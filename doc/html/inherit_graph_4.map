@@ -1,0 +1,41 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,490,68,515"/>
+<area shape="rect" id="Node000001" href="$classbase_1_1comment__block_1_1CommentBlock.html" title="Identify the start and end of a comment block." alt="" coords="127,5,357,45"/>
+<area shape="poly" id="edge16_Node000000_Node000001" title=" " alt="" coords="36,476,42,383,55,257,65,194,78,136,94,88,114,56,129,43,132,47,118,59,99,91,83,138,70,195,60,258,47,383,42,477"/>
+<area shape="rect" id="Node000002" href="$classbase_1_1comment__block_1_1CommentParams.html" title="Comment marker definitions and static selection methods." alt="" coords="127,69,357,109"/>
+<area shape="poly" id="edge17_Node000000_Node000002" title=" " alt="" coords="37,476,45,395,59,288,82,187,96,147,114,120,129,107,132,112,118,123,101,149,87,188,64,289,50,395,42,476"/>
+<area shape="rect" id="Node000003" href="$classbase_1_1comment__block_1_1TextFileCommentBlock.html" title="Identify the start and end of a comment text block." alt="" coords="135,133,349,173"/>
+<area shape="poly" id="edge18_Node000000_Node000003" title=" " alt="" coords="38,476,48,407,64,320,86,238,99,206,114,183,133,169,136,173,118,187,104,208,91,240,69,321,53,408,44,477"/>
+<area shape="rect" id="Node000004" href="$classbase_1_1copyright__tools_1_1CopyrightFinder.html" title="Copyright message finder class." alt="" coords="130,197,354,237"/>
+<area shape="poly" id="edge19_Node000000_Node000004" title=" " alt="" coords="35,476,39,427,51,366,74,302,92,273,114,247,130,236,133,240,118,251,96,276,79,305,56,367,45,428,41,476"/>
+<area shape="rect" id="Node000005" href="$classbase_1_1copyright__tools_1_1CopyrightGenerator.html" title="Copyright message generator." alt="" coords="130,261,354,301"/>
+<area shape="poly" id="edge20_Node000000_Node000005" title=" " alt="" coords="39,476,46,439,60,395,82,350,114,311,132,299,135,304,118,315,87,353,65,397,51,440,44,477"/>
+<area shape="rect" id="Node000006" href="$classbase_1_1copyright__tools_1_1CopyrightParse.html" title="Copyright parsing and new message class." alt="" coords="130,325,354,365"/>
+<area shape="poly" id="edge21_Node000000_Node000006" title=" " alt="" coords="45,476,71,425,90,398,114,375,135,363,138,368,118,379,94,401,75,427,49,478"/>
+<area shape="rect" id="Node000010" href="$classbase_1_1copyright__tools_1_1CopyrightYearsList.html" title="Parse dates return data structure." alt="" coords="130,389,354,429"/>
+<area shape="poly" id="edge25_Node000000_Node000010" title=" " alt="" coords="59,479,85,458,115,439,144,427,146,432,117,444,88,462,62,483"/>
+<area shape="rect" id="Node000011" href="$classbase_1_1copyright__tools_1_1SubTextMarker.html" title="Regex trimmed substrng text and location information." alt="" coords="149,453,335,493"/>
+<area shape="poly" id="edge26_Node000000_Node000011" title=" " alt="" coords="81,494,149,484,149,489,82,499"/>
+<area shape="rect" id="Node000012" href="$classbase_1_1eula_1_1EulaText.html" title="EULA text helper class." alt="" coords="170,518,314,543"/>
+<area shape="poly" id="edge27_Node000000_Node000012" title=" " alt="" coords="82,506,170,518,169,524,81,511"/>
+<area shape="rect" id="Node000013" href="$classbase_1_1json__language__list_1_1LanguageDescriptionList.html" title="Language description list data." alt="" coords="135,568,349,608"/>
+<area shape="poly" id="edge28_Node000000_Node000013" title=" " alt="" coords="65,521,117,554,148,565,147,570,115,558,62,526"/>
+<area shape="rect" id="Node000014" href="$classbase_1_1json__string__class__description_1_1StringClassDescription.html" title="String object class definitions." alt="" coords="116,632,368,672"/>
+<area shape="poly" id="edge29_Node000000_Node000014" title=" " alt="" coords="51,527,77,574,95,598,118,618,138,629,135,634,114,622,91,601,72,577,46,529"/>
+<area shape="rect" id="Node000015" href="$classbase_1_1json__string__class__description_1_1TranslationTextParser.html" title="Translation text helper functions." alt="" coords="141,697,343,751"/>
+<area shape="poly" id="edge30_Node000000_Node000015" title=" " alt="" coords="45,528,53,563,67,604,88,646,118,682,142,698,139,703,114,686,84,649,62,607,48,565,40,530"/>
+<area shape="rect" id="Node000016" href="$classbase_1_1param__return__tools_1_1ParamRetDict.html" title="Parameter/Return value dictionary utility functions." alt="" coords="148,776,336,816"/>
+<area shape="poly" id="edge31_Node000000_Node000016" title=" " alt="" coords="41,529,44,579,55,642,65,675,78,707,96,736,118,762,149,782,146,786,114,766,91,739,74,709,60,676,50,643,39,580,35,530"/>
+<area shape="rect" id="Node000017" href="$classcpp__gen_1_1file__gen__base_1_1GenerateCppFileHelper.html" title="File generation helper class." alt="" coords="125,840,359,880"/>
+<area shape="poly" id="edge32_Node000000_Node000017" title=" " alt="" coords="43,529,53,598,68,688,90,772,103,804,118,826,132,838,129,842,114,830,99,807,85,774,63,689,47,599,38,529"/>
+<area shape="rect" id="Node000018" href="$classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html" title="File generation helper class." alt="" coords="125,904,359,944"/>
+<area shape="poly" id="edge33_Node000000_Node000018" title=" " alt="" coords="42,529,50,611,64,720,86,823,101,863,118,890,132,902,129,906,114,894,96,866,81,825,59,721,44,612,37,529"/>
+<area shape="rect" id="Node000019" href="$classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html" title="File generation helper class." alt="" coords="131,969,353,1023"/>
+<area shape="poly" id="edge34_Node000000_Node000019" title=" " alt="" coords="42,529,47,623,61,751,71,815,83,874,99,922,118,954,132,967,129,971,114,958,94,924,78,875,65,816,55,751,42,624,36,529"/>
+<area shape="rect" id="Node000007" href="$classbase_1_1copyright__tools_1_1CopyrightParseOrder1.html" title="Copyright order parsing and new message class." alt="" coords="416,293,640,333"/>
+<area shape="poly" id="edge22_Node000006_Node000007" title=" " alt="" coords="367,329,416,323,416,328,368,334"/>
+<area shape="rect" id="Node000009" href="$classbase_1_1copyright__tools_1_1CopyrightParseOrder2.html" title="Copyright order parsing and new message class." alt="" coords="416,357,640,397"/>
+<area shape="poly" id="edge24_Node000006_Node000009" title=" " alt="" coords="368,357,416,362,416,367,367,362"/>
+<area shape="rect" id="Node000008" href="$classbase_1_1copyright__tools_1_1CopyrightParseEnglish.html" title="English copyright parsing and new message class." alt="" coords="688,293,912,333"/>
+<area shape="poly" id="edge23_Node000007_Node000008" title=" " alt="" coords="653,311,688,311,688,316,653,316"/>
+</map>

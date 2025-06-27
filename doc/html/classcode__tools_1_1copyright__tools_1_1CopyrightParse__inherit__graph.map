@@ -1,0 +1,11 @@
+<map id="code_tools.copyright_tools.CopyrightParse" name="code_tools.copyright_tools.CopyrightParse">
+<area shape="rect" id="Node000001" title="Copyright parsing and new message class." alt="" coords="116,37,279,77"/>
+<area shape="rect" id="Node000003" href="$classcode__tools_1_1copyright__tools_1_1CopyrightParseOrder1.html" title="Copyright order parsing and new message class." alt="" coords="327,5,533,45"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="292,42,326,37,327,42,293,47"/>
+<area shape="rect" id="Node000005" href="$classcode__tools_1_1copyright__tools_1_1CopyrightParseOrder2.html" title="Copyright order parsing and new message class." alt="" coords="327,69,533,109"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="293,68,327,72,326,78,292,73"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,45,68,70"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,55,116,55,116,60,82,60"/>
+<area shape="rect" id="Node000004" href="$classcode__tools_1_1copyright__tools_1_1CopyrightParseEnglish.html" title="English copyright parsing and new message class." alt="" coords="581,5,792,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="547,23,581,23,581,28,547,28"/>
+</map>

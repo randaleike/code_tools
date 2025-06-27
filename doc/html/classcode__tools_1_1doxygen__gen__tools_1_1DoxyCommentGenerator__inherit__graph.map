@@ -1,0 +1,11 @@
+<map id="code_tools.doxygen_gen_tools.DoxyCommentGenerator" name="code_tools.doxygen_gen_tools.DoxyCommentGenerator">
+<area shape="rect" id="Node000001" title="Generic Doxygen comment generator class Generic Doxygen comment generator class." alt="" coords="5,101,264,141"/>
+<area shape="rect" id="Node000002" href="$classcode__tools_1_1doxygen__gen__tools_1_1CDoxyCommentGenerator.html" title="C/C++ file Doxygen comment generator class." alt="" coords="315,5,583,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,94,311,55,355,43,357,48,313,60,200,99"/>
+<area shape="rect" id="Node000003" href="$classcode__tools_1_1doxygen__gen__tools_1_1JsDoxyCommentGenerator.html" title="Javascript file Doxygen comment generator class." alt="" coords="314,69,585,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="277,104,313,100,314,106,278,109"/>
+<area shape="rect" id="Node000004" href="$classcode__tools_1_1doxygen__gen__tools_1_1PyDoxyCommentGenerator.html" title="Python file Doxygen comment generator class." alt="" coords="312,133,587,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="278,133,312,137,311,142,277,139"/>
+<area shape="rect" id="Node000005" href="$classcode__tools_1_1doxygen__gen__tools_1_1TsDoxyCommentGenerator.html" title="Typescript file Doxygen comment generator class." alt="" coords="313,197,585,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="200,144,313,183,357,195,355,200,311,188,198,149"/>
+</map>
