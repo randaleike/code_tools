@@ -1,0 +1,29 @@
+# OS junk files
+
+# Vscode files
+*.code-workspace
+
+# Cache data
+.cache
+.vscode/node_modules
+.vscode/res
+
+# Cmake files
+[Bb]uild*/
+*.Cmake
+MakeFile
+
+# C Build files
+*.o
+*.lst
+.vscode/node_modules
+
+# Python build files
+__pycache__
+*.egg-info
+dist
+htmlcov
+.coverage
+
+# Doxygen Output
+html

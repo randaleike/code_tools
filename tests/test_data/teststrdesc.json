@@ -1,0 +1,47 @@
+{
+  "baseClassName": "ParserStringListInterface",
+  "namespace": "argparser",
+  "dynamicCompileSwitch": "TEST_DYNAMIC_INTERNATIONALIZATION",
+  "propertyMethods": {
+    "getLangIsoCode": {
+      "name": "isoCode",
+      "briefDesc": "Get the ISO 639 set 1 language code for this object",
+      "params": [],
+      "return": {
+        "type": "string",
+        "desc": "ISO 639 set 1 language code",
+        "typeMod": 0
+      }
+    }
+  },
+  "translateMethods": {
+    "getNotListTypeMessage": {
+      "briefDesc": "Return non-list varg error message",
+      "params": [
+        {
+          "name": "nargs",
+          "type": "integer",
+          "desc": "input nargs value",
+          "typeMod": 0
+        }
+      ],
+      "return": {
+        "type": "string",
+        "desc": "Non-list varg error message",
+        "typeMod": 0
+      },
+      "translateDesc": {
+        "en": [
+          [
+            "text",
+            "Only list type arguments can have an argument count of "
+          ],
+          [
+            "param",
+            "nargs"
+          ]
+        ]
+      }
+    }
+  }
+}

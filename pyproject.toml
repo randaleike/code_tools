@@ -1,0 +1,41 @@
+[project]
+name = "code_tools_grocsoftware"
+version = "0.4.3"
+
+authors = [
+  { name="Randal Eike", email="grocsoftware@gmail.com" },
+]
+maintainers = [
+  {name="Randal Eike", email="grocsoftware@gmail.com"},
+]
+
+description = "Code generation and maintenance tools for C/CPP/Python/Typescript files"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = "MIT"
+keywords = ["code", "generation", "maintenance", "tools", "utilities", "C", "CPP", "Python", "Typescript", "files", "developer"]
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Repository = "https://github.com/randaleike/code_tools.git"
+Documentation = "https://github.com/randaleike/code_tools/wiki"
+Issues = "https://github.com/randaleike/code_tools/issues"
+Changelog = "https://github.com/randaleike/code_tools/master/CHANGELOG.md"
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["code_tools/*.py"]
+
+[tool.coverage.report]
+fail_under = 90
+
+[tool.coverage.run]
+branch = true
+include = ["code_tools/*"]
+command_line = "-m unittest discover -s tests/"

@@ -1,0 +1,47 @@
+{
+  "default": {
+    "name": "spanish",
+    "isoCode": "es"
+  },
+  "languages": {
+    "english": {
+      "LANG": "en",
+      "LANG_regions": [
+        "AU",
+        "BZ",
+        "CA",
+        "CB",
+        "GB",
+        "IE",
+        "JM",
+        "NZ",
+        "PH",
+        "TT",
+        "US",
+        "ZA",
+        "ZW"
+      ],
+      "LANGID": [
+        9
+      ],
+      "LANGID_regions": [
+        3081,
+        10249,
+        4105,
+        9225,
+        2057,
+        16393,
+        6153,
+        8201,
+        5129,
+        13321,
+        7177,
+        11273,
+        1033,
+        12297
+      ],
+      "isoCode": "en",
+      "compileSwitch": "ENGLISH_ERRORS"
+    }
+    }
+}
