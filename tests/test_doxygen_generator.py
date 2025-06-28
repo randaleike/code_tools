@@ -30,8 +30,8 @@ import unittest
 from dir_init import pathincsetup
 pathincsetup()
 
-from code_tools.base.param_return_tools import ParamRetDict
-from code_tools.base.doxygen_gen_tools import DoxyCommentGenerator
+from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
+from code_tools_grocsoftware.base.doxygen_gen_tools import DoxyCommentGenerator
 
 class UnittestDoxygenCommentBlock:
     """!
@@ -546,10 +546,10 @@ class UnittestDoxygenSinglLineCommentBlock(unittest.TestCase, UnittestDoxygenCom
     def setUp(self):
         self.setUpParams(None, None, None, '##!', True)
 
-from code_tools.base.doxygen_gen_tools import CDoxyCommentGenerator
-from code_tools.base.doxygen_gen_tools import PyDoxyCommentGenerator
-from code_tools.base.doxygen_gen_tools import TsDoxyCommentGenerator
-from code_tools.base.doxygen_gen_tools import JsDoxyCommentGenerator
+from code_tools_grocsoftware.base.doxygen_gen_tools import CDoxyCommentGenerator
+from code_tools_grocsoftware.base.doxygen_gen_tools import PyDoxyCommentGenerator
+from code_tools_grocsoftware.base.doxygen_gen_tools import TsDoxyCommentGenerator
+from code_tools_grocsoftware.base.doxygen_gen_tools import JsDoxyCommentGenerator
 
 class UnittestDoxygenProgCommentBlock(unittest.TestCase):
     """!

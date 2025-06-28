@@ -30,7 +30,7 @@ import unittest
 from dir_init import pathincsetup
 pathincsetup()
 
-from code_tools.base.comment_gen_tools import CommentGenerator
+from code_tools_grocsoftware.base.comment_gen_tools import CommentGenerator
 
 cCommentParms =   {'blockStart': "/*", 'blockEnd': "*/", 'blockLineStart': "", 'singleLine': "//"}
 pyCommentParms =  {'blockStart': "\"\"\"", 'blockEnd':"\"\"\"", 'blockLineStart': "", 'singleLine': "#"}
@@ -746,7 +746,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         """!
         @brief Test all generatoe constructors
         """
-        from code_tools.base.comment_gen_tools import CCommentGenerator
+        from code_tools_grocsoftware.base.comment_gen_tools import CCommentGenerator
 
         generator = CCommentGenerator()
         self.assertIsNone(generator.lineLength)
@@ -763,7 +763,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         """!
         @brief Test all generatoe constructors
         """
-        from code_tools.base.comment_gen_tools import PyCommentGenerator
+        from code_tools_grocsoftware.base.comment_gen_tools import PyCommentGenerator
 
         generator = PyCommentGenerator()
         self.assertIsNone(generator.lineLength)
@@ -780,7 +780,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         """!
         @brief Test all generatoe constructors
         """
-        from code_tools.base.comment_gen_tools import TsCommentGenerator
+        from code_tools_grocsoftware.base.comment_gen_tools import TsCommentGenerator
 
         generator = TsCommentGenerator()
         self.assertIsNone(generator.lineLength)
@@ -797,7 +797,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         """!
         @brief Test all generatoe constructors
         """
-        from code_tools.base.comment_gen_tools import JsCommentGenerator
+        from code_tools_grocsoftware.base.comment_gen_tools import JsCommentGenerator
 
         generator = JsCommentGenerator()
         self.assertIsNone(generator.lineLength)
@@ -814,7 +814,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         """!
         @brief Test all generatoe constructors
         """
-        from code_tools.base.comment_gen_tools import BashCommentGenerator
+        from code_tools_grocsoftware.base.comment_gen_tools import BashCommentGenerator
 
         generator = BashCommentGenerator()
         self.assertIsNone(generator.lineLength)
@@ -831,7 +831,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         """!
         @brief Test all generatoe constructors
         """
-        from code_tools.base.comment_gen_tools import BatchCommentGenerator
+        from code_tools_grocsoftware.base.comment_gen_tools import BatchCommentGenerator
 
         generator = BatchCommentGenerator()
         self.assertIsNone(generator.lineLength)

@@ -24,25 +24,47 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-clean-tempfiles.cmake "# 
 # Python source
 ####
 set(PYTHON_SRC_DIR
-    ${CMAKE_CURRENT_LIST_DIR}/code_tools
+    ${CMAKE_CURRENT_LIST_DIR}/src/code_tools_grocsoftware
+    )
+
+set(PYTHON_BASE_SRC_DIR
+    ${PYTHON_SRC_DIR}/base
     )
 
 set(PYTHON_CODE_TOOL_BASE_SRC
-    ${PYTHON_SRC_DIR}/text_format.py
-    ${PYTHON_SRC_DIR}/comment_block.py
-    ${PYTHON_SRC_DIR}/copyright_tools.py
-    ${PYTHON_SRC_DIR}/eula.py
-    ${PYTHON_SRC_DIR}/param_return_tools.py
-    ${PYTHON_SRC_DIR}/comment_gen_tools.py
-    ${PYTHON_SRC_DIR}/doxygen_gen_tools.py
+    ${PYTHON_BASE_SRC_DIR}/text_format.py
+    ${PYTHON_BASE_SRC_DIR}/comment_block.py
+    ${PYTHON_BASE_SRC_DIR}/copyright_tools.py
+    ${PYTHON_BASE_SRC_DIR}/eula.py
+    ${PYTHON_BASE_SRC_DIR}/param_return_tools.py
+    ${PYTHON_BASE_SRC_DIR}/comment_gen_tools.py
+    ${PYTHON_BASE_SRC_DIR}/doxygen_gen_tools.py
+    ${PYTHON_BASE_SRC_DIR}/json_language_list.py
+    ${PYTHON_BASE_SRC_DIR}/json_string_class_description.py
     )
 
+set(PYTHON_CPP_GEN_SRC_DIR
+    ${PYTHON_SRC_DIR}/cpp_gen
+    )
+
+set(PYTHON_PY_GEN_SRC_DIR
+    ${PYTHON_SRC_DIR}/python_gen
+    )
+
+set(PYTHON_TS_GEN_SRC_DIR
+    ${PYTHON_SRC_DIR}/typescript_gen
+    )
+
+
 set(PYTHON_CODE_TOOL_SRC
-    ${PYTHON_SRC_DIR}/json_language_list.py
-    ${PYTHON_SRC_DIR}/json_string_class_description.py
-    ${PYTHON_SRC_DIR}/cpp_file_gen_base.py
-    ${PYTHON_SRC_DIR}/python_file_gen_base.py
-    ${PYTHON_SRC_DIR}/typescript_file_gen_base.py
+    ${PYTHON_CPP_GEN_SRC_DIR}/file_gen_base.py
+    ${PYTHON_CPP_GEN_SRC_DIR}/string_class_tools.py
+    ${PYTHON_CPP_GEN_SRC_DIR}/linux_lang_select.py
+    ${PYTHON_CPP_GEN_SRC_DIR}/windows_lang_select.py
+    ${PYTHON_CPP_GEN_SRC_DIR}/static_lang_select.py
+    ${PYTHON_CPP_GEN_SRC_DIR}/master_lang_select.py
+    ${PYTHON_PY_GEN_SRC_DIR}/file_gen_base.py
+    ${PYTHON_TS_GEN_SRC_DIR}/file_gen_base.py
     )
 
 set(PYTHON_SRC

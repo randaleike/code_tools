@@ -7,6 +7,5 @@ Code generation and maintenance tools for C/CPP/Python/Typescript files
 [Repository for this project](https://github.com/randaleike/code_tools.git)<br>
 [Documentation for this project](https://github.com/randaleike/code_tools/wiki)<br>
 [To report issues](https://github.com/randaleike/code_tools/issues)<br>
-[Changelog for this project](https://github.com/randaleike/code_tools/master/CHANGELOG.md)<br>
+[Change log for this project](https://github.com/randaleike/code_tools/master/CHANGELOG.md)<br>
 [Contribution guidelines for this project](https://github.com/randaleike/code_tools/master/CONTRIBUTING.md)<br>
-

@@ -31,9 +31,9 @@ import unittest
 from dir_init import pathincsetup
 pathincsetup()
 
-from code_tools.base.copyright_tools import SubTextMarker
-from code_tools.base.copyright_tools import CopyrightYearsList
-from code_tools.base.copyright_tools import CopyrightParse
+from code_tools_grocsoftware.base.copyright_tools import SubTextMarker
+from code_tools_grocsoftware.base.copyright_tools import CopyrightYearsList
+from code_tools_grocsoftware.base.copyright_tools import CopyrightParse
 
 class TestClass01CopyrightParserBase(unittest.TestCase):
     """!

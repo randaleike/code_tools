@@ -33,9 +33,9 @@ from dir_init import pathincsetup
 pathincsetup()
 testFileBaseDir = TESTFILEPATH
 
-from code_tools.base.comment_block import CommentBlock
-from code_tools.base.comment_block import TextFileCommentBlock
-from code_tools.base.comment_block import CommentParams
+from code_tools_grocsoftware.base.comment_block import CommentBlock
+from code_tools_grocsoftware.base.comment_block import TextFileCommentBlock
+from code_tools_grocsoftware.base.comment_block import CommentParams
 
 class Unittest01TextCommentBlock(unittest.TestCase):
     """!

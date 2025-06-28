@@ -33,7 +33,7 @@ def pathincsetup():
     """
 
     # pylint: disable=locally-disabled, multiple-statements, import-error, wrong-import-position
-    # sys.path.insert(0, '.')
+    sys.path.insert(0, './src')
     # pylint: enable=import-error, wrong-import-position
 
 TESTFILEPATH = './tests/test_data'

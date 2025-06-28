@@ -30,8 +30,8 @@ import unittest
 from dir_init import pathincsetup
 pathincsetup()
 
-from code_tools.base.eula import EulaText
-from code_tools.base.eula import eula as eulaData
+from code_tools_grocsoftware.base.eula import EulaText
+from code_tools_grocsoftware.base.eula import eula as eulaData
 
 class TestEula(unittest.TestCase):
     """!

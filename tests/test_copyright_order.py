@@ -30,8 +30,8 @@ import unittest
 from dir_init import pathincsetup
 pathincsetup()
 
-from code_tools.base.copyright_tools import CopyrightParseOrder1
-from code_tools.base.copyright_tools import CopyrightParseOrder2
+from code_tools_grocsoftware.base.copyright_tools import CopyrightParseOrder1
+from code_tools_grocsoftware.base.copyright_tools import CopyrightParseOrder2
 
 class TestClass04CopyrightParserOrder1(unittest.TestCase):
     """!

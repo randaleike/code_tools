@@ -35,9 +35,9 @@ from dir_init import TESTFILEPATH
 from dir_init import pathincsetup
 pathincsetup()
 
-from code_tools.base.json_string_class_description import TranslationTextParser
-from code_tools.base.json_string_class_description import StringClassDescription
-from code_tools.base.param_return_tools import ParamRetDict
+from code_tools_grocsoftware.base.json_string_class_description import TranslationTextParser
+from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
+from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 
 class Unittest02StringClassDescription(unittest.TestCase):
     """!

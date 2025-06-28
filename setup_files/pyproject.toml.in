@@ -29,13 +29,10 @@ Changelog = "https://github.com/randaleike/@PROJECT_NAME@/master/CHANGELOG.md"
 requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools.packages.find]
-include = ["code_tools/*.py"]
-
 [tool.coverage.report]
 fail_under = 90
 
 [tool.coverage.run]
 branch = true
-include = ["code_tools/*"]
+include = ["src/code_tools_grocsoftware/*"]
 command_line = "-m unittest discover -s tests/"

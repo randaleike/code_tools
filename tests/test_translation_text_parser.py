@@ -33,7 +33,7 @@ from dir_init import TESTFILEPATH
 from dir_init import pathincsetup
 pathincsetup()
 
-from code_tools.base.json_string_class_description import TranslationTextParser
+from code_tools_grocsoftware.base.json_string_class_description import TranslationTextParser
 
 class Unittest01TranslationTextParser(unittest.TestCase):
     """!

@@ -33,9 +33,9 @@ from dir_init import pathincsetup
 pathincsetup()
 testFileBaseDir = TESTFILEPATH
 
-from code_tools.base.copyright_tools import CopyrightParseEnglish
-from code_tools.base.copyright_tools import CopyrightGenerator
-from code_tools.base.copyright_tools import CopyrightFinder
+from code_tools_grocsoftware.base.copyright_tools import CopyrightParseEnglish
+from code_tools_grocsoftware.base.copyright_tools import CopyrightGenerator
+from code_tools_grocsoftware.base.copyright_tools import CopyrightFinder
 
 class TestClass06CopyrightParserEnglish(unittest.TestCase):
     """!

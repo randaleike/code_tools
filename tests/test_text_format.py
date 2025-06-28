@@ -30,7 +30,7 @@ import unittest
 from dir_init import pathincsetup
 pathincsetup()
 
-from code_tools.base.text_format import MultiLineFormat
+from code_tools_grocsoftware.base.text_format import MultiLineFormat
 
 class Unittest01MultiLineFormat(unittest.TestCase):
     """!

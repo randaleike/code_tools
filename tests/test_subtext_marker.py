@@ -30,7 +30,7 @@ import unittest
 from dir_init import pathincsetup
 pathincsetup()
 
-from code_tools.base.copyright_tools import SubTextMarker
+from code_tools_grocsoftware.base.copyright_tools import SubTextMarker
 
 class TestClass01CopyrightSubtextMarker(unittest.TestCase):
     """!
