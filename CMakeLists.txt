@@ -24,11 +24,11 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-clean-tempfiles.cmake "# 
 # Python source
 ####
 set(PYTHON_SRC_DIR
-    ${CMAKE_CURRENT_LIST_DIR}/src/code_tools_grocsoftware
+    ${CMAKE_CURRENT_LIST_DIR}/src
     )
 
 set(PYTHON_BASE_SRC_DIR
-    ${PYTHON_SRC_DIR}/base
+    ${PYTHON_SRC_DIR}/code_tools_grocsoftware/base
     )
 
 set(PYTHON_CODE_TOOL_BASE_SRC
@@ -44,15 +44,15 @@ set(PYTHON_CODE_TOOL_BASE_SRC
     )
 
 set(PYTHON_CPP_GEN_SRC_DIR
-    ${PYTHON_SRC_DIR}/cpp_gen
+    ${PYTHON_SRC_DIR}/code_tools_grocsoftware/cpp_gen
     )
 
 set(PYTHON_PY_GEN_SRC_DIR
-    ${PYTHON_SRC_DIR}/python_gen
+    ${PYTHON_SRC_DIR}/code_tools_grocsoftware/python_gen
     )
 
 set(PYTHON_TS_GEN_SRC_DIR
-    ${PYTHON_SRC_DIR}/typescript_gen
+    ${PYTHON_SRC_DIR}/code_tools_grocsoftware/typescript_gen
     )
 
 

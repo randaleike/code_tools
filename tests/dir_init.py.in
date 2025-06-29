@@ -33,7 +33,7 @@ def pathincsetup():
     """
 
     # pylint: disable=locally-disabled, multiple-statements, import-error, wrong-import-position
-    # sys.path.insert(0, '@CMAKE_CURRENT_LIST_DIR@')
+    sys.path.insert(0, './src')
     # pylint: enable=import-error, wrong-import-position
 
-TESTFILEPATH = '@CMAKE_CURRENT_LIST_DIR@/tests/test_data'
+TESTFILEPATH = './tests/test_data'

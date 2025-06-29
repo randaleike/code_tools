@@ -8,5 +8,6 @@ var searchData=
   ['findnextcopyrightmsg_5',['findNextCopyrightMsg',['../classbase_1_1copyright__tools_1_1CopyrightFinder.html#ab7e384b05d6341d53d4f0e895a88f119',1,'base::copyright_tools::CopyrightFinder']]],
   ['formateulaname_6',['formatEulaName',['../classbase_1_1eula_1_1EulaText.html#a1f36029119658f157305df109b0ef015',1,'base::eula::EulaText']]],
   ['formateulatext_7',['formatEulaText',['../classbase_1_1eula_1_1EulaText.html#a4c3ee4970d7654d65d66f0b2777ad097',1,'base::eula::EulaText']]],
-  ['formatmaxlength_8',['formatMaxLength',['../classbase_1_1doxygen__gen__tools_1_1DoxyCommentGenerator.html#a0566531006725e187e72e550729f6e30',1,'base::doxygen_gen_tools::DoxyCommentGenerator']]]
+  ['formatmaxlength_8',['formatMaxLength',['../classbase_1_1doxygen__gen__tools_1_1DoxyCommentGenerator.html#a0566531006725e187e72e550729f6e30',1,'base::doxygen_gen_tools::DoxyCommentGenerator']]],
+  ['functionindent_9',['functionIndent',['../classcpp__gen_1_1string__class__tools_1_1BaseCppStringClassGenerator.html#a91f741c80bea0d42136705cf434e2f7e',1,'cpp_gen::string_class_tools::BaseCppStringClassGenerator']]]
 ];

@@ -11,5 +11,6 @@ var searchData=
   ['assembleparsedstrdata_8',['assembleParsedStrData',['../classbase_1_1json__string__class__description_1_1TranslationTextParser.html#a99f53e231215390508097c823a435ab3',1,'base::json_string_class_description::TranslationTextParser']]],
   ['assemblestream_9',['assembleStream',['../classbase_1_1json__string__class__description_1_1TranslationTextParser.html#a23d0d7f75f027e551117a202ff30ab25',1,'base::json_string_class_description::TranslationTextParser']]],
   ['assembletestreturnstring_10',['assembleTestReturnString',['../classbase_1_1json__string__class__description_1_1TranslationTextParser.html#afdb4cd308e2ceeb50f78100a0b847619',1,'base::json_string_class_description::TranslationTextParser']]],
-  ['autogenlang_11',['autogenlang',['../namespaceautogenlang.html',1,'']]]
+  ['autogenlang_11',['autogenlang',['../namespaceautogenlang.html',1,'']]],
+  ['autotoolname_12',['autoToolName',['../classcpp__gen_1_1string__class__tools_1_1BaseCppStringClassGenerator.html#a6ee492c26fa8eeaa94ed10d84e576622',1,'cpp_gen::string_class_tools::BaseCppStringClassGenerator']]]
 ];

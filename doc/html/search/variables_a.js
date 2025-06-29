@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['parsedtypeparam_0',['parsedTypeParam',['../classbase_1_1json__string__class__description_1_1TranslationTextParser.html#a2fec59ad68347e68dc705dc2ff56cb82',1,'base::json_string_class_description::TranslationTextParser']]],
-  ['parsedtypespecial_1',['parsedTypeSpecial',['../classbase_1_1json__string__class__description_1_1TranslationTextParser.html#ac3df23b95e5ef673d2bab5154cdd41d5',1,'base::json_string_class_description::TranslationTextParser']]],
-  ['parsedtypetext_2',['parsedTypeText',['../classbase_1_1json__string__class__description_1_1TranslationTextParser.html#a26681557c87c0ad6f275ec0c9dfa7503',1,'base::json_string_class_description::TranslationTextParser']]],
-  ['parser_3',['parser',['../classbase_1_1copyright__tools_1_1CopyrightGenerator.html#acdb17217490efe9ae123857f06d3a3a2',1,'base::copyright_tools::CopyrightGenerator']]],
-  ['pycommentparms_4',['pyCommentParms',['../classbase_1_1comment__block_1_1CommentParams.html#a4c09f9afdd02eeea6d46b0a147190f87',1,'base::comment_block::CommentParams']]]
+  ['langjsondata_0',['langJsonData',['../classbase_1_1json__language__list_1_1LanguageDescriptionList.html#a0f73f9bda098c9ca5f6a34cea503bd20',1,'base::json_language_list::LanguageDescriptionList']]],
+  ['leveltabsize_1',['leveltabsize',['../classcpp__gen_1_1file__gen__base_1_1GenerateCppFileHelper.html#a32025b2ca9e2185d11653897d2171241',1,'cpp_gen.file_gen_base.GenerateCppFileHelper.levelTabSize'],['../classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a1bd21bb24a6914ee29a5543c4ba27f50',1,'python_gen.file_gen_base.GeneratePythonFileHelper.levelTabSize'],['../classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a9677501ad468d1424688942825184e21',1,'typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.levelTabSize']]],
+  ['linelength_2',['lineLength',['../classbase_1_1comment__gen__tools_1_1CommentGenerator.html#a1d74c2ea56632df5d17d4d0a243dcf53',1,'base::comment_gen_tools::CommentGenerator']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['raweulatext_0',['rawEulaText',['../classbase_1_1eula_1_1EulaText.html#a2a8f5ccf260d502b05fa40a8fca52137',1,'base::eula::EulaText']]]
+  ['owner_0',['owner',['../classcpp__gen_1_1string__class__tools_1_1BaseCppStringClassGenerator.html#a4d6e0874003c45febdee40fa9c857910',1,'cpp_gen::string_class_tools::BaseCppStringClassGenerator']]]
 ];
