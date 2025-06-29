@@ -413,13 +413,13 @@ class LanguageDescriptionList(object):
             if region == 0:
                 break
             else:
-                if region > 0x0FF:
-                    if region not in windowsIdCodeList:
-                        windowsIdCodeList.append(region)
+                if region not in windowsIdCodeList:
+                    windowsIdCodeList.append(region)
 
-                winId = region & 0x0FF
-                if winId not in windowsIdCodes:
-                    windowsIdCodes.append(winId)
+                    winId = region & 0x0FF
+                    if winId not in windowsIdCodes:
+                        windowsIdCodes.append(winId)
+
         return windowsIdCodes, windowsIdCodeList
 
     def newLanguage(self, override:bool = False)->bool:

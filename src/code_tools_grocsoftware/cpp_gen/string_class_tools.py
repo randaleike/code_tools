@@ -34,36 +34,56 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         @brief BaseCppStringClassGenerator constructor
         @param owner {string} Owner string for the copyright/EULA file header comment
         @param eulaName {string} EULA name for the copyright/EULA file header comment
+        @param baseClassName {string} Base class name for class definition generation
+        @param dynamicCompileSwitch {string} Dynamic language selection compile switch
         """
         super().__init__(eulaName)
-        if owner is None:
-            self.owner = "BaseCppStringClassGenerator"
-        else:
+        ## Owner name for file header copyright message generation
+        self.owner = "BaseCppStringClassGenerator"
+        if owner is not None:
             self.owner = owner
 
+        ## Base class name for class definition generations
         self.baseClassName = baseClassName
+
+        ## Dynamic compile switch name for generation
         self.dynamicCompileSwitch = dynamicCompileSwitch
 
-        # Add the specialty types
-        self.baseIntfRetPtrType = "std::shared_ptr<"+self.baseClassName+">"
-        self.typeXlationDict['LANID'] = "LANGID"
-        self.typeXlationDict['sharedptr'] = self.baseIntfRetPtrType
-        self.typeXlationDict['strstream'] = "std::stringstream"
+        ## Dynamic compile switch name for generation #if text
+        self.ifDynamicDefined = "defined("+self.dynamicCompileSwitch+")"
 
+        ## CPP return type for the language selection static function
+        self.baseIntfRetPtrType = "std::shared_ptr<"+self.baseClassName+">"
+
+        ## CPP ParamRetDict return dictionary for the language selection static function
         self.baseIntfRetPtrDict = ParamRetDict.buildReturnDict('sharedptr',
                                                                 "Shared pointer to "+self.baseClassName+"<lang> based on OS local language")
 
+        # Add the specialty types
+        self.typeXlationDict['LANGID'] = "LANGID"
+        self.typeXlationDict['sharedptr'] = self.baseIntfRetPtrType
+        self.typeXlationDict['strstream'] = "std::stringstream"
+
+        ## Major version number definition for  the genertator
         self.versionMajor = 0
+        ## Minor version number definition for  the genertator
         self.versionMinor = 4
+        ## Patch version number definition for  the genertator
         self.versionPatch = 1
-        self.versionTweak = 0
+
+        ## Autogeneration tool name
         self.autoToolName = self.__class__.__name__+self._getVersion()
 
+        ## Doxygen group name
         self.groupName = "LocalLanguageSelection"
+
+        ## Doxygen group description
         self.groupDesc = "Local language detection and selection utility"
 
-        self.ifDynamicDefined = "defined("+self.dynamicCompileSwitch+")"
+        ## Default class method/variable declaration indentation
         self.declareIndent = 8
+
+        ## Default method/function body indentation
         self.functionIndent = 4
 
     def _getStringType(self)->str:
@@ -108,7 +128,7 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         @brief Return the version number as a string
         @return string - Version number
         """
-        return "V"+str(self.versionMajor)+"."+str(self.versionMinor)+"."+str(self.versionPatch)+"."+str(self.versionTweak)
+        return "V"+str(self.versionMajor)+"."+str(self.versionMinor)+"."+str(self.versionPatch)
 
     def _generateFileHeader(self)->list:
         """!

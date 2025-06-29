@@ -780,7 +780,7 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         """!
         @brief Test _inputWindowsLangIds() method, single LANGID value, single LANGID code
         """
-        inputStr = (text for text in ["1157", "0"])
+        inputStr = (text for text in ["1157", "133", "0"])
         def testMockIn(prompt):
             return next(inputStr)
 
@@ -790,8 +790,9 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
             windowsIdCodes, windowsIdCodeList = testobj._inputWindowsLangIds()
             self.assertEqual(len(windowsIdCodes), 1)
             self.assertEqual(windowsIdCodes[0], (1157 & 0xFF))
-            self.assertEqual(len(windowsIdCodeList), 1)
+            self.assertEqual(len(windowsIdCodeList), 2)
             self.assertEqual(windowsIdCodeList[0], 1157)
+            self.assertEqual(windowsIdCodeList[1], 133)
 
             expected = "Enter Windows LANGID values. A value of 0 will exit.\n"
             self.assertEqual(output.getvalue(), expected)
@@ -822,7 +823,7 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         """!
         @brief Test _inputWindowsLangIds() method, multiple LANGID values, multiple LANGID codes
         """
-        inputStr = (text for text in ["3081", "10249", "4105", "2060", "11276", "0"])
+        inputStr = (text for text in ["3081", "10249", "4105", "2060", "11276", "9", "0"])
         def testMockIn(prompt):
             return next(inputStr)
 
@@ -833,12 +834,13 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
             self.assertEqual(len(windowsIdCodes), 2)
             self.assertEqual(windowsIdCodes[0], 9)
             self.assertEqual(windowsIdCodes[1], 12)
-            self.assertEqual(len(windowsIdCodeList), 5)
+            self.assertEqual(len(windowsIdCodeList), 6)
             self.assertEqual(windowsIdCodeList[0], 3081)
             self.assertEqual(windowsIdCodeList[1], 10249)
             self.assertEqual(windowsIdCodeList[2], 4105)
             self.assertEqual(windowsIdCodeList[3], 2060)
             self.assertEqual(windowsIdCodeList[4], 11276)
+            self.assertEqual(windowsIdCodeList[5], 9)
 
             expected = "Enter Windows LANGID values. A value of 0 will exit.\n"
             self.assertEqual(output.getvalue(), expected)
@@ -1337,6 +1339,28 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         expected += str(testobj.langJsonData['default']['name'])
 
         self.assertEqual(testStr, expected)
+
+    def test19InputWindowsLangIdsMultipleIdMultipleCode(self):
+        """!
+        @brief Test _inputWindowsLangIds() method, multiple LANGID values, multiple LANGID codes
+        """
+        inputStr = (text for text in ["3081", "2576", "2576", "0"])
+        def testMockIn(prompt):
+            return next(inputStr)
+
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
+            testobj = LanguageDescriptionList()
+            windowsIdCodes, windowsIdCodeList = testobj._inputWindowsLangIds()
+            self.assertEqual(len(windowsIdCodes), 2)
+            self.assertEqual(windowsIdCodes[0], 9)
+            self.assertEqual(windowsIdCodes[1], 16)
+            self.assertEqual(len(windowsIdCodeList), 2)
+            self.assertEqual(windowsIdCodeList[0], 3081)
+            self.assertEqual(windowsIdCodeList[1], 2576)
+
+            expected = "Enter Windows LANGID values. A value of 0 will exit.\n"
+            self.assertEqual(output.getvalue(), expected)
 
 if __name__ == '__main__':
     unittest.main()

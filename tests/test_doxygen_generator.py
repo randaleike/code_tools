@@ -517,6 +517,38 @@ class UnittestDoxygenCommentBlock:
         self.assertEqual(tstStrList[2], blockprefix+"\n")
         self.assertEqual(tstStrList[3], prefix+self.expectedBlockEnd+"\n")
 
+    def test25GenLongNone(self):
+        """!
+        @brief Test the long description block with None long description
+        """
+        prefix = "  "+self.expectedBlockPrefix
+        self.tstGen.descFormatMax = 80+len(prefix)
+        tstStrList = self.tstGen._genLongDesc(prefix)
+        self.assertEqual(len(tstStrList), 0)
+
+    def test26GenClassDocBriefNone(self):
+        """!
+        @brief Test the generate class documentation
+        """
+        prefix = "".rjust(4, ' ')
+        blockprefix = prefix+self.expectedBlockPrefix
+        self.tstGen.descFormatMax = 78+len(prefix)
+        tstStrList = self.tstGen.genDoxyClassComment(None, "Long class description", blockIndent=4)
+
+        self.assertEqual(len(tstStrList), 3)
+        self.assertEqual(tstStrList[0], prefix+self.expectedBlockStart+"\n")
+        self.assertEqual(tstStrList[1], blockprefix+"Long class description\n")
+        self.assertEqual(tstStrList[2], prefix+self.expectedBlockEnd+"\n")
+
+    def test27GenDefGroupNone(self):
+        """!
+        @brief Test the generate group definition documentation, None group
+        """
+        tstStrList = self.tstGen.genDoxyDefgroup("test.x")
+        self.assertEqual(len(tstStrList), 3)
+        self.assertEqual(tstStrList[0], self.expectedBlockStart+"\n")
+        self.assertEqual(tstStrList[1], self.expectedBlockPrefix+"@file test.x\n")
+        self.assertEqual(tstStrList[2], self.expectedBlockEnd+"\n")
 
 class UnittestDoxygenCCommentBlock(unittest.TestCase, UnittestDoxygenCommentBlock):
     """!
