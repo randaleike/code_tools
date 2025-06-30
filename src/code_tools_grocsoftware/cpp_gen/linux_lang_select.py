@@ -44,11 +44,19 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         @param dynnamicCompileSwitch {string} Dynamic compile switch for #if generation
         """
         super().__init__(owner, eulaName, baseClassName, dynamicCompileSwitch)
+        ## Name of the linux language class dynamic allocation function
         self.selectFunctionName = "get"+baseClassName+"_Linux"
 
+        ## Dynamic allocation function input parameter dictionary list
         self.paramDictList = [ParamRetDict.buildParamDict("langId", "const char*", "Current LANG value from the program environment")]
+
+        ## Linux OS definition compile switch
         self.defOsString = "(defined(__linux__) || defined(__unix__))"
+
+        ## Json language data list object
         self.langJsonData = jsonLangData
+
+        ## CPP Doxygen comment generator
         self.doxyCommentGen = CDoxyCommentGenerator()
 
     def getFunctionName(self)->str:
@@ -93,13 +101,13 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
 
         # Start function body generation
         paramName = ParamRetDict.getParamName(self.paramDictList[0])
-        bodyIndent = "    "
+        bodyIndent = "".rjust(self.levelTabSize, " ")
         functionBody.append(bodyIndent+"// Check for valid input\n")
         functionBody.append(bodyIndent+"if (nullptr != "+paramName+")\n")
         functionBody.append(bodyIndent+"{\n")
 
         # Generate if/else if chain for each language in the dictionary
-        if1BodyIndent = bodyIndent+"".rjust(4, " ")
+        if1BodyIndent = bodyIndent+"".rjust(self.levelTabSize, " ")
         functionBody.append(if1BodyIndent+"// Break the string into its components\n")
         functionBody.append(if1BodyIndent+"std::cmatch searchMatch;\n")
         functionBody.append(if1BodyIndent+"std::regex searchRegex(\"^([a-z]{2})_([A-Z]{2})\\\\.(UTF-[0-9]{1,2})\");\n")
@@ -107,7 +115,7 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         functionBody.append("\n")  # whitespace for readability
         functionBody.append(if1BodyIndent+"// Determine the language\n")
 
-        if2BodyIndent = if1BodyIndent+"".rjust(4, " ")
+        if2BodyIndent = if1BodyIndent+"".rjust(self.levelTabSize, " ")
         firstCheck = True
         for langName in self.langJsonData.getLanguageList():
             langCode, regionList = self.langJsonData.getLanguageLANGData(langName)
@@ -159,7 +167,7 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         getParam += ParamRetDict.getParamType(self.paramDictList[0])
         getParam += " "
         getParam += localVarName
-        getParam += "= getenv(\"LANG\");\n"
+        getParam += " = getenv(\"LANG\");\n"
 
         doCall = indentText
         doCall += "return "
@@ -182,7 +190,7 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         @return list of strings - Output C code
         """
         testBlockName = "LinuxSelectFunction"
-        bodyIndent = "".rjust(4, " ")
+        bodyIndent = "".rjust(self.levelTabSize, " ")
         breifDesc = "Test "+self.selectFunctionName+" "+linuxEnvString+" selection case"
         testBody = self.doxyCommentGen.genDoxyMethodComment(breifDesc, [])
 
