@@ -25,7 +25,8 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import unittest
+import pytest
+#
 
 from dir_init import pathincsetup
 pathincsetup()
@@ -33,7 +34,7 @@ pathincsetup()
 from code_tools_grocsoftware.base.eula import EulaText
 from code_tools_grocsoftware.base.eula import eula as eulaData
 
-class TestEula(unittest.TestCase):
+class TestEula:
     """!
     @brief Unit test for the EULAText class
     """
@@ -42,115 +43,115 @@ class TestEula(unittest.TestCase):
         @brief Test the static get EULA text method
         """
         eula = EulaText.getEulaText('MIT_open')
-        self.assertIsNotNone(eula)
-        self.assertEqual(len(eula), 3)
+        assert eula is not None
+        assert len(eula) == 3
 
         eula = EulaText.getEulaText('MIT_no_atrtrib')
-        self.assertIsNotNone(eula)
-        self.assertEqual(len(eula), 2)
+        assert eula is not None
+        assert len(eula) == 2
 
         eula = EulaText.getEulaText('MIT_X11')
-        self.assertIsNotNone(eula)
-        self.assertEqual(len(eula), 4)
+        assert eula is not None
+        assert len(eula) == 4
 
         eula = EulaText.getEulaText('GNU_V11')
-        self.assertIsNotNone(eula)
-        self.assertEqual(len(eula), 3)
+        assert eula is not None
+        assert len(eula) == 3
 
         eula = EulaText.getEulaText('apache_v2_0')
-        self.assertIsNotNone(eula)
-        self.assertEqual(len(eula), 3)
+        assert eula is not None
+        assert len(eula) == 3
 
         eula = EulaText.getEulaText('BSD_3clause')
-        self.assertIsNotNone(eula)
-        self.assertEqual(len(eula), 5)
+        assert eula is not None
+        assert len(eula) == 5
 
         eula = EulaText.getEulaText('BSD_2clause')
-        self.assertIsNotNone(eula)
-        self.assertEqual(len(eula), 4)
+        assert eula is not None
+        assert len(eula) == 4
 
         eula = EulaText.getEulaText('somethingelse')
-        self.assertIsNone(eula)
+        assert eula is None
 
     def test02StaticGetEulaName(self):
         """!
         @brief Test the static get EULA name method
         """
         eulaName = EulaText.getEulaName('MIT_open')
-        self.assertIsNotNone(eulaName)
-        self.assertEqual(eulaName, eulaData['MIT_open']['name'])
+        assert eulaName is not None
+        assert eulaName == eulaData['MIT_open']['name']
 
         eulaName = EulaText.getEulaName('MIT_no_atrtrib')
-        self.assertIsNotNone(eulaName)
-        self.assertEqual(eulaName, eulaData['MIT_no_atrtrib']['name'])
+        assert eulaName is not None
+        assert eulaName == eulaData['MIT_no_atrtrib']['name']
 
         eulaName = EulaText.getEulaName('MIT_X11')
-        self.assertIsNotNone(eulaName)
-        self.assertEqual(eulaName, eulaData['MIT_X11']['name'])
+        assert eulaName is not None
+        assert eulaName == eulaData['MIT_X11']['name']
 
         eulaName = EulaText.getEulaName('GNU_V11')
-        self.assertIsNotNone(eulaName)
-        self.assertEqual(eulaName, eulaData['GNU_V11']['name'])
+        assert eulaName is not None
+        assert eulaName == eulaData['GNU_V11']['name']
 
         eulaName = EulaText.getEulaName('apache_v2_0')
-        self.assertIsNotNone(eulaName)
-        self.assertEqual(eulaName, eulaData['apache_v2_0']['name'])
+        assert eulaName is not None
+        assert eulaName == eulaData['apache_v2_0']['name']
 
         eulaName = EulaText.getEulaName('BSD_3clause')
-        self.assertIsNotNone(eulaName)
-        self.assertEqual(eulaName, eulaData['BSD_3clause']['name'])
+        assert eulaName is not None
+        assert eulaName == eulaData['BSD_3clause']['name']
 
         eulaName = EulaText.getEulaName('BSD_2clause')
-        self.assertIsNotNone(eulaName)
-        self.assertEqual(eulaName, eulaData['BSD_2clause']['name'])
+        assert eulaName is not None
+        assert eulaName == eulaData['BSD_2clause']['name']
 
         eulaName = EulaText.getEulaName('somethingelse')
-        self.assertIsNone(eulaName)
+        assert eulaName is None
 
     def test11Constructor(self):
         """!
         @brief Test the EULA text constructor
         """
         eula = EulaText('MIT_open')
-        self.assertIsNotNone(eula.rawEulaText)
-        self.assertEqual(len(eula.rawEulaText), 3)
+        assert eula.rawEulaText is not None
+        assert len(eula.rawEulaText) == 3
 
         eula = EulaText('MIT_no_atrtrib')
-        self.assertIsNotNone(eula.rawEulaText)
-        self.assertEqual(len(eula.rawEulaText), 2)
+        assert eula.rawEulaText is not None
+        assert len(eula.rawEulaText) == 2
 
         eula = EulaText('MIT_X11')
-        self.assertIsNotNone(eula.rawEulaText)
-        self.assertEqual(len(eula.rawEulaText), 4)
+        assert eula.rawEulaText is not None
+        assert len(eula.rawEulaText) == 4
 
         eula = EulaText('GNU_V11')
-        self.assertIsNotNone(eula.rawEulaText)
-        self.assertEqual(len(eula.rawEulaText), 3)
+        assert eula.rawEulaText is not None
+        assert len(eula.rawEulaText) == 3
 
         eula = EulaText('apache_v2_0')
-        self.assertIsNotNone(eula.rawEulaText)
-        self.assertEqual(len(eula.rawEulaText), 3)
+        assert eula.rawEulaText is not None
+        assert len(eula.rawEulaText) == 3
 
         eula = EulaText('BSD_3clause')
-        self.assertIsNotNone(eula.rawEulaText)
-        self.assertEqual(len(eula.rawEulaText), 5)
+        assert eula.rawEulaText is not None
+        assert len(eula.rawEulaText) == 5
 
         eula = EulaText('BSD_2clause')
-        self.assertIsNotNone(eula.rawEulaText)
-        self.assertEqual(len(eula.rawEulaText), 4)
+        assert eula.rawEulaText is not None
+        assert len(eula.rawEulaText) == 4
 
         eula = EulaText(None, ["Custom EULA message","Test message"])
-        self.assertIsNotNone(eula.rawEulaText)
-        self.assertEqual(len(eula.rawEulaText), 2)
-        self.assertEqual(eula.rawEulaText[0], "Custom EULA message")
+        assert eula.rawEulaText is not None
+        assert len(eula.rawEulaText) == 2
+        assert eula.rawEulaText[0] == "Custom EULA message"
 
     def test12ConstructorError(self):
         """!
         @brief Test the EULA constructor error case
         """
-        with self.assertRaises(Exception) as context:
+        with pytest.raises(Exception) as context:
             eula = EulaText()
-        self.assertTrue("ERROR: Standard or custom EULA is required." in str(context.exception))
+        assert "ERROR: Standard or custom EULA is required." in str(context.value)
 
 
     def test13FormatEulaTextDefault(self):
@@ -159,18 +160,18 @@ class TestEula(unittest.TestCase):
         """
         eula = EulaText('MIT_open')
         formatedtext = eula.formatEulaText()
-        self.assertIsNotNone(formatedtext)
-        self.assertEqual(len(formatedtext),18)
+        assert formatedtext is not None
+        assert len(formatedtext) ==18
         for line in formatedtext:
-            self.assertLessEqual(len(line),80)
+            assert len(line) <=80
 
-        self.assertEqual(formatedtext[0], "Permission is hereby granted, free of charge, to any person obtaining a copy of")
-        self.assertEqual(formatedtext[6], "")
-        self.assertEqual(formatedtext[7], "The above copyright notice and self permission notice shall be included in all")
-        self.assertEqual(formatedtext[9], "")
-        self.assertEqual(formatedtext[10], "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR")
-        self.assertEqual(formatedtext[16], "SOFTWARE.")
-        self.assertEqual(formatedtext[17], "")
+        assert formatedtext[0] == "Permission is hereby granted, free of charge, to any person obtaining a copy of"
+        assert formatedtext[6] == ""
+        assert formatedtext[7] == "The above copyright notice and self permission notice shall be included in all"
+        assert formatedtext[9] == ""
+        assert formatedtext[10] == "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR"
+        assert formatedtext[16] == "SOFTWARE."
+        assert formatedtext[17] == ""
 
     def test14FormatEulaTextPad(self):
         """!
@@ -178,18 +179,18 @@ class TestEula(unittest.TestCase):
         """
         eula = EulaText('MIT_open')
         formatedtext = eula.formatEulaText(pad=True)
-        self.assertIsNotNone(formatedtext)
-        self.assertEqual(len(formatedtext),18)
+        assert formatedtext is not None
+        assert len(formatedtext) ==18
         for line in formatedtext:
-            self.assertEqual(len(line),80)
+            assert len(line) ==80
 
-        self.assertEqual(formatedtext[0], "Permission is hereby granted, free of charge, to any person obtaining a copy of ")
-        self.assertEqual(formatedtext[6], "                                                                                ")
-        self.assertEqual(formatedtext[7], "The above copyright notice and self permission notice shall be included in all  ")
-        self.assertEqual(formatedtext[9], "                                                                                ")
-        self.assertEqual(formatedtext[10], "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR      ")
-        self.assertEqual(formatedtext[16], "SOFTWARE.                                                                       ")
-        self.assertEqual(formatedtext[17], "                                                                                ")
+        assert formatedtext[0] == "Permission is hereby granted, free of charge, to any person obtaining a copy of "
+        assert formatedtext[6] == "                                                                                "
+        assert formatedtext[7] == "The above copyright notice and self permission notice shall be included in all  "
+        assert formatedtext[9] == "                                                                                "
+        assert formatedtext[10] == "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR      "
+        assert formatedtext[16] == "SOFTWARE.                                                                       "
+        assert formatedtext[17] == "                                                                                "
 
     def test15FormatEulaTextLength50(self):
         """!
@@ -197,20 +198,20 @@ class TestEula(unittest.TestCase):
         """
         eula = EulaText('GNU_V11')
         formatedtext = eula.formatEulaText(50)
-        self.assertIsNotNone(formatedtext)
-        self.assertEqual(len(formatedtext), 17)
+        assert formatedtext is not None
+        assert len(formatedtext) == 17
         for line in formatedtext:
-            self.assertLessEqual(len(line),50)
+            assert len(line) <=50
 
-        self.assertEqual(formatedtext[0], "This program is free software: you can")
-        self.assertEqual(formatedtext[5], "version.")
-        self.assertEqual(formatedtext[6], "")
-        self.assertEqual(formatedtext[7], "This program is distributed in the hope that it")
-        self.assertEqual(formatedtext[11], "General Public License for more details.")
-        self.assertEqual(formatedtext[12], "")
-        self.assertEqual(formatedtext[13], "You should have received a copy of the GNU")
-        self.assertEqual(formatedtext[15], "If not, see <https://www.gnu.org/licenses/>.")
-        self.assertEqual(formatedtext[16], "")
+        assert formatedtext[0] == "This program is free software: you can"
+        assert formatedtext[5] == "version."
+        assert formatedtext[6] == ""
+        assert formatedtext[7] == "This program is distributed in the hope that it"
+        assert formatedtext[11] == "General Public License for more details."
+        assert formatedtext[12] == ""
+        assert formatedtext[13] == "You should have received a copy of the GNU"
+        assert formatedtext[15] == "If not, see <https://www.gnu.org/licenses/>."
+        assert formatedtext[16] == ""
 
     def test16FormatEulaTextSingleLine(self):
         """!
@@ -218,9 +219,9 @@ class TestEula(unittest.TestCase):
         """
         eula = EulaText(None, ['No real EULA text'])
         formatedtext = eula.formatEulaText(80)
-        self.assertIsNotNone(formatedtext)
-        self.assertEqual(len(formatedtext), 2)
-        self.assertEqual(formatedtext[0], 'No real EULA text')
+        assert formatedtext is not None
+        assert len(formatedtext) == 2
+        assert formatedtext[0] == 'No real EULA text'
 
     def test17FormatEulaName(self):
         """!
@@ -229,7 +230,7 @@ class TestEula(unittest.TestCase):
         eula = EulaText('GNU_V11')
 
         nametext = eula.formatEulaName()
-        self.assertEqual(nametext, eulaData['GNU_V11']['name'])
+        assert nametext == eulaData['GNU_V11']['name']
 
     def test18FormatEulaNameWithPad(self):
         """!
@@ -237,7 +238,7 @@ class TestEula(unittest.TestCase):
         """
         eula = EulaText('GNU_V11')
         nametext = eula.formatEulaName(80, True)
-        self.assertEqual(nametext, eulaData['GNU_V11']['name'].ljust(80, ' '))
+        assert nametext == eulaData['GNU_V11']['name'].ljust(80, ' ')
 
     def test19FormatEulaTextSingleLineNoBreak(self):
         """!
@@ -245,11 +246,11 @@ class TestEula(unittest.TestCase):
         """
         eula = EulaText(None, ['Longlinewithnobreakstoforceawkwardbreak'])
         formatedtext = eula.formatEulaText(22)
-        self.assertIsNotNone(formatedtext)
-        self.assertEqual(len(formatedtext), 3)
-        self.assertEqual(formatedtext[0], 'Longlinewithnobreaksto')
-        self.assertEqual(formatedtext[1], 'forceawkwardbreak')
-        self.assertEqual(formatedtext[2], '')
+        assert formatedtext is not None
+        assert len(formatedtext) == 3
+        assert formatedtext[0] == 'Longlinewithnobreaksto'
+        assert formatedtext[1] == 'forceawkwardbreak'
+        assert formatedtext[2] == ''
 
-if __name__ == '__main__':
-    unittest.main()
+#if __name__ == '__main__':
+#    unittest.main()

@@ -24,7 +24,7 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import unittest
+
 from unittest.mock import patch, MagicMock
 
 import io
@@ -39,11 +39,9 @@ from code_tools_grocsoftware.base.json_string_class_description import StringCla
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 
-class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
-    """!
-    @brief Unit test for the StringClassDescription class
-    """
-    def getExpectedReturn(self, expectedType:str, expectedDesc:str, expectedTypeMod:int)->str:
+class ExpectedStrHelper(object):
+    @staticmethod
+    def getExpectedReturn(expectedType:str, expectedDesc:str, expectedTypeMod:int)->str:
         """!
         @brief Return the expected print string for the input return values
         @param expectedType {string} Expected type string
@@ -56,7 +54,8 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         expectedStr += "'typeMod': "+str(expectedTypeMod)+"}"
         return expectedStr
 
-    def getExpectedParam(self, expectedName:str, expectedType:str, expectedDesc:str, expectedTypeMod:int)->str:
+    @staticmethod
+    def getExpectedParam(expectedName:str, expectedType:str, expectedDesc:str, expectedTypeMod:int)->str:
         """!
         @brief Return the expected print string for the input return values
         @param expectedName {string} Expected parameter name string
@@ -71,7 +70,8 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         expectedStr += "'typeMod': "+str(expectedTypeMod)+"}"
         return expectedStr
 
-    def getExpectedParamList(self, paramList:list)->str:
+    @staticmethod
+    def getExpectedParamList(paramList:list)->str:
         """!
         @brief Return the expected print string for the input return values
         @param paramList {list} Expected parameter dictionary list
@@ -83,12 +83,13 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
             for param in paramList:
                 expectedName, expectedType, expectedDesc, expectedTypeMod = ParamRetDict.getParamData(param)
                 expectedStr += paramPrefix
-                expectedStr += self.getExpectedParam(expectedName, expectedType, expectedDesc, expectedTypeMod)
+                expectedStr += ExpectedStrHelper.getExpectedParam(expectedName, expectedType, expectedDesc, expectedTypeMod)
                 paramPrefix = ", "
         expectedStr += "]"
         return expectedStr
 
-    def getExpectedTranslationDescList(self, textText:str, langList:list = None)->str:
+    @staticmethod
+    def getExpectedTranslationDescList(textText:str, langList:list = None)->str:
         """!
         @brief Generate the expected translation description text
         @param textText {string} Test translation text string
@@ -121,7 +122,8 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         expectedStr += "}"
         return expectedStr
 
-    def getExpectedNewTranslationEntry(self, briefDesc:str, returnData:dict, paramList:list = [], transText:str="", langList:list = None):
+    @staticmethod
+    def getExpectedNewTranslationEntry(briefDesc:str, returnData:dict, paramList:list = [], transText:str="", langList:list = None):
         """!
         @brief Get the expected new translation method entry print text
 
@@ -135,17 +137,18 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         """
         expectedStr = "New Entry:\n"
         expectedStr += "{'briefDesc': '"+briefDesc+"', "
-        expectedStr += self.getExpectedParamList(paramList)
+        expectedStr += ExpectedStrHelper.getExpectedParamList(paramList)
         expectedStr += ", "
-        expectedStr += self.getExpectedReturn(ParamRetDict.getReturnType(returnData),
+        expectedStr += ExpectedStrHelper.getExpectedReturn(ParamRetDict.getReturnType(returnData),
                                               ParamRetDict.getReturnDesc(returnData),
                                               ParamRetDict.getReturnTypeMod(returnData))
         expectedStr += ", "
-        expectedStr += self.getExpectedTranslationDescList(transText, langList)
+        expectedStr += ExpectedStrHelper.getExpectedTranslationDescList(transText, langList)
         expectedStr += "}\n"
         return expectedStr
 
-    def getExpectedTransDescHelp(self)->str:
+    @staticmethod
+    def getExpectedTransDescHelp()->str:
         """!
         Get the expected translation description help message
         """
@@ -154,7 +157,8 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         expectedStr += "Example with single input parameter name \"keyString\": Found argument key @keyString@\n"
         return expectedStr
 
-    def getExpectedNewPropertyStr(self, methodName:str, propertyId:str, returnData:dict):
+    @staticmethod
+    def getExpectedNewPropertyStr(methodName:str, propertyId:str, returnData:dict):
         """!
         @brief Get the expected new translation method entry print text
 
@@ -169,13 +173,14 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         expectedStr += "{'name': '"+propertyId+"', "
         expectedStr += "'briefDesc': '"+expectedMethodDesc+"', "
         expectedStr += "'params': [], "
-        expectedStr += self.getExpectedReturn(ParamRetDict.getReturnType(returnData),
+        expectedStr += ExpectedStrHelper.getExpectedReturn(ParamRetDict.getReturnType(returnData),
                                               ParamRetDict.getReturnDesc(returnData),
                                               ParamRetDict.getReturnTypeMod(returnData))
         expectedStr += "}\n"
         return expectedStr
 
-    def getExpectedOptionList(self)->tuple:
+    @staticmethod
+    def getExpectedOptionList()->tuple:
         """!
         @brief Get the expected property data list string for the unittest
         @return string - Expected property list string
@@ -197,6 +202,10 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         expectedStr += optionText+"\n"
         return expectedStr, maxIndex
 
+class TestUnittest03StringClassDescriptionMacroMethods:
+    """!
+    @brief Unit test for the StringClassDescription class
+    """
     def test01NewTranslateMethodEntry(self):
         """!
         @brief Test newTranslateMethodEntry method, improper message
@@ -232,28 +241,28 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = StringClassDescription()
-            self.assertTrue(testobj.newTranslateMethodEntry())
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestString'], dict)
-            self.assertEqual(testobj.stringJasonData['translateMethods']['getTestString']['briefDesc'], "Brief method description")
+            assert testobj.newTranslateMethodEntry()
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestString'], dict)
+            assert testobj.stringJasonData['translateMethods']['getTestString']['briefDesc'] == "Brief method description"
 
-            self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestString']['params']), 2)
-            self.assertDictEqual(testobj.stringJasonData['translateMethods']['getTestString']['params'][0], testParamlist[0])
-            self.assertDictEqual(testobj.stringJasonData['translateMethods']['getTestString']['params'][1], testParamlist[1])
-            self.assertDictEqual(testobj.stringJasonData['translateMethods']['getTestString']['return'], testReturn)
+            assert len(testobj.stringJasonData['translateMethods']['getTestString']['params']) == 2
+            assert testobj.stringJasonData['translateMethods']['getTestString']['params'][0] == testParamlist[0]
+            assert testobj.stringJasonData['translateMethods']['getTestString']['params'][1] == testParamlist[1]
+            assert testobj.stringJasonData['translateMethods']['getTestString']['return'] == testReturn
 
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc'], dict)
-            self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc']), 1)
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc']['en'], list)
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc'], dict)
+            assert len(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc']) == 1
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc']['en'], list)
 
             testParsedList = TranslationTextParser.parseTranslateString(testTransString)
-            self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc']['en']), len(testParsedList))
+            assert len(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc']['en']) == len(testParsedList)
 
             for index, entry in enumerate(testParsedList):
-                self.assertTupleEqual(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc']["en"][index], entry)
+                assert testobj.stringJasonData['translateMethods']['getTestString']['translateDesc']["en"][index] == entry
 
-            expectedStr = self.getExpectedTransDescHelp()
-            expectedStr += self.getExpectedNewTranslationEntry('Brief method description', testReturn, testParamlist, testTransString, ['en'])
-            self.assertEqual(output.getvalue(), expectedStr)
+            expectedStr = ExpectedStrHelper.getExpectedTransDescHelp()
+            expectedStr += ExpectedStrHelper.getExpectedNewTranslationEntry('Brief method description', testReturn, testParamlist, testTransString, ['en'])
+            assert output.getvalue() == expectedStr
 
     def test02NewTranslateMethodEntryNoConfirm(self):
         """!
@@ -308,15 +317,15 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = StringClassDescription()
-            self.assertFalse(testobj.newTranslateMethodEntry())
-            self.assertNotIn('getTestString', testobj.stringJasonData['translateMethods'])
-            self.assertNotIn('getTestInt', testobj.stringJasonData['translateMethods'])
+            assert not testobj.newTranslateMethodEntry()
+            assert 'getTestString' not in testobj.stringJasonData['translateMethods']
+            assert 'getTestInt' not in testobj.stringJasonData['translateMethods']
 
-            expectedStr = self.getExpectedTransDescHelp()
-            expectedStr += self.getExpectedNewTranslationEntry('Brief method description', testReturn, testParamlist, testTransString, ['en'])
-            expectedStr += self.getExpectedTransDescHelp()
-            expectedStr += self.getExpectedNewTranslationEntry('Brief method description2', testReturn2, testParamlist2, testTransString2, ['en'])
-            self.assertEqual(output.getvalue(), expectedStr)
+            expectedStr = ExpectedStrHelper.getExpectedTransDescHelp()
+            expectedStr += ExpectedStrHelper.getExpectedNewTranslationEntry('Brief method description', testReturn, testParamlist, testTransString, ['en'])
+            expectedStr += ExpectedStrHelper.getExpectedTransDescHelp()
+            expectedStr += ExpectedStrHelper.getExpectedNewTranslationEntry('Brief method description2', testReturn2, testParamlist2, testTransString2, ['en'])
+            assert output.getvalue() == expectedStr
 
     def test03AddTranslateMethodEntry(self):
         """!
@@ -326,26 +335,26 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         paramList = [ParamRetDict.buildParamDictWithMod("goo", "integer", "goo description", 0)]
         returnDict = ParamRetDict.buildReturnDictWithMod("string", "return description", 0)
 
-        self.assertTrue(testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt description',
-                                                        paramList, returnDict, "en", "Test @goo@"))
+        assert testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt description',
+                                                        paramList, returnDict, "en", "Test @goo@")
 
-        self.assertIn('getTestInt', testobj.getTranlateMethodList())
-        self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
-        self.assertEqual(testobj.stringJasonData['translateMethods']['getTestInt']['briefDesc'], "Brief getTestInt description")
-        self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestInt']['params']), len(paramList))
+        assert 'getTestInt' in testobj.getTranlateMethodList()
+        assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
+        assert testobj.stringJasonData['translateMethods']['getTestInt']['briefDesc'] == "Brief getTestInt description"
+        assert len(testobj.stringJasonData['translateMethods']['getTestInt']['params']) == len(paramList)
 
         for index in range(0, len(paramList)):
-            self.assertDictEqual(testobj.stringJasonData['translateMethods']['getTestInt']['params'][index], paramList[index])
+            assert testobj.stringJasonData['translateMethods']['getTestInt']['params'][index] == paramList[index]
 
-        self.assertDictEqual(testobj.stringJasonData['translateMethods']['getTestInt']['return'], returnDict)
+        assert testobj.stringJasonData['translateMethods']['getTestInt']['return'] == returnDict
 
         transDescList = TranslationTextParser.parseTranslateString("Test @goo@")
-        self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']), 1)
-        self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en'], list)
-        self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en']), len(transDescList))
+        assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']) == 1
+        assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en'], list)
+        assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en']) == len(transDescList)
 
         for index in range(0, len(transDescList)):
-            self.assertTupleEqual(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']["en"][index], transDescList[index])
+            assert testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']["en"][index] == transDescList[index]
 
     def test04AddTranslateMethodEntryOverride(self):
         """!
@@ -357,39 +366,39 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         testobj = StringClassDescription()
         paramList = [ParamRetDict.buildParamDictWithMod("goo", "integer", "goo description", 0)]
         returnDict = ParamRetDict.buildReturnDictWithMod("string", "return description", 0)
-        self.assertTrue(testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt description', paramList, returnDict, "en", "Test @goo@"))
+        assert testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt description', paramList, returnDict, "en", "Test @goo@")
 
-        self.assertIn('getTestInt', testobj.getTranlateMethodList())
-        self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
+        assert 'getTestInt' in testobj.getTranlateMethodList()
+        assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             paramList = [ParamRetDict.buildParamDictWithMod("goo2", "unsigned", "goo2 description", 0)]
             returnDict = ParamRetDict.buildReturnDictWithMod("integer", "return int description", 0)
-            self.assertTrue(testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt override description',
-                                                            paramList, returnDict, "en", "Test override @goo2@"))
+            assert testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt override description',
+                                                            paramList, returnDict, "en", "Test override @goo2@")
 
-            self.assertIn('getTestInt', testobj.getTranlateMethodList())
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
-            self.assertEqual(testobj.stringJasonData['translateMethods']['getTestInt']['briefDesc'], "Brief getTestInt override description")
+            assert 'getTestInt' in testobj.getTranlateMethodList()
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
+            assert testobj.stringJasonData['translateMethods']['getTestInt']['briefDesc'] == "Brief getTestInt override description"
 
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['params'], list)
-            self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestInt']['params']), len(paramList))
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['params'], list)
+            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['params']) == len(paramList)
 
             for index in range(0, len(paramList)):
-                self.assertDictEqual(testobj.stringJasonData['translateMethods']['getTestInt']['params'][index], paramList[index])
+                assert testobj.stringJasonData['translateMethods']['getTestInt']['params'][index] == paramList[index]
 
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['return'], dict)
-            self.assertDictEqual(testobj.stringJasonData['translateMethods']['getTestInt']['return'], returnDict)
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['return'], dict)
+            assert testobj.stringJasonData['translateMethods']['getTestInt']['return'] == returnDict
 
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc'], dict)
-            self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']), 1)
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc'], dict)
+            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']) == 1
 
             transDescList = TranslationTextParser.parseTranslateString("Test override @goo2@")
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en'], list)
-            self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en']), len(transDescList))
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en'], list)
+            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en']) == len(transDescList)
             for index in range(0, len(transDescList)):
-                self.assertTupleEqual(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']["en"][index], transDescList[index])
+                assert testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']["en"][index] == transDescList[index]
 
     def test05AddTranslateMethodEntryNoOverride(self):
         """!
@@ -401,39 +410,39 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         testobj = StringClassDescription()
         paramList = [ParamRetDict.buildParamDictWithMod("goo", "integer", "goo description", 0)]
         returnDict = ParamRetDict.buildReturnDictWithMod("string", "return description", 0)
-        self.assertTrue(testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt description', paramList, returnDict, "en", "Test @goo@"))
+        assert testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt description', paramList, returnDict, "en", "Test @goo@")
 
-        self.assertIn('getTestInt', testobj.getTranlateMethodList())
-        self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
+        assert 'getTestInt' in testobj.getTranlateMethodList()
+        assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             paramList2 = [ParamRetDict.buildParamDictWithMod("goo2", "unsigned", "goo2 description", 0)]
             returnDict2 = ParamRetDict.buildReturnDictWithMod("integer", "return int description", 0)
-            self.assertFalse(testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt override description',
-                                                             paramList2, returnDict2, "en", "Test override @goo2@"))
+            assert not testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt override description',
+                                                             paramList2, returnDict2, "en", "Test override @goo2@")
 
-            self.assertIn('getTestInt', testobj.getTranlateMethodList())
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
-            self.assertEqual(testobj.stringJasonData['translateMethods']['getTestInt']['briefDesc'], "Brief getTestInt description")
+            assert 'getTestInt' in testobj.getTranlateMethodList()
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
+            assert testobj.stringJasonData['translateMethods']['getTestInt']['briefDesc'] == "Brief getTestInt description"
 
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['params'], list)
-            self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestInt']['params']), len(paramList))
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['params'], list)
+            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['params']) == len(paramList)
 
             for index in range(0, len(paramList)):
-                self.assertDictEqual(testobj.stringJasonData['translateMethods']['getTestInt']['params'][index], paramList[index])
+                assert testobj.stringJasonData['translateMethods']['getTestInt']['params'][index] == paramList[index]
 
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['return'], dict)
-            self.assertDictEqual(testobj.stringJasonData['translateMethods']['getTestInt']['return'], returnDict)
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['return'], dict)
+            assert testobj.stringJasonData['translateMethods']['getTestInt']['return'] == returnDict
 
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc'], dict)
-            self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']), 1)
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc'], dict)
+            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']) == 1
 
             transDescList = TranslationTextParser.parseTranslateString("Test @goo@")
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en'], list)
-            self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en']), len(transDescList))
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en'], list)
+            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en']) == len(transDescList)
             for index in range(0, len(transDescList)):
-                self.assertTupleEqual(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']["en"][index], transDescList[index])
+                assert testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']["en"][index] == transDescList[index]
 
     def test06AddTranslateMethodEntryForceOverride(self):
         """!
@@ -445,39 +454,39 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
         testobj = StringClassDescription()
         paramList = [ParamRetDict.buildParamDictWithMod("goo", "integer", "goo description", 0)]
         returnDict = ParamRetDict.buildReturnDictWithMod("string", "return description", 0)
-        self.assertTrue(testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt description', paramList, returnDict, "en", "Test @goo@"))
+        assert testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt description', paramList, returnDict, "en", "Test @goo@")
 
-        self.assertIn('getTestInt', testobj.getTranlateMethodList())
-        self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
+        assert 'getTestInt' in testobj.getTranlateMethodList()
+        assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             paramList = [ParamRetDict.buildParamDictWithMod("goo2", "unsigned", "goo2 description", 0)]
             returnDict = ParamRetDict.buildReturnDictWithMod("integer", "return int description", 0)
-            self.assertTrue(testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt override description', \
-                                                            paramList, returnDict, "en", "Test override @goo2@", True))
+            assert testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt override description',
+                                                            paramList, returnDict, "en", "Test override @goo2@", True)
 
-            self.assertIn('getTestInt', testobj.getTranlateMethodList())
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
-            self.assertEqual(testobj.stringJasonData['translateMethods']['getTestInt']['briefDesc'], "Brief getTestInt override description")
+            assert 'getTestInt' in testobj.getTranlateMethodList()
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
+            assert testobj.stringJasonData['translateMethods']['getTestInt']['briefDesc'] == "Brief getTestInt override description"
 
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['params'], list)
-            self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestInt']['params']), len(paramList))
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['params'], list)
+            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['params']) == len(paramList)
 
             for index in range(0, len(paramList)):
-                self.assertDictEqual(testobj.stringJasonData['translateMethods']['getTestInt']['params'][index], paramList[index])
+                assert testobj.stringJasonData['translateMethods']['getTestInt']['params'][index] == paramList[index]
 
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['return'], dict)
-            self.assertDictEqual(testobj.stringJasonData['translateMethods']['getTestInt']['return'], returnDict)
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['return'], dict)
+            assert testobj.stringJasonData['translateMethods']['getTestInt']['return'] == returnDict
 
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc'], dict)
-            self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']), 1)
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc'], dict)
+            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']) == 1
 
             transDescList = TranslationTextParser.parseTranslateString("Test override @goo2@")
-            self.assertIsInstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en'], list)
-            self.assertEqual(len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en']), len(transDescList))
+            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en'], list)
+            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en']) == len(transDescList)
             for index in range(0, len(transDescList)):
-                self.assertTupleEqual(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']["en"][index], transDescList[index])
+                assert testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']["en"][index] == transDescList[index]
 
     def test07GetPropertyReturnData(self):
         """!
@@ -498,11 +507,11 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
                 expectedReturnType, expectedReturnDesc, expectedIsList = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[index])
                 expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[index])
 
-                self.assertEqual(propertyId, propertyOptions[index])
-                self.assertEqual(methodName, expectedMethodName)
-                self.assertEqual(returnType, expectedReturnType)
-                self.assertEqual(returnDesc, expectedReturnDesc)
-                self.assertEqual(isList, expectedIsList)
+                assert propertyId == propertyOptions[index]
+                assert methodName == expectedMethodName
+                assert returnType == expectedReturnType
+                assert returnDesc == expectedReturnDesc
+                assert isList == expectedIsList
 
     def test08GetPropertyReturnDataBadInput(self):
         """!
@@ -522,15 +531,15 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
             expectedReturnType, expectedReturnDesc, expectedIsList = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[0])
             expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[0])
 
-            self.assertEqual(propertyId, propertyOptions[0])
-            self.assertEqual(methodName, expectedMethodName)
-            self.assertEqual(returnType, expectedReturnType)
-            self.assertEqual(returnDesc, expectedReturnDesc)
-            self.assertEqual(isList, expectedIsList)
+            assert propertyId == propertyOptions[0]
+            assert methodName == expectedMethodName
+            assert returnType == expectedReturnType
+            assert returnDesc == expectedReturnDesc
+            assert isList == expectedIsList
 
-            expectedStr, maxIndex = self.getExpectedOptionList()
+            expectedStr, maxIndex = ExpectedStrHelper.getExpectedOptionList()
             expectedStr += "Valid input values are 0 to "+str(maxIndex-1)+", try again\n"
-            self.assertEqual(output.getvalue(), expectedStr)
+            assert output.getvalue() == expectedStr
 
     def test09NewPropertyMethodEntry(self):
         """!
@@ -545,15 +554,15 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            self.assertTrue(testobj.newPropertyMethodEntry())
+            assert testobj.newPropertyMethodEntry()
 
             returnType, returnDesc, isList = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[0])
             expectedReturn = ParamRetDict.buildReturnDict(returnType, returnDesc, isList)
             expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[0])
 
-            expectedStr, maxIndex = self.getExpectedOptionList()
-            expectedStr += self.getExpectedNewPropertyStr(expectedMethodName, propertyOptions[0], expectedReturn)
-            self.assertEqual(output.getvalue(), expectedStr)
+            expectedStr, maxIndex = ExpectedStrHelper.getExpectedOptionList()
+            expectedStr += ExpectedStrHelper.getExpectedNewPropertyStr(expectedMethodName, propertyOptions[0], expectedReturn)
+            assert output.getvalue() == expectedStr
 
     def test10NewPropertyMethodEntryNo(self):
         """!
@@ -565,11 +574,11 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
 
         testobj = StringClassDescription()
         propertyOptions = LanguageDescriptionList.getLanguagePropertyList()
-        optionString, _ = self.getExpectedOptionList()
+        optionString, _ = ExpectedStrHelper.getExpectedOptionList()
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            self.assertTrue(testobj.newPropertyMethodEntry())
+            assert testobj.newPropertyMethodEntry()
 
             returnType, returnDesc, isList = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[0])
             expectedReturn = ParamRetDict.buildReturnDict(returnType, returnDesc, isList)
@@ -580,10 +589,10 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
             expectedMethodName1 = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[1])
 
             expectedStr = optionString
-            expectedStr += self.getExpectedNewPropertyStr(expectedMethodName, propertyOptions[0], expectedReturn)
+            expectedStr += ExpectedStrHelper.getExpectedNewPropertyStr(expectedMethodName, propertyOptions[0], expectedReturn)
             expectedStr += optionString
-            expectedStr += self.getExpectedNewPropertyStr(expectedMethodName1, propertyOptions[1], expectedReturn1)
-            self.assertEqual(output.getvalue(), expectedStr)
+            expectedStr += ExpectedStrHelper.getExpectedNewPropertyStr(expectedMethodName1, propertyOptions[1], expectedReturn1)
+            assert output.getvalue() == expectedStr
 
     def test11NewPropertyMethodEntryNoCommit(self):
         """!
@@ -595,19 +604,19 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
 
         testobj = StringClassDescription()
         propertyOptions = LanguageDescriptionList.getLanguagePropertyList()
-        optionString, _ = self.getExpectedOptionList()
+        optionString, _ = ExpectedStrHelper.getExpectedOptionList()
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            self.assertFalse(testobj.newPropertyMethodEntry())
+            assert not testobj.newPropertyMethodEntry()
 
             returnType, returnDesc, isList = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[0])
             expectedReturn = ParamRetDict.buildReturnDict(returnType, returnDesc, isList)
             expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[0])
 
             expectedStr = optionString
-            expectedStr += self.getExpectedNewPropertyStr(expectedMethodName, propertyOptions[0], expectedReturn)
-            self.assertEqual(output.getvalue(), expectedStr)
+            expectedStr += ExpectedStrHelper.getExpectedNewPropertyStr(expectedMethodName, propertyOptions[0], expectedReturn)
+            assert output.getvalue() == expectedStr
 
     def test12AddPropertyMethodEntry(self):
         """!
@@ -619,26 +628,25 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
 
         testobj = StringClassDescription()
         propertyOptions = LanguageDescriptionList.getLanguagePropertyList()
-        optionString, _ = self.getExpectedOptionList()
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            self.assertTrue(testobj.addPropertyMethodEntry(propertyOptions[3]))
+            assert testobj.addPropertyMethodEntry(propertyOptions[3])
 
             returnType, returnDesc, isList = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[3])
             expectedReturn = ParamRetDict.buildReturnDict(returnType, returnDesc, isList)
             expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[3])
 
-            self.assertIn(expectedMethodName, testobj.getPropertyMethodList())
-            self.assertIsInstance(testobj.stringJasonData['propertyMethods'][expectedMethodName], dict)
-            self.assertEqual(testobj.stringJasonData['propertyMethods'][expectedMethodName]['name'], propertyOptions[3])
-            self.assertEqual(testobj.stringJasonData['propertyMethods'][expectedMethodName]['briefDesc'], "Get the "+returnDesc+" for this object")
+            assert expectedMethodName in testobj.getPropertyMethodList()
+            assert isinstance(testobj.stringJasonData['propertyMethods'][expectedMethodName], dict)
+            assert testobj.stringJasonData['propertyMethods'][expectedMethodName]['name'] == propertyOptions[3]
+            assert testobj.stringJasonData['propertyMethods'][expectedMethodName]['briefDesc'] == "Get the "+returnDesc+" for this object"
 
-            self.assertIsInstance(testobj.stringJasonData['propertyMethods'][expectedMethodName]['params'], list)
-            self.assertEqual(len(testobj.stringJasonData['propertyMethods'][expectedMethodName]['params']), 0)
+            assert isinstance(testobj.stringJasonData['propertyMethods'][expectedMethodName]['params'], list)
+            assert len(testobj.stringJasonData['propertyMethods'][expectedMethodName]['params']) == 0
 
-            self.assertIsInstance(testobj.stringJasonData['propertyMethods'][expectedMethodName]['return'], dict)
-            self.assertDictEqual(testobj.stringJasonData['propertyMethods'][expectedMethodName]['return'], expectedReturn)
+            assert isinstance(testobj.stringJasonData['propertyMethods'][expectedMethodName]['return'], dict)
+            assert testobj.stringJasonData['propertyMethods'][expectedMethodName]['return'] == expectedReturn
 
     def test13AddPropertyMethodEntryNoConfirm(self):
         """!
@@ -653,9 +661,9 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            self.assertFalse(testobj.addPropertyMethodEntry(propertyOptions[3]))
+            assert not testobj.addPropertyMethodEntry(propertyOptions[3])
             expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[3])
-            self.assertNotIn(expectedMethodName, testobj.getPropertyMethodList())
+            assert expectedMethodName not in testobj.getPropertyMethodList()
 
     def test14AddTranslateMethodEntryBadtranslateString(self):
         """!
@@ -670,13 +678,10 @@ class Unittest03StringClassDescriptionMacroMethods(unittest.TestCase):
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            self.assertFalse(testobj.addTranslateMethodEntry('getTestInt',
+            assert not testobj.addTranslateMethodEntry('getTestInt',
                                                              'Brief getTestInt description',
                                                              paramList, returnDict,
-                                                             "en", "Test @goo@ @foo@"))
+                                                             "en", "Test @goo@ @foo@")
 
-            self.assertNotIn('getTestInt', testobj.getTranlateMethodList())
-            self.assertEqual(output.getvalue(), "Error: Invalid translation string: Test @goo@ @foo@. paramCount= 2 matchCount= 1\n")
-
-if __name__ == '__main__':
-    unittest.main()
+            assert 'getTestInt' not in testobj.getTranlateMethodList()
+            assert output.getvalue() == "Error: Invalid translation string: Test @goo@ @foo@. paramCount= 2 matchCount= 1\n"

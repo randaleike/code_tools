@@ -25,14 +25,14 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import unittest
+
 
 from dir_init import pathincsetup
 pathincsetup()
 
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 
-class Unittest01Buildmodification(unittest.TestCase):
+class TestUnittest01Buildmodification:
     """!
     @brief Unit test for the ParamRetDict class
     """
@@ -41,72 +41,72 @@ class Unittest01Buildmodification(unittest.TestCase):
         @brief Test build modification value function, default modification
         """
         testMod = ParamRetDict.buildDictModValue()
-        self.assertEqual(0, testMod)
+        assert 0 == testMod
 
     def test02BuildModList(self):
         """!
         @brief Test build modification value function, list modification
         """
         testMod = ParamRetDict.buildDictModValue(isList=True)
-        self.assertEqual(ParamRetDict.typeModList, testMod)
+        assert ParamRetDict.typeModList == testMod
 
     def test03BuildModRef(self):
         """!
         @brief Test build modification value function, reference modification
         """
         testMod = ParamRetDict.buildDictModValue(isReference=True)
-        self.assertEqual(ParamRetDict.typeModRef, testMod)
+        assert ParamRetDict.typeModRef == testMod
 
     def test04BuildModPtr(self):
         """!
         @brief Test build modification value function, pointer modification
         """
         testMod = ParamRetDict.buildDictModValue(isPtr=True)
-        self.assertEqual(ParamRetDict.typeModPtr, testMod)
+        assert ParamRetDict.typeModPtr == testMod
 
     def test05BuildModUndefined(self):
         """!
         @brief Test build modification value function, undefined modification
         """
         testMod = ParamRetDict.buildDictModValue(orUndef=True)
-        self.assertEqual(ParamRetDict.typeModUndef, testMod)
+        assert ParamRetDict.typeModUndef == testMod
 
     def test06BuildModMultiple(self):
         """!
         @brief Test build modification value function, multiple modifications
         """
         testMod = ParamRetDict.buildDictModValue(True, True, True, True)
-        self.assertEqual(0x0F, testMod)
+        assert 0x0F == testMod
 
     def test07TestIsFunctionsTrue(self):
         """!
         @brief Test the mod check functions
         """
         testMod = ParamRetDict.buildDictModValue(True, True, True, True)
-        self.assertTrue(ParamRetDict.isModList(testMod))
-        self.assertTrue(ParamRetDict.isModPointer(testMod))
-        self.assertTrue(ParamRetDict.isModReference(testMod))
-        self.assertTrue(ParamRetDict.isOrUndefType(testMod))
+        assert ParamRetDict.isModList(testMod)
+        assert ParamRetDict.isModPointer(testMod)
+        assert ParamRetDict.isModReference(testMod)
+        assert ParamRetDict.isOrUndefType(testMod)
 
     def test08TestIsFunctionsTrue(self):
         """!
         @brief Test the mod check functions
         """
         testMod = ParamRetDict.buildDictModValue()
-        self.assertFalse(ParamRetDict.isModList(testMod))
-        self.assertFalse(ParamRetDict.isModPointer(testMod))
-        self.assertFalse(ParamRetDict.isModReference(testMod))
-        self.assertFalse(ParamRetDict.isOrUndefType(testMod))
+        assert not ParamRetDict.isModList(testMod)
+        assert not ParamRetDict.isModPointer(testMod)
+        assert not ParamRetDict.isModReference(testMod)
+        assert not ParamRetDict.isOrUndefType(testMod)
 
     def test09TestIsFunctionsFalse(self):
         """!
         @brief Test the mod check functions
         """
         testMod = ParamRetDict.buildDictModValue()
-        self.assertFalse(ParamRetDict.isModList(testMod))
-        self.assertFalse(ParamRetDict.isModPointer(testMod))
-        self.assertFalse(ParamRetDict.isModReference(testMod))
-        self.assertFalse(ParamRetDict.isOrUndefType(testMod))
+        assert not ParamRetDict.isModList(testMod)
+        assert not ParamRetDict.isModPointer(testMod)
+        assert not ParamRetDict.isModReference(testMod)
+        assert not ParamRetDict.isOrUndefType(testMod)
 
     def test10TestSetTypeModArraySize(self):
         """!
@@ -115,7 +115,7 @@ class Unittest01Buildmodification(unittest.TestCase):
         testList = [0,1,2,37,62,100,1000,10000]
         for testValue in testList:
             expectedVal = (testValue & ParamRetDict.typeModArrayMask) << ParamRetDict.typeModArrayShift
-            self.assertEqual(expectedVal, ParamRetDict.setTypeModArraySize(0, testValue))
+            assert expectedVal == ParamRetDict.setTypeModArraySize(0, testValue)
 
     def test11TestSetTypeModArraySizePtrOverride(self):
         """!
@@ -124,7 +124,7 @@ class Unittest01Buildmodification(unittest.TestCase):
         testList = [0,1,2,37,62,100,1000,10000]
         for testValue in testList:
             expectedVal = (testValue & ParamRetDict.typeModArrayMask) << ParamRetDict.typeModArrayShift
-            self.assertEqual(expectedVal, ParamRetDict.setTypeModArraySize(ParamRetDict.typeModList, testValue))
+            assert expectedVal == ParamRetDict.setTypeModArraySize(ParamRetDict.typeModList, testValue)
 
     def test12TestGetArraySize(self):
         """!
@@ -133,7 +133,7 @@ class Unittest01Buildmodification(unittest.TestCase):
         testList = [0,1,2,37,62,100,1000,10000]
         for testValue in testList:
             testMod = ParamRetDict.setTypeModArraySize(0, testValue)
-            self.assertEqual(testValue, ParamRetDict.getArraySize(testMod))
+            assert testValue == ParamRetDict.getArraySize(testMod)
 
     def test13TestSetArraySize(self):
         """!
@@ -146,9 +146,9 @@ class Unittest01Buildmodification(unittest.TestCase):
             testDict['typeMod'] = 0
 
             ParamRetDict.setArraySize(testDict, testValue)
-            self.assertEqual(testValue, ParamRetDict.getArraySize(testDict['typeMod']))
+            assert testValue == ParamRetDict.getArraySize(testDict['typeMod'])
 
-class Unittest02ReturnDict(unittest.TestCase):
+class TestUnittest02ReturnDict:
     """!
     @brief Unit test for the ParamRetDict class
     """
@@ -159,14 +159,14 @@ class Unittest02ReturnDict(unittest.TestCase):
         """
         testDict = ParamRetDict.buildReturnDict("string", "Test return base description")
         keyList = list(testDict.keys())
-        self.assertEqual(3, len(keyList))
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 3 == len(keyList)
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("string", testDict['type'])
-        self.assertEqual("Test return base description", testDict['desc'])
-        self.assertEqual(0, testDict['typeMod'])
+        assert "string" == testDict['type']
+        assert "Test return base description" == testDict['desc']
+        assert 0 == testDict['typeMod']
 
     def test02BuildReturnDictListMod(self):
         """!
@@ -174,14 +174,14 @@ class Unittest02ReturnDict(unittest.TestCase):
         """
         testDict = ParamRetDict.buildReturnDict("string", "Test return list modification", True)
         keyList = list(testDict.keys())
-        self.assertEqual(3, len(keyList))
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 3 == len(keyList)
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("string", testDict['type'])
-        self.assertEqual("Test return list modification", testDict['desc'])
-        self.assertEqual(ParamRetDict.typeModList, testDict['typeMod'])
+        assert "string" == testDict['type']
+        assert "Test return list modification" == testDict['desc']
+        assert ParamRetDict.typeModList == testDict['typeMod']
 
     def test03BuildReturnDictRefMod(self):
         """!
@@ -189,14 +189,14 @@ class Unittest02ReturnDict(unittest.TestCase):
         """
         testDict = ParamRetDict.buildReturnDict("integer", "Test return reference modification", isReference=True)
         keyList = list(testDict.keys())
-        self.assertEqual(3, len(keyList))
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 3 == len(keyList)
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("integer", testDict['type'])
-        self.assertEqual("Test return reference modification", testDict['desc'])
-        self.assertEqual(ParamRetDict.typeModRef, testDict['typeMod'])
+        assert "integer" == testDict['type']
+        assert "Test return reference modification" == testDict['desc']
+        assert ParamRetDict.typeModRef == testDict['typeMod']
 
     def test04BuildReturnDictPtrMod(self):
         """!
@@ -204,14 +204,14 @@ class Unittest02ReturnDict(unittest.TestCase):
         """
         testDict = ParamRetDict.buildReturnDict("integer", "Test return pointer modification", isPtr=True)
         keyList = list(testDict.keys())
-        self.assertEqual(3, len(keyList))
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 3 == len(keyList)
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("integer", testDict['type'])
-        self.assertEqual("Test return pointer modification", testDict['desc'])
-        self.assertEqual(ParamRetDict.typeModPtr, testDict['typeMod'])
+        assert "integer" == testDict['type']
+        assert "Test return pointer modification" == testDict['desc']
+        assert ParamRetDict.typeModPtr == testDict['typeMod']
 
     def test05BuildReturnDictUndefinedMod(self):
         """!
@@ -219,14 +219,14 @@ class Unittest02ReturnDict(unittest.TestCase):
         """
         testDict = ParamRetDict.buildReturnDict("unsigned", "Test return undefined modification", orUndef=True)
         keyList = list(testDict.keys())
-        self.assertEqual(3, len(keyList))
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 3 == len(keyList)
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("unsigned", testDict['type'])
-        self.assertEqual("Test return undefined modification", testDict['desc'])
-        self.assertEqual(ParamRetDict.typeModUndef, testDict['typeMod'])
+        assert "unsigned" == testDict['type']
+        assert "Test return undefined modification" == testDict['desc']
+        assert ParamRetDict.typeModUndef == testDict['typeMod']
 
     def test06BuildReturnDictMultipleMods(self):
         """!
@@ -235,15 +235,15 @@ class Unittest02ReturnDict(unittest.TestCase):
         testDict = ParamRetDict.buildReturnDict("size", "Test return multiple modifications",
                                                 isList=True, isReference=True, isPtr=True, orUndef=True)
         keyList = list(testDict.keys())
-        self.assertEqual(3, len(keyList))
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 3 == len(keyList)
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("size", testDict['type'])
-        self.assertEqual("Test return multiple modifications", testDict['desc'])
+        assert "size" == testDict['type']
+        assert "Test return multiple modifications" == testDict['desc']
         expectedMod = ParamRetDict.typeModList|ParamRetDict.typeModPtr|ParamRetDict.typeModRef|ParamRetDict.typeModUndef
-        self.assertEqual(expectedMod, testDict['typeMod'])
+        assert expectedMod == testDict['typeMod']
 
     def test07BuildReturnDictDefaultPlusArray(self):
         """!
@@ -253,15 +253,15 @@ class Unittest02ReturnDict(unittest.TestCase):
         ParamRetDict.setArraySize(testDict, 7)
 
         keyList = list(testDict.keys())
-        self.assertEqual(3, len(keyList))
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 3 == len(keyList)
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("float", testDict['type'])
-        self.assertEqual("Test return array post modification", testDict['desc'])
+        assert "float" == testDict['type']
+        assert "Test return array post modification" == testDict['desc']
         expectedMod = 7 << ParamRetDict.typeModArrayShift
-        self.assertEqual(expectedMod, testDict['typeMod'])
+        assert expectedMod == testDict['typeMod']
 
     def test08BuildReturnDictPtrPlusArray(self):
         """!
@@ -271,15 +271,15 @@ class Unittest02ReturnDict(unittest.TestCase):
         ParamRetDict.setArraySize(testDict, 8)
 
         keyList = list(testDict.keys())
-        self.assertEqual(3, len(keyList))
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 3 == len(keyList)
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("float", testDict['type'])
-        self.assertEqual("Test return ptr array post modification", testDict['desc'])
+        assert "float" == testDict['type']
+        assert "Test return ptr array post modification" == testDict['desc']
         expectedMod = (8 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModPtr
-        self.assertEqual(expectedMod, testDict['typeMod'])
+        assert expectedMod == testDict['typeMod']
 
     def test09BuildReturnDictWithInputMod(self):
         """!
@@ -288,23 +288,23 @@ class Unittest02ReturnDict(unittest.TestCase):
         testDict = ParamRetDict.buildReturnDictWithMod("struct", "Test return dictionary with mode input", 55)
 
         keyList = list(testDict.keys())
-        self.assertEqual(3, len(keyList))
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 3 == len(keyList)
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("struct", testDict['type'])
-        self.assertEqual("Test return dictionary with mode input", testDict['desc'])
-        self.assertEqual(55, testDict['typeMod'])
+        assert "struct" == testDict['type']
+        assert "Test return dictionary with mode input" == testDict['desc']
+        assert 55 == testDict['typeMod']
 
     def test10GetReturnData(self):
         """!
         @brief Test return dictionary get data function
         """
         testDict = ParamRetDict.buildReturnDictWithMod("struct", "Test return dictionary with mode input", ParamRetDict.typeModList)
-        self.assertEqual("struct", ParamRetDict.getReturnType(testDict))
-        self.assertEqual("Test return dictionary with mode input", ParamRetDict.getReturnDesc(testDict))
-        self.assertEqual(ParamRetDict.typeModList, ParamRetDict.getReturnTypeMod(testDict))
+        assert "struct" == ParamRetDict.getReturnType(testDict)
+        assert "Test return dictionary with mode input" == ParamRetDict.getReturnDesc(testDict)
+        assert ParamRetDict.typeModList == ParamRetDict.getReturnTypeMod(testDict)
 
     def test11GetReturnDataTuple(self):
         """!
@@ -313,12 +313,12 @@ class Unittest02ReturnDict(unittest.TestCase):
         testDict = ParamRetDict.buildReturnDictWithMod("struct", "Test return dictionary with mode input", ParamRetDict.typeModPtr)
 
         retType, retDesc, retMode = ParamRetDict.getReturnData(testDict)
-        self.assertEqual("struct", retType)
-        self.assertEqual("Test return dictionary with mode input", retDesc)
-        self.assertEqual(ParamRetDict.typeModPtr, retMode)
+        assert "struct" == retType
+        assert "Test return dictionary with mode input" == retDesc
+        assert ParamRetDict.typeModPtr == retMode
 
 
-class Unittest03ParamDict(unittest.TestCase):
+class TestUnittest03ParamDict:
     """!
     @brief Unit test for the ParamRetDict class
     """
@@ -329,16 +329,16 @@ class Unittest03ParamDict(unittest.TestCase):
         """
         testDict = ParamRetDict.buildParamDict("foo", "string", "Test parameter base description")
         keyList = list(testDict.keys())
-        self.assertEqual(4, len(keyList))
-        self.assertTrue('name' in keyList)
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 4 == len(keyList)
+        assert 'name' in keyList
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("foo", testDict['name'])
-        self.assertEqual("string", testDict['type'])
-        self.assertEqual("Test parameter base description", testDict['desc'])
-        self.assertEqual(0, testDict['typeMod'])
+        assert "foo" == testDict['name']
+        assert "string" == testDict['type']
+        assert "Test parameter base description" == testDict['desc']
+        assert 0 == testDict['typeMod']
 
     def test02BuildParamDictListMod(self):
         """!
@@ -346,16 +346,16 @@ class Unittest03ParamDict(unittest.TestCase):
         """
         testDict = ParamRetDict.buildParamDict("moo", "string", "Test parameter list modification", True)
         keyList = list(testDict.keys())
-        self.assertEqual(4, len(keyList))
-        self.assertTrue('name' in keyList)
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 4 == len(keyList)
+        assert 'name' in keyList
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("moo", testDict['name'])
-        self.assertEqual("string", testDict['type'])
-        self.assertEqual("Test parameter list modification", testDict['desc'])
-        self.assertEqual(ParamRetDict.typeModList, testDict['typeMod'])
+        assert "moo" == testDict['name']
+        assert "string" == testDict['type']
+        assert "Test parameter list modification" == testDict['desc']
+        assert ParamRetDict.typeModList == testDict['typeMod']
 
     def test03BuildParamDictRefMod(self):
         """!
@@ -363,16 +363,16 @@ class Unittest03ParamDict(unittest.TestCase):
         """
         testDict = ParamRetDict.buildParamDict("goo", "integer", "Test parameter reference modification", isReference=True)
         keyList = list(testDict.keys())
-        self.assertEqual(4, len(keyList))
-        self.assertTrue('name' in keyList)
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 4 == len(keyList)
+        assert 'name' in keyList
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("goo", testDict['name'])
-        self.assertEqual("integer", testDict['type'])
-        self.assertEqual("Test parameter reference modification", testDict['desc'])
-        self.assertEqual(ParamRetDict.typeModRef, testDict['typeMod'])
+        assert "goo" == testDict['name']
+        assert "integer" == testDict['type']
+        assert "Test parameter reference modification" == testDict['desc']
+        assert ParamRetDict.typeModRef == testDict['typeMod']
 
     def test04BuildParamDictPtrMod(self):
         """!
@@ -380,16 +380,16 @@ class Unittest03ParamDict(unittest.TestCase):
         """
         testDict = ParamRetDict.buildParamDict("shoo", "integer", "Test parameter pointer modification", isPtr=True)
         keyList = list(testDict.keys())
-        self.assertEqual(4, len(keyList))
-        self.assertTrue('name' in keyList)
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 4 == len(keyList)
+        assert 'name' in keyList
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("shoo", testDict['name'])
-        self.assertEqual("integer", testDict['type'])
-        self.assertEqual("Test parameter pointer modification", testDict['desc'])
-        self.assertEqual(ParamRetDict.typeModPtr, testDict['typeMod'])
+        assert "shoo" == testDict['name']
+        assert "integer" == testDict['type']
+        assert "Test parameter pointer modification" == testDict['desc']
+        assert ParamRetDict.typeModPtr == testDict['typeMod']
 
     def test05BuildParamDictUndefinedMod(self):
         """!
@@ -397,16 +397,16 @@ class Unittest03ParamDict(unittest.TestCase):
         """
         testDict = ParamRetDict.buildParamDict("too", "unsigned", "Test parameter undefined modification", orUndef=True)
         keyList = list(testDict.keys())
-        self.assertEqual(4, len(keyList))
-        self.assertTrue('name' in keyList)
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 4 == len(keyList)
+        assert 'name' in keyList
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("too", testDict['name'])
-        self.assertEqual("unsigned", testDict['type'])
-        self.assertEqual("Test parameter undefined modification", testDict['desc'])
-        self.assertEqual(ParamRetDict.typeModUndef, testDict['typeMod'])
+        assert "too" == testDict['name']
+        assert "unsigned" == testDict['type']
+        assert "Test parameter undefined modification" == testDict['desc']
+        assert ParamRetDict.typeModUndef == testDict['typeMod']
 
     def test06BuildParamDictMultipleMods(self):
         """!
@@ -415,17 +415,17 @@ class Unittest03ParamDict(unittest.TestCase):
         testDict = ParamRetDict.buildParamDict("yoo", "size", "Test parameter multiple modifications",
                                                 isList=True, isReference=True, isPtr=True, orUndef=True)
         keyList = list(testDict.keys())
-        self.assertEqual(4, len(keyList))
-        self.assertTrue('name' in keyList)
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 4 == len(keyList)
+        assert 'name' in keyList
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("yoo", testDict['name'])
-        self.assertEqual("size", testDict['type'])
-        self.assertEqual("Test parameter multiple modifications", testDict['desc'])
+        assert "yoo" == testDict['name']
+        assert "size" == testDict['type']
+        assert "Test parameter multiple modifications" == testDict['desc']
         expectedMod = ParamRetDict.typeModList|ParamRetDict.typeModPtr|ParamRetDict.typeModRef|ParamRetDict.typeModUndef
-        self.assertEqual(expectedMod, testDict['typeMod'])
+        assert expectedMod == testDict['typeMod']
 
     def test07BuildParamDictDefaultPlusArray(self):
         """!
@@ -435,17 +435,17 @@ class Unittest03ParamDict(unittest.TestCase):
         ParamRetDict.setArraySize(testDict, 7)
 
         keyList = list(testDict.keys())
-        self.assertEqual(4, len(keyList))
-        self.assertTrue('name' in keyList)
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 4 == len(keyList)
+        assert 'name' in keyList
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("pi", testDict['name'])
-        self.assertEqual("float", testDict['type'])
-        self.assertEqual("Test parameter array post modification", testDict['desc'])
+        assert "pi" == testDict['name']
+        assert "float" == testDict['type']
+        assert "Test parameter array post modification" == testDict['desc']
         expectedMod = 7 << ParamRetDict.typeModArrayShift
-        self.assertEqual(expectedMod, testDict['typeMod'])
+        assert expectedMod == testDict['typeMod']
 
     def test08BuildParamDictPtrPlusArray(self):
         """!
@@ -455,17 +455,17 @@ class Unittest03ParamDict(unittest.TestCase):
         ParamRetDict.setArraySize(testDict, 23)
 
         keyList = list(testDict.keys())
-        self.assertEqual(4, len(keyList))
-        self.assertTrue('name' in keyList)
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 4 == len(keyList)
+        assert 'name' in keyList
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("rugbyPlayers", testDict['name'])
-        self.assertEqual("string", testDict['type'])
-        self.assertEqual("Test parameter ptr array post modification", testDict['desc'])
+        assert "rugbyPlayers" == testDict['name']
+        assert "string" == testDict['type']
+        assert "Test parameter ptr array post modification" == testDict['desc']
         expectedMod = (23 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModPtr
-        self.assertEqual(expectedMod, testDict['typeMod'])
+        assert expectedMod == testDict['typeMod']
 
     def test09BuildParamDictWithInputMod(self):
         """!
@@ -474,26 +474,26 @@ class Unittest03ParamDict(unittest.TestCase):
         testDict = ParamRetDict.buildParamDictWithMod("employees", "struct", "Test parameter dictionary with mode input", 0x0440002)
 
         keyList = list(testDict.keys())
-        self.assertEqual(4, len(keyList))
-        self.assertTrue('name' in keyList)
-        self.assertTrue('type' in keyList)
-        self.assertTrue('desc' in keyList)
-        self.assertTrue('typeMod' in keyList)
+        assert 4 == len(keyList)
+        assert 'name' in keyList
+        assert 'type' in keyList
+        assert 'desc' in keyList
+        assert 'typeMod' in keyList
 
-        self.assertEqual("employees", testDict['name'])
-        self.assertEqual("struct", testDict['type'])
-        self.assertEqual("Test parameter dictionary with mode input", testDict['desc'])
-        self.assertEqual(0x0440002, testDict['typeMod'])
+        assert "employees" == testDict['name']
+        assert "struct" == testDict['type']
+        assert "Test parameter dictionary with mode input" == testDict['desc']
+        assert 0x0440002 == testDict['typeMod']
 
     def test10GetParamData(self):
         """!
         @brief Test parameter dictionary get data function
         """
         testDict = ParamRetDict.buildParamDictWithMod("employees", "struct", "Test parameter dictionary with mode input", 0x0440002)
-        self.assertEqual("employees", ParamRetDict.getParamName(testDict))
-        self.assertEqual("struct", ParamRetDict.getParamType(testDict))
-        self.assertEqual("Test parameter dictionary with mode input", ParamRetDict.getParamDesc(testDict))
-        self.assertEqual(0x0440002, ParamRetDict.getParamTypeMod(testDict))
+        assert "employees" == ParamRetDict.getParamName(testDict)
+        assert "struct" == ParamRetDict.getParamType(testDict)
+        assert "Test parameter dictionary with mode input" == ParamRetDict.getParamDesc(testDict)
+        assert 0x0440002 == ParamRetDict.getParamTypeMod(testDict)
 
     def test11GetParamDataTuple(self):
         """!
@@ -502,10 +502,7 @@ class Unittest03ParamDict(unittest.TestCase):
         testDict = ParamRetDict.buildParamDictWithMod("uid", "integer", "Test parameter dictionary with mode input", ParamRetDict.typeModPtr)
         paramName, paramType, paramDesc, paramMode = ParamRetDict.getParamData(testDict)
 
-        self.assertEqual("uid", paramName)
-        self.assertEqual("integer", paramType)
-        self.assertEqual("Test parameter dictionary with mode input", paramDesc)
-        self.assertEqual(ParamRetDict.typeModPtr, paramMode)
-
-if __name__ == '__main__':
-    unittest.main()
+        assert "uid" == paramName
+        assert "integer" == paramType
+        assert "Test parameter dictionary with mode input" == paramDesc
+        assert ParamRetDict.typeModPtr == paramMode

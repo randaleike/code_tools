@@ -26,7 +26,7 @@ Unittest for programmer base tools utility
 #==========================================================================
 
 import os
-import unittest
+
 
 from dir_init import TESTFILEPATH
 from dir_init import pathincsetup
@@ -37,7 +37,7 @@ from code_tools_grocsoftware.base.copyright_tools import CopyrightParseEnglish
 from code_tools_grocsoftware.base.copyright_tools import CopyrightGenerator
 from code_tools_grocsoftware.base.copyright_tools import CopyrightFinder
 
-class TestClass06CopyrightParserEnglish(unittest.TestCase):
+class TestClass06CopyrightParserEnglish:
     """!
     @brief Unit test for the english copyright parser class
     """
@@ -48,18 +48,18 @@ class TestClass06CopyrightParserEnglish(unittest.TestCase):
         self.tstParser = CopyrightParseEnglish()
 
         testStr = self.tstParser.createCopyrightMsg("James Kirk", 2024, 2024)
-        self.assertEqual(testStr, "Copyright (c) 2024 James Kirk")
+        assert testStr == "Copyright (c) 2024 James Kirk"
 
         testStr = self.tstParser.createCopyrightMsg("James Kirk", 2022, 2024)
-        self.assertEqual(testStr, "Copyright (c) 2022-2024 James Kirk")
+        assert testStr == "Copyright (c) 2022-2024 James Kirk"
 
         testStr = self.tstParser.createCopyrightMsg("Mr. Spock", 2024, None)
-        self.assertEqual(testStr, "Copyright (c) 2024 Mr. Spock")
+        assert testStr == "Copyright (c) 2024 Mr. Spock"
 
         testStr = self.tstParser.createCopyrightMsg("Mr. Spock", 2023)
-        self.assertEqual(testStr, "Copyright (c) 2023 Mr. Spock")
+        assert testStr == "Copyright (c) 2023 Mr. Spock"
 
-class TestClass07CopyrightGenerator(unittest.TestCase):
+class TestClass07CopyrightGenerator:
     """!
     @brief Unit test for the copyright generator class
     """
@@ -67,9 +67,9 @@ class TestClass07CopyrightGenerator(unittest.TestCase):
         """!
         @brief Test the parser of parseCopyrightMsg() with valid message and default regx
         """
-        self.assertFalse(CopyrightGenerator._isMultiYear(2022, None))
-        self.assertFalse(CopyrightGenerator._isMultiYear(2022, 2022))
-        self.assertTrue(CopyrightGenerator._isMultiYear(2022, 2023))
+        assert not CopyrightGenerator._isMultiYear(2022, None)
+        assert not CopyrightGenerator._isMultiYear(2022, 2022)
+        assert CopyrightGenerator._isMultiYear(2022, 2023)
 
     def test001CopyrightDefaultGeneration(self):
         """!
@@ -78,10 +78,10 @@ class TestClass07CopyrightGenerator(unittest.TestCase):
         tstGenerator = CopyrightGenerator()
 
         _, defaultMsg = tstGenerator.getNewCopyrightMsg(2022, 2022)
-        self.assertEqual(defaultMsg, 'Copyright (c) 2022 None')
+        assert defaultMsg == 'Copyright (c) 2022 None'
 
         _, defaultMsg = tstGenerator.getNewCopyrightMsg(2022,2024)
-        self.assertEqual(defaultMsg, 'Copyright (c) 2022-2024 None')
+        assert defaultMsg == 'Copyright (c) 2022-2024 None'
 
     def test002CopyrightBaseGenerationSingleYear(self):
         """!
@@ -95,23 +95,23 @@ class TestClass07CopyrightGenerator(unittest.TestCase):
 
         # Unchanged, create year == last modification year
         changed, newMsg = tstGenerator._getNewCopyrightMsg(2022, 2022)
-        self.assertFalse(changed)
-        self.assertEqual(newMsg, copyrightMsg)
+        assert not changed
+        assert newMsg == copyrightMsg
 
         # Unchanged, create year, last modification year = None
         changed, newMsg = tstGenerator._getNewCopyrightMsg(2022)
-        self.assertFalse(changed)
-        self.assertEqual(newMsg, copyrightMsg)
+        assert not changed
+        assert newMsg == copyrightMsg
 
         # Changed, create year > current year, last modification year = None
         changed, newMsg = tstGenerator._getNewCopyrightMsg(2023)
-        self.assertFalse(changed)
-        self.assertEqual(newMsg, copyrightMsg)
+        assert not changed
+        assert newMsg == copyrightMsg
 
         # Changed, create year < current year, last modification year = None
         changed, newMsg = tstGenerator._getNewCopyrightMsg(2021)
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "Copyright (C) 2021 Scott Summers")
+        assert changed
+        assert newMsg == "Copyright (C) 2021 Scott Summers"
 
     def test003CopyrightBaseGenerationSingleYearMultiMsg(self):
         """!
@@ -125,23 +125,23 @@ class TestClass07CopyrightGenerator(unittest.TestCase):
 
         # Unchanged, create year = current year, last modification year = None
         changed, newMsg = tstGenerator._getNewCopyrightMsg(2022)
-        self.assertFalse(changed)
-        self.assertEqual(newMsg, copyrightMsg)
+        assert not changed
+        assert newMsg == copyrightMsg
 
         # Unchanged, create year <= current end year, last modification year = None
         changed, newMsg = tstGenerator._getNewCopyrightMsg(2023)
-        self.assertFalse(changed)
-        self.assertEqual(newMsg, copyrightMsg)
+        assert not changed
+        assert newMsg == copyrightMsg
 
         # Changed, create year < current year, last modification year = new year
         changed, newMsg = tstGenerator._getNewCopyrightMsg(2021)
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "Copyright (C) 2021-2023 Scott Summers")
+        assert changed
+        assert newMsg == "Copyright (C) 2021-2023 Scott Summers"
 
         # Changed, create year > current end year, last modification year = new year
         changed, newMsg = tstGenerator._getNewCopyrightMsg(2024)
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "Copyright (C) 2022-2024 Scott Summers")
+        assert changed
+        assert newMsg == "Copyright (C) 2022-2024 Scott Summers"
 
     def test004CopyrightBaseGenerationMultiYear(self):
         """!
@@ -155,23 +155,23 @@ class TestClass07CopyrightGenerator(unittest.TestCase):
 
         # Unchanged, create year = current year, last modification year = new year
         changed, newMsg = tstGenerator._getNewCopyrightMsg(2022, 2023)
-        self.assertFalse(changed)
-        self.assertEqual(newMsg, copyrightMsg)
+        assert not changed
+        assert newMsg == copyrightMsg
 
         # Changed, create year = current year, last modification year = new year
         changed, newMsg = tstGenerator._getNewCopyrightMsg(2022, 2024)
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "Copyright (C) 2022-2024 Scott Summers")
+        assert changed
+        assert newMsg == "Copyright (C) 2022-2024 Scott Summers"
 
         # Changed, create year > current year, last modification year = new year
         changed, newMsg = tstGenerator._getNewCopyrightMsg(2023, 2024)
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "Copyright (C) 2022-2024 Scott Summers")
+        assert changed
+        assert newMsg == "Copyright (C) 2022-2024 Scott Summers"
 
         # Changed, create year < current year, last modification year = new year
         changed, newMsg = tstGenerator._getNewCopyrightMsg(2021, 2023)
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "Copyright (C) 2021-2023 Scott Summers")
+        assert changed
+        assert newMsg == "Copyright (C) 2021-2023 Scott Summers"
 
     def test005CopyrightNormalGenerationNoChange(self):
         """!
@@ -184,21 +184,21 @@ class TestClass07CopyrightGenerator(unittest.TestCase):
         self.tstParser.parseCopyrightMsg(copyrightMsg)
 
         changed, newMsg = tstGenerator.getNewCopyrightMsg(2022, 2022)
-        self.assertFalse(changed)
-        self.assertEqual(newMsg, copyrightMsg)
+        assert not changed
+        assert newMsg == copyrightMsg
 
         copyrightMsg = "Copyright (C) 2022-2024 Scott Summers"
         self.tstParser.parseCopyrightMsg(copyrightMsg)
         changed, newMsg = tstGenerator.getNewCopyrightMsg(2022, 2024)
-        self.assertFalse(changed)
-        self.assertEqual(newMsg, copyrightMsg)
+        assert not changed
+        assert newMsg == copyrightMsg
 
         # Verify no move forward
         copyrightMsg = "Copyright (C) 2022-2024 Scott Summers"
         self.tstParser.parseCopyrightMsg(copyrightMsg)
         changed, newMsg = tstGenerator.getNewCopyrightMsg(2023, 2024)
-        self.assertFalse(changed)
-        self.assertEqual(newMsg, copyrightMsg)
+        assert not changed
+        assert newMsg == copyrightMsg
 
     def test006CopyrightNormalGenerationChange(self):
         """!
@@ -211,20 +211,20 @@ class TestClass07CopyrightGenerator(unittest.TestCase):
         self.tstParser.parseCopyrightMsg(copyrightMsg)
 
         changed, newMsg = tstGenerator.getNewCopyrightMsg(2022,2023)
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "Copyright (C) 2022-2023 Scott Summers")
+        assert changed
+        assert newMsg == "Copyright (C) 2022-2023 Scott Summers"
 
         copyrightMsg = newMsg
         self.tstParser.parseCopyrightMsg(copyrightMsg)
         changed, newMsg = tstGenerator.getNewCopyrightMsg(2022,2024)
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "Copyright (C) 2022-2024 Scott Summers")
+        assert changed
+        assert newMsg == "Copyright (C) 2022-2024 Scott Summers"
 
         # Verify no move forward, multiyear
         self.tstParser.parseCopyrightMsg(copyrightMsg)
         changed, newMsg = tstGenerator.getNewCopyrightMsg(2023, 2024)
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "Copyright (C) 2022-2024 Scott Summers")
+        assert changed
+        assert newMsg == "Copyright (C) 2022-2024 Scott Summers"
 
     def test007CreateCopyrightTransition(self):
         """!
@@ -237,14 +237,14 @@ class TestClass07CopyrightGenerator(unittest.TestCase):
         self.tstParser.parseCopyrightMsg(copyrightMsg)
 
         changed, oldMsg, newMsg = tstGenerator.createCopyrightTransition(2022,2032,2035,"Logan")
-        self.assertTrue(changed)
-        self.assertEqual(oldMsg, "Copyright (C) 2022-2032 Scott Summers")
-        self.assertEqual(newMsg, "Copyright (C) 2032-2035 Logan")
+        assert changed
+        assert oldMsg == "Copyright (C) 2022-2032 Scott Summers"
+        assert newMsg == "Copyright (C) 2032-2035 Logan"
 
         changed, oldMsg, newMsg = tstGenerator.createCopyrightTransition(2022,2035,2035,"Logan")
-        self.assertFalse(changed)
-        self.assertEqual(oldMsg, "Copyright (C) 2022-2035 Scott Summers")
-        self.assertEqual(newMsg, "Copyright (C) 2035 Logan")
+        assert not changed
+        assert oldMsg == "Copyright (C) 2022-2035 Scott Summers"
+        assert newMsg == "Copyright (C) 2035 Logan"
 
     def test008AddCopyrightOwner(self):
         """!
@@ -257,22 +257,22 @@ class TestClass07CopyrightGenerator(unittest.TestCase):
         self.tstParser.parseCopyrightMsg(copyrightMsg)
 
         changed, newMsg = tstGenerator.addCopyrightOwner(2022,2022,"Jean Gray")
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "Copyright (C) 2022 Scott Summers, Jean Gray")
+        assert changed
+        assert newMsg == "Copyright (C) 2022 Scott Summers, Jean Gray"
 
         copyrightMsg = "Copyright (C) 2022 Scott Summers"
         self.tstParser.parseCopyrightMsg(copyrightMsg)
 
         changed, newMsg = tstGenerator.addCopyrightOwner(2022,2024,"Jean Gray")
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "Copyright (C) 2022-2024 Scott Summers, Jean Gray")
+        assert changed
+        assert newMsg == "Copyright (C) 2022-2024 Scott Summers, Jean Gray"
 
         copyrightMsg = "Copyright (C) 2022-2035 Scott Summers"
         self.tstParser.parseCopyrightMsg(copyrightMsg)
 
         changed, newMsg = tstGenerator.addCopyrightOwner(2022,2035,"Jean Gray")
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "Copyright (C) 2022-2035 Scott Summers, Jean Gray")
+        assert changed
+        assert newMsg == "Copyright (C) 2022-2035 Scott Summers, Jean Gray"
 
     def test009AddCopyrightOwnerWithWrapper(self):
         """!
@@ -285,22 +285,22 @@ class TestClass07CopyrightGenerator(unittest.TestCase):
         self.tstParser.parseCopyrightMsg(copyrightMsg)
 
         changed, newMsg = tstGenerator.addCopyrightOwner(2022,2022,"Jean Gray")
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "* Copyright (C) 2022 Scott Summers, Jean Gray        *")
+        assert changed
+        assert newMsg == "* Copyright (C) 2022 Scott Summers, Jean Gray        *"
 
         copyrightMsg = "* Copyright (C) 2022 Scott Summers                   *"
         self.tstParser.parseCopyrightMsg(copyrightMsg)
 
         changed, newMsg = tstGenerator.addCopyrightOwner(2022,2024,"Jean Gray")
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "* Copyright (C) 2022-2024 Scott Summers, Jean Gray   *")
+        assert changed
+        assert newMsg == "* Copyright (C) 2022-2024 Scott Summers, Jean Gray   *"
 
         copyrightMsg = "* Copyright (C) 2022-2035 Scott Summers              *"
         self.tstParser.parseCopyrightMsg(copyrightMsg)
 
         changed, newMsg = tstGenerator.addCopyrightOwner(2022,2035,"Jean Gray")
-        self.assertTrue(changed)
-        self.assertEqual(newMsg, "* Copyright (C) 2022-2035 Scott Summers, Jean Gray   *")
+        assert changed
+        assert newMsg == "* Copyright (C) 2022-2035 Scott Summers, Jean Gray   *"
 
     def test010AddCopyrightOwnerFailed(self):
         """!
@@ -309,8 +309,8 @@ class TestClass07CopyrightGenerator(unittest.TestCase):
         self.tstParser = CopyrightParseEnglish()
         tstGenerator = CopyrightGenerator(self.tstParser)
         changed, newMsg = tstGenerator.addCopyrightOwner(2022,2035,"Jean Gray")
-        self.assertFalse(changed)
-        self.assertIsNone(newMsg)
+        assert not changed
+        assert newMsg is None
 
     def test011CreateNewMsg(self):
         """!
@@ -319,9 +319,9 @@ class TestClass07CopyrightGenerator(unittest.TestCase):
         self.tstParser = CopyrightParseEnglish()
         tstGenerator = CopyrightGenerator(self.tstParser)
         newMsg = tstGenerator.createNewCopyright("Jean Gray", 2022, 2035)
-        self.assertEqual(newMsg, "Copyright (c) 2022-2035 Jean Gray")
+        assert newMsg == "Copyright (c) 2022-2035 Jean Gray"
 
-class TestClass08CopyrightFind(unittest.TestCase):
+class TestClass08CopyrightFind:
     """!
     @brief Unit test for the copyright finder class
     """
@@ -334,9 +334,9 @@ class TestClass08CopyrightFind(unittest.TestCase):
         with open(testFilePath, "rt", encoding="utf-8") as testFile:
             tstFinder = CopyrightFinder()
             copyrightFound, locationDict = tstFinder.findNextCopyrightMsg(testFile, 0, None)
-            self.assertTrue(copyrightFound)
-            self.assertEqual(locationDict['lineOffset'], 3)
-            self.assertEqual(locationDict['text'], ' Copyright (c) 2022-2024 Randal Eike\n')
+            assert copyrightFound
+            assert locationDict['lineOffset'] == 3
+            assert locationDict['text'] == ' Copyright (c) 2022-2024 Randal Eike\n'
 
     def test001aFindCopyrightLineC(self):
         """!
@@ -346,9 +346,9 @@ class TestClass08CopyrightFind(unittest.TestCase):
         with open(testFilePath, "rt", encoding="utf-8") as testFile:
             tstFinder = CopyrightFinder(CopyrightParseEnglish())
             copyrightFound, locationDict = tstFinder.findNextCopyrightMsg(testFile, 0, None)
-            self.assertTrue(copyrightFound)
-            self.assertEqual(locationDict['lineOffset'], 3)
-            self.assertEqual(locationDict['text'], ' Copyright (c) 2022-2024 Randal Eike\n')
+            assert copyrightFound
+            assert locationDict['lineOffset'] == 3
+            assert locationDict['text'] == ' Copyright (c) 2022-2024 Randal Eike\n'
 
     def test002FindCopyrightLineCpp(self):
         """!
@@ -358,9 +358,9 @@ class TestClass08CopyrightFind(unittest.TestCase):
         with open(testFilePath, "rt", encoding="utf-8") as testFile:
             tstFinder = CopyrightFinder()
             copyrightFound, locationDict = tstFinder.findNextCopyrightMsg(testFile, 0, None)
-            self.assertTrue(copyrightFound)
-            self.assertEqual(locationDict['lineOffset'], 3)
-            self.assertEqual(locationDict['text'], ' Copyright (c) 2022-2024 Randal Eike\n')
+            assert copyrightFound
+            assert locationDict['lineOffset'] == 3
+            assert locationDict['text'] == ' Copyright (c) 2022-2024 Randal Eike\n'
 
     def test003FindCopyrightLineH(self):
         """!
@@ -370,9 +370,9 @@ class TestClass08CopyrightFind(unittest.TestCase):
         with open(testFilePath, "rt", encoding="utf-8") as testFile:
             tstFinder = CopyrightFinder()
             copyrightFound, locationDict = tstFinder.findNextCopyrightMsg(testFile, 0, None)
-            self.assertTrue(copyrightFound)
-            self.assertEqual(locationDict['lineOffset'], 3)
-            self.assertEqual(locationDict['text'], ' Copyright (c) 2022-2024 Randal Eike\n')
+            assert copyrightFound
+            assert locationDict['lineOffset'] == 3
+            assert locationDict['text'] == ' Copyright (c) 2022-2024 Randal Eike\n'
 
     def test004FindCopyrightLineHpp(self):
         """!
@@ -382,9 +382,9 @@ class TestClass08CopyrightFind(unittest.TestCase):
         with open(testFilePath, "rt", encoding="utf-8") as testFile:
             tstFinder = CopyrightFinder()
             copyrightFound, locationDict = tstFinder.findNextCopyrightMsg(testFile, 0, None)
-            self.assertTrue(copyrightFound)
-            self.assertEqual(locationDict['lineOffset'], 3)
-            self.assertEqual(locationDict['text'], ' Copyright (c) 2022-2024 Randal Eike\n')
+            assert copyrightFound
+            assert locationDict['lineOffset'] == 3
+            assert locationDict['text'] == ' Copyright (c) 2022-2024 Randal Eike\n'
 
     def test005FindCopyrightLinePy(self):
         """!
@@ -394,9 +394,9 @@ class TestClass08CopyrightFind(unittest.TestCase):
         with open(testFilePath, "rt", encoding="utf-8") as testFile:
             tstFinder = CopyrightFinder()
             copyrightFound, locationDict = tstFinder.findNextCopyrightMsg(testFile, 0, None)
-            self.assertTrue(copyrightFound)
-            self.assertEqual(locationDict['lineOffset'], 133)
-            self.assertEqual(locationDict['text'], '# Copyright (c) 2024 Randal Eike\n')
+            assert copyrightFound
+            assert locationDict['lineOffset'] == 133
+            assert locationDict['text'] == '# Copyright (c) 2024 Randal Eike\n'
 
     def test006FindCopyrightNonePy(self):
         """!
@@ -406,8 +406,8 @@ class TestClass08CopyrightFind(unittest.TestCase):
         with open(testFilePath, "rt", encoding="utf-8") as testFile:
             tstFinder = CopyrightFinder()
             copyrightFound, locationDict = tstFinder.findNextCopyrightMsg(testFile, 0, None)
-            self.assertFalse(copyrightFound)
-            self.assertIsNone(locationDict)
+            assert not copyrightFound
+            assert locationDict is None
 
     def test007FindCopyrightAbortBeforeEndPy(self):
         """!
@@ -417,9 +417,9 @@ class TestClass08CopyrightFind(unittest.TestCase):
         with open(testFilePath, "rt", encoding="utf-8") as testFile:
             tstFinder = CopyrightFinder()
             copyrightFound, locationDict = tstFinder.findNextCopyrightMsg(testFile, 0, 200)
-            self.assertTrue(copyrightFound)
-            self.assertEqual(locationDict['lineOffset'], 133)
-            self.assertEqual(locationDict['text'], '# Copyright (c) 2024 Randal Eike\n')
+            assert copyrightFound
+            assert locationDict['lineOffset'] == 133
+            assert locationDict['text'] == '# Copyright (c) 2024 Randal Eike\n'
 
     def test008FindCopyrightNoneAndAbortPy(self):
         """!
@@ -429,8 +429,8 @@ class TestClass08CopyrightFind(unittest.TestCase):
         with open(testFilePath, "rt", encoding="utf-8") as testFile:
             tstFinder = CopyrightFinder()
             copyrightFound, locationDict = tstFinder.findNextCopyrightMsg(testFile, 0, 400)
-            self.assertFalse(copyrightFound)
-            self.assertIsNone(locationDict)
+            assert not copyrightFound
+            assert locationDict is None
 
     def test009FindCopyrightMacroPy(self):
         """!
@@ -440,9 +440,9 @@ class TestClass08CopyrightFind(unittest.TestCase):
         with open(testFilePath, "rt", encoding="utf-8") as testFile:
             tstFinder = CopyrightFinder()
             copyrightFound, locationDict = tstFinder.findCopyrightMsg(testFile)
-            self.assertTrue(copyrightFound)
-            self.assertEqual(locationDict['lineOffset'], 133)
-            self.assertEqual(locationDict['text'], '# Copyright (c) 2024 Randal Eike\n')
+            assert copyrightFound
+            assert locationDict['lineOffset'] == 133
+            assert locationDict['text'] == '# Copyright (c) 2024 Randal Eike\n'
 
     def test010FindAllCopyrightNonePy(self):
         """!
@@ -452,8 +452,8 @@ class TestClass08CopyrightFind(unittest.TestCase):
         with open(testFilePath, "rt", encoding="utf-8") as testFile:
             tstFinder = CopyrightFinder()
             copyrightFound, locationDictList = tstFinder.findAllCopyrightMsg(testFile)
-            self.assertFalse(copyrightFound)
-            self.assertIsNone(locationDictList)
+            assert not copyrightFound
+            assert locationDictList is None
 
     def test011FindAllCopyrightC(self):
         """!
@@ -463,10 +463,7 @@ class TestClass08CopyrightFind(unittest.TestCase):
         with open(testFilePath, "rt", encoding="utf-8") as testFile:
             tstFinder = CopyrightFinder(CopyrightParseEnglish())
             copyrightFound, locationDictList = tstFinder.findAllCopyrightMsg(testFile)
-            self.assertTrue(copyrightFound)
-            self.assertEqual(len(locationDictList), 1)
-            self.assertEqual(locationDictList[0]['lineOffset'], 3)
-            self.assertEqual(locationDictList[0]['text'], ' Copyright (c) 2022-2024 Randal Eike\n')
-
-if __name__ == '__main__':
-    unittest.main()
+            assert copyrightFound
+            assert len(locationDictList) == 1
+            assert locationDictList[0]['lineOffset'] == 3
+            assert locationDictList[0]['text'] == ' Copyright (c) 2022-2024 Randal Eike\n'

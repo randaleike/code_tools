@@ -26,14 +26,14 @@ Unittest for programmer base tools utility
 #==========================================================================
 
 import re
-import unittest
+
 
 from dir_init import pathincsetup
 pathincsetup()
 
 from code_tools_grocsoftware.base.copyright_tools import CopyrightYearsList
 
-class TestClass01CopyrightYearParser(unittest.TestCase):
+class TestClass01CopyrightYearParser:
     """!
     @brief Unit test for the copyright year parser
     """
@@ -43,15 +43,15 @@ class TestClass01CopyrightYearParser(unittest.TestCase):
         """
         yearRegex = re.compile(r'(\d{4})')
         yearParser = CopyrightYearsList(" 2024 ", yearRegex)
-        self.assertTrue(yearParser.isValid())
+        assert yearParser.isValid()
 
         yearList = yearParser.getNumericYearList()
-        self.assertEqual(len(yearList), 1)
+        assert len(yearList) == 1
 
-        self.assertEqual(yearParser.getFirstEntry(), 2024)
-        self.assertEqual(yearParser.getLastEntry(), 2024)
-        self.assertEqual(yearParser.getStartingStringIndex(), 1)
-        self.assertEqual(yearParser.getEndingStringIndex(), 5)
+        assert yearParser.getFirstEntry() == 2024
+        assert yearParser.getLastEntry() == 2024
+        assert yearParser.getStartingStringIndex() == 1
+        assert yearParser.getEndingStringIndex() == 5
 
     def test002ParseMultiYearDash(self):
         """!
@@ -59,15 +59,15 @@ class TestClass01CopyrightYearParser(unittest.TestCase):
         """
         yearRegex = re.compile(r'(\d{4})')
         yearParser = CopyrightYearsList(" 2024-2025 ", yearRegex)
-        self.assertTrue(yearParser.isValid())
+        assert yearParser.isValid()
 
         yearList = yearParser.getNumericYearList()
-        self.assertEqual(len(yearList), 2)
+        assert len(yearList) == 2
 
-        self.assertEqual(yearParser.getFirstEntry(), 2024)
-        self.assertEqual(yearParser.getLastEntry(), 2025)
-        self.assertEqual(yearParser.getStartingStringIndex(), 1)
-        self.assertEqual(yearParser.getEndingStringIndex(), 10)
+        assert yearParser.getFirstEntry() == 2024
+        assert yearParser.getLastEntry() == 2025
+        assert yearParser.getStartingStringIndex() == 1
+        assert yearParser.getEndingStringIndex() == 10
 
     def test003ParseMultiYearList(self):
         """!
@@ -75,15 +75,15 @@ class TestClass01CopyrightYearParser(unittest.TestCase):
         """
         yearRegex = re.compile(r'(\d{4})')
         yearParser = CopyrightYearsList(" 2022,2023,2024,2025 ", yearRegex)
-        self.assertTrue(yearParser.isValid())
+        assert yearParser.isValid()
 
         yearList = yearParser.getNumericYearList()
-        self.assertEqual(len(yearList), 4)
+        assert len(yearList) == 4
 
-        self.assertEqual(yearParser.getFirstEntry(), 2022)
-        self.assertEqual(yearParser.getLastEntry(), 2025)
-        self.assertEqual(yearParser.getStartingStringIndex(), 1)
-        self.assertEqual(yearParser.getEndingStringIndex(), 20)
+        assert yearParser.getFirstEntry() == 2022
+        assert yearParser.getLastEntry() == 2025
+        assert yearParser.getStartingStringIndex() == 1
+        assert yearParser.getEndingStringIndex() == 20
 
     def test004ParseMultiYearFulldate(self):
         """!
@@ -91,15 +91,15 @@ class TestClass01CopyrightYearParser(unittest.TestCase):
         """
         yearRegex = re.compile(r'(\d{4})')
         yearParser = CopyrightYearsList(" 01-jan-2022:31-dec-2023 ", yearRegex)
-        self.assertTrue(yearParser.isValid())
+        assert yearParser.isValid()
 
         yearList = yearParser.getNumericYearList()
-        self.assertEqual(len(yearList), 2)
+        assert len(yearList) == 2
 
-        self.assertEqual(yearParser.getFirstEntry(), 2022)
-        self.assertEqual(yearParser.getLastEntry(), 2023)
-        self.assertEqual(yearParser.getStartingStringIndex(), 8)
-        self.assertEqual(yearParser.getEndingStringIndex(), 24)
+        assert yearParser.getFirstEntry() == 2022
+        assert yearParser.getLastEntry() == 2023
+        assert yearParser.getStartingStringIndex() == 8
+        assert yearParser.getEndingStringIndex() == 24
 
     def test005ParseFailure(self):
         """!
@@ -107,16 +107,16 @@ class TestClass01CopyrightYearParser(unittest.TestCase):
         """
         yearRegex = re.compile(r'(\d{4})')
         yearParser = CopyrightYearsList(" Not date text ", yearRegex)
-        self.assertFalse(yearParser.isValid())
+        assert not yearParser.isValid()
 
         yearList = yearParser.getNumericYearList()
-        self.assertEqual(len(yearList), 0)
+        assert len(yearList) == 0
 
-        self.assertIsNone(yearParser.getFirstEntry())
-        self.assertIsNone(yearParser.getLastEntry())
+        assert yearParser.getFirstEntry() is None
+        assert yearParser.getLastEntry() is None
 
-        self.assertEqual(yearParser.getStartingStringIndex(), -1)
-        self.assertEqual(yearParser.getEndingStringIndex(), -1)
+        assert yearParser.getStartingStringIndex() == -1
+        assert yearParser.getEndingStringIndex() == -1
 
     def test006ParseYearFromDate(self):
         """!
@@ -125,10 +125,7 @@ class TestClass01CopyrightYearParser(unittest.TestCase):
         yearRegex = re.compile(r'(\d{4})')
         yearParser = CopyrightYearsList("", yearRegex)
 
-        self.assertEqual(yearParser._parseYearFromDate("jan-01-2022"), 2022)
-        self.assertEqual(yearParser._parseYearFromDate("14-mar-2023"), 2023)
-        self.assertEqual(yearParser._parseYearFromDate("03/14/2021"), 2021)
-        self.assertEqual(yearParser._parseYearFromDate("03/14"), 1970)
-
-if __name__ == '__main__':
-    unittest.main()
+        assert yearParser._parseYearFromDate("jan-01-2022") == 2022
+        assert yearParser._parseYearFromDate("14-mar-2023") == 2023
+        assert yearParser._parseYearFromDate("03/14/2021") == 2021
+        assert yearParser._parseYearFromDate("03/14") == 1970

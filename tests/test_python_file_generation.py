@@ -25,7 +25,7 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import unittest
+
 from datetime import datetime
 
 from dir_init import pathincsetup
@@ -34,7 +34,7 @@ pathincsetup()
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.python_gen.file_gen_base import GeneratePythonFileHelper
 
-class Unittest01CppFilehelper(unittest.TestCase):
+class TestUnittest01CppFilehelper:
     """!
     @brief Unit test for the GeneratePythonFileHelper class
     """
@@ -44,37 +44,37 @@ class Unittest01CppFilehelper(unittest.TestCase):
         """
         helper = GeneratePythonFileHelper()
 
-        self.assertIsNotNone(helper.copyrightGenerator)
-        self.assertIsNotNone(helper.eula)
-        self.assertIsNotNone(helper.doxyCommentGen)
-        self.assertIsNotNone(helper.headerCommentGen)
-        self.assertEqual(helper.levelTabSize, 4)
+        assert helper.copyrightGenerator is not None
+        assert helper.eula is not None
+        assert helper.doxyCommentGen is not None
+        assert helper.headerCommentGen is not None
+        assert helper.levelTabSize == 4
 
-        self.assertEqual(len(list(helper.typeXlationDict.keys())), 7)
-        self.assertEqual(helper.typeXlationDict['string'], "str")
-        self.assertEqual(helper.typeXlationDict['text'], "str")
-        self.assertEqual(helper.typeXlationDict['size'], "int")
-        self.assertEqual(helper.typeXlationDict['integer'], "int")
-        self.assertEqual(helper.typeXlationDict['unsigned'], "int")
-        self.assertEqual(helper.typeXlationDict['structure'], "dict")
-        self.assertEqual(helper.typeXlationDict['tuple'], "tuple")
+        assert len(list(helper.typeXlationDict.keys())) == 7
+        assert helper.typeXlationDict['string'] == "str"
+        assert helper.typeXlationDict['text'] == "str"
+        assert helper.typeXlationDict['size'] == "int"
+        assert helper.typeXlationDict['integer'] == "int"
+        assert helper.typeXlationDict['unsigned'] == "int"
+        assert helper.typeXlationDict['structure'] == "dict"
+        assert helper.typeXlationDict['tuple'] == "tuple"
 
         helper = GeneratePythonFileHelper("GNU_V11")
 
-        self.assertIsNotNone(helper.copyrightGenerator)
-        self.assertIsNotNone(helper.eula)
-        self.assertIsNotNone(helper.doxyCommentGen)
-        self.assertIsNotNone(helper.headerCommentGen)
-        self.assertEqual(helper.levelTabSize, 4)
+        assert helper.copyrightGenerator is not None
+        assert helper.eula is not None
+        assert helper.doxyCommentGen is not None
+        assert helper.headerCommentGen is not None
+        assert helper.levelTabSize == 4
 
-        self.assertEqual(len(list(helper.typeXlationDict.keys())), 7)
-        self.assertEqual(helper.typeXlationDict['string'], "str")
-        self.assertEqual(helper.typeXlationDict['text'], "str")
-        self.assertEqual(helper.typeXlationDict['size'], "int")
-        self.assertEqual(helper.typeXlationDict['integer'], "int")
-        self.assertEqual(helper.typeXlationDict['unsigned'], "int")
-        self.assertEqual(helper.typeXlationDict['structure'], "dict")
-        self.assertEqual(helper.typeXlationDict['tuple'], "tuple")
+        assert len(list(helper.typeXlationDict.keys())) == 7
+        assert helper.typeXlationDict['string'] == "str"
+        assert helper.typeXlationDict['text'] == "str"
+        assert helper.typeXlationDict['size'] == "int"
+        assert helper.typeXlationDict['integer'] == "int"
+        assert helper.typeXlationDict['unsigned'] == "int"
+        assert helper.typeXlationDict['structure'] == "dict"
+        assert helper.typeXlationDict['tuple'] == "tuple"
 
     def test02DeclareTypeBase(self):
         """!
@@ -83,16 +83,16 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         # Test the xlate path
-        self.assertEqual(helper._declareType('string'), "str")
-        self.assertEqual(helper._declareType('text'), "str")
-        self.assertEqual(helper._declareType('size'), "int")
-        self.assertEqual(helper._declareType('integer'), "int")
-        self.assertEqual(helper._declareType('unsigned'), "int")
-        self.assertEqual(helper._declareType('structure'), "dict")
-        self.assertEqual(helper._declareType('tuple'), "tuple")
+        assert helper._declareType('string') == "str"
+        assert helper._declareType('text') == "str"
+        assert helper._declareType('size') == "int"
+        assert helper._declareType('integer') == "int"
+        assert helper._declareType('unsigned') == "int"
+        assert helper._declareType('structure') == "dict"
+        assert helper._declareType('tuple') == "tuple"
 
         # Test the non-xlate pathGN
-        self.assertEqual(helper._declareType('MyClass'), "MyClass")
+        assert helper._declareType('MyClass') == "MyClass"
 
     def test03DeclareTypePtr(self):
         """!
@@ -101,13 +101,13 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         # Test the xlate path
-        self.assertEqual(helper._declareType('string', ParamRetDict.typeModPtr), "str")
-        self.assertEqual(helper._declareType('text', ParamRetDict.typeModPtr), "str")
-        self.assertEqual(helper._declareType('size', ParamRetDict.typeModPtr), "int")
-        self.assertEqual(helper._declareType('integer', ParamRetDict.typeModPtr), "int")
-        self.assertEqual(helper._declareType('unsigned', ParamRetDict.typeModPtr), "int")
-        self.assertEqual(helper._declareType('structure', ParamRetDict.typeModPtr), "dict")
-        self.assertEqual(helper._declareType('tuple', ParamRetDict.typeModPtr), "tuple")
+        assert helper._declareType('string', ParamRetDict.typeModPtr) == "str"
+        assert helper._declareType('text', ParamRetDict.typeModPtr) == "str"
+        assert helper._declareType('size', ParamRetDict.typeModPtr) == "int"
+        assert helper._declareType('integer', ParamRetDict.typeModPtr) == "int"
+        assert helper._declareType('unsigned', ParamRetDict.typeModPtr) == "int"
+        assert helper._declareType('structure', ParamRetDict.typeModPtr) == "dict"
+        assert helper._declareType('tuple', ParamRetDict.typeModPtr) == "tuple"
 
     def test04DeclareTypeRef(self):
         """!
@@ -116,13 +116,13 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         # Test the xlate path
-        self.assertEqual(helper._declareType('string', ParamRetDict.typeModRef), "str")
-        self.assertEqual(helper._declareType('text', ParamRetDict.typeModRef), "str")
-        self.assertEqual(helper._declareType('size', ParamRetDict.typeModRef), "int")
-        self.assertEqual(helper._declareType('integer', ParamRetDict.typeModRef), "int")
-        self.assertEqual(helper._declareType('unsigned', ParamRetDict.typeModRef), "int")
-        self.assertEqual(helper._declareType('structure', ParamRetDict.typeModRef), "dict")
-        self.assertEqual(helper._declareType('tuple', ParamRetDict.typeModRef), "tuple")
+        assert helper._declareType('string', ParamRetDict.typeModRef) == "str"
+        assert helper._declareType('text', ParamRetDict.typeModRef) == "str"
+        assert helper._declareType('size', ParamRetDict.typeModRef) == "int"
+        assert helper._declareType('integer', ParamRetDict.typeModRef) == "int"
+        assert helper._declareType('unsigned', ParamRetDict.typeModRef) == "int"
+        assert helper._declareType('structure', ParamRetDict.typeModRef) == "dict"
+        assert helper._declareType('tuple', ParamRetDict.typeModRef) == "tuple"
 
     def test05DeclareTypeList(self):
         """!
@@ -131,13 +131,13 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         # Test the xlate path
-        self.assertEqual(helper._declareType('string', ParamRetDict.typeModList), "list")
-        self.assertEqual(helper._declareType('text', ParamRetDict.typeModList), "list")
-        self.assertEqual(helper._declareType('size', ParamRetDict.typeModList), "list")
-        self.assertEqual(helper._declareType('integer', ParamRetDict.typeModList), "list")
-        self.assertEqual(helper._declareType('unsigned', ParamRetDict.typeModList), "list")
-        self.assertEqual(helper._declareType('structure', ParamRetDict.typeModList), "list")
-        self.assertEqual(helper._declareType('tuple', ParamRetDict.typeModList), "list")
+        assert helper._declareType('string', ParamRetDict.typeModList) == "list"
+        assert helper._declareType('text', ParamRetDict.typeModList) == "list"
+        assert helper._declareType('size', ParamRetDict.typeModList) == "list"
+        assert helper._declareType('integer', ParamRetDict.typeModList) == "list"
+        assert helper._declareType('unsigned', ParamRetDict.typeModList) == "list"
+        assert helper._declareType('structure', ParamRetDict.typeModList) == "list"
+        assert helper._declareType('tuple', ParamRetDict.typeModList) == "list"
 
     def test06DeclareTypeListPtr(self):
         """!
@@ -147,13 +147,13 @@ class Unittest01CppFilehelper(unittest.TestCase):
 
         # Test the xlate path
         typemod = ParamRetDict.typeModList | ParamRetDict.typeModPtr
-        self.assertEqual(helper._declareType('string', typemod), "list")
-        self.assertEqual(helper._declareType('text', typemod), "list")
-        self.assertEqual(helper._declareType('size', typemod), "list")
-        self.assertEqual(helper._declareType('integer', typemod), "list")
-        self.assertEqual(helper._declareType('unsigned', typemod), "list")
-        self.assertEqual(helper._declareType('structure', typemod), "list")
-        self.assertEqual(helper._declareType('tuple', typemod), "list")
+        assert helper._declareType('string', typemod) == "list"
+        assert helper._declareType('text', typemod) == "list"
+        assert helper._declareType('size', typemod) == "list"
+        assert helper._declareType('integer', typemod) == "list"
+        assert helper._declareType('unsigned', typemod) == "list"
+        assert helper._declareType('structure', typemod) == "list"
+        assert helper._declareType('tuple', typemod) == "list"
 
     def test07DeclareTypeListRef(self):
         """!
@@ -163,13 +163,13 @@ class Unittest01CppFilehelper(unittest.TestCase):
 
         # Test the xlate path
         typemod = ParamRetDict.typeModList | ParamRetDict.typeModRef
-        self.assertEqual(helper._declareType('string', typemod), "list")
-        self.assertEqual(helper._declareType('text', typemod), "list")
-        self.assertEqual(helper._declareType('size', typemod), "list")
-        self.assertEqual(helper._declareType('integer', typemod), "list")
-        self.assertEqual(helper._declareType('unsigned', typemod), "list")
-        self.assertEqual(helper._declareType('structure', typemod), "list")
-        self.assertEqual(helper._declareType('tuple', typemod), "list")
+        assert helper._declareType('string', typemod) == "list"
+        assert helper._declareType('text', typemod) == "list"
+        assert helper._declareType('size', typemod) == "list"
+        assert helper._declareType('integer', typemod) == "list"
+        assert helper._declareType('unsigned', typemod) == "list"
+        assert helper._declareType('structure', typemod) == "list"
+        assert helper._declareType('tuple', typemod) == "list"
 
     def test08DeclareTypeArray(self):
         """!
@@ -178,13 +178,13 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         # Test the xlate path
-        self.assertEqual(helper._declareType('string', 5 << ParamRetDict.typeModArrayShift), "list")
-        self.assertEqual(helper._declareType('text', 7 << ParamRetDict.typeModArrayShift), "list")
-        self.assertEqual(helper._declareType('size', 10 << ParamRetDict.typeModArrayShift), "list")
-        self.assertEqual(helper._declareType('integer', 20 << ParamRetDict.typeModArrayShift), "list")
-        self.assertEqual(helper._declareType('unsigned', 13 << ParamRetDict.typeModArrayShift), "list")
-        self.assertEqual(helper._declareType('structure', 12 << ParamRetDict.typeModArrayShift), "list")
-        self.assertEqual(helper._declareType('tuple', 14 << ParamRetDict.typeModArrayShift), "list")
+        assert helper._declareType('string', 5 << ParamRetDict.typeModArrayShift) == "list"
+        assert helper._declareType('text', 7 << ParamRetDict.typeModArrayShift) == "list"
+        assert helper._declareType('size', 10 << ParamRetDict.typeModArrayShift) == "list"
+        assert helper._declareType('integer', 20 << ParamRetDict.typeModArrayShift) == "list"
+        assert helper._declareType('unsigned', 13 << ParamRetDict.typeModArrayShift) == "list"
+        assert helper._declareType('structure', 12 << ParamRetDict.typeModArrayShift) == "list"
+        assert helper._declareType('tuple', 14 << ParamRetDict.typeModArrayShift) == "list"
 
     def test09DeclareTypeArrayPtr(self):
         """!
@@ -194,13 +194,13 @@ class Unittest01CppFilehelper(unittest.TestCase):
 
         # Test the xlate path
         typemod = (8 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModPtr
-        self.assertEqual(helper._declareType('string', typemod), "list")
-        self.assertEqual(helper._declareType('text', typemod), "list")
-        self.assertEqual(helper._declareType('size', typemod), "list")
-        self.assertEqual(helper._declareType('integer', typemod), "list")
-        self.assertEqual(helper._declareType('unsigned', typemod), "list")
-        self.assertEqual(helper._declareType('structure', typemod), "list")
-        self.assertEqual(helper._declareType('tuple', typemod), "list")
+        assert helper._declareType('string', typemod) == "list"
+        assert helper._declareType('text', typemod) == "list"
+        assert helper._declareType('size', typemod) == "list"
+        assert helper._declareType('integer', typemod) == "list"
+        assert helper._declareType('unsigned', typemod) == "list"
+        assert helper._declareType('structure', typemod) == "list"
+        assert helper._declareType('tuple', typemod) == "list"
 
     def test10DeclareTypeArrayRef(self):
         """!
@@ -210,13 +210,13 @@ class Unittest01CppFilehelper(unittest.TestCase):
 
         # Test the xlate path
         typemod = (8 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModRef
-        self.assertEqual(helper._declareType('string', typemod), "list")
-        self.assertEqual(helper._declareType('text', typemod), "list")
-        self.assertEqual(helper._declareType('size', typemod), "list")
-        self.assertEqual(helper._declareType('integer', typemod), "list")
-        self.assertEqual(helper._declareType('unsigned', typemod), "list")
-        self.assertEqual(helper._declareType('structure', typemod), "list")
-        self.assertEqual(helper._declareType('tuple', typemod), "list")
+        assert helper._declareType('string', typemod) == "list"
+        assert helper._declareType('text', typemod) == "list"
+        assert helper._declareType('size', typemod) == "list"
+        assert helper._declareType('integer', typemod) == "list"
+        assert helper._declareType('unsigned', typemod) == "list"
+        assert helper._declareType('structure', typemod) == "list"
+        assert helper._declareType('tuple', typemod) == "list"
 
     def test11DeclareTypeUndef(self):
         """!
@@ -225,34 +225,34 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         # Test the xlate path
-        self.assertEqual(helper._declareType('string', ParamRetDict.typeModUndef), "str|None")
+        assert helper._declareType('string', ParamRetDict.typeModUndef) == "str|None"
 
         typemod = ParamRetDict.typeModUndef | ParamRetDict.typeModPtr
-        self.assertEqual(helper._declareType('string', typemod), "str|None")
+        assert helper._declareType('string', typemod) == "str|None"
 
         typemod = ParamRetDict.typeModUndef | ParamRetDict.typeModRef
-        self.assertEqual(helper._declareType('string', typemod), "str|None")
+        assert helper._declareType('string', typemod) == "str|None"
 
         typemod = (8 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModUndef
-        self.assertEqual(helper._declareType('string', typemod), "list|None")
+        assert helper._declareType('string', typemod) == "list|None"
 
         typemod = ParamRetDict.typeModUndef | ParamRetDict.typeModList
-        self.assertEqual(helper._declareType('string', typemod), "list|None")
+        assert helper._declareType('string', typemod) == "list|None"
 
         typemod = (25 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModUndef | ParamRetDict.typeModPtr
-        self.assertEqual(helper._declareType('string', typemod), "list|None")
+        assert helper._declareType('string', typemod) == "list|None"
 
         typemod = (7 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModUndef | ParamRetDict.typeModRef
-        self.assertEqual(helper._declareType('string', typemod), "list|None")
+        assert helper._declareType('string', typemod) == "list|None"
 
         typemod = ParamRetDict.typeModUndef | ParamRetDict.typeModList
-        self.assertEqual(helper._declareType('string', typemod), "list|None")
+        assert helper._declareType('string', typemod) == "list|None"
 
         typemod = ParamRetDict.typeModUndef | ParamRetDict.typeModList | ParamRetDict.typeModPtr
-        self.assertEqual(helper._declareType('string', typemod), "list|None")
+        assert helper._declareType('string', typemod) == "list|None"
 
         typemod = ParamRetDict.typeModUndef | ParamRetDict.typeModList | ParamRetDict.typeModRef
-        self.assertEqual(helper._declareType('string', typemod), "list|None")
+        assert helper._declareType('string', typemod) == "list|None"
 
     def test12XlateParamList(self):
         """!
@@ -265,21 +265,21 @@ class Unittest01CppFilehelper(unittest.TestCase):
         genParamList.append(ParamRetDict.buildParamDictWithMod("goo", "string", "mystr", ParamRetDict.typeModList))
 
         xlateList = helper._xlateParams(genParamList)
-        self.assertEqual(len(xlateList), len(genParamList))
-        self.assertEqual(ParamRetDict.getParamName(xlateList[0]), ParamRetDict.getParamName(genParamList[0]))
-        self.assertEqual(ParamRetDict.getParamType(xlateList[0]), "int")
-        self.assertEqual(ParamRetDict.getParamDesc(xlateList[0]), ParamRetDict.getParamDesc(genParamList[0]))
-        self.assertEqual(ParamRetDict.getParamTypeMod(xlateList[0]), 0)
+        assert len(xlateList) == len(genParamList)
+        assert ParamRetDict.getParamName(xlateList[0]) == ParamRetDict.getParamName(genParamList[0])
+        assert ParamRetDict.getParamType(xlateList[0]) == "int"
+        assert ParamRetDict.getParamDesc(xlateList[0]) == ParamRetDict.getParamDesc(genParamList[0])
+        assert ParamRetDict.getParamTypeMod(xlateList[0]) == 0
 
-        self.assertEqual(ParamRetDict.getParamName(xlateList[1]), ParamRetDict.getParamName(genParamList[1]))
-        self.assertEqual(ParamRetDict.getParamType(xlateList[1]), "int")
-        self.assertEqual(ParamRetDict.getParamDesc(xlateList[1]), ParamRetDict.getParamDesc(genParamList[1]))
-        self.assertEqual(ParamRetDict.getParamTypeMod(xlateList[1]), 0)
+        assert ParamRetDict.getParamName(xlateList[1]) == ParamRetDict.getParamName(genParamList[1])
+        assert ParamRetDict.getParamType(xlateList[1]) == "int"
+        assert ParamRetDict.getParamDesc(xlateList[1]) == ParamRetDict.getParamDesc(genParamList[1])
+        assert ParamRetDict.getParamTypeMod(xlateList[1]) == 0
 
-        self.assertEqual(ParamRetDict.getParamName(xlateList[2]), ParamRetDict.getParamName(genParamList[2]))
-        self.assertEqual(ParamRetDict.getParamType(xlateList[2]), "list")
-        self.assertEqual(ParamRetDict.getParamDesc(xlateList[2]), ParamRetDict.getParamDesc(genParamList[2]))
-        self.assertEqual(ParamRetDict.getParamTypeMod(xlateList[2]), 0)
+        assert ParamRetDict.getParamName(xlateList[2]) == ParamRetDict.getParamName(genParamList[2])
+        assert ParamRetDict.getParamType(xlateList[2]) == "list"
+        assert ParamRetDict.getParamDesc(xlateList[2]) == ParamRetDict.getParamDesc(genParamList[2])
+        assert ParamRetDict.getParamTypeMod(xlateList[2]) == 0
 
     def test13XlateParamEmptyList(self):
         """!
@@ -288,7 +288,7 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
         genParamList = []
         xlateList = helper._xlateParams(genParamList)
-        self.assertEqual(len(xlateList), 0)
+        assert len(xlateList) == 0
 
     def test14XlateRetDict(self):
         """!
@@ -298,9 +298,9 @@ class Unittest01CppFilehelper(unittest.TestCase):
         genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "myint", 0)
 
         xlatedRet = helper._xlateReturnDict(genRetDict)
-        self.assertEqual(ParamRetDict.getReturnType(xlatedRet), "int")
-        self.assertEqual(ParamRetDict.getParamDesc(xlatedRet), ParamRetDict.getParamDesc(genRetDict))
-        self.assertEqual(ParamRetDict.getParamTypeMod(genRetDict), 0)
+        assert ParamRetDict.getReturnType(xlatedRet) == "int"
+        assert ParamRetDict.getParamDesc(xlatedRet) == ParamRetDict.getParamDesc(genRetDict)
+        assert ParamRetDict.getParamTypeMod(genRetDict) == 0
 
     def test15XlateRetDictNone(self):
         """!
@@ -308,7 +308,7 @@ class Unittest01CppFilehelper(unittest.TestCase):
         """
         helper = GeneratePythonFileHelper()
         xlatedRet = helper._xlateReturnDict(None)
-        self.assertIsNone(xlatedRet)
+        assert xlatedRet is None
 
     def test16GenReturnType(self):
         """!
@@ -318,11 +318,11 @@ class Unittest01CppFilehelper(unittest.TestCase):
 
         genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "myint", 0)
         returnText = helper._genFunctionRetType(genRetDict)
-        self.assertEqual(returnText, " -> int:")
+        assert returnText == " -> int:"
 
         genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "myint", ParamRetDict.typeModList)
         returnText = helper._genFunctionRetType(genRetDict)
-        self.assertEqual(returnText, " -> list:")
+        assert returnText == " -> list:"
 
     def test17GenReturnType(self):
         """!
@@ -331,7 +331,7 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         returnText = helper._genFunctionRetType(None)
-        self.assertEqual(returnText, ":")
+        assert returnText == ":"
 
     def test18GenFunctionParams(self):
         """!
@@ -344,7 +344,7 @@ class Unittest01CppFilehelper(unittest.TestCase):
         genParamList.append(ParamRetDict.buildParamDictWithMod("goo", "string", "mystr", ParamRetDict.typeModList))
 
         returnText = helper._genFunctionParams(genParamList)
-        self.assertEqual(returnText, "(foo:int, moo:int, goo:list)")
+        assert returnText == "(foo:int, moo:int, goo:list)"
 
     def test19GenFunctionParamsEmpty(self):
         """!
@@ -353,7 +353,7 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
         genParamList = []
         returnText = helper._genFunctionParams(genParamList)
-        self.assertEqual(returnText, "()")
+        assert returnText == "()"
 
     def test20DeclareFunction(self):
         """!
@@ -367,17 +367,17 @@ class Unittest01CppFilehelper(unittest.TestCase):
         genParamList.append(ParamRetDict.buildParamDictWithMod("moo", "size", "mysize", ParamRetDict.typeModPtr))
 
         functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict)
-        self.assertEqual(len(functionText), 10)
-        self.assertEqual(functionText[0], '    def myTest(foo:int, moo:int) -> int:\n')
-        self.assertEqual(functionText[1], '        """!\n')
-        self.assertEqual(functionText[2], '          @brief My test function\n')
-        self.assertEqual(functionText[3], '          \n')
-        self.assertEqual(functionText[4], '          @param foo {int} myint\n')
-        self.assertEqual(functionText[5], '          @param moo {int} mysize\n')
-        self.assertEqual(functionText[6], '          \n')
-        self.assertEqual(functionText[7], '          @return int - return int\n')
-        self.assertEqual(functionText[8], '        """\n')
-        self.assertEqual(functionText[9], '        ## @todo Implement code\n')
+        assert len(functionText) == 10
+        assert functionText[0] == '    def myTest(foo:int, moo:int) -> int:\n'
+        assert functionText[1] == '        """!\n'
+        assert functionText[2] == '          @brief My test function\n'
+        assert functionText[3] == '          \n'
+        assert functionText[4] == '          @param foo {int} myint\n'
+        assert functionText[5] == '          @param moo {int} mysize\n'
+        assert functionText[6] == '          \n'
+        assert functionText[7] == '          @return int - return int\n'
+        assert functionText[8] == '        """\n'
+        assert functionText[9] == '        ## @todo Implement code\n'
 
     def test21DeclareFunctionWithPrefix(self):
         """!
@@ -391,18 +391,18 @@ class Unittest01CppFilehelper(unittest.TestCase):
         genParamList.append(ParamRetDict.buildParamDictWithMod("moo", "size", "mysize", ParamRetDict.typeModPtr))
 
         functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict, 8, prefixDecaration='@staticmethod')
-        self.assertEqual(len(functionText), 11)
-        self.assertEqual(functionText[0], '        @staticmethod\n')
-        self.assertEqual(functionText[1], '        def myTest(foo:int, moo:int) -> int:\n')
-        self.assertEqual(functionText[2], '            """!\n')
-        self.assertEqual(functionText[3], '              @brief My test function\n')
-        self.assertEqual(functionText[4], '              \n')
-        self.assertEqual(functionText[5], '              @param foo {int} myint\n')
-        self.assertEqual(functionText[6], '              @param moo {int} mysize\n')
-        self.assertEqual(functionText[7], '              \n')
-        self.assertEqual(functionText[8], '              @return int - return int\n')
-        self.assertEqual(functionText[9], '            """\n')
-        self.assertEqual(functionText[10], '            ## @todo Implement code\n')
+        assert len(functionText) == 11
+        assert functionText[0] == '        @staticmethod\n'
+        assert functionText[1] == '        def myTest(foo:int, moo:int) -> int:\n'
+        assert functionText[2] == '            """!\n'
+        assert functionText[3] == '              @brief My test function\n'
+        assert functionText[4] == '              \n'
+        assert functionText[5] == '              @param foo {int} myint\n'
+        assert functionText[6] == '              @param moo {int} mysize\n'
+        assert functionText[7] == '              \n'
+        assert functionText[8] == '              @return int - return int\n'
+        assert functionText[9] == '            """\n'
+        assert functionText[10] == '            ## @todo Implement code\n'
 
     def test22DeclareFunctionWithPostfix(self):
         """!
@@ -416,17 +416,17 @@ class Unittest01CppFilehelper(unittest.TestCase):
         genParamList.append(ParamRetDict.buildParamDictWithMod("moo", "size", "mysize", ParamRetDict.typeModPtr))
 
         functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict, 8, postfixDecaration='const override')
-        self.assertEqual(len(functionText), 10)
-        self.assertEqual(functionText[0], '        def myTest(foo:int, moo:int) -> int:\n')
-        self.assertEqual(functionText[1], '            """!\n')
-        self.assertEqual(functionText[2], '              @brief My test function\n')
-        self.assertEqual(functionText[3], '              \n')
-        self.assertEqual(functionText[4], '              @param foo {int} myint\n')
-        self.assertEqual(functionText[5], '              @param moo {int} mysize\n')
-        self.assertEqual(functionText[6], '              \n')
-        self.assertEqual(functionText[7], '              @return int - return int\n')
-        self.assertEqual(functionText[8], '            """\n')
-        self.assertEqual(functionText[9], '            ## @todo Implement code\n')
+        assert len(functionText) == 10
+        assert functionText[0] == '        def myTest(foo:int, moo:int) -> int:\n'
+        assert functionText[1] == '            """!\n'
+        assert functionText[2] == '              @brief My test function\n'
+        assert functionText[3] == '              \n'
+        assert functionText[4] == '              @param foo {int} myint\n'
+        assert functionText[5] == '              @param moo {int} mysize\n'
+        assert functionText[6] == '              \n'
+        assert functionText[7] == '              @return int - return int\n'
+        assert functionText[8] == '            """\n'
+        assert functionText[9] == '            ## @todo Implement code\n'
 
 
     def test23DeclareFunctionWithPreAndPostfix(self):
@@ -442,18 +442,18 @@ class Unittest01CppFilehelper(unittest.TestCase):
 
         functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict,
                                                               8, prefixDecaration="@staticmethod", postfixDecaration='const override')
-        self.assertEqual(len(functionText), 11)
-        self.assertEqual(functionText[0], '        @staticmethod\n')
-        self.assertEqual(functionText[1], '        def myTest(foo:int, moo:int) -> int:\n')
-        self.assertEqual(functionText[2], '            """!\n')
-        self.assertEqual(functionText[3], '              @brief My test function\n')
-        self.assertEqual(functionText[4], '              \n')
-        self.assertEqual(functionText[5], '              @param foo {int} myint\n')
-        self.assertEqual(functionText[6], '              @param moo {int} mysize\n')
-        self.assertEqual(functionText[7], '              \n')
-        self.assertEqual(functionText[8], '              @return int - return int\n')
-        self.assertEqual(functionText[9], '            """\n')
-        self.assertEqual(functionText[10], '            ## @todo Implement code\n')
+        assert len(functionText) == 11
+        assert functionText[0] == '        @staticmethod\n'
+        assert functionText[1] == '        def myTest(foo:int, moo:int) -> int:\n'
+        assert functionText[2] == '            """!\n'
+        assert functionText[3] == '              @brief My test function\n'
+        assert functionText[4] == '              \n'
+        assert functionText[5] == '              @param foo {int} myint\n'
+        assert functionText[6] == '              @param moo {int} mysize\n'
+        assert functionText[7] == '              \n'
+        assert functionText[8] == '              @return int - return int\n'
+        assert functionText[9] == '            """\n'
+        assert functionText[10] == '            ## @todo Implement code\n'
 
     def test24DeclareFunctionWithPreAndPostfixNoComment(self):
         """!
@@ -468,10 +468,10 @@ class Unittest01CppFilehelper(unittest.TestCase):
 
         functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict,
                                                               8, True, "@staticmethod", 'const override')
-        self.assertEqual(len(functionText), 3)
-        self.assertEqual(functionText[0], '        @staticmethod\n')
-        self.assertEqual(functionText[1], '        def myTest(foo:int, moo:int) -> int:\n')
-        self.assertEqual(functionText[2], '            ## @todo Implement code\n')
+        assert len(functionText) == 3
+        assert functionText[0] == '        @staticmethod\n'
+        assert functionText[1] == '        def myTest(foo:int, moo:int) -> int:\n'
+        assert functionText[2] == '            ## @todo Implement code\n'
 
     def test25DeclareFunctionWithNoCommentInlineSingleLine(self):
         """!
@@ -486,10 +486,10 @@ class Unittest01CppFilehelper(unittest.TestCase):
 
         functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict,
                                                               8, True, "@staticmethod", 'const override', ["return 15"])
-        self.assertEqual(len(functionText), 3)
-        self.assertEqual(functionText[0], '        @staticmethod\n')
-        self.assertEqual(functionText[1], '        def myTest(foo:int, moo:int) -> int:\n')
-        self.assertEqual(functionText[2], '            return 15\n')
+        assert len(functionText) == 3
+        assert functionText[0] == '        @staticmethod\n'
+        assert functionText[1] == '        def myTest(foo:int, moo:int) -> int:\n'
+        assert functionText[2] == '            return 15\n'
 
     def test26DeclareFunctionWithNoCommentInlineMultiLine(self):
         """!
@@ -509,12 +509,12 @@ class Unittest01CppFilehelper(unittest.TestCase):
 
         functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict,
                                                               8, True, inlinecode = inlineCode)
-        self.assertEqual(len(functionText), 5)
-        self.assertEqual(functionText[0], '        def myTest(foo:int, moo:int) -> list:\n')
-        self.assertEqual(functionText[1], '            '+inlineCode[0]+'\n')
-        self.assertEqual(functionText[2], '            '+inlineCode[1]+'\n')
-        self.assertEqual(functionText[3], '            '+inlineCode[2]+'\n')
-        self.assertEqual(functionText[4], '            '+inlineCode[3]+'\n')
+        assert len(functionText) == 5
+        assert functionText[0] == '        def myTest(foo:int, moo:int) -> list:\n'
+        assert functionText[1] == '            '+inlineCode[0]+'\n'
+        assert functionText[2] == '            '+inlineCode[1]+'\n'
+        assert functionText[3] == '            '+inlineCode[2]+'\n'
+        assert functionText[4] == '            '+inlineCode[3]+'\n'
 
     def test27EndFunction(self):
         """!
@@ -522,7 +522,7 @@ class Unittest01CppFilehelper(unittest.TestCase):
         """
         helper = GeneratePythonFileHelper()
         functionText = helper._endFunction("myTest")
-        self.assertEqual(functionText, '# end of function myTest\n')
+        assert functionText == '# end of function myTest\n'
 
     def test28GenFileHeader(self):
         """!
@@ -532,19 +532,19 @@ class Unittest01CppFilehelper(unittest.TestCase):
         currentYear = datetime.now().year
         headerText = helper._generateGenericFileHeader("unittest", currentYear, "Me")
         copyrightMsg = "# Copyright (c) "+str(currentYear)+" Me"
-        self.assertEqual(len(headerText), 27)
-        self.assertEqual(headerText[0], "#-------------------------------------------------------------------------------\n")
-        self.assertEqual(headerText[1], copyrightMsg+"\n")
-        self.assertEqual(headerText[3], "# MIT License\n")
-        self.assertEqual(headerText[24], "# This file was autogenerated by unittest do not edit\n")
-        self.assertEqual(headerText[26], "#-------------------------------------------------------------------------------\n")
+        assert len(headerText) == 27
+        assert headerText[0] == "#-------------------------------------------------------------------------------\n"
+        assert headerText[1] == copyrightMsg+"\n"
+        assert headerText[3] == "# MIT License\n"
+        assert headerText[24] == "# This file was autogenerated by unittest do not edit\n"
+        assert headerText[26] == "#-------------------------------------------------------------------------------\n"
 
         minText = helper._generateGenericFileHeader("unittest")
-        self.assertEqual(len(minText), 4)
-        self.assertEqual(minText[0], "#-------------------------------------------------------------------------------\n")
-        self.assertEqual(minText[1], "# This file was autogenerated by unittest do not edit\n")
-        self.assertEqual(minText[2], "# \n")
-        self.assertEqual(minText[3], "#-------------------------------------------------------------------------------\n")
+        assert len(minText) == 4
+        assert minText[0] == "#-------------------------------------------------------------------------------\n"
+        assert minText[1] == "# This file was autogenerated by unittest do not edit\n"
+        assert minText[2] == "# \n"
+        assert minText[3] == "#-------------------------------------------------------------------------------\n"
 
     def test29GenInclude(self):
         """!
@@ -553,10 +553,10 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         includeText = helper._genImport("MyImportClass", "importModuleName")
-        self.assertEqual(includeText, "from importModuleName import MyImportClass\n")
+        assert includeText == "from importModuleName import MyImportClass\n"
 
         includeText = helper._genImport("os")
-        self.assertEqual(includeText, "import os\n")
+        assert includeText == "import os\n"
 
     def test30GenIncludeBlock(self):
         """!
@@ -565,11 +565,11 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
         includeList = [("re", None), ("datetime", "datetime"), ("MyImportClass", "importModuleName")]
         includeText = helper._genImportBlock(includeList)
-        self.assertEqual(len(includeText), len(includeList) + 1)
-        self.assertEqual(includeText[0], "// Imports\n")
-        self.assertEqual(includeText[1], "import re\n")
-        self.assertEqual(includeText[2], "from datetime import datetime\n")
-        self.assertEqual(includeText[3], "from importModuleName import MyImportClass\n")
+        assert len(includeText) == len(includeList) + 1
+        assert includeText[0] == "// Imports\n"
+        assert includeText[1] == "import re\n"
+        assert includeText[2] == "from datetime import datetime\n"
+        assert includeText[3] == "from importModuleName import MyImportClass\n"
 
     def test31GenOpenNamespace(self):
         """!
@@ -578,10 +578,10 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         testText = helper._genNamespaceOpen("wonder")
-        self.assertEqual(len(testText), 0)
+        assert len(testText) == 0
 
         testText = helper._genNamespaceOpen("boy")
-        self.assertEqual(len(testText), 0)
+        assert len(testText) == 0
 
     def test32GenCloseNamespace(self):
         """!
@@ -590,10 +590,10 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         testText = helper._genNamespaceClose("wonder")
-        self.assertEqual(len(testText), 0)
+        assert len(testText) == 0
 
         testText = helper._genNamespaceClose("boy")
-        self.assertEqual(len(testText), 0)
+        assert len(testText) == 0
 
     def test33GenUsingNamespace(self):
         """!
@@ -602,10 +602,10 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         testText = helper._genUsingNamespace("wonder")
-        self.assertEqual(len(testText), 0)
+        assert len(testText) == 0
 
         testText = helper._genUsingNamespace("boy")
-        self.assertEqual(len(testText), 0)
+        assert len(testText) == 0
 
     def test34GenClassOpen(self):
         """!
@@ -614,11 +614,11 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         testText = helper._genClassOpen("MyTestClassName", "My class description")
-        self.assertEqual(len(testText), 4)
-        self.assertEqual(testText[0], "class MyTestClassName(object):\n")
-        self.assertEqual(testText[1], '    """!\n')
-        self.assertEqual(testText[2], "      @brief My class description\n")
-        self.assertEqual(testText[3], '    """\n')
+        assert len(testText) == 4
+        assert testText[0] == "class MyTestClassName(object):\n"
+        assert testText[1] == '    """!\n'
+        assert testText[2] == "      @brief My class description\n"
+        assert testText[3] == '    """\n'
 
     def test35GenClassOpenWithInheritence(self):
         """!
@@ -627,11 +627,11 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         testText = helper._genClassOpen("MyTestClassName", "My class description", "MyBaseClass")
-        self.assertEqual(len(testText), 4)
-        self.assertEqual(testText[0], "class MyTestClassName(MyBaseClass):\n")
-        self.assertEqual(testText[1], '    """!\n')
-        self.assertEqual(testText[2], "      @brief My class description\n")
-        self.assertEqual(testText[3], '    """\n')
+        assert len(testText) == 4
+        assert testText[0] == "class MyTestClassName(MyBaseClass):\n"
+        assert testText[1] == '    """!\n'
+        assert testText[2] == "      @brief My class description\n"
+        assert testText[3] == '    """\n'
 
     def test36GenClassOpenDecoration(self):
         """!
@@ -640,11 +640,11 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         testText = helper._genClassOpen("MyTestClassName", "My class description", "MyBaseClass", "final", 2)
-        self.assertEqual(len(testText), 4)
-        self.assertEqual(testText[0], "  class MyTestClassName(MyBaseClass):\n")
-        self.assertEqual(testText[1], '      """!\n')
-        self.assertEqual(testText[2], "        @brief My class description\n")
-        self.assertEqual(testText[3], '      """\n')
+        assert len(testText) == 4
+        assert testText[0] == "  class MyTestClassName(MyBaseClass):\n"
+        assert testText[1] == '      """!\n'
+        assert testText[2] == "        @brief My class description\n"
+        assert testText[3] == '      """\n'
 
     def test37GenClassClose(self):
         """!
@@ -653,12 +653,12 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         testText = helper._genClassClose("MyTestClassName")
-        self.assertEqual(len(testText), 1)
-        self.assertEqual(testText[0], "# end of MyTestClassName class\n")
+        assert len(testText) == 1
+        assert testText[0] == "# end of MyTestClassName class\n"
 
         testText = helper._genClassClose("MyTestClassName", 2)
-        self.assertEqual(len(testText), 1)
-        self.assertEqual(testText[0], "  # end of MyTestClassName class\n")
+        assert len(testText) == 1
+        assert testText[0] == "  # end of MyTestClassName class\n"
 
     def test38GenClassDefaultConstrutor(self):
         """!
@@ -667,13 +667,13 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         testText = helper._genClassDefaultConstructor("MyTestClassName")
-        self.assertEqual(len(testText), 6)
-        self.assertEqual(testText[0], "    def __init__():\n")
-        self.assertEqual(testText[1], '        """!\n')
-        self.assertEqual(testText[2], "          @brief Construct a new MyTestClassName object\n")
-        self.assertEqual(testText[3], '          \n')
-        self.assertEqual(testText[4], '        """\n')
-        self.assertEqual(testText[5], '    \n')
+        assert len(testText) == 6
+        assert testText[0] == "    def __init__():\n"
+        assert testText[1] == '        """!\n'
+        assert testText[2] == "          @brief Construct a new MyTestClassName object\n"
+        assert testText[3] == '          \n'
+        assert testText[4] == '        """\n'
+        assert testText[5] == '    \n'
 
     def test39GenClassDefaultConDestrutorNoDoxy(self):
         """!
@@ -682,9 +682,9 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         testText = helper._genClassDefaultConstructor("MyTestClassName", noDoxyCommentConstructor=True)
-        self.assertEqual(len(testText), 2)
-        self.assertEqual(testText[0], "    def __init__():\n")
-        self.assertEqual(testText[1], '    \n')
+        assert len(testText) == 2
+        assert testText[0] == "    def __init__():\n"
+        assert testText[1] == '    \n'
 
     def test40DeclareStructEmptyList(self):
         """!
@@ -694,12 +694,12 @@ class Unittest01CppFilehelper(unittest.TestCase):
 
         varList = []
         testText = helper._declareStructure("MyTestStructName", varList, 0, "Test structure")
-        self.assertEqual(len(testText), 5)
-        self.assertEqual(testText[0], "class MyTestStructName(object):\n")
-        self.assertEqual(testText[1], '    """!\n')
-        self.assertEqual(testText[2], "      @brief Test structure\n")
-        self.assertEqual(testText[3], '    """\n')
-        self.assertEqual(testText[4], '# end of MyTestStructName class\n')
+        assert len(testText) == 5
+        assert testText[0] == "class MyTestStructName(object):\n"
+        assert testText[1] == '    """!\n'
+        assert testText[2] == "      @brief Test structure\n"
+        assert testText[3] == '    """\n'
+        assert testText[4] == '# end of MyTestStructName class\n'
 
     def test41DeclareStruct(self):
         """!
@@ -711,14 +711,14 @@ class Unittest01CppFilehelper(unittest.TestCase):
         member2 = ParamRetDict.buildParamDictWithMod("moo", "unsigned", "Test unsigned", 0)
         varList = [member1, member2]
         testText = helper._declareStructure("MyTestStructName", varList, 0, "Test structure")
-        self.assertEqual(len(testText), 7)
-        self.assertEqual(testText[0], "class MyTestStructName(object):\n")
-        self.assertEqual(testText[1], '    """!\n')
-        self.assertEqual(testText[2], "      @brief Test structure\n")
-        self.assertEqual(testText[3], '    """\n')
-        self.assertEqual(testText[4], "    ## Test integer\n    foo:int\n")
-        self.assertEqual(testText[5], "    ## Test unsigned\n    moo:int\n")
-        self.assertEqual(testText[6], '# end of MyTestStructName class\n')
+        assert len(testText) == 7
+        assert testText[0] == "class MyTestStructName(object):\n"
+        assert testText[1] == '    """!\n'
+        assert testText[2] == "      @brief Test structure\n"
+        assert testText[3] == '    """\n'
+        assert testText[4] == "    ## Test integer\n    foo:int\n"
+        assert testText[5] == "    ## Test unsigned\n    moo:int\n"
+        assert testText[6] == '# end of MyTestStructName class\n'
 
     def test42DeclareVariable(self):
         """!
@@ -730,13 +730,13 @@ class Unittest01CppFilehelper(unittest.TestCase):
         member3 = ParamRetDict.buildParamDictWithMod("goo", "string", "Test string", 0)
 
         testText = helper._declareVarStatment(member1, 4)
-        self.assertEqual(testText, "    ## Test integer\n    foo:int\n")
+        assert testText == "    ## Test integer\n    foo:int\n"
 
         testText = helper._declareVarStatment(member2, 8)
-        self.assertEqual(testText, "        ## Test unsigned\n        moo:int\n")
+        assert testText == "        ## Test unsigned\n        moo:int\n"
 
         testText = helper._declareVarStatment(member3)
-        self.assertEqual(testText, "## Test string\ngoo:str\n")
+        assert testText == "## Test string\ngoo:str\n"
 
     def test43AddListEntry(self):
         """!
@@ -744,14 +744,14 @@ class Unittest01CppFilehelper(unittest.TestCase):
         """
         helper = GeneratePythonFileHelper()
         testText = helper._genAddListStatment("testList", "number", False)
-        self.assertEqual(testText, "testList.append(number)")
+        assert testText == "testList.append(number)"
         testText = helper._genAddListStatment("testList", "5", False)
-        self.assertEqual(testText, "testList.append(5)")
+        assert testText == "testList.append(5)"
 
         testText = helper._genAddListStatment("testList", "text", True)
-        self.assertEqual(testText, "testList.append(\"text\")")
+        assert testText == "testList.append(\"text\")"
         testText = helper._genAddListStatment("testList", "AU", True)
-        self.assertEqual(testText, "testList.append(\"AU\")")
+        assert testText == "testList.append(\"AU\")"
 
     def test44GenerateReturn(self):
         """!
@@ -759,14 +759,14 @@ class Unittest01CppFilehelper(unittest.TestCase):
         """
         helper = GeneratePythonFileHelper()
         testText = helper._genReturnStatment("number", False)
-        self.assertEqual(testText, "return number")
+        assert testText == "return number"
         testText = helper._genReturnStatment("5", False)
-        self.assertEqual(testText, "return 5")
+        assert testText == "return 5"
 
         testText = helper._genReturnStatment("text", True)
-        self.assertEqual(testText, "return \"text\"")
+        assert testText == "return \"text\""
         testText = helper._genReturnStatment("AU", True)
-        self.assertEqual(testText, "return \"AU\"")
+        assert testText == "return \"AU\""
 
     def test49DefineFunction(self):
         """!
@@ -776,15 +776,15 @@ class Unittest01CppFilehelper(unittest.TestCase):
         retDict = ParamRetDict.buildReturnDictWithMod("integer", "return value", 0)
         paramList = [ParamRetDict.buildParamDictWithMod("foo", "unsigned", "Foo input", 0)]
         testText = helper._defineFunctionWithDecorations("MyDefineFunc", "Brief description", paramList, retDict)
-        self.assertEqual(len(testText), 8)
-        self.assertEqual(testText[0], 'def MyDefineFunc(foo:int) -> int:\n')
-        self.assertEqual(testText[1], '    """!\n')
-        self.assertEqual(testText[2], '      @brief Brief description\n')
-        self.assertEqual(testText[3], '      \n')
-        self.assertEqual(testText[4], '      @param foo {int} Foo input\n')
-        self.assertEqual(testText[5], '      \n')
-        self.assertEqual(testText[6], '      @return int - return value\n')
-        self.assertEqual(testText[7], '    """\n')
+        assert len(testText) == 8
+        assert testText[0] == 'def MyDefineFunc(foo:int) -> int:\n'
+        assert testText[1] == '    """!\n'
+        assert testText[2] == '      @brief Brief description\n'
+        assert testText[3] == '      \n'
+        assert testText[4] == '      @param foo {int} Foo input\n'
+        assert testText[5] == '      \n'
+        assert testText[6] == '      @return int - return value\n'
+        assert testText[7] == '    """\n'
 
     def test50DefineFunctionWithPreDecoration(self):
         """!
@@ -794,16 +794,16 @@ class Unittest01CppFilehelper(unittest.TestCase):
         retDict = ParamRetDict.buildReturnDictWithMod("integer", "return value", 0)
         paramList = [ParamRetDict.buildParamDictWithMod("foo", "unsigned", "Foo input", 0)]
         testText = helper._defineFunctionWithDecorations("MyDefineFunc", "Brief description", paramList, retDict, False, "@static")
-        self.assertEqual(len(testText), 9)
-        self.assertEqual(testText[0], '@static\n')
-        self.assertEqual(testText[1], 'def MyDefineFunc(foo:int) -> int:\n')
-        self.assertEqual(testText[2], '    """!\n')
-        self.assertEqual(testText[3], '      @brief Brief description\n')
-        self.assertEqual(testText[4], '      \n')
-        self.assertEqual(testText[5], '      @param foo {int} Foo input\n')
-        self.assertEqual(testText[6], '      \n')
-        self.assertEqual(testText[7], '      @return int - return value\n')
-        self.assertEqual(testText[8], '    """\n')
+        assert len(testText) == 9
+        assert testText[0] == '@static\n'
+        assert testText[1] == 'def MyDefineFunc(foo:int) -> int:\n'
+        assert testText[2] == '    """!\n'
+        assert testText[3] == '      @brief Brief description\n'
+        assert testText[4] == '      \n'
+        assert testText[5] == '      @param foo {int} Foo input\n'
+        assert testText[6] == '      \n'
+        assert testText[7] == '      @return int - return value\n'
+        assert testText[8] == '    """\n'
 
     def test51DefineFunctionWithPostDecoration(self):
         """!
@@ -813,15 +813,15 @@ class Unittest01CppFilehelper(unittest.TestCase):
         retDict = ParamRetDict.buildReturnDictWithMod("integer", "return value", 0)
         paramList = [ParamRetDict.buildParamDictWithMod("foo", "unsigned", "Foo input", 0)]
         testText = helper._defineFunctionWithDecorations("MyDefineFunc", "Brief description", paramList, retDict, postfixDecaration="const")
-        self.assertEqual(len(testText), 8)
-        self.assertEqual(testText[0], 'def MyDefineFunc(foo:int) -> int:\n')
-        self.assertEqual(testText[1], '    """!\n')
-        self.assertEqual(testText[2], '      @brief Brief description\n')
-        self.assertEqual(testText[3], '      \n')
-        self.assertEqual(testText[4], '      @param foo {int} Foo input\n')
-        self.assertEqual(testText[5], '      \n')
-        self.assertEqual(testText[6], '      @return int - return value\n')
-        self.assertEqual(testText[7], '    """\n')
+        assert len(testText) == 8
+        assert testText[0] == 'def MyDefineFunc(foo:int) -> int:\n'
+        assert testText[1] == '    """!\n'
+        assert testText[2] == '      @brief Brief description\n'
+        assert testText[3] == '      \n'
+        assert testText[4] == '      @param foo {int} Foo input\n'
+        assert testText[5] == '      \n'
+        assert testText[6] == '      @return int - return value\n'
+        assert testText[7] == '    """\n'
 
     def test52DefineFunctionWithPrePostDecoration(self):
         """!
@@ -832,16 +832,16 @@ class Unittest01CppFilehelper(unittest.TestCase):
         paramList = [ParamRetDict.buildParamDictWithMod("foo", "unsigned", "Foo input", 0)]
         testText = helper._defineFunctionWithDecorations("MyDefineFunc", "Brief description", paramList, retDict,
                                                          prefixDecaration="@static", postfixDecaration="const")
-        self.assertEqual(len(testText), 9)
-        self.assertEqual(testText[0], '@static\n')
-        self.assertEqual(testText[1], 'def MyDefineFunc(foo:int) -> int:\n')
-        self.assertEqual(testText[2], '    """!\n')
-        self.assertEqual(testText[3], '      @brief Brief description\n')
-        self.assertEqual(testText[4], '      \n')
-        self.assertEqual(testText[5], '      @param foo {int} Foo input\n')
-        self.assertEqual(testText[6], '      \n')
-        self.assertEqual(testText[7], '      @return int - return value\n')
-        self.assertEqual(testText[8], '    """\n')
+        assert len(testText) == 9
+        assert testText[0] == '@static\n'
+        assert testText[1] == 'def MyDefineFunc(foo:int) -> int:\n'
+        assert testText[2] == '    """!\n'
+        assert testText[3] == '      @brief Brief description\n'
+        assert testText[4] == '      \n'
+        assert testText[5] == '      @param foo {int} Foo input\n'
+        assert testText[6] == '      \n'
+        assert testText[7] == '      @return int - return value\n'
+        assert testText[8] == '    """\n'
 
     def test53DefineFunctionNoComment(self):
         """!
@@ -851,8 +851,8 @@ class Unittest01CppFilehelper(unittest.TestCase):
         retDict = ParamRetDict.buildReturnDictWithMod("integer", "return value", 0)
         paramList = [ParamRetDict.buildParamDictWithMod("foo", "unsigned", "Foo input", 0)]
         testText = helper._defineFunctionWithDecorations("MyDefineFunc", "Brief description", paramList, retDict, True)
-        self.assertEqual(len(testText), 1)
-        self.assertEqual(testText[0], 'def MyDefineFunc(foo:int) -> int:\n')
+        assert len(testText) == 1
+        assert testText[0] == 'def MyDefineFunc(foo:int) -> int:\n'
 
     def test54DefineFunctionEmptyParamList(self):
         """!
@@ -861,8 +861,8 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
         retDict = ParamRetDict.buildReturnDictWithMod("integer", "return value", 0)
         testText = helper._defineFunctionWithDecorations("MyDefineFunc", "Brief description", [], retDict, True)
-        self.assertEqual(len(testText), 1)
-        self.assertEqual(testText[0], 'def MyDefineFunc() -> int:\n')
+        assert len(testText) == 1
+        assert testText[0] == 'def MyDefineFunc() -> int:\n'
 
     def test55GenClassOpenNoDescription(self):
         """!
@@ -871,8 +871,5 @@ class Unittest01CppFilehelper(unittest.TestCase):
         helper = GeneratePythonFileHelper()
 
         testText = helper._genClassOpen("MyTestClassName", None, "MyBaseClass", "final", 2)
-        self.assertEqual(len(testText), 1)
-        self.assertEqual(testText[0], "  class MyTestClassName(MyBaseClass):\n")
-
-if __name__ == '__main__':
-    unittest.main()
+        assert len(testText) == 1
+        assert testText[0] == "  class MyTestClassName(MyBaseClass):\n"

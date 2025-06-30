@@ -2,6 +2,7 @@
 
 # Vscode files
 *.code-workspace
+.venv
 
 # Cache data
 .cache

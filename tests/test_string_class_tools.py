@@ -24,7 +24,7 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import unittest
+
 
 from dir_init import pathincsetup
 pathincsetup()
@@ -34,7 +34,7 @@ from code_tools_grocsoftware.base.eula import EulaText
 from code_tools_grocsoftware.cpp_gen.file_gen_base import GenerateCppFileHelper
 from code_tools_grocsoftware.cpp_gen.string_class_tools import BaseCppStringClassGenerator
 
-class TestClass01StringClass_tools(unittest.TestCase):
+class TestClass01StringClass_tools:
     """!
     @brief Unit test for the BaseCppStringClassGenerator class
     """
@@ -44,27 +44,27 @@ class TestClass01StringClass_tools(unittest.TestCase):
         """
         testObj = BaseCppStringClassGenerator()
 
-        self.assertEqual(testObj.owner, "BaseCppStringClassGenerator")
-        self.assertEqual(testObj.baseClassName, "BaseClass")
-        self.assertEqual(testObj.dynamicCompileSwitch, "DYNAMIC_INTERNATIONALIZATION")
-        self.assertEqual(testObj.ifDynamicDefined, "defined(DYNAMIC_INTERNATIONALIZATION)")
-        self.assertEqual(testObj.baseIntfRetPtrType, "std::shared_ptr<BaseClass>")
-        self.assertDictEqual(testObj.baseIntfRetPtrDict, ParamRetDict.buildReturnDict('sharedptr',
-                                                                                      "Shared pointer to BaseClass<lang> based on OS local language"))
-        self.assertEqual(testObj.typeXlationDict['LANGID'], "LANGID")
-        self.assertEqual(testObj.typeXlationDict['sharedptr'], "std::shared_ptr<BaseClass>")
-        self.assertEqual(testObj.typeXlationDict['strstream'], "std::stringstream")
+        assert testObj.owner == "BaseCppStringClassGenerator"
+        assert testObj.baseClassName == "BaseClass"
+        assert testObj.dynamicCompileSwitch == "DYNAMIC_INTERNATIONALIZATION"
+        assert testObj.ifDynamicDefined == "defined(DYNAMIC_INTERNATIONALIZATION)"
+        assert testObj.baseIntfRetPtrType == "std::shared_ptr<BaseClass>"
+        assert testObj.baseIntfRetPtrDict == ParamRetDict.buildReturnDict('sharedptr',
+                                                                                      "Shared pointer to BaseClass<lang> based on OS local language")
+        assert testObj.typeXlationDict['LANGID'] == "LANGID"
+        assert testObj.typeXlationDict['sharedptr'] == "std::shared_ptr<BaseClass>"
+        assert testObj.typeXlationDict['strstream'] == "std::stringstream"
 
-        self.assertEqual(testObj.versionMajor, 0)
-        self.assertEqual(testObj.versionMinor, 4)
-        self.assertEqual(testObj.versionPatch, 1)
+        assert testObj.versionMajor == 0
+        assert testObj.versionMinor == 4
+        assert testObj.versionPatch == 1
 
-        self.assertEqual(testObj.autoToolName, testObj.__class__.__name__+"V0.4.1")
-        self.assertEqual(testObj.groupName, "LocalLanguageSelection")
+        assert testObj.autoToolName == testObj.__class__.__name__+"V0.4.1"
+        assert testObj.groupName == "LocalLanguageSelection"
 
-        self.assertEqual(testObj.groupDesc, "Local language detection and selection utility")
-        self.assertEqual(testObj.declareIndent, 8)
-        self.assertEqual(testObj.functionIndent, 4)
+        assert testObj.groupDesc == "Local language detection and selection utility"
+        assert testObj.declareIndent == 8
+        assert testObj.functionIndent == 4
 
     """!
     @brief Unit test for the BaseCppStringClassGenerator class
@@ -75,51 +75,51 @@ class TestClass01StringClass_tools(unittest.TestCase):
         """
         testObj = BaseCppStringClassGenerator("me", "MIT_open", "TestBaseClass", "BASE_DYNAMIC_SWITCH")
 
-        self.assertEqual(testObj.owner, "me")
-        self.assertEqual(testObj.baseClassName, "TestBaseClass")
-        self.assertEqual(testObj.dynamicCompileSwitch, "BASE_DYNAMIC_SWITCH")
-        self.assertEqual(testObj.ifDynamicDefined, "defined(BASE_DYNAMIC_SWITCH)")
-        self.assertEqual(testObj.baseIntfRetPtrType, "std::shared_ptr<TestBaseClass>")
-        self.assertDictEqual(testObj.baseIntfRetPtrDict, ParamRetDict.buildReturnDict('sharedptr',
-                                                                                      "Shared pointer to TestBaseClass<lang> based on OS local language"))
-        self.assertEqual(testObj.typeXlationDict['LANGID'], "LANGID")
-        self.assertEqual(testObj.typeXlationDict['sharedptr'], "std::shared_ptr<TestBaseClass>")
-        self.assertEqual(testObj.typeXlationDict['strstream'], "std::stringstream")
+        assert testObj.owner == "me"
+        assert testObj.baseClassName == "TestBaseClass"
+        assert testObj.dynamicCompileSwitch == "BASE_DYNAMIC_SWITCH"
+        assert testObj.ifDynamicDefined == "defined(BASE_DYNAMIC_SWITCH)"
+        assert testObj.baseIntfRetPtrType == "std::shared_ptr<TestBaseClass>"
+        assert testObj.baseIntfRetPtrDict == ParamRetDict.buildReturnDict('sharedptr',
+                                                                                      "Shared pointer to TestBaseClass<lang> based on OS local language")
+        assert testObj.typeXlationDict['LANGID'] == "LANGID"
+        assert testObj.typeXlationDict['sharedptr'] == "std::shared_ptr<TestBaseClass>"
+        assert testObj.typeXlationDict['strstream'] == "std::stringstream"
 
-        self.assertEqual(testObj.versionMajor, 0)
-        self.assertEqual(testObj.versionMinor, 4)
-        self.assertEqual(testObj.versionPatch, 1)
+        assert testObj.versionMajor == 0
+        assert testObj.versionMinor == 4
+        assert testObj.versionPatch == 1
 
-        self.assertEqual(testObj.autoToolName, testObj.__class__.__name__+"V0.4.1")
-        self.assertEqual(testObj.groupName, "LocalLanguageSelection")
+        assert testObj.autoToolName == testObj.__class__.__name__+"V0.4.1"
+        assert testObj.groupName == "LocalLanguageSelection"
 
-        self.assertEqual(testObj.groupDesc, "Local language detection and selection utility")
-        self.assertEqual(testObj.declareIndent, 8)
-        self.assertEqual(testObj.functionIndent, 4)
+        assert testObj.groupDesc == "Local language detection and selection utility"
+        assert testObj.declareIndent == 8
+        assert testObj.functionIndent == 4
 
     def test003GetTypes(self):
         """!
         @brief Test _getStringType, _getCharType and _getStrStreamType
         """
         testObj = BaseCppStringClassGenerator()
-        self.assertEqual(testObj._getStringType(), testObj.typeXlationDict['string'])
-        self.assertEqual(testObj._getCharType(), testObj.typeXlationDict['char'])
-        self.assertEqual(testObj._getStrStreamType(), testObj.typeXlationDict['strstream'])
+        assert testObj._getStringType() == testObj.typeXlationDict['string']
+        assert testObj._getCharType() == testObj.typeXlationDict['char']
+        assert testObj._getStrStreamType() == testObj.typeXlationDict['strstream']
 
     def test004GenMakePtrReturnStatement(self):
         """!
         @brief Test _genMakePtrReturnStatement
         """
         testObj = BaseCppStringClassGenerator()
-        self.assertEqual(testObj._genMakePtrReturnStatement(), "return std::make_shared<BaseClass>();\n")
-        self.assertEqual(testObj._genMakePtrReturnStatement("oompa"), "return std::make_shared<BaseClassOompa>();\n")
+        assert testObj._genMakePtrReturnStatement() == "return std::make_shared<BaseClass>();\n"
+        assert testObj._genMakePtrReturnStatement("oompa") == "return std::make_shared<BaseClassOompa>();\n"
 
     def test005GetVersion(self):
         """!
         @brief Test _getVersion
         """
         testObj = BaseCppStringClassGenerator()
-        self.assertEqual(testObj._getVersion(), "V"+str(testObj.versionMajor)+"."+str(testObj.versionMinor)+"."+str(testObj.versionPatch))
+        assert testObj._getVersion() == "V"+str(testObj.versionMajor)+"."+str(testObj.versionMinor)+"."+str(testObj.versionPatch)
 
     def test006GenerateFileHeader(self):
         """!
@@ -130,68 +130,68 @@ class TestClass01StringClass_tools(unittest.TestCase):
         eulaData = EulaText('MIT_open')
         eulaName = eulaData.formatEulaName()
         eulaText = eulaData.formatEulaText()
-        self.assertEqual(len(strList), 27)
-        self.assertEqual(strList[0], "/*------------------------------------------------------------------------------\n")
-        self.assertEqual(strList[1], "* Copyright (c) 2025 Tester\n")
-        self.assertEqual(strList[2], "* \n")
-        self.assertEqual(strList[3], "* "+eulaName+"\n")
-        self.assertEqual(strList[4], "* \n")
+        assert len(strList) == 27
+        assert strList[0] == "/*------------------------------------------------------------------------------\n"
+        assert strList[1] == "* Copyright (c) 2025 Tester\n"
+        assert strList[2] == "* \n"
+        assert strList[3] == "* "+eulaName+"\n"
+        assert strList[4] == "* \n"
 
         for index, eulaLine in enumerate(eulaText):
-            self.assertEqual(strList[index+5], "* "+eulaLine+"\n")
+            assert strList[index+5] == "* "+eulaLine+"\n"
 
-        self.assertEqual(strList[23], "* \n")
-        self.assertEqual(strList[24], "* This file was autogenerated by "+testObj.autoToolName+" do not edit\n")
-        self.assertEqual(strList[25], "* \n")
-        self.assertEqual(strList[26], "* ----------------------------------------------------------------------------*/\n")
+        assert strList[23] == "* \n"
+        assert strList[24] == "* This file was autogenerated by "+testObj.autoToolName+" do not edit\n"
+        assert strList[25] == "* \n"
+        assert strList[26] == "* ----------------------------------------------------------------------------*/\n"
 
     def test007GenerateHFileName(self):
         """!
         @brief Test _generateHFileName
         """
         testObj = BaseCppStringClassGenerator()
-        self.assertEqual(testObj._generateHFileName(), testObj.baseClassName+".h")
-        self.assertEqual(testObj._generateHFileName("klingon"), testObj.baseClassName+"klingon".capitalize()+".h")
+        assert testObj._generateHFileName() == testObj.baseClassName+".h"
+        assert testObj._generateHFileName("klingon") == testObj.baseClassName+"klingon".capitalize()+".h"
 
     def test008GenerateCppFileName(self):
         """!
         @brief Test _generateCppFileName
         """
         testObj = BaseCppStringClassGenerator()
-        self.assertEqual(testObj._generateCppFileName(), testObj.baseClassName+".cpp")
-        self.assertEqual(testObj._generateCppFileName("romulan"), testObj.baseClassName+"romulan".capitalize()+".cpp")
+        assert testObj._generateCppFileName() == testObj.baseClassName+".cpp"
+        assert testObj._generateCppFileName("romulan") == testObj.baseClassName+"romulan".capitalize()+".cpp"
 
     def test009GenerateUnittestFileName(self):
         """!
         @brief Test _generateUnittestFileName
         """
         testObj = BaseCppStringClassGenerator()
-        self.assertEqual(testObj._generateUnittestFileName(), testObj.baseClassName+"_test.cpp")
-        self.assertEqual(testObj._generateUnittestFileName("gorn"), testObj.baseClassName+"gorn".capitalize()+"_test.cpp")
+        assert testObj._generateUnittestFileName() == testObj.baseClassName+"_test.cpp"
+        assert testObj._generateUnittestFileName("gorn") == testObj.baseClassName+"gorn".capitalize()+"_test.cpp"
 
     def test010GenerateUnittestTargetName(self):
         """!
         @brief Test _generateUnittestTargetName
         """
         testObj = BaseCppStringClassGenerator()
-        self.assertEqual(testObj._generateUnittestTargetName(), testObj.baseClassName+"_test")
-        self.assertEqual(testObj._generateUnittestTargetName("telerite"), testObj.baseClassName+"telerite".capitalize()+"_test")
+        assert testObj._generateUnittestTargetName() == testObj.baseClassName+"_test"
+        assert testObj._generateUnittestTargetName("telerite") == testObj.baseClassName+"telerite".capitalize()+"_test"
 
     def test011GenerateMockHFileName(self):
         """!
         @brief Test _generateMockHFileName
         """
         testObj = BaseCppStringClassGenerator()
-        self.assertEqual(testObj._generateMockHFileName(), "mock_"+testObj.baseClassName+".h")
-        self.assertEqual(testObj._generateMockHFileName("latin"), "mock_"+testObj.baseClassName+"latin".capitalize()+".h")
+        assert testObj._generateMockHFileName() == "mock_"+testObj.baseClassName+".h"
+        assert testObj._generateMockHFileName("latin") == "mock_"+testObj.baseClassName+"latin".capitalize()+".h"
 
     def test012GenerateMockCppFileName(self):
         """!
         @brief Test _generateMockCppFileName
         """
         testObj = BaseCppStringClassGenerator()
-        self.assertEqual(testObj._generateMockCppFileName(), "mock_"+testObj.baseClassName+".cpp")
-        self.assertEqual(testObj._generateMockCppFileName("latin"), "mock_"+testObj.baseClassName+"latin".capitalize()+".cpp")
+        assert testObj._generateMockCppFileName() == "mock_"+testObj.baseClassName+".cpp"
+        assert testObj._generateMockCppFileName("latin") == "mock_"+testObj.baseClassName+"latin".capitalize()+".cpp"
 
     def test013WriteMethodMin(self):
         """!
@@ -209,9 +209,9 @@ class TestClass01StringClass_tools(unittest.TestCase):
                                                             True,
                                                             None,
                                                             "const")
-        self.assertEqual(len(strList), len(expectedList))
+        assert len(strList) == len(expectedList)
         for index, expectedStr in enumerate(expectedList):
-            self.assertEqual(strList[index], expectedStr)
+            assert strList[index] == expectedStr
 
     def test014WriteMethodMinWithDoxygen(self):
         """!
@@ -229,9 +229,9 @@ class TestClass01StringClass_tools(unittest.TestCase):
                                                             False,
                                                             None,
                                                             "const")
-        self.assertEqual(len(strList), len(expectedList))
+        assert len(strList) == len(expectedList)
         for index, expectedStr in enumerate(expectedList):
-            self.assertEqual(strList[index], expectedStr)
+            assert strList[index] == expectedStr
 
     def test015WriteMethodWithPrefix(self):
         """!
@@ -249,9 +249,9 @@ class TestClass01StringClass_tools(unittest.TestCase):
                                                             True,
                                                             "virtual",
                                                             "const")
-        self.assertEqual(len(strList), len(expectedList))
+        assert len(strList) == len(expectedList)
         for index, expectedStr in enumerate(expectedList):
-            self.assertEqual(strList[index], expectedStr)
+            assert strList[index] == expectedStr
 
     def test016WriteMethodWithPostfix(self):
         """!
@@ -270,9 +270,9 @@ class TestClass01StringClass_tools(unittest.TestCase):
                                                             True,
                                                             "virtual",
                                                             "final")
-        self.assertEqual(len(strList), len(expectedList))
+        assert len(strList) == len(expectedList)
         for index, expectedStr in enumerate(expectedList):
-            self.assertEqual(strList[index], expectedStr)
+            assert strList[index] == expectedStr
 
     def test017WriteMethodWithPostfixOnly(self):
         """!
@@ -291,9 +291,9 @@ class TestClass01StringClass_tools(unittest.TestCase):
                                                             True,
                                                             "virtual",
                                                             "const final")
-        self.assertEqual(len(strList), len(expectedList))
+        assert len(strList) == len(expectedList)
         for index, expectedStr in enumerate(expectedList):
-            self.assertEqual(strList[index], expectedStr)
+            assert strList[index] == expectedStr
 
     def test018WriteMockMethodMin(self):
         """!
@@ -308,8 +308,8 @@ class TestClass01StringClass_tools(unittest.TestCase):
         expectedMock = "        MOCK_METHOD("+expectedDecl+", TestMethod, "+expectedParms+", (const));\n"
 
         strList = testObj._writeMockMethod("TestMethod", [], returnDict, None)
-        self.assertEqual(len(strList), 1)
-        self.assertEqual(strList[0], expectedMock)
+        assert len(strList) == 1
+        assert strList[0] == expectedMock
 
     def test019WriteMockMethodWithParam(self):
         """!
@@ -325,8 +325,8 @@ class TestClass01StringClass_tools(unittest.TestCase):
         expectedMock = "        MOCK_METHOD("+expectedDecl+", TestMethod, "+expectedParms+");\n"
 
         strList = testObj._writeMockMethod("TestMethod", paramList, returnDict, None)
-        self.assertEqual(len(strList), 1)
-        self.assertEqual(strList[0], expectedMock)
+        assert len(strList) == 1
+        assert strList[0] == expectedMock
 
     def test020WriteMockMethodWithPostfix(self):
         """!
@@ -342,8 +342,8 @@ class TestClass01StringClass_tools(unittest.TestCase):
         expectedMock = "        MOCK_METHOD("+expectedDecl+", TestMethod, "+expectedParms+", (const, override));\n"
 
         strList = testObj._writeMockMethod("TestMethod", paramList, returnDict, "override")
-        self.assertEqual(len(strList), 1)
-        self.assertEqual(strList[0], expectedMock)
+        assert len(strList) == 1
+        assert strList[0] == expectedMock
 
     def test021WriteMockMethodWithParamPostfix(self):
         """!
@@ -359,8 +359,5 @@ class TestClass01StringClass_tools(unittest.TestCase):
         expectedMock = "        MOCK_METHOD("+expectedDecl+", TestMethod, "+expectedParms+", (override));\n"
 
         strList = testObj._writeMockMethod("TestMethod", paramList, returnDict, "override")
-        self.assertEqual(len(strList), 1)
-        self.assertEqual(strList[0], expectedMock)
-
-if __name__ == '__main__':
-    unittest.main()
+        assert len(strList) == 1
+        assert strList[0] == expectedMock

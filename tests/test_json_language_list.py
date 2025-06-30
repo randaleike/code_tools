@@ -24,8 +24,9 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
+import pytest
 import os
-import unittest
+
 from unittest.mock import patch, MagicMock, mock_open
 
 import io
@@ -38,98 +39,98 @@ pathincsetup()
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 
 
-class Unittest01JsonLanguageList(unittest.TestCase):
+class TestUnittest01JsonLanguageList:
     """!
     @brief Unit test for the LanguageDescriptionList class
     """
 
     @classmethod
-    def setUpClass(cls):
+    def setup_class(cls):
         cls.testJson = os.path.join(TESTFILEPATH, "testdata.json")
-        return super().setUpClass()
+
 
     @classmethod
-    def tearDownClass(cls):
+    def teardown_class(cls):
         if os.path.exists("jsonLanguageDescriptionList.json"):
             os.remove("jsonLanguageDescriptionList.json")   # Delete in case it was accidently created
-        return super().tearDownClass()
+
 
     def test01DefaultConstructor(self):
         """!
         @brief Test Default constructor()
         """
         testobj = LanguageDescriptionList()
-        self.assertRaises(FileNotFoundError)
-        self.assertEqual(testobj.filename, "jsonLanguageDescriptionList.json")
-        self.assertIsNotNone(testobj.langJsonData['default'])
-        self.assertEqual(testobj.langJsonData['default']['name'], "english")
-        self.assertEqual(testobj.langJsonData['default']['isoCode'], "en")
-        self.assertIsNotNone(testobj.langJsonData['languages'])
-        self.assertEqual(len(testobj.langJsonData['languages']), 0)
+        pytest.raises(FileNotFoundError)
+        assert testobj.filename == "jsonLanguageDescriptionList.json"
+        assert testobj.langJsonData['default'] is not None
+        assert testobj.langJsonData['default']['name'] == "english"
+        assert testobj.langJsonData['default']['isoCode'] == "en"
+        assert testobj.langJsonData['languages'] is not None
+        assert len(testobj.langJsonData['languages']) == 0
 
     def test02ConstructorWithFile(self):
         """!
         @brief Test constructor() with file name
         """
         testobj = LanguageDescriptionList(self.testJson)
-        self.assertEqual(testobj.filename, self.testJson)
-        self.assertIsNotNone(testobj.langJsonData['default'])
-        self.assertEqual(testobj.langJsonData['default']['name'], "spanish")
-        self.assertEqual(testobj.langJsonData['default']['isoCode'], "es")
-        self.assertIsNotNone(testobj.langJsonData['languages'])
-        self.assertEqual(len(testobj.langJsonData['languages']), 1)
+        assert testobj.filename == self.testJson
+        assert testobj.langJsonData['default'] is not None
+        assert testobj.langJsonData['default']['name'] == "spanish"
+        assert testobj.langJsonData['default']['isoCode'] == "es"
+        assert testobj.langJsonData['languages'] is not None
+        assert len(testobj.langJsonData['languages']) == 1
 
-        self.assertIsNotNone(testobj.langJsonData['languages']['english'])
+        assert testobj.langJsonData['languages']['english'] is not None
         keyList = list(testobj.langJsonData['languages']['english'].keys())
-        self.assertEqual(len(keyList), 6)
+        assert len(keyList) == 6
 
-        self.assertIn('LANG', keyList)
-        self.assertIsNotNone(testobj.langJsonData['languages']['english']['LANG'])
-        self.assertEqual(testobj.langJsonData['languages']['english']['LANG'], 'en')
+        assert 'LANG' in keyList
+        assert testobj.langJsonData['languages']['english']['LANG'] is not None
+        assert testobj.langJsonData['languages']['english']['LANG'] == 'en'
 
-        self.assertIn('LANG_regions', keyList)
-        self.assertIsNotNone(testobj.langJsonData['languages']['english']['LANG_regions'])
-        self.assertEqual(len(testobj.langJsonData['languages']['english']['LANG_regions']), 13)
-        self.assertEqual(testobj.langJsonData['languages']['english']['LANG_regions'][0], 'AU')
-        self.assertEqual(testobj.langJsonData['languages']['english']['LANG_regions'][12], 'ZW')
+        assert 'LANG_regions' in keyList
+        assert testobj.langJsonData['languages']['english']['LANG_regions'] is not None
+        assert len(testobj.langJsonData['languages']['english']['LANG_regions']) == 13
+        assert testobj.langJsonData['languages']['english']['LANG_regions'][0] == 'AU'
+        assert testobj.langJsonData['languages']['english']['LANG_regions'][12] == 'ZW'
 
-        self.assertIn('LANGID', keyList)
-        self.assertIsNotNone(testobj.langJsonData['languages']['english']['LANGID'])
-        self.assertEqual(len(testobj.langJsonData['languages']['english']['LANGID']), 1)
-        self.assertEqual(testobj.langJsonData['languages']['english']['LANGID'][0], 9)
+        assert 'LANGID' in keyList
+        assert testobj.langJsonData['languages']['english']['LANGID'] is not None
+        assert len(testobj.langJsonData['languages']['english']['LANGID']) == 1
+        assert testobj.langJsonData['languages']['english']['LANGID'][0] == 9
 
-        self.assertIn('LANGID_regions', keyList)
-        self.assertIsNotNone(testobj.langJsonData['languages']['english']['LANGID_regions'])
-        self.assertEqual(len(testobj.langJsonData['languages']['english']['LANGID_regions']), 14)
-        self.assertEqual(testobj.langJsonData['languages']['english']['LANGID_regions'][0], 3081)
-        self.assertEqual(testobj.langJsonData['languages']['english']['LANGID_regions'][13], 12297)
+        assert 'LANGID_regions' in keyList
+        assert testobj.langJsonData['languages']['english']['LANGID_regions'] is not None
+        assert len(testobj.langJsonData['languages']['english']['LANGID_regions']) == 14
+        assert testobj.langJsonData['languages']['english']['LANGID_regions'][0] == 3081
+        assert testobj.langJsonData['languages']['english']['LANGID_regions'][13] == 12297
 
-        self.assertIn('isoCode', keyList)
-        self.assertIsNotNone(testobj.langJsonData['languages']['english']['isoCode'])
-        self.assertEqual(testobj.langJsonData['languages']['english']['isoCode'], 'en')
+        assert 'isoCode' in keyList
+        assert testobj.langJsonData['languages']['english']['isoCode'] is not None
+        assert testobj.langJsonData['languages']['english']['isoCode'] == 'en'
 
-        self.assertIn('compileSwitch', keyList)
-        self.assertIsNotNone(testobj.langJsonData['languages']['english']['compileSwitch'])
-        self.assertEqual(testobj.langJsonData['languages']['english']['compileSwitch'], "ENGLISH_ERRORS")
+        assert 'compileSwitch' in keyList
+        assert testobj.langJsonData['languages']['english']['compileSwitch'] is not None
+        assert testobj.langJsonData['languages']['english']['compileSwitch'] == "ENGLISH_ERRORS"
 
     def test03Clear(self):
         """!
         @brief Test clear method
         """
         testobj = LanguageDescriptionList(self.testJson)
-        self.assertEqual(testobj.filename, self.testJson)
-        self.assertIsNotNone(testobj.langJsonData['default'])
-        self.assertEqual(testobj.langJsonData['default']['isoCode'], "es")
-        self.assertIsNotNone(testobj.langJsonData['languages'])
-        self.assertEqual(len(testobj.langJsonData['languages']), 1)
+        assert testobj.filename == self.testJson
+        assert testobj.langJsonData['default'] is not None
+        assert testobj.langJsonData['default']['isoCode'] == "es"
+        assert testobj.langJsonData['languages'] is not None
+        assert len(testobj.langJsonData['languages']) == 1
 
         testobj.clear()
-        self.assertEqual(testobj.filename, self.testJson)
-        self.assertIsNotNone(testobj.langJsonData['default'])
-        self.assertEqual(testobj.langJsonData['default']['name'], "english")
-        self.assertEqual(testobj.langJsonData['default']['isoCode'], "en")
-        self.assertIsNotNone(testobj.langJsonData['languages'])
-        self.assertEqual(len(testobj.langJsonData['languages']), 0)
+        assert testobj.filename == self.testJson
+        assert testobj.langJsonData['default'] is not None
+        assert testobj.langJsonData['default']['name'] == "english"
+        assert testobj.langJsonData['default']['isoCode'] == "en"
+        assert testobj.langJsonData['languages'] is not None
+        assert len(testobj.langJsonData['languages']) == 0
 
     def test04Printerror(self):
         """!
@@ -139,7 +140,7 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
             testobj._printError("test error")
-            self.assertEqual(output.getvalue(), "Error: test error\n")
+            assert output.getvalue() == "Error: test error\n"
 
     def test05GetCommitOverwriteFlagNo(self):
         """!
@@ -147,23 +148,23 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList()
         with patch('builtins.input', side_effect='n') as inMock:
-            self.assertFalse(testobj._getCommitOverWriteFlag("testEntry"))
+            assert not testobj._getCommitOverWriteFlag("testEntry")
             inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='N') as inMock:
-            self.assertFalse(testobj._getCommitOverWriteFlag("testEntry"))
+            assert not testobj._getCommitOverWriteFlag("testEntry")
             inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='no') as inMock:
-            self.assertFalse(testobj._getCommitOverWriteFlag("testEntry"))
+            assert not testobj._getCommitOverWriteFlag("testEntry")
             inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='NO') as inMock:
-            self.assertFalse(testobj._getCommitOverWriteFlag("testEntry"))
+            assert not testobj._getCommitOverWriteFlag("testEntry")
             inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='No') as inMock:
-            self.assertFalse(testobj._getCommitOverWriteFlag("testEntry"))
+            assert not testobj._getCommitOverWriteFlag("testEntry")
             inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
 
     def test06GetCommitOverwriteFlagYes(self):
@@ -172,23 +173,23 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList()
         with patch('builtins.input', side_effect='y') as inMock:
-            self.assertTrue(testobj._getCommitOverWriteFlag("testEntry"))
+            assert testobj._getCommitOverWriteFlag("testEntry")
             inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='Y') as inMock:
-            self.assertTrue(testobj._getCommitOverWriteFlag("testEntry"))
+            assert testobj._getCommitOverWriteFlag("testEntry")
             inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='yes') as inMock:
-            self.assertTrue(testobj._getCommitOverWriteFlag("testEntry"))
+            assert testobj._getCommitOverWriteFlag("testEntry")
             inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='YES') as inMock:
-            self.assertTrue(testobj._getCommitOverWriteFlag("testEntry"))
+            assert testobj._getCommitOverWriteFlag("testEntry")
             inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='Yes') as inMock:
-            self.assertTrue(testobj._getCommitOverWriteFlag("testEntry"))
+            assert testobj._getCommitOverWriteFlag("testEntry")
             inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
 
     def test07GetCommitOverwriteFlagOverride(self):
@@ -198,8 +199,8 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         testobj = LanguageDescriptionList()
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
-            self.assertTrue(testobj._getCommitOverWriteFlag("testEntry", True))
-            self.assertEqual(output.getvalue(), "")
+            assert testobj._getCommitOverWriteFlag("testEntry", True)
+            assert output.getvalue() == ""
 
     def test08GetCommitNewFlagNo(self):
         """!
@@ -207,23 +208,23 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList()
         with patch('builtins.input', side_effect='n') as inMock:
-            self.assertFalse(testobj._getCommitNewFlag("testEntry"))
+            assert not testobj._getCommitNewFlag("testEntry")
             inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='N') as inMock:
-            self.assertFalse(testobj._getCommitNewFlag("testEntry"))
+            assert not testobj._getCommitNewFlag("testEntry")
             inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='no') as inMock:
-            self.assertFalse(testobj._getCommitNewFlag("testEntry"))
+            assert not testobj._getCommitNewFlag("testEntry")
             inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='NO') as inMock:
-            self.assertFalse(testobj._getCommitNewFlag("testEntry"))
+            assert not testobj._getCommitNewFlag("testEntry")
             inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='No') as inMock:
-            self.assertFalse(testobj._getCommitNewFlag("testEntry"))
+            assert not testobj._getCommitNewFlag("testEntry")
             inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
 
     def test09GetCommitNewFlagYes(self):
@@ -232,23 +233,23 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList()
         with patch('builtins.input', side_effect='y') as inMock:
-            self.assertTrue(testobj._getCommitNewFlag("testEntry"))
+            assert testobj._getCommitNewFlag("testEntry")
             inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='Y') as inMock:
-            self.assertTrue(testobj._getCommitNewFlag("testEntry"))
+            assert testobj._getCommitNewFlag("testEntry")
             inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='yes') as inMock:
-            self.assertTrue(testobj._getCommitNewFlag("testEntry"))
+            assert testobj._getCommitNewFlag("testEntry")
             inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='YES') as inMock:
-            self.assertTrue(testobj._getCommitNewFlag("testEntry"))
+            assert testobj._getCommitNewFlag("testEntry")
             inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='Yes') as inMock:
-            self.assertTrue(testobj._getCommitNewFlag("testEntry"))
+            assert testobj._getCommitNewFlag("testEntry")
             inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
 
     def test10GetCommitFlag(self):
@@ -257,26 +258,26 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList()
         with patch('builtins.input', side_effect='y') as inMock:
-            self.assertTrue(testobj._getCommitFlag("testEntry",['testEntry']))
+            assert testobj._getCommitFlag("testEntry",['testEntry'])
             inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
         with patch('builtins.input', side_effect='n') as inMock:
-            self.assertFalse(testobj._getCommitFlag("testEntry",['testEntry']))
+            assert not testobj._getCommitFlag("testEntry",['testEntry'])
             inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
 
         with patch('builtins.input', side_effect='y') as inMock:
-            self.assertTrue(testobj._getCommitFlag("test33",['testEntry']))
+            assert testobj._getCommitFlag("test33",['testEntry'])
             inMock.assert_called_once_with("Add new test33 entry? [Y/N]")
         with patch('builtins.input', side_effect='n') as inMock:
-            self.assertFalse(testobj._getCommitFlag("test33",['testEntry']))
+            assert not testobj._getCommitFlag("test33",['testEntry'])
             inMock.assert_called_once_with("Add new test33 entry? [Y/N]")
 
-        self.assertTrue(testobj._getCommitFlag("testEntry",['testEntry'], True))
+        assert testobj._getCommitFlag("testEntry",['testEntry'], True)
 
         with patch('builtins.input', side_effect='y') as inMock:
-            self.assertTrue(testobj._getCommitFlag("test33",['testEntry'], True))
+            assert testobj._getCommitFlag("test33",['testEntry'], True)
             inMock.assert_called_once_with("Add new test33 entry? [Y/N]")
         with patch('builtins.input', side_effect='n') as inMock:
-            self.assertFalse(testobj._getCommitFlag("test33",['testEntry'], True))
+            assert not testobj._getCommitFlag("test33",['testEntry'], True)
             inMock.assert_called_once_with("Add new test33 entry? [Y/N]")
 
     def test11Update(self):
@@ -284,51 +285,51 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         @brief Test update method
         """
         testobj = LanguageDescriptionList("temp.json")
-        self.assertEqual(testobj.filename, "temp.json")
+        assert testobj.filename == "temp.json"
         testobj.langJsonData['languages']['french'] = {'LANG':'fr', 'LANG_regions':['FR'],
                                                        'LANGID': [12], 'LANGID_regions': [1036, 5132],
                                                        'isoCode': 'fr', 'compileSwitch': "FRENCH_ERRORS"}
         testobj.update()
 
         updateobj = LanguageDescriptionList("temp.json")
-        self.assertEqual(updateobj.filename, "temp.json")
-        self.assertIsNotNone(updateobj.langJsonData['default'])
-        self.assertEqual(updateobj.langJsonData['default']['name'], "english")
-        self.assertEqual(updateobj.langJsonData['default']['isoCode'], "en")
-        self.assertIsNotNone(updateobj.langJsonData['languages'])
-        self.assertEqual(len(updateobj.langJsonData['languages']), 1)
+        assert updateobj.filename == "temp.json"
+        assert updateobj.langJsonData['default'] is not None
+        assert updateobj.langJsonData['default']['name'] == "english"
+        assert updateobj.langJsonData['default']['isoCode'] == "en"
+        assert updateobj.langJsonData['languages'] is not None
+        assert len(updateobj.langJsonData['languages']) == 1
 
-        self.assertIsNotNone(updateobj.langJsonData['languages']['french'])
+        assert updateobj.langJsonData['languages']['french'] is not None
         keyList = list(updateobj.langJsonData['languages']['french'].keys())
-        self.assertEqual(len(keyList), 6)
+        assert len(keyList) == 6
 
-        self.assertIn('LANG', keyList)
-        self.assertIsNotNone(updateobj.langJsonData['languages']['french']['LANG'])
-        self.assertEqual(updateobj.langJsonData['languages']['french']['LANG'], 'fr')
+        assert 'LANG' in keyList
+        assert updateobj.langJsonData['languages']['french']['LANG'] is not None
+        assert updateobj.langJsonData['languages']['french']['LANG'] == 'fr'
 
-        self.assertIn('LANG_regions', keyList)
-        self.assertIsNotNone(updateobj.langJsonData['languages']['french']['LANG_regions'])
-        self.assertEqual(len(updateobj.langJsonData['languages']['french']['LANG_regions']), 1)
-        self.assertEqual(updateobj.langJsonData['languages']['french']['LANG_regions'][0], 'FR')
+        assert 'LANG_regions' in keyList
+        assert updateobj.langJsonData['languages']['french']['LANG_regions'] is not None
+        assert len(updateobj.langJsonData['languages']['french']['LANG_regions']) == 1
+        assert updateobj.langJsonData['languages']['french']['LANG_regions'][0] == 'FR'
 
-        self.assertIn('LANGID', keyList)
-        self.assertIsNotNone(updateobj.langJsonData['languages']['french']['LANGID'])
-        self.assertEqual(len(updateobj.langJsonData['languages']['french']['LANGID']), 1)
-        self.assertEqual(updateobj.langJsonData['languages']['french']['LANGID'][0], 12)
+        assert 'LANGID' in keyList
+        assert updateobj.langJsonData['languages']['french']['LANGID'] is not None
+        assert len(updateobj.langJsonData['languages']['french']['LANGID']) == 1
+        assert updateobj.langJsonData['languages']['french']['LANGID'][0] == 12
 
-        self.assertIn('LANGID_regions', keyList)
-        self.assertIsNotNone(updateobj.langJsonData['languages']['french']['LANGID_regions'])
-        self.assertEqual(len(updateobj.langJsonData['languages']['french']['LANGID_regions']), 2)
-        self.assertEqual(updateobj.langJsonData['languages']['french']['LANGID_regions'][0], 1036)
-        self.assertEqual(updateobj.langJsonData['languages']['french']['LANGID_regions'][1], 5132)
+        assert 'LANGID_regions' in keyList
+        assert updateobj.langJsonData['languages']['french']['LANGID_regions'] is not None
+        assert len(updateobj.langJsonData['languages']['french']['LANGID_regions']) == 2
+        assert updateobj.langJsonData['languages']['french']['LANGID_regions'][0] == 1036
+        assert updateobj.langJsonData['languages']['french']['LANGID_regions'][1] == 5132
 
-        self.assertIn('isoCode', keyList)
-        self.assertIsNotNone(updateobj.langJsonData['languages']['french']['isoCode'])
-        self.assertEqual(updateobj.langJsonData['languages']['french']['isoCode'], 'fr')
+        assert 'isoCode' in keyList
+        assert updateobj.langJsonData['languages']['french']['isoCode'] is not None
+        assert updateobj.langJsonData['languages']['french']['isoCode'] == 'fr'
 
-        self.assertIn('compileSwitch', keyList)
-        self.assertIsNotNone(updateobj.langJsonData['languages']['french']['compileSwitch'])
-        self.assertEqual(updateobj.langJsonData['languages']['french']['compileSwitch'], "FRENCH_ERRORS")
+        assert 'compileSwitch' in keyList
+        assert updateobj.langJsonData['languages']['french']['compileSwitch'] is not None
+        assert updateobj.langJsonData['languages']['french']['compileSwitch'] == "FRENCH_ERRORS"
 
         os.remove("temp.json")
 
@@ -337,32 +338,32 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         @brief Test setDefault method, pass
         """
         testobj = LanguageDescriptionList(self.testJson)
-        self.assertEqual(testobj.filename, self.testJson)
-        self.assertIsNotNone(testobj.langJsonData['default'])
-        self.assertEqual(testobj.langJsonData['default']['name'], "spanish")
-        self.assertEqual(testobj.langJsonData['default']['isoCode'], "es")
-        self.assertIsNotNone(testobj.langJsonData['languages'])
-        self.assertEqual(len(testobj.langJsonData['languages']), 1)
+        assert testobj.filename == self.testJson
+        assert testobj.langJsonData['default'] is not None
+        assert testobj.langJsonData['default']['name'] == "spanish"
+        assert testobj.langJsonData['default']['isoCode'] == "es"
+        assert testobj.langJsonData['languages'] is not None
+        assert len(testobj.langJsonData['languages']) == 1
 
         testobj.setDefault("english")
-        self.assertEqual(testobj.langJsonData['default']['name'], "english")
-        self.assertEqual(testobj.langJsonData['default']['isoCode'], "en")
+        assert testobj.langJsonData['default']['name'] == "english"
+        assert testobj.langJsonData['default']['isoCode'] == "en"
 
     def test13SetDefaultFail(self):
         """!
         @brief Test setDefault method, fail
         """
         testobj = LanguageDescriptionList(self.testJson)
-        self.assertIsNotNone(testobj.langJsonData['languages'])
-        self.assertEqual(len(testobj.langJsonData['languages']), 1)
+        assert testobj.langJsonData['languages'] is not None
+        assert len(testobj.langJsonData['languages']) == 1
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
             testobj.setDefault("german")
-            self.assertEqual(output.getvalue(), "Error: You must select a current language as the default.\nAvailable languages:\n  english\n")
+            assert output.getvalue() == "Error: You must select a current language as the default.\nAvailable languages:\n  english\n"
 
-            self.assertEqual(testobj.langJsonData['default']['name'], "spanish")
-            self.assertEqual(testobj.langJsonData['default']['isoCode'], "es")
+            assert testobj.langJsonData['default']['name'] == "spanish"
+            assert testobj.langJsonData['default']['isoCode'] == "es"
 
     def test14GetDefaultData(self):
         """!
@@ -370,8 +371,8 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList()
         defaultLang, defaultIsoCode = testobj.getDefaultData()
-        self.assertEqual(testobj.langJsonData['default']['name'], defaultLang)
-        self.assertEqual(testobj.langJsonData['default']['isoCode'], defaultIsoCode)
+        assert testobj.langJsonData['default']['name'] == defaultLang
+        assert testobj.langJsonData['default']['isoCode'] == defaultIsoCode
 
     def test15CreateEntry(self):
         """!
@@ -379,36 +380,36 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         entryDict = LanguageDescriptionList._createLanguageEntry("en", ['AU','US'], [9], [100,200], 'en', "ENGLISH_SWITCH")
         keyList = list(entryDict.keys())
-        self.assertEqual(len(keyList), 6)
+        assert len(keyList) == 6
 
-        self.assertIn('LANG', keyList)
-        self.assertIsNotNone(entryDict['LANG'])
-        self.assertEqual(entryDict['LANG'], 'en')
+        assert 'LANG' in keyList
+        assert entryDict['LANG'] is not None
+        assert entryDict['LANG'] == 'en'
 
-        self.assertIn('LANG_regions', keyList)
-        self.assertIsNotNone(entryDict['LANG_regions'])
-        self.assertEqual(len(entryDict['LANG_regions']), 2)
-        self.assertEqual(entryDict['LANG_regions'][0], 'AU')
-        self.assertEqual(entryDict['LANG_regions'][1], 'US')
+        assert 'LANG_regions' in keyList
+        assert entryDict['LANG_regions'] is not None
+        assert len(entryDict['LANG_regions']) == 2
+        assert entryDict['LANG_regions'][0] == 'AU'
+        assert entryDict['LANG_regions'][1] == 'US'
 
-        self.assertIn('LANGID', keyList)
-        self.assertIsNotNone(entryDict['LANGID'])
-        self.assertEqual(len(entryDict['LANGID']), 1)
-        self.assertEqual(entryDict['LANGID'][0], 9)
+        assert 'LANGID' in keyList
+        assert entryDict['LANGID'] is not None
+        assert len(entryDict['LANGID']) == 1
+        assert entryDict['LANGID'][0] == 9
 
-        self.assertIn('LANGID_regions', keyList)
-        self.assertIsNotNone(entryDict['LANGID_regions'])
-        self.assertEqual(len(entryDict['LANGID_regions']), 2)
-        self.assertEqual(entryDict['LANGID_regions'][0], 100)
-        self.assertEqual(entryDict['LANGID_regions'][1], 200)
+        assert 'LANGID_regions' in keyList
+        assert entryDict['LANGID_regions'] is not None
+        assert len(entryDict['LANGID_regions']) == 2
+        assert entryDict['LANGID_regions'][0] == 100
+        assert entryDict['LANGID_regions'][1] == 200
 
-        self.assertIn('isoCode', keyList)
-        self.assertIsNotNone(entryDict['isoCode'])
-        self.assertEqual(entryDict['isoCode'], 'en')
+        assert 'isoCode' in keyList
+        assert entryDict['isoCode'] is not None
+        assert entryDict['isoCode'] == 'en'
 
-        self.assertIn('compileSwitch', keyList)
-        self.assertIsNotNone(entryDict['compileSwitch'])
-        self.assertEqual(entryDict['compileSwitch'], "ENGLISH_SWITCH")
+        assert 'compileSwitch' in keyList
+        assert entryDict['compileSwitch'] is not None
+        assert entryDict['compileSwitch'] == "ENGLISH_SWITCH"
 
     def test16GetLanguagePropertyData(self):
         """!
@@ -416,28 +417,28 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList(self.testJson)
         property = testobj.getLanguagePropertyData('english', 'LANG')
-        self.assertIsInstance(property, str)
-        self.assertEqual(property, "en")
+        assert isinstance(property, str)
+        assert property == "en"
 
         property = testobj.getLanguagePropertyData('english', 'LANG_regions')
-        self.assertIsInstance(property, list)
-        self.assertEqual(len(property), 13)
+        assert isinstance(property, list)
+        assert len(property) == 13
 
         property = testobj.getLanguagePropertyData('english', 'LANGID')
-        self.assertIsInstance(property, list)
-        self.assertEqual(len(property), 1)
+        assert isinstance(property, list)
+        assert len(property) == 1
 
         property = testobj.getLanguagePropertyData('english', 'LANGID_regions')
-        self.assertIsInstance(property, list)
-        self.assertEqual(len(property), 14)
+        assert isinstance(property, list)
+        assert len(property) == 14
 
         property = testobj.getLanguagePropertyData('english', 'isoCode')
-        self.assertIsInstance(property, str)
-        self.assertEqual(property, "en")
+        assert isinstance(property, str)
+        assert property == "en"
 
         property = testobj.getLanguagePropertyData('english', 'compileSwitch')
-        self.assertIsInstance(property, str)
-        self.assertEqual(property, "ENGLISH_ERRORS")
+        assert isinstance(property, str)
+        assert property == "ENGLISH_ERRORS"
 
     def test17GetLanguageIsoCodeData(self):
         """!
@@ -445,7 +446,7 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList(self.testJson)
         property = testobj.getLanguageIsoCodeData('english')
-        self.assertEqual(property, "en")
+        assert property == "en"
 
     def test18GetLanguageLANGData(self):
         """!
@@ -453,8 +454,8 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList(self.testJson)
         langCode, regionList = testobj.getLanguageLANGData('english')
-        self.assertEqual(langCode, "en")
-        self.assertEqual(len(regionList), 13)
+        assert langCode == "en"
+        assert len(regionList) == 13
 
     def test19GetLanguageLANGIDData(self):
         """!
@@ -462,9 +463,9 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList(self.testJson)
         langIdCodes, regionIdList = testobj.getLanguageLANGIDData('english')
-        self.assertEqual(len(langIdCodes), 1)
-        self.assertEqual(langIdCodes[0], 9)
-        self.assertEqual(len(regionIdList), 14)
+        assert len(langIdCodes) == 1
+        assert langIdCodes[0] == 9
+        assert len(regionIdList) == 14
 
     def test20GetLanguageCompileSwitchData(self):
         """!
@@ -472,7 +473,7 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList(self.testJson)
         property = testobj.getLanguageCompileSwitchData('english')
-        self.assertEqual(property, "ENGLISH_ERRORS")
+        assert property == "ENGLISH_ERRORS"
 
     def test21GetLanguagePropertyList(self):
         """!
@@ -480,13 +481,13 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList()
         propertyList = testobj.getLanguagePropertyList()
-        self.assertEqual(len(propertyList), 6)
-        self.assertIn('LANG', propertyList)
-        self.assertIn('LANG_regions', propertyList)
-        self.assertIn('LANGID', propertyList)
-        self.assertIn('LANGID_regions', propertyList)
-        self.assertIn('isoCode', propertyList)
-        self.assertIn('compileSwitch', propertyList)
+        assert len(propertyList) == 6
+        assert 'LANG' in propertyList
+        assert 'LANG_regions' in propertyList
+        assert 'LANGID' in propertyList
+        assert 'LANGID_regions' in propertyList
+        assert 'isoCode' in propertyList
+        assert 'compileSwitch' in propertyList
 
     def test22GetLanguagePropertyReturnData(self):
         """!
@@ -494,72 +495,72 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList()
         type, description, isList = testobj.getLanguagePropertyReturnData('LANG')
-        self.assertEqual(type, "string")
-        self.assertFalse(isList)
-        self.assertIsInstance(description, str)
+        assert type == "string"
+        assert not isList
+        assert isinstance(description, str)
 
         type, description, isList = testobj.getLanguagePropertyReturnData('LANG_regions')
-        self.assertEqual(type, "string")
-        self.assertTrue(isList)
-        self.assertIsInstance(description, str)
+        assert type == "string"
+        assert isList
+        assert isinstance(description, str)
 
         type, description, isList = testobj.getLanguagePropertyReturnData('LANGID')
-        self.assertEqual(type, "LANGID")
-        self.assertTrue(isList)
-        self.assertIsInstance(description, str)
+        assert type == "LANGID"
+        assert isList
+        assert isinstance(description, str)
 
         type, description, isList = testobj.getLanguagePropertyReturnData('LANGID_regions')
-        self.assertEqual(type, "LANGID")
-        self.assertTrue(isList)
-        self.assertIsInstance(description, str)
+        assert type == "LANGID"
+        assert isList
+        assert isinstance(description, str)
 
         type, description, isList = testobj.getLanguagePropertyReturnData('isoCode')
-        self.assertEqual(type, "string")
-        self.assertFalse(isList)
-        self.assertIsInstance(description, str)
+        assert type == "string"
+        assert not isList
+        assert isinstance(description, str)
 
         type, description, isList = testobj.getLanguagePropertyReturnData('compileSwitch')
-        self.assertEqual(type, "string")
-        self.assertFalse(isList)
-        self.assertIsInstance(description, str)
+        assert type == "string"
+        assert not isList
+        assert isinstance(description, str)
 
         type, description, isList = testobj.getLanguagePropertyReturnData('sillyString')
-        self.assertIsNone(type, )
-        self.assertFalse(isList)
-        self.assertIsNone(description)
+        assert type is None
+        assert not isList
+        assert description is None
 
     def test23IsPropertyText(self):
         """!
         @brief Test isLanguagePropertyText method
         """
         testobj = LanguageDescriptionList()
-        self.assertTrue(testobj.isLanguagePropertyText('LANG'))
-        self.assertTrue(testobj.isLanguagePropertyText('LANG_regions'))
-        self.assertFalse(testobj.isLanguagePropertyText('LANGID'))
-        self.assertFalse(testobj.isLanguagePropertyText('LANGID_regions'))
-        self.assertTrue(testobj.isLanguagePropertyText('isoCode'))
-        self.assertTrue(testobj.isLanguagePropertyText('compileSwitch'))
-        self.assertFalse(testobj.isLanguagePropertyText('sillyString'))
+        assert testobj.isLanguagePropertyText('LANG')
+        assert testobj.isLanguagePropertyText('LANG_regions')
+        assert not testobj.isLanguagePropertyText('LANGID')
+        assert not testobj.isLanguagePropertyText('LANGID_regions')
+        assert testobj.isLanguagePropertyText('isoCode')
+        assert testobj.isLanguagePropertyText('compileSwitch')
+        assert not testobj.isLanguagePropertyText('sillyString')
 
     def test24GetLanguagePropertyMethodName(self):
         """!
         @brief Test getLanguagePropertyMethodName method
         """
         testobj = LanguageDescriptionList()
-        self.assertEqual(testobj.getLanguagePropertyMethodName('LANG'), "getLANGLanguage")
-        self.assertEqual(testobj.getLanguagePropertyMethodName('LANG_regions'), "getLANGRegionList")
-        self.assertEqual(testobj.getLanguagePropertyMethodName('LANGID'), "getLANGIDCode")
-        self.assertEqual(testobj.getLanguagePropertyMethodName('LANGID_regions'), "getLANGIDList")
-        self.assertEqual(testobj.getLanguagePropertyMethodName('isoCode'), "getLangIsoCode")
-        self.assertEqual(testobj.getLanguagePropertyMethodName('compileSwitch'), "getLanguageCompileSwitch")
-        self.assertIsNone(testobj.getLanguagePropertyMethodName('sillyString'))
+        assert testobj.getLanguagePropertyMethodName('LANG') == "getLANGLanguage"
+        assert testobj.getLanguagePropertyMethodName('LANG_regions') == "getLANGRegionList"
+        assert testobj.getLanguagePropertyMethodName('LANGID') == "getLANGIDCode"
+        assert testobj.getLanguagePropertyMethodName('LANGID_regions') == "getLANGIDList"
+        assert testobj.getLanguagePropertyMethodName('isoCode') == "getLangIsoCode"
+        assert testobj.getLanguagePropertyMethodName('compileSwitch') == "getLanguageCompileSwitch"
+        assert testobj.getLanguagePropertyMethodName('sillyString') is None
 
     def test25GetLanguageIsoPropertyMethodName(self):
         """!
         @brief Test getLanguageIsoPropertyMethodName method
         """
         testobj = LanguageDescriptionList()
-        self.assertEqual(testobj.getLanguageIsoPropertyMethodName(), "getLangIsoCode")
+        assert testobj.getLanguageIsoPropertyMethodName() == "getLangIsoCode"
 
     def test26AddLanguage(self):
         """!
@@ -567,22 +568,22 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList()
         testobj.addLanguage('umpalumpa', 'ul', ['OR', 'WW'], [0x42], [0x1042, 0x2042], 'ul', "UMPA_LUMPA_ERRORS")
-        self.assertIsNotNone(testobj.langJsonData['languages']['umpalumpa'])
-        self.assertEqual(testobj.langJsonData['languages']['umpalumpa']['LANG'], 'ul')
+        assert testobj.langJsonData['languages']['umpalumpa'] is not None
+        assert testobj.langJsonData['languages']['umpalumpa']['LANG'] == 'ul'
 
-        self.assertEqual(len(testobj.langJsonData['languages']['umpalumpa']['LANG_regions']), 2)
-        self.assertEqual(testobj.langJsonData['languages']['umpalumpa']['LANG_regions'][0], 'OR')
-        self.assertEqual(testobj.langJsonData['languages']['umpalumpa']['LANG_regions'][1], 'WW')
+        assert len(testobj.langJsonData['languages']['umpalumpa']['LANG_regions']) == 2
+        assert testobj.langJsonData['languages']['umpalumpa']['LANG_regions'][0] == 'OR'
+        assert testobj.langJsonData['languages']['umpalumpa']['LANG_regions'][1] == 'WW'
 
-        self.assertEqual(len(testobj.langJsonData['languages']['umpalumpa']['LANGID']), 1)
-        self.assertEqual(testobj.langJsonData['languages']['umpalumpa']['LANGID'][0], 0x42)
+        assert len(testobj.langJsonData['languages']['umpalumpa']['LANGID']) == 1
+        assert testobj.langJsonData['languages']['umpalumpa']['LANGID'][0] == 0x42
 
-        self.assertEqual(len(testobj.langJsonData['languages']['umpalumpa']['LANGID_regions']), 2)
-        self.assertEqual(testobj.langJsonData['languages']['umpalumpa']['LANGID_regions'][0], 0x1042)
-        self.assertEqual(testobj.langJsonData['languages']['umpalumpa']['LANGID_regions'][1], 0x2042)
+        assert len(testobj.langJsonData['languages']['umpalumpa']['LANGID_regions']) == 2
+        assert testobj.langJsonData['languages']['umpalumpa']['LANGID_regions'][0] == 0x1042
+        assert testobj.langJsonData['languages']['umpalumpa']['LANGID_regions'][1] == 0x2042
 
-        self.assertEqual(testobj.langJsonData['languages']['umpalumpa']['isoCode'], 'ul')
-        self.assertEqual(testobj.langJsonData['languages']['umpalumpa']['compileSwitch'], 'UMPA_LUMPA_ERRORS')
+        assert testobj.langJsonData['languages']['umpalumpa']['isoCode'] == 'ul'
+        assert testobj.langJsonData['languages']['umpalumpa']['compileSwitch'] == 'UMPA_LUMPA_ERRORS'
 
     def test27GetLanguageList(self):
         """!
@@ -590,23 +591,23 @@ class Unittest01JsonLanguageList(unittest.TestCase):
         """
         testobj = LanguageDescriptionList(self.testJson)
         langList = testobj.getLanguageList()
-        self.assertEqual(len(langList), 1)
-        self.assertIn("english", langList)
+        assert len(langList) == 1
+        assert "english" in langList
 
-class Unittest02JsonLanguageListInputTests(unittest.TestCase):
+class TestUnittest02JsonLanguageListInput:
     """!
     Test input methods
     """
     @classmethod
-    def setUpClass(cls):
+    def setup_class(cls):
         cls.testJson = os.path.join(TESTFILEPATH, "testdata.json")
-        return super().setUpClass()
+
 
     @classmethod
-    def tearDownClass(cls):
+    def teardown_class(cls):
         if os.path.exists("jsonLanguageDescriptionList.json"):
             os.remove("jsonLanguageDescriptionList.json")   # Delete in case it was accidently created
-        return super().tearDownClass()
+
 
     """!
     @brief Unit test for the LanguageDescriptionList class input functions
@@ -618,8 +619,8 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', return_value='Klingon'):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputLanguageName(), 'klingon')
-            self.assertEqual(output.getvalue(), "")
+            assert testobj._inputLanguageName() == 'klingon'
+            assert output.getvalue() == ""
 
     def test02InputLanguageNameBlankGoodSecond(self):
         """!
@@ -632,8 +633,8 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputLanguageName(), 'romulan')
-            self.assertEqual(output.getvalue(), "Error: Only characters a-z are allowed in the <lang> name, try again.\n")
+            assert testobj._inputLanguageName() == 'romulan'
+            assert output.getvalue() == "Error: Only characters a-z are allowed in the <lang> name, try again.\n"
 
     def test03InputLanguageNameBadInputs(self):
         """!
@@ -646,11 +647,11 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputLanguageName(), 'romulan')
+            assert testobj._inputLanguageName() == 'romulan'
             expected = "Error: Only characters a-z are allowed in the <lang> name, try again.\n"
             expected += "Error: Only characters a-z are allowed in the <lang> name, try again.\n"
             expected += "Error: Only characters a-z are allowed in the <lang> name, try again.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test04InputIsoCodeGood(self):
         """!
@@ -659,8 +660,8 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', return_value='kl'):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputIsoTranslateCode(), 'kl')
-            self.assertEqual(output.getvalue(), "")
+            assert testobj._inputIsoTranslateCode() == 'kl'
+            assert output.getvalue() == ""
 
     def test05InputIsoCodeBlankGoodSecond(self):
         """!
@@ -673,8 +674,8 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputIsoTranslateCode(), 'rm')
-            self.assertEqual(output.getvalue(), "Error: Only two characters a-z are allowed in the code, try again.\n")
+            assert testobj._inputIsoTranslateCode() == 'rm'
+            assert output.getvalue() == "Error: Only two characters a-z are allowed in the code, try again.\n"
 
     def test06InputIsoCodeBadGoodSecond(self):
         """!
@@ -687,11 +688,11 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputIsoTranslateCode(), 'rm')
+            assert testobj._inputIsoTranslateCode() == 'rm'
             expected = "Error: Only two characters a-z are allowed in the code, try again.\n"
             expected += "Error: Only two characters a-z are allowed in the code, try again.\n"
             expected += "Error: Only two characters a-z are allowed in the code, try again.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test07InputLinuxLangCodeGood(self):
         """!
@@ -700,8 +701,8 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', return_value='kl'):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputLinuxLangCode(), 'kl')
-            self.assertEqual(output.getvalue(), "")
+            assert testobj._inputLinuxLangCode() == 'kl'
+            assert output.getvalue() == ""
 
     def test08InputLinuxLangCodeBlankGoodSecond(self):
         """!
@@ -714,8 +715,8 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputLinuxLangCode(), 'rm')
-            self.assertEqual(output.getvalue(), "Error: Only two characters a-z are allowed in the code, try again.\n")
+            assert testobj._inputLinuxLangCode() == 'rm'
+            assert output.getvalue() == "Error: Only two characters a-z are allowed in the code, try again.\n"
 
     def test09InputLinuxLangCodeBadGoodSecond(self):
         """!
@@ -728,11 +729,11 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputLinuxLangCode(), 'rm')
+            assert testobj._inputLinuxLangCode() == 'rm'
             expected = "Error: Only two characters a-z are allowed in the code, try again.\n"
             expected += "Error: Only two characters a-z are allowed in the code, try again.\n"
             expected += "Error: Only two characters a-z are allowed in the code, try again.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test10InputLinuxLangRegionsGood(self):
         """!
@@ -746,12 +747,12 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
             regionList = testobj._inputLinuxLangRegions()
-            self.assertEqual(len(regionList), 1)
-            self.assertEqual(regionList[0], 'HK')
+            assert len(regionList) == 1
+            assert regionList[0] == 'HK'
 
             expected = "Enter linux region code(s) (2 chars following the _ in the 'LANG' environment value).\n"
             expected += "Enter empty string to exit.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test11InputLinuxLangRegionsBadThenGood2(self):
         """!
@@ -765,16 +766,16 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
             regionList = testobj._inputLinuxLangRegions()
-            self.assertEqual(len(regionList), 2)
-            self.assertEqual(regionList[0], 'RH')
-            self.assertEqual(regionList[1], 'RL')
+            assert len(regionList) == 2
+            assert regionList[0] == 'RH'
+            assert regionList[1] == 'RL'
 
             expected = "Enter linux region code(s) (2 chars following the _ in the 'LANG' environment value).\n"
             expected += "Enter empty string to exit.\n"
             expected += "Error: Only two characters A-Z are allowed in the code, try again.\n"
             expected += "Error: Only two characters A-Z are allowed in the code, try again.\n"
             expected += "Error: Only two characters A-Z are allowed in the code, try again.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test12InputWindowsLangIdsGood(self):
         """!
@@ -788,14 +789,14 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
             windowsIdCodes, windowsIdCodeList = testobj._inputWindowsLangIds()
-            self.assertEqual(len(windowsIdCodes), 1)
-            self.assertEqual(windowsIdCodes[0], (1157 & 0xFF))
-            self.assertEqual(len(windowsIdCodeList), 2)
-            self.assertEqual(windowsIdCodeList[0], 1157)
-            self.assertEqual(windowsIdCodeList[1], 133)
+            assert len(windowsIdCodes) == 1
+            assert windowsIdCodes[0] == (1157 & 0xFF)
+            assert len(windowsIdCodeList) == 2
+            assert windowsIdCodeList[0] == 1157
+            assert windowsIdCodeList[1] == 133
 
             expected = "Enter Windows LANGID values. A value of 0 will exit.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test13InputWindowsLangIdsMultipleIdOneCode(self):
         """!
@@ -809,15 +810,15 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
             windowsIdCodes, windowsIdCodeList = testobj._inputWindowsLangIds()
-            self.assertEqual(len(windowsIdCodes), 1)
-            self.assertEqual(windowsIdCodes[0], 9)
-            self.assertEqual(len(windowsIdCodeList), 3)
-            self.assertEqual(windowsIdCodeList[0], 3081)
-            self.assertEqual(windowsIdCodeList[1], 10249)
-            self.assertEqual(windowsIdCodeList[2], 4105)
+            assert len(windowsIdCodes) == 1
+            assert windowsIdCodes[0] == 9
+            assert len(windowsIdCodeList) == 3
+            assert windowsIdCodeList[0] == 3081
+            assert windowsIdCodeList[1] == 10249
+            assert windowsIdCodeList[2] == 4105
 
             expected = "Enter Windows LANGID values. A value of 0 will exit.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test14InputWindowsLangIdsMultipleIdMultipleOneCode(self):
         """!
@@ -831,19 +832,19 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
             windowsIdCodes, windowsIdCodeList = testobj._inputWindowsLangIds()
-            self.assertEqual(len(windowsIdCodes), 2)
-            self.assertEqual(windowsIdCodes[0], 9)
-            self.assertEqual(windowsIdCodes[1], 12)
-            self.assertEqual(len(windowsIdCodeList), 6)
-            self.assertEqual(windowsIdCodeList[0], 3081)
-            self.assertEqual(windowsIdCodeList[1], 10249)
-            self.assertEqual(windowsIdCodeList[2], 4105)
-            self.assertEqual(windowsIdCodeList[3], 2060)
-            self.assertEqual(windowsIdCodeList[4], 11276)
-            self.assertEqual(windowsIdCodeList[5], 9)
+            assert len(windowsIdCodes) == 2
+            assert windowsIdCodes[0] == 9
+            assert windowsIdCodes[1] == 12
+            assert len(windowsIdCodeList) == 6
+            assert windowsIdCodeList[0] == 3081
+            assert windowsIdCodeList[1] == 10249
+            assert windowsIdCodeList[2] == 4105
+            assert windowsIdCodeList[3] == 2060
+            assert windowsIdCodeList[4] == 11276
+            assert windowsIdCodeList[5] == 9
 
             expected = "Enter Windows LANGID values. A value of 0 will exit.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test15NewLanguage(self):
         """!
@@ -858,7 +859,7 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertTrue(testobj.newLanguage())
+            assert testobj.newLanguage()
 
             expected = "Enter linux region code(s) (2 chars following the _ in the 'LANG' environment value).\n"
             expected += "Enter empty string to exit.\n"
@@ -866,25 +867,25 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
             expected += "New Entry:\n"
             expected += "{'LANG': 'tl', 'LANG_regions': ['AU', 'US'], 'LANGID': [9], "
             expected += "'LANGID_regions': [3081, 10249, 4105], 'isoCode': 'tl', 'compileSwitch': 'TESTLANG_ERRORS'}\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
-            self.assertIsNotNone(testobj.langJsonData['languages']['testlang'])
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANG'], 'tl')
+            assert testobj.langJsonData['languages']['testlang'] is not None
+            assert testobj.langJsonData['languages']['testlang']['LANG'] == 'tl'
 
-            self.assertEqual(len(testobj.langJsonData['languages']['testlang']['LANG_regions']), 2)
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANG_regions'][0], 'AU')
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANG_regions'][1], 'US')
+            assert len(testobj.langJsonData['languages']['testlang']['LANG_regions']) == 2
+            assert testobj.langJsonData['languages']['testlang']['LANG_regions'][0] == 'AU'
+            assert testobj.langJsonData['languages']['testlang']['LANG_regions'][1] == 'US'
 
-            self.assertEqual(len(testobj.langJsonData['languages']['testlang']['LANGID']), 1)
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANGID'][0], (3081 & 0x0FF))
+            assert len(testobj.langJsonData['languages']['testlang']['LANGID']) == 1
+            assert testobj.langJsonData['languages']['testlang']['LANGID'][0] == (3081 & 0x0FF)
 
-            self.assertEqual(len(testobj.langJsonData['languages']['testlang']['LANGID_regions']), 3)
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANGID_regions'][0], 3081)
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANGID_regions'][1], 10249)
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANGID_regions'][2], 4105)
+            assert len(testobj.langJsonData['languages']['testlang']['LANGID_regions']) == 3
+            assert testobj.langJsonData['languages']['testlang']['LANGID_regions'][0] == 3081
+            assert testobj.langJsonData['languages']['testlang']['LANGID_regions'][1] == 10249
+            assert testobj.langJsonData['languages']['testlang']['LANGID_regions'][2] == 4105
 
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['isoCode'], 'tl')
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['compileSwitch'], 'TESTLANG_ERRORS')
+            assert testobj.langJsonData['languages']['testlang']['isoCode'] == 'tl'
+            assert testobj.langJsonData['languages']['testlang']['compileSwitch'] == 'TESTLANG_ERRORS'
 
     def test16NewLanguageNoCommit(self):
         """!
@@ -899,7 +900,7 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertFalse(testobj.newLanguage())
+            assert not testobj.newLanguage()
 
             expected = "Enter linux region code(s) (2 chars following the _ in the 'LANG' environment value).\n"
             expected += "Enter empty string to exit.\n"
@@ -907,10 +908,10 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
             expected += "New Entry:\n"
             expected += "{'LANG': 'tl', 'LANG_regions': ['AU', 'US'], 'LANGID': [9], "
             expected += "'LANGID_regions': [3081, 10249, 4105], 'isoCode': 'tl', 'compileSwitch': 'NEWLANG_ERRORS'}\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
             langKeys = list(testobj.langJsonData['languages'].keys())
-            self.assertNotIn('newlang', langKeys)
+            assert 'newlang' not in langKeys
 
     def test17NewLanguageNotRight(self):
         """!
@@ -927,7 +928,7 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertTrue(testobj.newLanguage())
+            assert testobj.newLanguage()
 
             expected = "Enter linux region code(s) (2 chars following the _ in the 'LANG' environment value).\n"
             expected += "Enter empty string to exit.\n"
@@ -941,11 +942,11 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
             expected += "New Entry:\n"
             expected += "{'LANG': 'nl', 'LANG_regions': ['FR', 'ES'], 'LANGID': [12], "
             expected += "'LANGID_regions': [2060, 11276, 3084], 'isoCode': 'nl', 'compileSwitch': 'NEWTSTLANG_ERRORS'}\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
             langKeys = list(testobj.langJsonData['languages'].keys())
-            self.assertNotIn('newlang', langKeys)
-            self.assertIn('newtstlang', langKeys)
+            assert 'newlang' not in langKeys
+            assert 'newtstlang' in langKeys
 
     def test18String(self):
         """!
@@ -967,19 +968,19 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         expected += "Default = "
         expected += str(testobj.langJsonData['default']['name'])
 
-        self.assertEqual(testStr, expected)
+        assert testStr == expected
 
-class Unittest02JsonLanguageListInputTests(unittest.TestCase):
+class TestUnittest02JsonLanguageListInput:
     @classmethod
-    def setUpClass(cls):
+    def setup_class(cls):
         cls.testJson = os.path.join(TESTFILEPATH, "testdata.json")
-        return super().setUpClass()
+
 
     @classmethod
-    def tearDownClass(cls):
+    def teardown_class(cls):
         if os.path.exists("jsonLanguageDescriptionList.json"):
             os.remove("jsonLanguageDescriptionList.json")   # Delete in case it was accidently created
-        return super().tearDownClass()
+
 
     """!
     @brief Unit test for the LanguageDescriptionList class input functions
@@ -991,8 +992,8 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', return_value='Klingon'):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputLanguageName(), 'klingon')
-            self.assertEqual(output.getvalue(), "")
+            assert testobj._inputLanguageName() == 'klingon'
+            assert output.getvalue() == ""
 
     def test02InputLanguageNameBlankGoodSecond(self):
         """!
@@ -1005,8 +1006,8 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputLanguageName(), 'romulan')
-            self.assertEqual(output.getvalue(), "Error: Only characters a-z are allowed in the <lang> name, try again.\n")
+            assert testobj._inputLanguageName() == 'romulan'
+            assert output.getvalue() == "Error: Only characters a-z are allowed in the <lang> name, try again.\n"
 
     def test03InputLanguageNameBadGoodSecond(self):
         """!
@@ -1019,11 +1020,11 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputLanguageName(), 'romulan')
+            assert testobj._inputLanguageName() == 'romulan'
             expected = "Error: Only characters a-z are allowed in the <lang> name, try again.\n"
             expected += "Error: Only characters a-z are allowed in the <lang> name, try again.\n"
             expected += "Error: Only characters a-z are allowed in the <lang> name, try again.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test04InputIsoCodeGood(self):
         """!
@@ -1032,8 +1033,8 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', return_value='kl'):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputIsoTranslateCode(), 'kl')
-            self.assertEqual(output.getvalue(), "")
+            assert testobj._inputIsoTranslateCode() == 'kl'
+            assert output.getvalue() == ""
 
     def test05InputIsoCodeBlankGoodSecond(self):
         """!
@@ -1046,8 +1047,8 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputIsoTranslateCode(), 'rm')
-            self.assertEqual(output.getvalue(), "Error: Only two characters a-z are allowed in the code, try again.\n")
+            assert testobj._inputIsoTranslateCode() == 'rm'
+            assert output.getvalue() == "Error: Only two characters a-z are allowed in the code, try again.\n"
 
     def test06InputIsoCodeBadGoodSecond(self):
         """!
@@ -1060,11 +1061,11 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputIsoTranslateCode(), 'rm')
+            assert testobj._inputIsoTranslateCode() == 'rm'
             expected = "Error: Only two characters a-z are allowed in the code, try again.\n"
             expected += "Error: Only two characters a-z are allowed in the code, try again.\n"
             expected += "Error: Only two characters a-z are allowed in the code, try again.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test07InputLinuxLangCodeGood(self):
         """!
@@ -1073,8 +1074,8 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', return_value='kl'):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputLinuxLangCode(), 'kl')
-            self.assertEqual(output.getvalue(), "")
+            assert testobj._inputLinuxLangCode() == 'kl'
+            assert output.getvalue() == ""
 
     def test08InputLinuxLangCodeBlankGoodSecond(self):
         """!
@@ -1087,8 +1088,8 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputLinuxLangCode(), 'rm')
-            self.assertEqual(output.getvalue(), "Error: Only two characters a-z are allowed in the code, try again.\n")
+            assert testobj._inputLinuxLangCode() == 'rm'
+            assert output.getvalue() == "Error: Only two characters a-z are allowed in the code, try again.\n"
 
     def test09InputLinuxLangCodeBadGoodSecond(self):
         """!
@@ -1101,11 +1102,11 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertEqual(testobj._inputLinuxLangCode(), 'rm')
+            assert testobj._inputLinuxLangCode() == 'rm'
             expected = "Error: Only two characters a-z are allowed in the code, try again.\n"
             expected += "Error: Only two characters a-z are allowed in the code, try again.\n"
             expected += "Error: Only two characters a-z are allowed in the code, try again.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test10InputLinuxLangRegionsGood(self):
         """!
@@ -1119,12 +1120,12 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
             regionList = testobj._inputLinuxLangRegions()
-            self.assertEqual(len(regionList), 1)
-            self.assertEqual(regionList[0], 'HK')
+            assert len(regionList) == 1
+            assert regionList[0] == 'HK'
 
             expected = "Enter linux region code(s) (2 chars following the _ in the 'LANG' environment value).\n"
             expected += "Enter empty string to exit.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test11InputLinuxLangRegionsBadThenGood2(self):
         """!
@@ -1138,16 +1139,16 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
             regionList = testobj._inputLinuxLangRegions()
-            self.assertEqual(len(regionList), 2)
-            self.assertEqual(regionList[0], 'RH')
-            self.assertEqual(regionList[1], 'RL')
+            assert len(regionList) == 2
+            assert regionList[0] == 'RH'
+            assert regionList[1] == 'RL'
 
             expected = "Enter linux region code(s) (2 chars following the _ in the 'LANG' environment value).\n"
             expected += "Enter empty string to exit.\n"
             expected += "Error: Only two characters A-Z are allowed in the code, try again.\n"
             expected += "Error: Only two characters A-Z are allowed in the code, try again.\n"
             expected += "Error: Only two characters A-Z are allowed in the code, try again.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test12InputWindowsLangIdsGood(self):
         """!
@@ -1161,13 +1162,13 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
             windowsIdCodes, windowsIdCodeList = testobj._inputWindowsLangIds()
-            self.assertEqual(len(windowsIdCodes), 1)
-            self.assertEqual(windowsIdCodes[0], (1157 & 0xFF))
-            self.assertEqual(len(windowsIdCodeList), 1)
-            self.assertEqual(windowsIdCodeList[0], 1157)
+            assert len(windowsIdCodes) == 1
+            assert windowsIdCodes[0] == (1157 & 0xFF)
+            assert len(windowsIdCodeList) == 1
+            assert windowsIdCodeList[0] == 1157
 
             expected = "Enter Windows LANGID values. A value of 0 will exit.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test13InputWindowsLangIdsMultipleIdOneCode(self):
         """!
@@ -1181,15 +1182,15 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
             windowsIdCodes, windowsIdCodeList = testobj._inputWindowsLangIds()
-            self.assertEqual(len(windowsIdCodes), 1)
-            self.assertEqual(windowsIdCodes[0], 9)
-            self.assertEqual(len(windowsIdCodeList), 3)
-            self.assertEqual(windowsIdCodeList[0], 3081)
-            self.assertEqual(windowsIdCodeList[1], 10249)
-            self.assertEqual(windowsIdCodeList[2], 4105)
+            assert len(windowsIdCodes) == 1
+            assert windowsIdCodes[0] == 9
+            assert len(windowsIdCodeList) == 3
+            assert windowsIdCodeList[0] == 3081
+            assert windowsIdCodeList[1] == 10249
+            assert windowsIdCodeList[2] == 4105
 
             expected = "Enter Windows LANGID values. A value of 0 will exit.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test14InputWindowsLangIdsMultipleIdMultipleOneCode(self):
         """!
@@ -1203,18 +1204,18 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
             windowsIdCodes, windowsIdCodeList = testobj._inputWindowsLangIds()
-            self.assertEqual(len(windowsIdCodes), 2)
-            self.assertEqual(windowsIdCodes[0], 9)
-            self.assertEqual(windowsIdCodes[1], 12)
-            self.assertEqual(len(windowsIdCodeList), 5)
-            self.assertEqual(windowsIdCodeList[0], 3081)
-            self.assertEqual(windowsIdCodeList[1], 10249)
-            self.assertEqual(windowsIdCodeList[2], 4105)
-            self.assertEqual(windowsIdCodeList[3], 2060)
-            self.assertEqual(windowsIdCodeList[4], 11276)
+            assert len(windowsIdCodes) == 2
+            assert windowsIdCodes[0] == 9
+            assert windowsIdCodes[1] == 12
+            assert len(windowsIdCodeList) == 5
+            assert windowsIdCodeList[0] == 3081
+            assert windowsIdCodeList[1] == 10249
+            assert windowsIdCodeList[2] == 4105
+            assert windowsIdCodeList[3] == 2060
+            assert windowsIdCodeList[4] == 11276
 
             expected = "Enter Windows LANGID values. A value of 0 will exit.\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
     def test15NewLanguage(self):
         """!
@@ -1229,7 +1230,7 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertTrue(testobj.newLanguage())
+            assert testobj.newLanguage()
 
             expected = "Enter linux region code(s) (2 chars following the _ in the 'LANG' environment value).\n"
             expected += "Enter empty string to exit.\n"
@@ -1237,25 +1238,25 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
             expected += "New Entry:\n"
             expected += "{'LANG': 'tl', 'LANG_regions': ['AU', 'US'], 'LANGID': [9], "
             expected += "'LANGID_regions': [3081, 10249, 4105], 'isoCode': 'tl', 'compileSwitch': 'TESTLANG_ERRORS'}\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
-            self.assertIsNotNone(testobj.langJsonData['languages']['testlang'])
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANG'], 'tl')
+            assert testobj.langJsonData['languages']['testlang'] is not None
+            assert testobj.langJsonData['languages']['testlang']['LANG'] == 'tl'
 
-            self.assertEqual(len(testobj.langJsonData['languages']['testlang']['LANG_regions']), 2)
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANG_regions'][0], 'AU')
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANG_regions'][1], 'US')
+            assert len(testobj.langJsonData['languages']['testlang']['LANG_regions']) == 2
+            assert testobj.langJsonData['languages']['testlang']['LANG_regions'][0] == 'AU'
+            assert testobj.langJsonData['languages']['testlang']['LANG_regions'][1] == 'US'
 
-            self.assertEqual(len(testobj.langJsonData['languages']['testlang']['LANGID']), 1)
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANGID'][0], (3081 & 0x0FF))
+            assert len(testobj.langJsonData['languages']['testlang']['LANGID']) == 1
+            assert testobj.langJsonData['languages']['testlang']['LANGID'][0] == (3081 & 0x0FF)
 
-            self.assertEqual(len(testobj.langJsonData['languages']['testlang']['LANGID_regions']), 3)
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANGID_regions'][0], 3081)
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANGID_regions'][1], 10249)
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['LANGID_regions'][2], 4105)
+            assert len(testobj.langJsonData['languages']['testlang']['LANGID_regions']) == 3
+            assert testobj.langJsonData['languages']['testlang']['LANGID_regions'][0] == 3081
+            assert testobj.langJsonData['languages']['testlang']['LANGID_regions'][1] == 10249
+            assert testobj.langJsonData['languages']['testlang']['LANGID_regions'][2] == 4105
 
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['isoCode'], 'tl')
-            self.assertEqual(testobj.langJsonData['languages']['testlang']['compileSwitch'], 'TESTLANG_ERRORS')
+            assert testobj.langJsonData['languages']['testlang']['isoCode'] == 'tl'
+            assert testobj.langJsonData['languages']['testlang']['compileSwitch'] == 'TESTLANG_ERRORS'
 
     def test16NewLanguageNoCommit(self):
         """!
@@ -1270,7 +1271,7 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertFalse(testobj.newLanguage())
+            assert not testobj.newLanguage()
 
             expected = "Enter linux region code(s) (2 chars following the _ in the 'LANG' environment value).\n"
             expected += "Enter empty string to exit.\n"
@@ -1278,10 +1279,10 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
             expected += "New Entry:\n"
             expected += "{'LANG': 'tl', 'LANG_regions': ['AU', 'US'], 'LANGID': [9], "
             expected += "'LANGID_regions': [3081, 10249, 4105], 'isoCode': 'tl', 'compileSwitch': 'NEWLANG_ERRORS'}\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
             langKeys = list(testobj.langJsonData['languages'].keys())
-            self.assertNotIn('newlang', langKeys)
+            assert 'newlang' not in langKeys
 
     def test17NewLanguageNotRight(self):
         """!
@@ -1298,7 +1299,7 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
-            self.assertTrue(testobj.newLanguage())
+            assert testobj.newLanguage()
 
             expected = "Enter linux region code(s) (2 chars following the _ in the 'LANG' environment value).\n"
             expected += "Enter empty string to exit.\n"
@@ -1312,11 +1313,11 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
             expected += "New Entry:\n"
             expected += "{'LANG': 'nl', 'LANG_regions': ['FR', 'ES'], 'LANGID': [12], "
             expected += "'LANGID_regions': [2060, 11276, 3084], 'isoCode': 'nl', 'compileSwitch': 'NEWTSTLANG_ERRORS'}\n"
-            self.assertEqual(output.getvalue(), expected)
+            assert output.getvalue() == expected
 
             langKeys = list(testobj.langJsonData['languages'].keys())
-            self.assertNotIn('newlang', langKeys)
-            self.assertIn('newtstlang', langKeys)
+            assert 'newlang' not in langKeys
+            assert 'newtstlang' in langKeys
 
     def test18String(self):
         """!
@@ -1338,7 +1339,7 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         expected += "Default = "
         expected += str(testobj.langJsonData['default']['name'])
 
-        self.assertEqual(testStr, expected)
+        assert testStr == expected
 
     def test19InputWindowsLangIdsMultipleIdMultipleCode(self):
         """!
@@ -1352,15 +1353,12 @@ class Unittest02JsonLanguageListInputTests(unittest.TestCase):
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
             testobj = LanguageDescriptionList()
             windowsIdCodes, windowsIdCodeList = testobj._inputWindowsLangIds()
-            self.assertEqual(len(windowsIdCodes), 2)
-            self.assertEqual(windowsIdCodes[0], 9)
-            self.assertEqual(windowsIdCodes[1], 16)
-            self.assertEqual(len(windowsIdCodeList), 2)
-            self.assertEqual(windowsIdCodeList[0], 3081)
-            self.assertEqual(windowsIdCodeList[1], 2576)
+            assert len(windowsIdCodes) == 2
+            assert windowsIdCodes[0] == 9
+            assert windowsIdCodes[1] == 16
+            assert len(windowsIdCodeList) == 2
+            assert windowsIdCodeList[0] == 3081
+            assert windowsIdCodeList[1] == 2576
 
             expected = "Enter Windows LANGID values. A value of 0 will exit.\n"
-            self.assertEqual(output.getvalue(), expected)
-
-if __name__ == '__main__':
-    unittest.main()
+            assert output.getvalue() == expected

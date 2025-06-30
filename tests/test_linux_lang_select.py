@@ -25,7 +25,7 @@ Unittest for programmer base tools utility
 #==========================================================================
 
 import os
-import unittest
+
 from unittest.mock import mock_open, patch
 
 from dir_init import pathincsetup
@@ -58,7 +58,7 @@ class fileCapture(object):
         self.lineCount += len(writeList)
         self.captureList.extend(writeList)
 
-class TestClass01LinuxLangSelect(unittest.TestCase):
+class TestClass01LinuxLangSelect:
     """!
     @brief Unit test for the BaseCppStringClassGenerator class
     """
@@ -68,16 +68,16 @@ class TestClass01LinuxLangSelect(unittest.TestCase):
         """
         testObj = LinuxLangSelectFunctionGenerator(LanguageDescriptionList())
 
-        self.assertEqual(testObj.baseClassName, "BaseClass")
-        self.assertEqual(testObj.dynamicCompileSwitch, "DYNAMIC_INTERNATIONALIZATION")
-        self.assertEqual(testObj.selectFunctionName, "getBaseClass_Linux")
-        self.assertEqual(len(testObj.paramDictList), 1)
-        self.assertDictEqual(testObj.paramDictList[0], ParamRetDict.buildParamDict("langId",
+        assert testObj.baseClassName == "BaseClass"
+        assert testObj.dynamicCompileSwitch == "DYNAMIC_INTERNATIONALIZATION"
+        assert testObj.selectFunctionName == "getBaseClass_Linux"
+        assert len(testObj.paramDictList) == 1
+        assert testObj.paramDictList[0] == ParamRetDict.buildParamDict("langId",
                                                                                    "const char*",
-                                                                                   "Current LANG value from the program environment"))
-        self.assertEqual(testObj.defOsString, "(defined(__linux__) || defined(__unix__))")
-        self.assertIsInstance(testObj.langJsonData, LanguageDescriptionList)
-        self.assertIsInstance(testObj.doxyCommentGen, CDoxyCommentGenerator)
+                                                                                   "Current LANG value from the program environment")
+        assert testObj.defOsString == "(defined(__linux__) || defined(__unix__))"
+        assert isinstance(testObj.langJsonData, LanguageDescriptionList)
+        assert isinstance(testObj.doxyCommentGen, CDoxyCommentGenerator)
 
     def test002ConstructorNonDefault(self):
         """!
@@ -85,30 +85,30 @@ class TestClass01LinuxLangSelect(unittest.TestCase):
         """
         testObj = LinuxLangSelectFunctionGenerator(LanguageDescriptionList(), "George", "MIT_open", "TestBaseClass", "TEST_DYNAM_SWITCH")
 
-        self.assertEqual(testObj.baseClassName, "TestBaseClass")
-        self.assertEqual(testObj.dynamicCompileSwitch, "TEST_DYNAM_SWITCH")
-        self.assertEqual(testObj.selectFunctionName, "getTestBaseClass_Linux")
-        self.assertEqual(len(testObj.paramDictList), 1)
-        self.assertDictEqual(testObj.paramDictList[0], ParamRetDict.buildParamDict("langId",
+        assert testObj.baseClassName == "TestBaseClass"
+        assert testObj.dynamicCompileSwitch == "TEST_DYNAM_SWITCH"
+        assert testObj.selectFunctionName == "getTestBaseClass_Linux"
+        assert len(testObj.paramDictList) == 1
+        assert testObj.paramDictList[0] == ParamRetDict.buildParamDict("langId",
                                                                                    "const char*",
-                                                                                   "Current LANG value from the program environment"))
-        self.assertEqual(testObj.defOsString, "(defined(__linux__) || defined(__unix__))")
-        self.assertIsInstance(testObj.langJsonData, LanguageDescriptionList)
-        self.assertIsInstance(testObj.doxyCommentGen, CDoxyCommentGenerator)
+                                                                                   "Current LANG value from the program environment")
+        assert testObj.defOsString == "(defined(__linux__) || defined(__unix__))"
+        assert isinstance(testObj.langJsonData, LanguageDescriptionList)
+        assert isinstance(testObj.doxyCommentGen, CDoxyCommentGenerator)
 
     def test003GetFunctionName(self):
         """!
         @brief Test getFunctionName
         """
         testObj = LinuxLangSelectFunctionGenerator(LanguageDescriptionList())
-        self.assertEqual(testObj.getFunctionName(), "getBaseClass_Linux")
+        assert testObj.getFunctionName() == "getBaseClass_Linux"
 
     def test004GetOsDefine(self):
         """!
         @brief Test getOsDefine
         """
         testObj = LinuxLangSelectFunctionGenerator(LanguageDescriptionList())
-        self.assertEqual(testObj.getOsDefine(), "(defined(__linux__) || defined(__unix__))")
+        assert testObj.getOsDefine() == "(defined(__linux__) || defined(__unix__))"
 
     def test005GenFunctionDefine(self):
         """!
@@ -123,16 +123,16 @@ class TestClass01LinuxLangSelect(unittest.TestCase):
         expectedList.append("{\n")
 
         testList = testObj.genFunctionDefine()
-        self.assertEqual(len(testList), len(expectedList))
+        assert len(testList) == len(expectedList)
         for index, expectedText in enumerate(expectedList):
-            self.assertEqual(testList[index], expectedText)
+            assert testList[index] == expectedText
 
     def test006GenFunctionEnd(self):
         """!
         @brief Test genFunctionEnd
         """
         testObj = LinuxLangSelectFunctionGenerator(LanguageDescriptionList())
-        self.assertEqual(testObj.genFunctionEnd(), "} // end of "+testObj.selectFunctionName+"()\n")
+        assert testObj.genFunctionEnd() == "} // end of "+testObj.selectFunctionName+"()\n"
 
     def test007GenFunction(self):
         """!
@@ -145,13 +145,13 @@ class TestClass01LinuxLangSelect(unittest.TestCase):
 
         testObj.genFunction(dummy)
 
-        self.assertEqual(dummy.callCount, 1)
-        self.assertEqual(dummy.lineCount, 41)
+        assert dummy.callCount == 1
+        assert dummy.lineCount == 41
 
-        self.assertEqual(dummy.captureList[0], "#if (defined(__linux__) || defined(__unix__))\n")
-        self.assertEqual(dummy.captureList[1], cppGen._genInclude("<cstdlib>"))
-        self.assertEqual(dummy.captureList[2], cppGen._genInclude("<regex>"))
-        self.assertEqual(dummy.captureList[3], "\n")
+        assert dummy.captureList[0] == "#if (defined(__linux__) || defined(__unix__))\n"
+        assert dummy.captureList[1] == cppGen._genInclude("<cstdlib>")
+        assert dummy.captureList[2] == cppGen._genInclude("<regex>")
+        assert dummy.captureList[3] == "\n"
 
         expectedList = cppGen._defineFunctionWithDecorations(testObj.selectFunctionName,
                                                              "Determine the correct local language class from the input LANG environment setting",
@@ -159,18 +159,18 @@ class TestClass01LinuxLangSelect(unittest.TestCase):
                                                              testObj.baseIntfRetPtrDict)
         expectedList.append("{\n")
         for index, expectedText in enumerate(expectedList):
-            self.assertEqual(dummy.captureList[index+4], expectedText)
+            assert dummy.captureList[index+4] == expectedText
 
         paramName = ParamRetDict.getParamName(testObj.paramDictList[0])
-        self.assertEqual(dummy.captureList[13], "    // Check for valid input\n")
-        self.assertEqual(dummy.captureList[14], "    if (nullptr != "+paramName+")\n")
-        self.assertEqual(dummy.captureList[15], "    {\n")
-        self.assertEqual(dummy.captureList[16], "        // Break the string into its components\n")
-        self.assertEqual(dummy.captureList[17], "        std::cmatch searchMatch;\n")
-        self.assertEqual(dummy.captureList[18], "        std::regex searchRegex(\"^([a-z]{2})_([A-Z]{2})\\\\.(UTF-[0-9]{1,2})\");\n")
-        self.assertEqual(dummy.captureList[19], "        bool matched = std::regex_match("+paramName+", searchMatch, searchRegex);\n")
-        self.assertEqual(dummy.captureList[20], "\n")
-        self.assertEqual(dummy.captureList[21], "        // Determine the language\n")
+        assert dummy.captureList[13] == "    // Check for valid input\n"
+        assert dummy.captureList[14] == "    if (nullptr != "+paramName+")\n"
+        assert dummy.captureList[15] == "    {\n"
+        assert dummy.captureList[16] == "        // Break the string into its components\n"
+        assert dummy.captureList[17] == "        std::cmatch searchMatch;\n"
+        assert dummy.captureList[18] == "        std::regex searchRegex(\"^([a-z]{2})_([A-Z]{2})\\\\.(UTF-[0-9]{1,2})\");\n"
+        assert dummy.captureList[19] == "        bool matched = std::regex_match("+paramName+", searchMatch, searchRegex);\n"
+        assert dummy.captureList[20] == "\n"
+        assert dummy.captureList[21] == "        // Determine the language\n"
 
         first = True
         for index, langName in enumerate(langList.getLanguageList()):
@@ -185,23 +185,23 @@ class TestClass01LinuxLangSelect(unittest.TestCase):
             ifLine += "\"))\n"
 
             listOffset = 22 + (index * 4)
-            self.assertEqual(dummy.captureList[listOffset], "        "+ifLine)
-            self.assertEqual(dummy.captureList[listOffset+1], "        {\n")
-            self.assertEqual(dummy.captureList[listOffset+2], "            "+cppGen._genMakePtrReturnStatement(langName))
-            self.assertEqual(dummy.captureList[listOffset+3], "        }\n")
+            assert dummy.captureList[listOffset] == "        "+ifLine
+            assert dummy.captureList[listOffset+1] == "        {\n"
+            assert dummy.captureList[listOffset+2] == "            "+cppGen._genMakePtrReturnStatement(langName)
+            assert dummy.captureList[listOffset+3] == "        }\n"
 
-        self.assertEqual(dummy.captureList[30], "        else //unknown language code, use default language\n")
-        self.assertEqual(dummy.captureList[31], "        {\n")
+        assert dummy.captureList[30] == "        else //unknown language code, use default language\n"
+        assert dummy.captureList[31] == "        {\n"
         defaultLang, defaultIsoCode = langList.getDefaultData()
-        self.assertEqual(dummy.captureList[32], "            "+cppGen._genMakePtrReturnStatement(defaultLang))
-        self.assertEqual(dummy.captureList[33], "        }\n")
-        self.assertEqual(dummy.captureList[34], "    }\n")
-        self.assertEqual(dummy.captureList[35], "    else // null pointer input, use default language\n")
-        self.assertEqual(dummy.captureList[36], "    {\n")
-        self.assertEqual(dummy.captureList[37], "        "+cppGen._genMakePtrReturnStatement(defaultLang))
-        self.assertEqual(dummy.captureList[38], "    } // end of if(nullptr != "+paramName+")\n")
-        self.assertEqual(dummy.captureList[39], "} // end of "+testObj.selectFunctionName+"()\n")
-        self.assertEqual(dummy.captureList[40], "#endif // "+testObj.defOsString+"\n")
+        assert dummy.captureList[32] == "            "+cppGen._genMakePtrReturnStatement(defaultLang)
+        assert dummy.captureList[33] == "        }\n"
+        assert dummy.captureList[34] == "    }\n"
+        assert dummy.captureList[35] == "    else // null pointer input, use default language\n"
+        assert dummy.captureList[36] == "    {\n"
+        assert dummy.captureList[37] == "        "+cppGen._genMakePtrReturnStatement(defaultLang)
+        assert dummy.captureList[38] == "    } // end of if(nullptr != "+paramName+")\n"
+        assert dummy.captureList[39] == "} // end of "+testObj.selectFunctionName+"()\n"
+        assert dummy.captureList[40] == "#endif // "+testObj.defOsString+"\n"
 
     def test008GenReturnFunctionCall(self):
         """!
@@ -211,9 +211,9 @@ class TestClass01LinuxLangSelect(unittest.TestCase):
         paramType = ParamRetDict.getParamType(testObj.paramDictList[0])
 
         strList = testObj.genReturnFunctionCall()
-        self.assertEqual(len(strList), 2)
-        self.assertEqual(strList[0], "    "+paramType+" langId = getenv(\"LANG\");\n")
-        self.assertEqual(strList[1], "    return "+testObj.selectFunctionName+"(langId);\n")
+        assert len(strList) == 2
+        assert strList[0] == "    "+paramType+" langId = getenv(\"LANG\");\n"
+        assert strList[1] == "    return "+testObj.selectFunctionName+"(langId);\n"
 
     def test009GenUnitTestTest(self):
         """!
@@ -227,20 +227,16 @@ class TestClass01LinuxLangSelect(unittest.TestCase):
         doxyBody = doxyGen.genDoxyMethodComment(doxyDesc, [])
 
         strList = testObj._genUnitTestTest("Foo", "envLang", "en", "getIsoCode")
-        self.assertEqual(len(strList), 11)
-        self.assertEqual(strList[0], doxyBody[0])
-        self.assertEqual(strList[1], doxyBody[1])
-        self.assertEqual(strList[2], doxyBody[2])
-        self.assertEqual(strList[3], doxyBody[3])
+        assert len(strList) == 11
+        assert strList[0] == doxyBody[0]
+        assert strList[1] == doxyBody[1]
+        assert strList[2] == doxyBody[2]
+        assert strList[3] == doxyBody[3]
 
-        self.assertEqual(strList[4], "TEST(LinuxSelectFunction, Foo)\n")
-        self.assertEqual(strList[5], "{\n")
-        self.assertEqual(strList[6], "    // Generate the test language string object\n")
-        self.assertEqual(strList[7], "    std::string testLangCode = \"envLang\";\n")
-        self.assertEqual(strList[8], "    "+testObj.baseIntfRetPtrType+" testVar = "+testObj.selectFunctionName+"(testLangCode.c_str());\n")
-        self.assertEqual(strList[9], "    EXPECT_STREQ(\"en\", testVar->getIsoCode().c_str());\n")
-        self.assertEqual(strList[10], "}\n")
-
-
-if __name__ == '__main__':
-    unittest.main()
+        assert strList[4] == "TEST(LinuxSelectFunction, Foo)\n"
+        assert strList[5] == "{\n"
+        assert strList[6] == "    // Generate the test language string object\n"
+        assert strList[7] == "    std::string testLangCode = \"envLang\";\n"
+        assert strList[8] == "    "+testObj.baseIntfRetPtrType+" testVar = "+testObj.selectFunctionName+"(testLangCode.c_str());\n"
+        assert strList[9] == "    EXPECT_STREQ(\"en\", testVar->getIsoCode().c_str());\n"
+        assert strList[10] == "}\n"

@@ -25,14 +25,14 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import unittest
+
 
 from dir_init import pathincsetup
 pathincsetup()
 
 from code_tools_grocsoftware.base.copyright_tools import SubTextMarker
 
-class TestClass01CopyrightSubtextMarker(unittest.TestCase):
+class TestClass01CopyrightSubtextMarker:
     """!
     @brief Unit test for the copyright SubTextMarker class
     """
@@ -41,36 +41,33 @@ class TestClass01CopyrightSubtextMarker(unittest.TestCase):
         @brief Test simple input
         """
         testObj = SubTextMarker("test", 10)
-        self.assertEqual(testObj.text, "test")
-        self.assertEqual(testObj.start, 10)
-        self.assertEqual(testObj.end, 14)
+        assert testObj.text == "test"
+        assert testObj.start == 10
+        assert testObj.end == 14
 
     def test002ConstructorPadded(self):
         """!
         @brief Test simple input
         """
         testObj = SubTextMarker(" test ", 10)
-        self.assertEqual(testObj.text, "test")
-        self.assertEqual(testObj.start, 11)
-        self.assertEqual(testObj.end, 15)
+        assert testObj.text == "test"
+        assert testObj.start == 11
+        assert testObj.end == 15
 
     def test003ConstructorTabPadded(self):
         """!
         @brief Test simple input
         """
         testObj = SubTextMarker("\ttest\t", 10)
-        self.assertEqual(testObj.text, "test")
-        self.assertEqual(testObj.start, 11)
-        self.assertEqual(testObj.end, 15)
+        assert testObj.text == "test"
+        assert testObj.start == 11
+        assert testObj.end == 15
 
     def test004ConstructorExtraPadded(self):
         """!
         @brief Test simple input
         """
         testObj = SubTextMarker("  test  ", 10)
-        self.assertEqual(testObj.text, "test")
-        self.assertEqual(testObj.start, 12)
-        self.assertEqual(testObj.end, 16)
-
-if __name__ == '__main__':
-    unittest.main()
+        assert testObj.text == "test"
+        assert testObj.start == 12
+        assert testObj.end == 16

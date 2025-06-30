@@ -25,7 +25,7 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import unittest
+
 
 from dir_init import pathincsetup
 pathincsetup()
@@ -37,7 +37,7 @@ pyCommentParms =  {'blockStart': "\"\"\"", 'blockEnd':"\"\"\"", 'blockLineStart'
 shCommentParms =  {'blockStart': None, 'blockEnd': None, 'blockLineStart': "#", 'singleLine': "#"}
 batCommentParms = {'blockStart': None, 'blockEnd': None, 'blockLineStart': "REM ", 'singleLine': "REM ",}
 
-class Unittest07CommentGeneration(unittest.TestCase):
+class TestUnittest07CommentGeneration:
     """!
     @brief Unit test for the CommentGenerator class
     """
@@ -49,19 +49,19 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms)
 
         header = generator.buildCommentBlockHeader()
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "/*")
+        assert len(header) == 1
+        assert header[0] == "/*"
 
         header = generator.buildCommentBlockHeader(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "/*")
-        self.assertEqual(header[1], "")
+        assert len(header) == 2
+        assert header[0] == "/*"
+        assert header[1] == ""
 
         header = generator.buildCommentBlockHeader(3)
-        self.assertEqual(len(header), 3)
-        self.assertEqual(header[0], "/*")
-        self.assertEqual(header[1], "")
-        self.assertEqual(header[2], "")
+        assert len(header) == 3
+        assert header[0] == "/*"
+        assert header[1] == ""
+        assert header[2] == ""
 
     def test002CHeaderGenerationPad(self):
         """!
@@ -71,19 +71,19 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 10)
 
         header = generator.buildCommentBlockHeader(1, '=')
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "/*========")
+        assert len(header) == 1
+        assert header[0] == "/*========"
 
         header = generator.buildCommentBlockHeader(2, '=')
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "/*========")
-        self.assertEqual(header[1], "==========")
+        assert len(header) == 2
+        assert header[0] == "/*========"
+        assert header[1] == "=========="
 
         header = generator.buildCommentBlockHeader(3, '=')
-        self.assertEqual(len(header), 3)
-        self.assertEqual(header[0], "/*========")
-        self.assertEqual(header[1], "==========")
-        self.assertEqual(header[2], "==========")
+        assert len(header) == 3
+        assert header[0] == "/*========"
+        assert header[1] == "=========="
+        assert header[2] == "=========="
 
     def test003CHeaderGenerationPadAndEol(self):
         """!
@@ -93,19 +93,19 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 10, "*")
 
         header = generator.buildCommentBlockHeader(1, '=')
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "/*=======*")
+        assert len(header) == 1
+        assert header[0] == "/*=======*"
 
         header = generator.buildCommentBlockHeader(2, '=')
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "/*=======*")
-        self.assertEqual(header[1], "=========*")
+        assert len(header) == 2
+        assert header[0] == "/*=======*"
+        assert header[1] == "=========*"
 
         header = generator.buildCommentBlockHeader(3, '=')
-        self.assertEqual(len(header), 3)
-        self.assertEqual(header[0], "/*=======*")
-        self.assertEqual(header[1], "=========*")
-        self.assertEqual(header[2], "=========*")
+        assert len(header) == 3
+        assert header[0] == "/*=======*"
+        assert header[1] == "=========*"
+        assert header[2] == "=========*"
 
     def test004CHeaderGenerationPadAndEol2(self):
         """!
@@ -115,18 +115,18 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 10, " *")
 
         header = generator.buildCommentBlockHeader(1, '=')
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "/*====== *")
+        assert len(header) == 1
+        assert header[0] == "/*====== *"
 
         header = generator.buildCommentBlockHeader(2, '=')
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "/*====== *")
-        self.assertEqual(header[1], "======== *")
+        assert len(header) == 2
+        assert header[0] == "/*====== *"
+        assert header[1] == "======== *"
 
         header = generator.buildCommentBlockHeader(3, '=')
-        self.assertEqual(header[0], "/*====== *")
-        self.assertEqual(header[1], "======== *")
-        self.assertEqual(header[2], "======== *")
+        assert header[0] == "/*====== *"
+        assert header[1] == "======== *"
+        assert header[2] == "======== *"
 
 
     def test005CHeaderGenerationForceSingle(self):
@@ -137,19 +137,19 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, useSingleLine = True)
 
         header = generator.buildCommentBlockHeader()
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "//")
+        assert len(header) == 1
+        assert header[0] == "//"
 
         header = generator.buildCommentBlockHeader(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "//")
-        self.assertEqual(header[1], "//")
+        assert len(header) == 2
+        assert header[0] == "//"
+        assert header[1] == "//"
 
         header = generator.buildCommentBlockHeader(3)
-        self.assertEqual(len(header), 3)
-        self.assertEqual(header[0], "//")
-        self.assertEqual(header[1], "//")
-        self.assertEqual(header[2], "//")
+        assert len(header) == 3
+        assert header[0] == "//"
+        assert header[1] == "//"
+        assert header[2] == "//"
 
     def test006CHeaderGenerationForceSinglePad(self):
         """!
@@ -159,19 +159,19 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 10, useSingleLine = True)
 
         header = generator.buildCommentBlockHeader(1)
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "//--------")
+        assert len(header) == 1
+        assert header[0] == "//--------"
 
         header = generator.buildCommentBlockHeader(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "//--------")
-        self.assertEqual(header[1], "//--------")
+        assert len(header) == 2
+        assert header[0] == "//--------"
+        assert header[1] == "//--------"
 
         header = generator.buildCommentBlockHeader(3, '=')
-        self.assertEqual(len(header), 3)
-        self.assertEqual(header[0], "//========")
-        self.assertEqual(header[1], "//========")
-        self.assertEqual(header[2], "//========")
+        assert len(header) == 3
+        assert header[0] == "//========"
+        assert header[1] == "//========"
+        assert header[2] == "//========"
 
     def test007CHeaderGenerationForceSinglePadEol(self):
         """!
@@ -181,19 +181,19 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 10, " *", useSingleLine = True)
 
         header = generator.buildCommentBlockHeader(1, '=')
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "//====== *")
+        assert len(header) == 1
+        assert header[0] == "//====== *"
 
         header = generator.buildCommentBlockHeader(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "//------ *")
-        self.assertEqual(header[1], "//------ *")
+        assert len(header) == 2
+        assert header[0] == "//------ *"
+        assert header[1] == "//------ *"
 
         header = generator.buildCommentBlockHeader(3, '=')
-        self.assertEqual(len(header), 3)
-        self.assertEqual(header[0], "//====== *")
-        self.assertEqual(header[1], "//====== *")
-        self.assertEqual(header[2], "//====== *")
+        assert len(header) == 3
+        assert header[0] == "//====== *"
+        assert header[1] == "//====== *"
+        assert header[2] == "//====== *"
 
     def test011CFooterGenerationDefault(self):
         """!
@@ -203,19 +203,19 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms)
 
         footer = generator.buildCommentBlockFooter()
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "*/")
+        assert len(footer) == 1
+        assert footer[0] == "*/"
 
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "")
-        self.assertEqual(footer[1], "*/")
+        assert len(footer) == 2
+        assert footer[0] == ""
+        assert footer[1] == "*/"
 
         footer = generator.buildCommentBlockFooter(3)
-        self.assertEqual(len(footer), 3)
-        self.assertEqual(footer[0], "")
-        self.assertEqual(footer[1], "")
-        self.assertEqual(footer[2], "*/")
+        assert len(footer) == 3
+        assert footer[0] == ""
+        assert footer[1] == ""
+        assert footer[2] == "*/"
 
     def test012CFooterGenerationPad(self):
         """!
@@ -225,19 +225,19 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 10)
 
         footer = generator.buildCommentBlockFooter(1, '=')
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "========*/")
+        assert len(footer) == 1
+        assert footer[0] == "========*/"
 
         footer = generator.buildCommentBlockFooter(2, '=')
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "==========")
-        self.assertEqual(footer[1], "========*/")
+        assert len(footer) == 2
+        assert footer[0] == "=========="
+        assert footer[1] == "========*/"
 
         footer = generator.buildCommentBlockFooter(3, '=')
-        self.assertEqual(len(footer), 3)
-        self.assertEqual(footer[0], "==========")
-        self.assertEqual(footer[1], "==========")
-        self.assertEqual(footer[2], "========*/")
+        assert len(footer) == 3
+        assert footer[0] == "=========="
+        assert footer[1] == "=========="
+        assert footer[2] == "========*/"
 
     def test013CFooterGenerationPadAndEol(self):
         """!
@@ -247,19 +247,19 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 10, "*")
 
         footer = generator.buildCommentBlockFooter(1, '=')
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "========*/")
+        assert len(footer) == 1
+        assert footer[0] == "========*/"
 
         footer = generator.buildCommentBlockFooter(2, '=')
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "=========*")
-        self.assertEqual(footer[1], "========*/")
+        assert len(footer) == 2
+        assert footer[0] == "=========*"
+        assert footer[1] == "========*/"
 
         footer = generator.buildCommentBlockFooter(3, '=')
-        self.assertEqual(len(footer), 3)
-        self.assertEqual(footer[0], "=========*")
-        self.assertEqual(footer[1], "=========*")
-        self.assertEqual(footer[2], "========*/")
+        assert len(footer) == 3
+        assert footer[0] == "=========*"
+        assert footer[1] == "=========*"
+        assert footer[2] == "========*/"
 
     def test014CFooterGenerationPadAndEol2(self):
         """!
@@ -269,18 +269,18 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 10, " *")
 
         footer = generator.buildCommentBlockFooter(1, '=')
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "========*/")
+        assert len(footer) == 1
+        assert footer[0] == "========*/"
 
         footer = generator.buildCommentBlockFooter(2, '=')
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "======== *")
-        self.assertEqual(footer[1], "========*/")
+        assert len(footer) == 2
+        assert footer[0] == "======== *"
+        assert footer[1] == "========*/"
 
         footer = generator.buildCommentBlockFooter(3, '=')
-        self.assertEqual(footer[0], "======== *")
-        self.assertEqual(footer[1], "======== *")
-        self.assertEqual(footer[2], "========*/")
+        assert footer[0] == "======== *"
+        assert footer[1] == "======== *"
+        assert footer[2] == "========*/"
 
     def test015CFooterGenerationForceSingle(self):
         """!
@@ -290,19 +290,19 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, useSingleLine = True)
 
         footer = generator.buildCommentBlockFooter()
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "//")
+        assert len(footer) == 1
+        assert footer[0] == "//"
 
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "//")
-        self.assertEqual(footer[1], "//")
+        assert len(footer) == 2
+        assert footer[0] == "//"
+        assert footer[1] == "//"
 
         footer = generator.buildCommentBlockFooter(3)
-        self.assertEqual(len(footer), 3)
-        self.assertEqual(footer[0], "//")
-        self.assertEqual(footer[1], "//")
-        self.assertEqual(footer[2], "//")
+        assert len(footer) == 3
+        assert footer[0] == "//"
+        assert footer[1] == "//"
+        assert footer[2] == "//"
 
     def test016CFooterGenerationForceSinglePad(self):
         """!
@@ -312,18 +312,18 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 10, useSingleLine = True)
 
         footer = generator.buildCommentBlockFooter(1, '=')
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "//========")
+        assert len(footer) == 1
+        assert footer[0] == "//========"
 
         footer = generator.buildCommentBlockFooter(2,)
-        self.assertEqual(footer[0], "//--------")
-        self.assertEqual(footer[1], "//--------")
+        assert footer[0] == "//--------"
+        assert footer[1] == "//--------"
 
         footer = generator.buildCommentBlockFooter(3, '=')
-        self.assertEqual(len(footer), 3)
-        self.assertEqual(footer[0], "//========")
-        self.assertEqual(footer[1], "//========")
-        self.assertEqual(footer[2], "//========")
+        assert len(footer) == 3
+        assert footer[0] == "//========"
+        assert footer[1] == "//========"
+        assert footer[2] == "//========"
 
     def test017CFooterGenerationForceSinglePadEol(self):
         """!
@@ -333,19 +333,19 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 10, " *", useSingleLine = True)
 
         footer = generator.buildCommentBlockFooter(1, '=')
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "//====== *")
+        assert len(footer) == 1
+        assert footer[0] == "//====== *"
 
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "//------ *")
-        self.assertEqual(footer[1], "//------ *")
+        assert len(footer) == 2
+        assert footer[0] == "//------ *"
+        assert footer[1] == "//------ *"
 
         footer = generator.buildCommentBlockFooter(3, '=')
-        self.assertEqual(len(footer), 3)
-        self.assertEqual(footer[0], "//====== *")
-        self.assertEqual(footer[1], "//====== *")
-        self.assertEqual(footer[2], "//====== *")
+        assert len(footer) == 3
+        assert footer[0] == "//====== *"
+        assert footer[1] == "//====== *"
+        assert footer[2] == "//====== *"
 
     def test021CWrap(self):
         """!
@@ -355,7 +355,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms)
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "test line")
+        assert wrap == "test line"
 
     def test022CWrapPad(self):
         """!
@@ -365,7 +365,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 10)
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "test line")
+        assert wrap == "test line"
 
     def test022CWrapPad1(self):
         """!
@@ -375,7 +375,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 12)
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "test line")
+        assert wrap == "test line"
 
     def test023CWrapSingle(self):
         """!
@@ -385,7 +385,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, useSingleLine = True)
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "// test line")
+        assert wrap == "// test line"
 
     def test024CWrapSingle(self):
         """!
@@ -395,7 +395,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 15, useSingleLine = True)
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "// test line")
+        assert wrap == "// test line"
 
     def test025CWrapPadAndEol(self):
         """!
@@ -405,7 +405,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 12, " *")
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "test line  *")
+        assert wrap == "test line  *"
 
     def test026CWrapPadAndEol(self):
         """!
@@ -415,7 +415,7 @@ class Unittest07CommentGeneration(unittest.TestCase):
         generator = CommentGenerator(cCommentParms, 15, " *", useSingleLine = True)
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "// test line  *")
+        assert wrap == "// test line  *"
 
     def test031PythonDefault(self):
         """!
@@ -426,22 +426,22 @@ class Unittest07CommentGeneration(unittest.TestCase):
 
         header = generator.buildCommentBlockHeader()
         footer = generator.buildCommentBlockFooter()
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "\"\"\"")
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "\"\"\"")
+        assert len(header) == 1
+        assert header[0] == "\"\"\""
+        assert len(footer) == 1
+        assert footer[0] == "\"\"\""
 
         header = generator.buildCommentBlockHeader(2)
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "\"\"\"")
-        self.assertEqual(header[1], "")
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "")
-        self.assertEqual(footer[1], "\"\"\"")
+        assert len(header) == 2
+        assert header[0] == "\"\"\""
+        assert header[1] == ""
+        assert len(footer) == 2
+        assert footer[0] == ""
+        assert footer[1] == "\"\"\""
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "test line")
+        assert wrap == "test line"
 
     def test032PythonPad(self):
         """!
@@ -452,22 +452,22 @@ class Unittest07CommentGeneration(unittest.TestCase):
 
         header = generator.buildCommentBlockHeader()
         footer = generator.buildCommentBlockFooter()
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "\"\"\"-------")
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "-------\"\"\"")
+        assert len(header) == 1
+        assert header[0] == "\"\"\"-------"
+        assert len(footer) == 1
+        assert footer[0] == "-------\"\"\""
 
         header = generator.buildCommentBlockHeader(2)
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "\"\"\"-------")
-        self.assertEqual(header[1], "----------")
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "----------")
-        self.assertEqual(footer[1], "-------\"\"\"")
+        assert len(header) == 2
+        assert header[0] == "\"\"\"-------"
+        assert header[1] == "----------"
+        assert len(footer) == 2
+        assert footer[0] == "----------"
+        assert footer[1] == "-------\"\"\""
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "test line")
+        assert wrap == "test line"
 
     def test033PythonPadEol(self):
         """!
@@ -478,22 +478,22 @@ class Unittest07CommentGeneration(unittest.TestCase):
 
         header = generator.buildCommentBlockHeader()
         footer = generator.buildCommentBlockFooter()
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "\"\"\"-------- *")
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "----------\"\"\"")
+        assert len(header) == 1
+        assert header[0] == "\"\"\"-------- *"
+        assert len(footer) == 1
+        assert footer[0] == "----------\"\"\""
 
         header = generator.buildCommentBlockHeader(2)
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "\"\"\"-------- *")
-        self.assertEqual(header[1], "----------- *")
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "----------- *")
-        self.assertEqual(footer[1], "----------\"\"\"")
+        assert len(header) == 2
+        assert header[0] == "\"\"\"-------- *"
+        assert header[1] == "----------- *"
+        assert len(footer) == 2
+        assert footer[0] == "----------- *"
+        assert footer[1] == "----------\"\"\""
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "test line   *")
+        assert wrap == "test line   *"
 
     def test034PythonForceSingle(self):
         """!
@@ -504,22 +504,22 @@ class Unittest07CommentGeneration(unittest.TestCase):
 
         header = generator.buildCommentBlockHeader()
         footer = generator.buildCommentBlockFooter()
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "#")
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "#")
+        assert len(header) == 1
+        assert header[0] == "#"
+        assert len(footer) == 1
+        assert footer[0] == "#"
 
         header = generator.buildCommentBlockHeader(2)
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "#")
-        self.assertEqual(header[1], "#")
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "#")
-        self.assertEqual(footer[1], "#")
+        assert len(header) == 2
+        assert header[0] == "#"
+        assert header[1] == "#"
+        assert len(footer) == 2
+        assert footer[0] == "#"
+        assert footer[1] == "#"
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "# test line")
+        assert wrap == "# test line"
 
     def test035PythonPadForceSingle(self):
         """!
@@ -530,22 +530,22 @@ class Unittest07CommentGeneration(unittest.TestCase):
 
         header = generator.buildCommentBlockHeader(1, '=')
         footer = generator.buildCommentBlockFooter(1, '=')
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "#===========")
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "#===========")
+        assert len(header) == 1
+        assert header[0] == "#==========="
+        assert len(footer) == 1
+        assert footer[0] == "#==========="
 
         header = generator.buildCommentBlockHeader(2, '=')
         footer = generator.buildCommentBlockFooter(2, '=')
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "#===========")
-        self.assertEqual(header[1], "#===========")
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "#===========")
-        self.assertEqual(footer[1], "#===========")
+        assert len(header) == 2
+        assert header[0] == "#==========="
+        assert header[1] == "#==========="
+        assert len(footer) == 2
+        assert footer[0] == "#==========="
+        assert footer[1] == "#==========="
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "# test line")
+        assert wrap == "# test line"
 
     def test036PythonPadEolForceSingle(self):
         """!
@@ -556,22 +556,22 @@ class Unittest07CommentGeneration(unittest.TestCase):
 
         header = generator.buildCommentBlockHeader(1, '=')
         footer = generator.buildCommentBlockFooter(1, '=')
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "#============ *")
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "#============ *")
+        assert len(header) == 1
+        assert header[0] == "#============ *"
+        assert len(footer) == 1
+        assert footer[0] == "#============ *"
 
         header = generator.buildCommentBlockHeader(2, '=')
         footer = generator.buildCommentBlockFooter(2, '=')
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "#============ *")
-        self.assertEqual(header[1], "#============ *")
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "#============ *")
-        self.assertEqual(footer[1], "#============ *")
+        assert len(header) == 2
+        assert header[0] == "#============ *"
+        assert header[1] == "#============ *"
+        assert len(footer) == 2
+        assert footer[0] == "#============ *"
+        assert footer[1] == "#============ *"
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "# test line   *")
+        assert wrap == "# test line   *"
 
     def test041ShellDefault(self):
         """!
@@ -582,22 +582,22 @@ class Unittest07CommentGeneration(unittest.TestCase):
 
         header = generator.buildCommentBlockHeader()
         footer = generator.buildCommentBlockFooter()
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "#")
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "#")
+        assert len(header) == 1
+        assert header[0] == "#"
+        assert len(footer) == 1
+        assert footer[0] == "#"
 
         header = generator.buildCommentBlockHeader(2)
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "#")
-        self.assertEqual(header[1], "#")
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "#")
-        self.assertEqual(footer[1], "#")
+        assert len(header) == 2
+        assert header[0] == "#"
+        assert header[1] == "#"
+        assert len(footer) == 2
+        assert footer[0] == "#"
+        assert footer[1] == "#"
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "# test line")
+        assert wrap == "# test line"
 
     def test042ShellPad(self):
         """!
@@ -608,22 +608,22 @@ class Unittest07CommentGeneration(unittest.TestCase):
 
         header = generator.buildCommentBlockHeader()
         footer = generator.buildCommentBlockFooter()
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "#---------")
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "#---------")
+        assert len(header) == 1
+        assert header[0] == "#---------"
+        assert len(footer) == 1
+        assert footer[0] == "#---------"
 
         header = generator.buildCommentBlockHeader(2)
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "#---------")
-        self.assertEqual(header[1], "#---------")
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "#---------")
-        self.assertEqual(footer[1], "#---------")
+        assert len(header) == 2
+        assert header[0] == "#---------"
+        assert header[1] == "#---------"
+        assert len(footer) == 2
+        assert footer[0] == "#---------"
+        assert footer[1] == "#---------"
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "# test line")
+        assert wrap == "# test line"
 
     def test043ShellPadEol(self):
         """!
@@ -634,22 +634,22 @@ class Unittest07CommentGeneration(unittest.TestCase):
 
         header = generator.buildCommentBlockHeader()
         footer = generator.buildCommentBlockFooter()
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "#---------- *")
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "#---------- *")
+        assert len(header) == 1
+        assert header[0] == "#---------- *"
+        assert len(footer) == 1
+        assert footer[0] == "#---------- *"
 
         header = generator.buildCommentBlockHeader(2)
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "#---------- *")
-        self.assertEqual(header[1], "#---------- *")
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "#---------- *")
-        self.assertEqual(footer[1], "#---------- *")
+        assert len(header) == 2
+        assert header[0] == "#---------- *"
+        assert header[1] == "#---------- *"
+        assert len(footer) == 2
+        assert footer[0] == "#---------- *"
+        assert footer[1] == "#---------- *"
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "# test line *")
+        assert wrap == "# test line *"
 
     def test044ShellForce(self):
         """!
@@ -660,22 +660,22 @@ class Unittest07CommentGeneration(unittest.TestCase):
 
         header = generator.buildCommentBlockHeader()
         footer = generator.buildCommentBlockFooter()
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "#")
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "#")
+        assert len(header) == 1
+        assert header[0] == "#"
+        assert len(footer) == 1
+        assert footer[0] == "#"
 
         header = generator.buildCommentBlockHeader(2)
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "#")
-        self.assertEqual(header[1], "#")
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "#")
-        self.assertEqual(footer[1], "#")
+        assert len(header) == 2
+        assert header[0] == "#"
+        assert header[1] == "#"
+        assert len(footer) == 2
+        assert footer[0] == "#"
+        assert footer[1] == "#"
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "# test line")
+        assert wrap == "# test line"
 
     def test045ShellForcePad(self):
         """!
@@ -686,22 +686,22 @@ class Unittest07CommentGeneration(unittest.TestCase):
 
         header = generator.buildCommentBlockHeader()
         footer = generator.buildCommentBlockFooter()
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "#---------")
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "#---------")
+        assert len(header) == 1
+        assert header[0] == "#---------"
+        assert len(footer) == 1
+        assert footer[0] == "#---------"
 
         header = generator.buildCommentBlockHeader(2)
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "#---------")
-        self.assertEqual(header[1], "#---------")
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "#---------")
-        self.assertEqual(footer[1], "#---------")
+        assert len(header) == 2
+        assert header[0] == "#---------"
+        assert header[1] == "#---------"
+        assert len(footer) == 2
+        assert footer[0] == "#---------"
+        assert footer[1] == "#---------"
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "# test line")
+        assert wrap == "# test line"
 
     def test046ShellForcePadEol(self):
         """!
@@ -712,35 +712,35 @@ class Unittest07CommentGeneration(unittest.TestCase):
 
         header = generator.buildCommentBlockHeader()
         footer = generator.buildCommentBlockFooter()
-        self.assertEqual(len(header), 1)
-        self.assertEqual(header[0], "#---------- *")
-        self.assertEqual(len(footer), 1)
-        self.assertEqual(footer[0], "#---------- *")
+        assert len(header) == 1
+        assert header[0] == "#---------- *"
+        assert len(footer) == 1
+        assert footer[0] == "#---------- *"
 
         header = generator.buildCommentBlockHeader(2)
         footer = generator.buildCommentBlockFooter(2)
-        self.assertEqual(len(header), 2)
-        self.assertEqual(header[0], "#---------- *")
-        self.assertEqual(header[1], "#---------- *")
-        self.assertEqual(len(footer), 2)
-        self.assertEqual(footer[0], "#---------- *")
-        self.assertEqual(footer[1], "#---------- *")
+        assert len(header) == 2
+        assert header[0] == "#---------- *"
+        assert header[1] == "#---------- *"
+        assert len(footer) == 2
+        assert footer[0] == "#---------- *"
+        assert footer[1] == "#---------- *"
 
         wrap = generator.wrapCommentLine("test line")
-        self.assertEqual(wrap, "# test line *")
+        assert wrap == "# test line *"
 
     def test050GenSingleLine(self):
         """!
         @brief Test file type files single line comment generation
         """
         generator = CommentGenerator(shCommentParms)
-        self.assertEqual(generator.generateSingleLineComment("test text"), "# test text")
+        assert generator.generateSingleLineComment("test text") == "# test text"
 
         generator1 = CommentGenerator(cCommentParms)
-        self.assertEqual(generator1.generateSingleLineComment("test text"), "// test text")
+        assert generator1.generateSingleLineComment("test text") == "// test text"
 
         generator2 = CommentGenerator(pyCommentParms)
-        self.assertEqual(generator2.generateSingleLineComment("test text"), "# test text")
+        assert generator2.generateSingleLineComment("test text") == "# test text"
 
     def test051TestCCommentConstructor(self):
         """!
@@ -749,15 +749,15 @@ class Unittest07CommentGeneration(unittest.TestCase):
         from code_tools_grocsoftware.base.comment_gen_tools import CCommentGenerator
 
         generator = CCommentGenerator()
-        self.assertIsNone(generator.lineLength)
-        self.assertIsNone(generator.eoltext)
-        self.assertFalse(generator.useSingleLine)
-        self.assertEqual(generator.eolLength, 0)
-        self.assertEqual(generator.commentData['blockStart'], '/*')
-        self.assertEqual(generator.commentData['blockEnd'], '*/')
-        self.assertEqual(generator.commentData['blockLineStart'], '* ')
-        self.assertEqual(generator.commentData['singleLine'], '//')
-        self.assertEqual(generator.eolLength, 0)
+        assert generator.lineLength is None
+        assert generator.eoltext is None
+        assert not generator.useSingleLine
+        assert generator.eolLength == 0
+        assert generator.commentData['blockStart'] == '/*'
+        assert generator.commentData['blockEnd'] == '*/'
+        assert generator.commentData['blockLineStart'] == '* '
+        assert generator.commentData['singleLine'] == '//'
+        assert generator.eolLength == 0
 
     def test052TestPyCommentConstructor(self):
         """!
@@ -766,15 +766,15 @@ class Unittest07CommentGeneration(unittest.TestCase):
         from code_tools_grocsoftware.base.comment_gen_tools import PyCommentGenerator
 
         generator = PyCommentGenerator()
-        self.assertIsNone(generator.lineLength)
-        self.assertIsNone(generator.eoltext)
-        self.assertFalse(generator.useSingleLine)
-        self.assertEqual(generator.eolLength, 0)
-        self.assertEqual(generator.commentData['blockStart'], '"""')
-        self.assertEqual(generator.commentData['blockEnd'], '"""')
-        self.assertEqual(generator.commentData['blockLineStart'], '')
-        self.assertEqual(generator.commentData['singleLine'], '#')
-        self.assertEqual(generator.eolLength, 0)
+        assert generator.lineLength is None
+        assert generator.eoltext is None
+        assert not generator.useSingleLine
+        assert generator.eolLength == 0
+        assert generator.commentData['blockStart'] == '"""'
+        assert generator.commentData['blockEnd'] == '"""'
+        assert generator.commentData['blockLineStart'] == ''
+        assert generator.commentData['singleLine'] == '#'
+        assert generator.eolLength == 0
 
     def test053TestTsCommentConstructor(self):
         """!
@@ -783,15 +783,15 @@ class Unittest07CommentGeneration(unittest.TestCase):
         from code_tools_grocsoftware.base.comment_gen_tools import TsCommentGenerator
 
         generator = TsCommentGenerator()
-        self.assertIsNone(generator.lineLength)
-        self.assertIsNone(generator.eoltext)
-        self.assertFalse(generator.useSingleLine)
-        self.assertEqual(generator.eolLength, 0)
-        self.assertEqual(generator.commentData['blockStart'], '/*')
-        self.assertEqual(generator.commentData['blockEnd'], '*/')
-        self.assertEqual(generator.commentData['blockLineStart'], '* ')
-        self.assertEqual(generator.commentData['singleLine'], '//')
-        self.assertEqual(generator.eolLength, 0)
+        assert generator.lineLength is None
+        assert generator.eoltext is None
+        assert not generator.useSingleLine
+        assert generator.eolLength == 0
+        assert generator.commentData['blockStart'] == '/*'
+        assert generator.commentData['blockEnd'] == '*/'
+        assert generator.commentData['blockLineStart'] == '* '
+        assert generator.commentData['singleLine'] == '//'
+        assert generator.eolLength == 0
 
     def test054TestJsCommentConstructor(self):
         """!
@@ -800,15 +800,15 @@ class Unittest07CommentGeneration(unittest.TestCase):
         from code_tools_grocsoftware.base.comment_gen_tools import JsCommentGenerator
 
         generator = JsCommentGenerator()
-        self.assertIsNone(generator.lineLength)
-        self.assertIsNone(generator.eoltext)
-        self.assertFalse(generator.useSingleLine)
-        self.assertEqual(generator.eolLength, 0)
-        self.assertEqual(generator.commentData['blockStart'], '/*')
-        self.assertEqual(generator.commentData['blockEnd'], '*/')
-        self.assertEqual(generator.commentData['blockLineStart'], '* ')
-        self.assertEqual(generator.commentData['singleLine'], '//')
-        self.assertEqual(generator.eolLength, 0)
+        assert generator.lineLength is None
+        assert generator.eoltext is None
+        assert not generator.useSingleLine
+        assert generator.eolLength == 0
+        assert generator.commentData['blockStart'] == '/*'
+        assert generator.commentData['blockEnd'] == '*/'
+        assert generator.commentData['blockLineStart'] == '* '
+        assert generator.commentData['singleLine'] == '//'
+        assert generator.eolLength == 0
 
     def test055TestJsCommentConstructor(self):
         """!
@@ -817,15 +817,15 @@ class Unittest07CommentGeneration(unittest.TestCase):
         from code_tools_grocsoftware.base.comment_gen_tools import BashCommentGenerator
 
         generator = BashCommentGenerator()
-        self.assertIsNone(generator.lineLength)
-        self.assertIsNone(generator.eoltext)
-        self.assertTrue(generator.useSingleLine)
-        self.assertEqual(generator.eolLength, 0)
-        self.assertIsNone(generator.commentData['blockStart'])
-        self.assertIsNone(generator.commentData['blockEnd'])
-        self.assertEqual(generator.commentData['blockLineStart'], '#')
-        self.assertEqual(generator.commentData['singleLine'], '#')
-        self.assertEqual(generator.eolLength, 0)
+        assert generator.lineLength is None
+        assert generator.eoltext is None
+        assert generator.useSingleLine
+        assert generator.eolLength == 0
+        assert generator.commentData['blockStart'] is None
+        assert generator.commentData['blockEnd'] is None
+        assert generator.commentData['blockLineStart'] == '#'
+        assert generator.commentData['singleLine'] == '#'
+        assert generator.eolLength == 0
 
     def test056TestJsCommentConstructor(self):
         """!
@@ -834,16 +834,12 @@ class Unittest07CommentGeneration(unittest.TestCase):
         from code_tools_grocsoftware.base.comment_gen_tools import BatchCommentGenerator
 
         generator = BatchCommentGenerator()
-        self.assertIsNone(generator.lineLength)
-        self.assertIsNone(generator.eoltext)
-        self.assertTrue(generator.useSingleLine)
-        self.assertEqual(generator.eolLength, 0)
-        self.assertIsNone(generator.commentData['blockStart'])
-        self.assertIsNone(generator.commentData['blockEnd'])
-        self.assertEqual(generator.commentData['blockLineStart'], 'REM ')
-        self.assertEqual(generator.commentData['singleLine'], 'REM ')
-        self.assertEqual(generator.eolLength, 0)
-
-
-if __name__ == '__main__':
-    unittest.main()
+        assert generator.lineLength is None
+        assert generator.eoltext is None
+        assert generator.useSingleLine
+        assert generator.eolLength == 0
+        assert generator.commentData['blockStart'] is None
+        assert generator.commentData['blockEnd'] is None
+        assert generator.commentData['blockLineStart'] == 'REM '
+        assert generator.commentData['singleLine'] == 'REM '
+        assert generator.eolLength == 0

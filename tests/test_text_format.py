@@ -25,14 +25,14 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import unittest
+
 
 from dir_init import pathincsetup
 pathincsetup()
 
 from code_tools_grocsoftware.base.text_format import MultiLineFormat
 
-class Unittest01MultiLineFormat(unittest.TestCase):
+class TestUnittest01MultiLineFormat:
     """!
     @brief Unit test for the MultiLineFormat function
     """
@@ -41,45 +41,42 @@ class Unittest01MultiLineFormat(unittest.TestCase):
         @brief Test simple case of a short line
         """
         strList = MultiLineFormat("Test return description")
-        self.assertEqual(1, len(strList))
-        self.assertEqual("Test return description", strList[0])
+        assert 1 == len(strList)
+        assert "Test return description" == strList[0]
 
     def test02DoubleLine(self):
         """!
         @brief Test simple case of a short line
         """
         strList = MultiLineFormat("Test return description, longer line to induce wrap", 27)
-        self.assertEqual(2, len(strList))
-        self.assertEqual("Test return description,", strList[0])
-        self.assertEqual("longer line to induce wrap", strList[1])
+        assert 2 == len(strList)
+        assert "Test return description," == strList[0]
+        assert "longer line to induce wrap" == strList[1]
 
     def test03DoubleLineWithPad(self):
         """!
         @brief Test simple case of a short line
         """
         strList = MultiLineFormat("Test return description, longer line to induce wrap", 27, '-')
-        self.assertEqual(2, len(strList))
-        self.assertEqual("Test return description,---", strList[0])
-        self.assertEqual("longer line to induce wrap-", strList[1])
+        assert 2 == len(strList)
+        assert "Test return description,---" == strList[0]
+        assert "longer line to induce wrap-" == strList[1]
 
     def test04DoubleLineWithNoGoodBreak(self):
         """!
         @brief Test simple case of a short line
         """
         strList = MultiLineFormat("Testreturndescriptionlongerlinetoinducewrap", 27)
-        self.assertEqual(2, len(strList))
-        self.assertEqual("Testreturndescriptionlonger", strList[0])
-        self.assertEqual("linetoinducewrap", strList[1])
+        assert 2 == len(strList)
+        assert "Testreturndescriptionlonger" == strList[0]
+        assert "linetoinducewrap" == strList[1]
 
     def test05TripleLine(self):
         """!
         @brief Test simple case of a short line
         """
         strList = MultiLineFormat("Test return description, longer line to induce wrap. More text to create another line", 32)
-        self.assertEqual(3, len(strList))
-        self.assertEqual("Test return description, longer", strList[0])
-        self.assertEqual("line to induce wrap. More text", strList[1])
-        self.assertEqual("to create another line", strList[2])
-
-if __name__ == '__main__':
-    unittest.main()
+        assert 3 == len(strList)
+        assert "Test return description, longer" == strList[0]
+        assert "line to induce wrap. More text" == strList[1]
+        assert "to create another line" == strList[2]

@@ -24,7 +24,8 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import unittest
+import pytest
+
 
 import io
 import contextlib
@@ -35,7 +36,7 @@ pathincsetup()
 
 from code_tools_grocsoftware.base.json_string_class_description import TranslationTextParser
 
-class Unittest01TranslationTextParser(unittest.TestCase):
+class TestUnittest01TranslationTextParser:
     """!
     @brief Unit test for the TranslationTextParser class
     """
@@ -44,152 +45,152 @@ class Unittest01TranslationTextParser(unittest.TestCase):
         @brief Test makeTextEntry()
         """
         transType, transStr = TranslationTextParser.makeTextEntry("test text")
-        self.assertEqual(transType, TranslationTextParser.parsedTypeText)
-        self.assertEqual(transStr, "test text")
+        assert transType == TranslationTextParser.parsedTypeText
+        assert transStr == "test text"
 
     def test02MakeSpecialCharEntry(self):
         """!
         @brief Test makeSpecialCharEntry()
         """
         transType, transStr = TranslationTextParser.makeSpecialCharEntry("'test'")
-        self.assertEqual(transType, TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(transStr, "'")
+        assert transType == TranslationTextParser.parsedTypeSpecial
+        assert transStr == "'"
 
     def test03MakeParamEntry(self):
         """!
         @brief Test makeParamEntry()
         """
         transType, transStr = TranslationTextParser.makeParamEntry("param1")
-        self.assertEqual(transType, TranslationTextParser.parsedTypeParam)
-        self.assertEqual(transStr, "param1")
+        assert transType == TranslationTextParser.parsedTypeParam
+        assert transStr == "param1"
 
     def test04ParseTextBlock(self):
         """!
         @brief Test parseTextBlock()
         """
         outList = TranslationTextParser.parseTextBlock("This is a \"test\" string")
-        self.assertEqual(len(outList), 5)
-        self.assertEqual(outList[0][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[0][1], "This is a ")
-        self.assertEqual(outList[1][0], TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(outList[1][1], '"')
-        self.assertEqual(outList[2][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[2][1], "test")
-        self.assertEqual(outList[3][0], TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(outList[3][1], '"')
-        self.assertEqual(outList[4][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[4][1], " string")
+        assert len(outList) == 5
+        assert outList[0][0] == TranslationTextParser.parsedTypeText
+        assert outList[0][1] == "This is a "
+        assert outList[1][0] == TranslationTextParser.parsedTypeSpecial
+        assert outList[1][1] == '"'
+        assert outList[2][0] == TranslationTextParser.parsedTypeText
+        assert outList[2][1] == "test"
+        assert outList[3][0] == TranslationTextParser.parsedTypeSpecial
+        assert outList[3][1] == '"'
+        assert outList[4][0] == TranslationTextParser.parsedTypeText
+        assert outList[4][1] == " string"
 
     def test05ParseTextBlockSpecialEnd(self):
         """!
         @brief Test parseTextBlock(), end on special character
         """
         outList = TranslationTextParser.parseTextBlock("This is a \"test\"")
-        self.assertEqual(len(outList), 4)
-        self.assertEqual(outList[0][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[0][1], "This is a ")
-        self.assertEqual(outList[1][0], TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(outList[1][1], '"')
-        self.assertEqual(outList[2][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[2][1], "test")
-        self.assertEqual(outList[3][0], TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(outList[3][1], '"')
+        assert len(outList) == 4
+        assert outList[0][0] == TranslationTextParser.parsedTypeText
+        assert outList[0][1] == "This is a "
+        assert outList[1][0] == TranslationTextParser.parsedTypeSpecial
+        assert outList[1][1] == '"'
+        assert outList[2][0] == TranslationTextParser.parsedTypeText
+        assert outList[2][1] == "test"
+        assert outList[3][0] == TranslationTextParser.parsedTypeSpecial
+        assert outList[3][1] == '"'
 
     def test06ParseTextBlockSpecialStart(self):
         """!
         @brief Test parseTextBlock(), start on special character
         """
         outList = TranslationTextParser.parseTextBlock("\"test\" string.")
-        self.assertEqual(len(outList), 4)
-        self.assertEqual(outList[0][0], TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(outList[0][1], '"')
-        self.assertEqual(outList[1][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[1][1], "test")
-        self.assertEqual(outList[2][0], TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(outList[2][1], '"')
-        self.assertEqual(outList[3][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[3][1], " string.")
+        assert len(outList) == 4
+        assert outList[0][0] == TranslationTextParser.parsedTypeSpecial
+        assert outList[0][1] == '"'
+        assert outList[1][0] == TranslationTextParser.parsedTypeText
+        assert outList[1][1] == "test"
+        assert outList[2][0] == TranslationTextParser.parsedTypeSpecial
+        assert outList[2][1] == '"'
+        assert outList[3][0] == TranslationTextParser.parsedTypeText
+        assert outList[3][1] == " string."
 
     def test07ParseTextBlockSpecialBlock(self):
         """!
         @brief Test parseTextBlock(), start and end on special character
         """
         outList = TranslationTextParser.parseTextBlock("\"test string\"")
-        self.assertEqual(len(outList), 3)
-        self.assertEqual(outList[0][0], TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(outList[0][1], '"')
-        self.assertEqual(outList[1][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[1][1], "test string")
-        self.assertEqual(outList[2][0], TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(outList[2][1], '"')
+        assert len(outList) == 3
+        assert outList[0][0] == TranslationTextParser.parsedTypeSpecial
+        assert outList[0][1] == '"'
+        assert outList[1][0] == TranslationTextParser.parsedTypeText
+        assert outList[1][1] == "test string"
+        assert outList[2][0] == TranslationTextParser.parsedTypeSpecial
+        assert outList[2][1] == '"'
 
     def test08ParseTranslateStringSimple(self):
         """!
         @brief Test parseTranslateString(), single parameter, no quote
         """
         outList = TranslationTextParser.parseTranslateString("Simple with one @paramName@ in it")
-        self.assertEqual(len(outList), 3)
-        self.assertEqual(outList[0][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[0][1], 'Simple with one ')
-        self.assertEqual(outList[1][0], TranslationTextParser.parsedTypeParam)
-        self.assertEqual(outList[1][1], "paramName")
-        self.assertEqual(outList[2][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[2][1], ' in it')
+        assert len(outList) == 3
+        assert outList[0][0] == TranslationTextParser.parsedTypeText
+        assert outList[0][1] == 'Simple with one '
+        assert outList[1][0] == TranslationTextParser.parsedTypeParam
+        assert outList[1][1] == "paramName"
+        assert outList[2][0] == TranslationTextParser.parsedTypeText
+        assert outList[2][1] == ' in it'
 
     def test09ParseTranslateStringQuotedParam(self):
         """!
         @brief Test parseTranslateString(), single quoted param
         """
         outList = TranslationTextParser.parseTranslateString("Quoted param single \"@paramName@\" in it")
-        self.assertEqual(len(outList), 5)
-        self.assertEqual(outList[0][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[0][1], 'Quoted param single ')
-        self.assertEqual(outList[1][0], TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(outList[1][1], '"')
-        self.assertEqual(outList[2][0], TranslationTextParser.parsedTypeParam)
-        self.assertEqual(outList[2][1], "paramName")
-        self.assertEqual(outList[3][0], TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(outList[3][1], '"')
-        self.assertEqual(outList[4][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[4][1], ' in it')
+        assert len(outList) == 5
+        assert outList[0][0] == TranslationTextParser.parsedTypeText
+        assert outList[0][1] == 'Quoted param single '
+        assert outList[1][0] == TranslationTextParser.parsedTypeSpecial
+        assert outList[1][1] == '"'
+        assert outList[2][0] == TranslationTextParser.parsedTypeParam
+        assert outList[2][1] == "paramName"
+        assert outList[3][0] == TranslationTextParser.parsedTypeSpecial
+        assert outList[3][1] == '"'
+        assert outList[4][0] == TranslationTextParser.parsedTypeText
+        assert outList[4][1] == ' in it'
 
     def test10ParseTranslateStringDoubleParam(self):
         """!
         @brief Test parseTranslateString(), double parameter, no quote
         """
         outList = TranslationTextParser.parseTranslateString("Simple with @paramName1@ and @paramName2@ in it")
-        self.assertEqual(len(outList), 5)
-        self.assertEqual(outList[0][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[0][1], 'Simple with ')
-        self.assertEqual(outList[1][0], TranslationTextParser.parsedTypeParam)
-        self.assertEqual(outList[1][1], "paramName1")
-        self.assertEqual(outList[2][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[2][1], ' and ')
-        self.assertEqual(outList[3][0], TranslationTextParser.parsedTypeParam)
-        self.assertEqual(outList[3][1], "paramName2")
-        self.assertEqual(outList[4][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[4][1], ' in it')
+        assert len(outList) == 5
+        assert outList[0][0] == TranslationTextParser.parsedTypeText
+        assert outList[0][1] == 'Simple with '
+        assert outList[1][0] == TranslationTextParser.parsedTypeParam
+        assert outList[1][1] == "paramName1"
+        assert outList[2][0] == TranslationTextParser.parsedTypeText
+        assert outList[2][1] == ' and '
+        assert outList[3][0] == TranslationTextParser.parsedTypeParam
+        assert outList[3][1] == "paramName2"
+        assert outList[4][0] == TranslationTextParser.parsedTypeText
+        assert outList[4][1] == ' in it'
 
     def test11ParseTranslateStringDoubleParamOneQuoted(self):
         """!
         @brief Test parseTranslateString(), double parameter, one quoted
         """
         outList = TranslationTextParser.parseTranslateString("Quoted with @paramName1@ and \"@paramName2@\" in it")
-        self.assertEqual(len(outList), 7)
-        self.assertEqual(outList[0][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[0][1], 'Quoted with ')
-        self.assertEqual(outList[1][0], TranslationTextParser.parsedTypeParam)
-        self.assertEqual(outList[1][1], "paramName1")
-        self.assertEqual(outList[2][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[2][1], ' and ')
-        self.assertEqual(outList[3][0], TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(outList[3][1], '"')
-        self.assertEqual(outList[4][0], TranslationTextParser.parsedTypeParam)
-        self.assertEqual(outList[4][1], "paramName2")
-        self.assertEqual(outList[5][0], TranslationTextParser.parsedTypeSpecial)
-        self.assertEqual(outList[5][1], '"')
-        self.assertEqual(outList[6][0], TranslationTextParser.parsedTypeText)
-        self.assertEqual(outList[6][1], ' in it')
+        assert len(outList) == 7
+        assert outList[0][0] == TranslationTextParser.parsedTypeText
+        assert outList[0][1] == 'Quoted with '
+        assert outList[1][0] == TranslationTextParser.parsedTypeParam
+        assert outList[1][1] == "paramName1"
+        assert outList[2][0] == TranslationTextParser.parsedTypeText
+        assert outList[2][1] == ' and '
+        assert outList[3][0] == TranslationTextParser.parsedTypeSpecial
+        assert outList[3][1] == '"'
+        assert outList[4][0] == TranslationTextParser.parsedTypeParam
+        assert outList[4][1] == "paramName2"
+        assert outList[5][0] == TranslationTextParser.parsedTypeSpecial
+        assert outList[5][1] == '"'
+        assert outList[6][0] == TranslationTextParser.parsedTypeText
+        assert outList[6][1] == ' in it'
 
     def test12AssembleParsedStrData(self):
         """!
@@ -198,7 +199,7 @@ class Unittest01TranslationTextParser(unittest.TestCase):
         paramList = [(TranslationTextParser.parsedTypeText, "Simple text with "),
                      (TranslationTextParser.parsedTypeParam, "paramName")]
         outStr = TranslationTextParser.assembleParsedStrData(paramList)
-        self.assertEqual(outStr, "Simple text with @paramName@")
+        assert outStr == "Simple text with @paramName@"
 
     def test13AssembleParsedStrDataQuotes(self):
         """!
@@ -209,7 +210,7 @@ class Unittest01TranslationTextParser(unittest.TestCase):
                      (TranslationTextParser.parsedTypeParam, "paramName"),
                      (TranslationTextParser.parsedTypeSpecial, "'")]
         outStr = TranslationTextParser.assembleParsedStrData(paramList)
-        self.assertEqual(outStr, "Simple text with '@paramName@'")
+        assert outStr == "Simple text with '@paramName@'"
 
     def test14AssembleParsedStrDataQuotesMultiple(self):
         """!
@@ -222,7 +223,7 @@ class Unittest01TranslationTextParser(unittest.TestCase):
                      (TranslationTextParser.parsedTypeText, " and "),
                      (TranslationTextParser.parsedTypeParam, "paramName2")]
         outStr = TranslationTextParser.assembleParsedStrData(paramList)
-        self.assertEqual(outStr, "Multiple text with '@paramName1@' and @paramName2@")
+        assert outStr == "Multiple text with '@paramName1@' and @paramName2@"
 
     def test15AssembleParsedStrDataFailure(self):
         """!
@@ -234,9 +235,9 @@ class Unittest01TranslationTextParser(unittest.TestCase):
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
-            with self.assertRaises(TypeError):
+            with pytest.raises(TypeError):
                 outStr = TranslationTextParser.assembleParsedStrData(paramList)
-                self.assertEqual(output, "Unknown string description tuple type: Unknown")
+                assert output == "Unknown string description tuple type: Unknown"
 
     def test16AssembleStream(self):
         """!
@@ -245,7 +246,7 @@ class Unittest01TranslationTextParser(unittest.TestCase):
         paramList = [(TranslationTextParser.parsedTypeText, "Simple text with "),
                      (TranslationTextParser.parsedTypeParam, "paramName")]
         outStr = TranslationTextParser.assembleStream(paramList)
-        self.assertEqual(outStr, ' << "Simple text with " << paramName')
+        assert outStr == ' << "Simple text with " << paramName'
 
     def test17AssembleStreamQuotes(self):
         """!
@@ -256,7 +257,7 @@ class Unittest01TranslationTextParser(unittest.TestCase):
                      (TranslationTextParser.parsedTypeParam, "paramName"),
                      (TranslationTextParser.parsedTypeSpecial, "'")]
         outStr = TranslationTextParser.assembleStream(paramList)
-        self.assertEqual(outStr, ' << "Simple text with \\\'" << paramName << "\\\'"')
+        assert outStr == ' << "Simple text with \\\'" << paramName << "\\\'"'
 
     def test18AssembleStreamQuotesMultiple(self):
         """!
@@ -269,7 +270,7 @@ class Unittest01TranslationTextParser(unittest.TestCase):
                      (TranslationTextParser.parsedTypeText, " and "),
                      (TranslationTextParser.parsedTypeParam, "paramName2")]
         outStr = TranslationTextParser.assembleStream(paramList)
-        self.assertEqual(outStr, ' << "Multiple text with \\\'" << paramName1 << "\\\' and " << paramName2')
+        assert outStr == ' << "Multiple text with \\\'" << paramName1 << "\\\' and " << paramName2'
 
     def test19AssembleStreamQuotesMultipleStreamSpec(self):
         """!
@@ -282,7 +283,7 @@ class Unittest01TranslationTextParser(unittest.TestCase):
                      (TranslationTextParser.parsedTypeText, " and "),
                      (TranslationTextParser.parsedTypeParam, "paramName2")]
         outStr = TranslationTextParser.assembleStream(paramList, "+")
-        self.assertEqual(outStr, ' + "Multiple text with \\\'" + paramName1 + "\\\' and " + paramName2')
+        assert outStr == ' + "Multiple text with \\\'" + paramName1 + "\\\' and " + paramName2'
 
     def test20AssembleStreamFail(self):
         """!
@@ -294,45 +295,45 @@ class Unittest01TranslationTextParser(unittest.TestCase):
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
-            with self.assertRaises(TypeError):
+            with pytest.raises(TypeError):
                 outStr = TranslationTextParser.assembleStream(paramList)
-                self.assertEqual(output, "Unknown string description tuple type: Unknown")
+                assert output == "Unknown string description tuple type: Unknown"
 
     def test21IsParsedTextType(self):
         """!
         @brief Test isParsedTextType()
         """
-        self.assertTrue(TranslationTextParser.isParsedTextType((TranslationTextParser.parsedTypeText, "text")))
-        self.assertFalse(TranslationTextParser.isParsedTextType((TranslationTextParser.parsedTypeParam, "paramName")))
-        self.assertFalse(TranslationTextParser.isParsedTextType((TranslationTextParser.parsedTypeSpecial, "'")))
-        self.assertFalse(TranslationTextParser.isParsedTextType(('notOne', "")))
+        assert TranslationTextParser.isParsedTextType((TranslationTextParser.parsedTypeText, "text"))
+        assert not TranslationTextParser.isParsedTextType((TranslationTextParser.parsedTypeParam, "paramName"))
+        assert not TranslationTextParser.isParsedTextType((TranslationTextParser.parsedTypeSpecial, "'"))
+        assert not TranslationTextParser.isParsedTextType(('notOne', ""))
 
     def test22IsParsedParamType(self):
         """!
         @brief Test isParsedParamType()
         """
-        self.assertFalse(TranslationTextParser.isParsedParamType((TranslationTextParser.parsedTypeText, "text")))
-        self.assertTrue(TranslationTextParser.isParsedParamType((TranslationTextParser.parsedTypeParam, "paramName")))
-        self.assertFalse(TranslationTextParser.isParsedParamType((TranslationTextParser.parsedTypeSpecial, "'")))
-        self.assertFalse(TranslationTextParser.isParsedTextType(('notOne', "")))
+        assert not TranslationTextParser.isParsedParamType((TranslationTextParser.parsedTypeText, "text"))
+        assert TranslationTextParser.isParsedParamType((TranslationTextParser.parsedTypeParam, "paramName"))
+        assert not TranslationTextParser.isParsedParamType((TranslationTextParser.parsedTypeSpecial, "'"))
+        assert not TranslationTextParser.isParsedTextType(('notOne', ""))
 
     def test23IsParsedSpecialType(self):
         """!
         @brief Test isParsedSpecialType()
         """
-        self.assertFalse(TranslationTextParser.isParsedSpecialType((TranslationTextParser.parsedTypeText, "text")))
-        self.assertFalse(TranslationTextParser.isParsedSpecialType((TranslationTextParser.parsedTypeParam, "paramName")))
-        self.assertTrue(TranslationTextParser.isParsedSpecialType((TranslationTextParser.parsedTypeSpecial, "'")))
-        self.assertFalse(TranslationTextParser.isParsedTextType(('notOne', "")))
+        assert not TranslationTextParser.isParsedSpecialType((TranslationTextParser.parsedTypeText, "text"))
+        assert not TranslationTextParser.isParsedSpecialType((TranslationTextParser.parsedTypeParam, "paramName"))
+        assert TranslationTextParser.isParsedSpecialType((TranslationTextParser.parsedTypeSpecial, "'"))
+        assert not TranslationTextParser.isParsedTextType(('notOne', ""))
 
     def test24GetParsedStrData(self):
         """!
         @brief Test getParsedStrData()
         """
-        self.assertEqual(TranslationTextParser.getParsedStrData((TranslationTextParser.parsedTypeText, "text")), "text")
-        self.assertEqual(TranslationTextParser.getParsedStrData((TranslationTextParser.parsedTypeParam, "paramName")), "paramName")
-        self.assertEqual(TranslationTextParser.getParsedStrData((TranslationTextParser.parsedTypeSpecial, "'")), "'")
-        self.assertEqual(TranslationTextParser.getParsedStrData(('notOne', "55")), "55")
+        assert TranslationTextParser.getParsedStrData((TranslationTextParser.parsedTypeText, "text")) == "text"
+        assert TranslationTextParser.getParsedStrData((TranslationTextParser.parsedTypeParam, "paramName")) == "paramName"
+        assert TranslationTextParser.getParsedStrData((TranslationTextParser.parsedTypeSpecial, "'")) == "'"
+        assert TranslationTextParser.getParsedStrData(('notOne', "55")) == "55"
 
     def test25AssembleTestReturnString(self):
         """!
@@ -343,7 +344,7 @@ class Unittest01TranslationTextParser(unittest.TestCase):
                      (TranslationTextParser.parsedTypeParam, 'paramName'),
                      (TranslationTextParser.parsedTypeSpecial, '"')]
         valueXlateDict = {'paramName': ("xlateName", False)}
-        self.assertEqual(TranslationTextParser.assembleTestReturnString(testTuple, valueXlateDict), "Starting text \\\"xlateName\\\"")
+        assert TranslationTextParser.assembleTestReturnString(testTuple, valueXlateDict) == "Starting text \\\"xlateName\\\""
 
     def test26AssembleTestReturnStringError(self):
         """!
@@ -356,8 +357,5 @@ class Unittest01TranslationTextParser(unittest.TestCase):
                      (TranslationTextParser.parsedTypeSpecial, '"')
                      ]
         valueXlateDict = {'paramName': ("xlateName", False)}
-        with self.assertRaises(TypeError):
-            self.assertEqual(TranslationTextParser.assembleTestReturnString(testTuple, valueXlateDict), "Starting text ")
-
-if __name__ == '__main__':
-    unittest.main()
+        with pytest.raises(TypeError):
+            assert TranslationTextParser.assembleTestReturnString(testTuple, valueXlateDict) == "Starting text "
