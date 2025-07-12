@@ -25,21 +25,17 @@ Unittest for programmer base tools utility
 #==========================================================================
 
 import os
-
-from unittest.mock import patch, MagicMock
-
 import io
 import contextlib
-
-from dir_init import TESTFILEPATH
-from dir_init import pathincsetup
-pathincsetup()
+from unittest.mock import patch, MagicMock
 
 from code_tools_grocsoftware.base.json_string_class_description import TranslationTextParser
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 
-class TestUnittest02StringClassDescription:
+from tests.dir_init import TESTFILEPATH
+
+class Test02StringClassDescription:
     """!
     @brief Unit test for the StringClassDescription class
     """
@@ -399,7 +395,7 @@ class TestUnittest02StringClassDescription:
 
         inputStr = (text for text in inputList)
         def testMockIn(prompt):
-            return TestUnittest02StringClassDescription.mockParamRetInput(prompt, inputStr)
+            return Test02StringClassDescription.mockParamRetInput(prompt, inputStr)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
@@ -427,7 +423,7 @@ class TestUnittest02StringClassDescription:
 
         inputStr = (text for text in inputList)
         def testMockIn(prompt):
-            return TestUnittest02StringClassDescription.mockParamRetInput(prompt, inputStr)
+            return Test02StringClassDescription.mockParamRetInput(prompt, inputStr)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
@@ -455,7 +451,7 @@ class TestUnittest02StringClassDescription:
 
         inputStr = (text for text in inputList)
         def testMockIn(prompt):
-            return TestUnittest02StringClassDescription.mockParamRetInput(prompt, inputStr)
+            return Test02StringClassDescription.mockParamRetInput(prompt, inputStr)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
@@ -483,7 +479,7 @@ class TestUnittest02StringClassDescription:
 
         inputStr = (text for text in inputList)
         def testMockIn(prompt):
-            return TestUnittest02StringClassDescription.mockParamRetInput(prompt, inputStr)
+            return Test02StringClassDescription.mockParamRetInput(prompt, inputStr)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
@@ -511,7 +507,7 @@ class TestUnittest02StringClassDescription:
 
         inputStr = (text for text in inputList)
         def testMockIn(prompt):
-            return TestUnittest02StringClassDescription.mockParamRetInput(prompt, inputStr)
+            return Test02StringClassDescription.mockParamRetInput(prompt, inputStr)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
@@ -647,7 +643,7 @@ class TestUnittest02StringClassDescription:
         """
         inputStr = (text for text in ["x", "a", "dict", "i", "x", "z", "list", "i"])
         def testMockIn(prompt):
-            return TestUnittest02StringClassDescription.mockParamRetInput(prompt, inputStr)
+            return Test02StringClassDescription.mockParamRetInput(prompt, inputStr)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):

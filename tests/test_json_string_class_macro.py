@@ -24,15 +24,9 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-
-from unittest.mock import patch, MagicMock
-
 import io
 import contextlib
-
-from dir_init import TESTFILEPATH
-from dir_init import pathincsetup
-pathincsetup()
+from unittest.mock import patch, MagicMock
 
 from code_tools_grocsoftware.base.json_string_class_description import TranslationTextParser
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
@@ -202,7 +196,7 @@ class ExpectedStrHelper(object):
         expectedStr += optionText+"\n"
         return expectedStr, maxIndex
 
-class TestUnittest03StringClassDescriptionMacroMethods:
+class Test03StringClassDescriptionMacroMethods:
     """!
     @brief Unit test for the StringClassDescription class
     """

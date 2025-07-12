@@ -26,11 +26,6 @@ Unittest for programmer base tools utility
 #==========================================================================
 
 import pytest
-
-
-from dir_init import pathincsetup
-pathincsetup()
-
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.base.doxygen_gen_tools import DoxyCommentGenerator
 

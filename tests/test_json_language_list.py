@@ -24,22 +24,18 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import pytest
 import os
-
-from unittest.mock import patch, MagicMock, mock_open
-
 import io
 import contextlib
 
-from dir_init import TESTFILEPATH
-from dir_init import pathincsetup
-pathincsetup()
+import pytest
+from unittest.mock import patch, MagicMock, mock_open
 
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 
+from tests.dir_init import TESTFILEPATH
 
-class TestUnittest01JsonLanguageList:
+class Test01JsonLanguageList:
     """!
     @brief Unit test for the LanguageDescriptionList class
     """
@@ -594,7 +590,7 @@ class TestUnittest01JsonLanguageList:
         assert len(langList) == 1
         assert "english" in langList
 
-class TestUnittest02JsonLanguageListInput:
+class Test02JsonLanguageListInput:
     """!
     Test input methods
     """
@@ -970,7 +966,7 @@ class TestUnittest02JsonLanguageListInput:
 
         assert testStr == expected
 
-class TestUnittest02JsonLanguageListInput:
+class Test02JsonLanguageListInput:
     @classmethod
     def setup_class(cls):
         cls.testJson = os.path.join(TESTFILEPATH, "testdata.json")

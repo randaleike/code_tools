@@ -1,6 +1,6 @@
-"""@package argparselangautogen
+"""@package langstringautogen
 Utility to automatically generate language strings using google translate api
-for the argparse libraries
+for a language string generation library
 """
 
 #==========================================================================
@@ -80,10 +80,10 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         """
         return self._endFunction(self.selectFunctionName)
 
-    def genFunction(self, outfile):
+    def genFunction(self)->list:
         """!
         @brief Generate the function body text
-        @param outfile {file} File to output the function to
+        @return list - Function body string list
         """
         # Generate the #if and includes
         paramName = ParamRetDict.getParamName(self.paramDictList[0])
@@ -123,7 +123,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         # Complete the function
         functionBody.append(self.genFunctionEnd())
         functionBody.append("#endif // "+self.defOsString+"\n")
-        outfile.writelines(functionBody)
+        return functionBody
 
     def genReturnFunctionCall(self, indent:int = 4)->list:
         """!
@@ -138,7 +138,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         getParam += ParamRetDict.getParamType(self.paramDictList[0])
         getParam += " "
         getParam += localVarName
-        getParam += "= GetUserDefaultUILanguage();\n"
+        getParam += " = GetUserDefaultUILanguage();\n"
 
         doCall = indentText
         doCall += "return "
@@ -171,8 +171,6 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         testBody.append("TEST("+testBlockName+", "+testName+")\n")
         testBody.append("{\n")
         testBody.append(bodyIndent+"// Generate the test language string object\n")
-
-        testBody.append("\n") # whitespace for readability
         testBody.append(bodyIndent+testVarDecl+" = "+self.selectFunctionName+"("+str(langid)+");\n")
         testBody.append(bodyIndent+"EXPECT_STREQ(\""+expectedIso+"\", "+testVarTest+");\n")
         testBody.append("}\n")
@@ -194,21 +192,19 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         externDef += ");\n"
         return externDef
 
-    def genUnitTest(self, getIsoMethod:str, outfile):
+    def genUnitTest(self, getIsoMethod:str)->list:
         """!
         @brief Generate all unit tests for the selection function
-
         @param getIsoMethod {string} Name of the ParserStringListInterface return ISO code method
-        @param outfile {file} File to output the function to
+        @return list - Unittest text list
         """
         # Generate block start code
-        blockStart = []
-        blockStart.append("#if "+self.defOsString+"\n")
-        blockStart.append("\n") # white space for readability
-        blockStart.append(self._genInclude("<windows.h>"))
-        blockStart.append(self.genExternDefinition())
-        blockStart.append("\n") # white space for readability
-        outfile.writelines(blockStart)
+        unittestText = []
+        unittestText.append("#if "+self.defOsString+"\n")
+        unittestText.append("\n") # white space for readability
+        unittestText.append(self._genInclude("<windows.h>"))
+        unittestText.append(self.genExternDefinition())
+        unittestText.append("\n") # white space for readability
 
         # Generate the tests
         for langName in self.langJsonData.getLanguageList():
@@ -221,7 +217,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
                                                  self.langJsonData.getLanguageIsoCodeData(langName),
                                                  getIsoMethod)
                 testBody.append("\n") # whitespace for readability
-                outfile.writelines(testBody)
+                unittestText.extend(testBody)
 
             # Generate test for unknown region of known language(s)
             for langCode in langCodes:
@@ -231,7 +227,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
                                                           self.langJsonData.getLanguageIsoCodeData(langName),
                                                           getIsoMethod)
                 unknownRegionBody.append("\n") # whitespace for readability
-                outfile.writelines(unknownRegionBody)
+                unittestText.extend(unknownRegionBody)
 
             # Generate test for unknown region of known language(s)
             for langCode in langCodes:
@@ -241,7 +237,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
                                                           self.langJsonData.getLanguageIsoCodeData(langName),
                                                           getIsoMethod)
                 unknownRegionBody.append("\n") # whitespace for readability
-                outfile.writelines(unknownRegionBody)
+                unittestText.extend(unknownRegionBody)
 
         # Generate test for unknown region of unknown language and expect default
         defaultLang, defaultIsoCode = self.langJsonData.getDefaultData()
@@ -249,10 +245,11 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
                                                 0,
                                                 defaultIsoCode,
                                                 getIsoMethod)
-        outfile.writelines(unknownLangBody)
+        unittestText.extend(unknownLangBody)
 
         # Generate block end code
-        outfile.writelines(["#endif // "+self.defOsString+"\n"])
+        unittestText.append("#endif // "+self.defOsString+"\n")
+        return unittestText
 
     def genUnitTestFunctionCall(self, checkVarName:str, indent:int = 4)->list:
         """!
@@ -289,7 +286,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         """
         incBlock = []
         incBlock.append("#if "+self.defOsString+"\n")
-        incBlock.append(self._genInclude("windows.h"))
+        incBlock.append(self._genInclude("<windows.h>"))
         incBlock.append(self.genExternDefinition())
         incBlock.append("#endif // "+self.defOsString+"\n")
         return incBlock

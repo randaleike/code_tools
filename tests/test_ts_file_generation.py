@@ -28,13 +28,10 @@ Unittest for programmer base tools utility
 
 from datetime import datetime
 
-from dir_init import pathincsetup
-pathincsetup()
-
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.typescript_gen.file_gen_base import GenerateTypeScriptFileHelper
 
-class TestUnittest01CppFilehelper:
+class Test01CppFilehelper:
     """!
     @brief Unit test for the GenerateTypeScriptFileHelper class
     """

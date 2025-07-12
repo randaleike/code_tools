@@ -1,5 +1,6 @@
-"""@package commonProgramFileTools
-Utility to automatically generate language strings class using the json_string_class_description database
+"""@package langstringautogen
+Utility to automatically generate language strings using google translate api
+for a language string generation library
 """
 
 #==========================================================================

@@ -25,14 +25,9 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-
-
-from dir_init import pathincsetup
-pathincsetup()
-
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 
-class TestUnittest01Buildmodification:
+class Test01Buildmodification:
     """!
     @brief Unit test for the ParamRetDict class
     """
@@ -148,7 +143,7 @@ class TestUnittest01Buildmodification:
             ParamRetDict.setArraySize(testDict, testValue)
             assert testValue == ParamRetDict.getArraySize(testDict['typeMod'])
 
-class TestUnittest02ReturnDict:
+class Test02ReturnDict:
     """!
     @brief Unit test for the ParamRetDict class
     """
@@ -318,7 +313,7 @@ class TestUnittest02ReturnDict:
         assert ParamRetDict.typeModPtr == retMode
 
 
-class TestUnittest03ParamDict:
+class Test03ParamDict:
     """!
     @brief Unit test for the ParamRetDict class
     """

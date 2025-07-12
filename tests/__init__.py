@@ -1,6 +1,5 @@
 """@package test_programmer_tools
 Unittest for programmer base tools utility
-
 """
 
 #==========================================================================
@@ -25,49 +24,9 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
+import sys
 
-
-from dir_init import pathincsetup
-pathincsetup()
-
-from code_tools_grocsoftware.base.copyright_tools import SubTextMarker
-
-class TestClass01CopyrightSubtextMarker:
-    """!
-    @brief Unit test for the copyright SubTextMarker class
-    """
-    def test001ConstructorSimple(self):
-        """!
-        @brief Test simple input
-        """
-        testObj = SubTextMarker("test", 10)
-        assert testObj.text == "test"
-        assert testObj.start == 10
-        assert testObj.end == 14
-
-    def test002ConstructorPadded(self):
-        """!
-        @brief Test simple input
-        """
-        testObj = SubTextMarker(" test ", 10)
-        assert testObj.text == "test"
-        assert testObj.start == 11
-        assert testObj.end == 15
-
-    def test003ConstructorTabPadded(self):
-        """!
-        @brief Test simple input
-        """
-        testObj = SubTextMarker("\ttest\t", 10)
-        assert testObj.text == "test"
-        assert testObj.start == 11
-        assert testObj.end == 15
-
-    def test004ConstructorExtraPadded(self):
-        """!
-        @brief Test simple input
-        """
-        testObj = SubTextMarker("  test  ", 10)
-        assert testObj.text == "test"
-        assert testObj.start == 12
-        assert testObj.end == 16
+# pylint: disable=locally-disabled, multiple-statements, import-error, wrong-import-position
+sys.path.insert(0, './src')
+sys.path.insert(1, './tests')
+# pylint: enable=import-error, wrong-import-position

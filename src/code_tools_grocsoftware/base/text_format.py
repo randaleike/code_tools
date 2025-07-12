@@ -1,5 +1,6 @@
-"""@package utility
-Common utility functions
+"""@package langstringautogen
+Utility to automatically generate language strings using google translate api
+for a language string generation library
 """
 
 #==========================================================================

@@ -26,11 +26,6 @@ Unittest for programmer base tools utility
 #==========================================================================
 
 import pytest
-#
-
-from dir_init import pathincsetup
-pathincsetup()
-
 from code_tools_grocsoftware.base.eula import EulaText
 from code_tools_grocsoftware.base.eula import eula as eulaData
 

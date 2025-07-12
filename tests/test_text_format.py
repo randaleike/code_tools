@@ -25,14 +25,9 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-
-
-from dir_init import pathincsetup
-pathincsetup()
-
 from code_tools_grocsoftware.base.text_format import MultiLineFormat
 
-class TestUnittest01MultiLineFormat:
+class Test01MultiLineFormat:
     """!
     @brief Unit test for the MultiLineFormat function
     """

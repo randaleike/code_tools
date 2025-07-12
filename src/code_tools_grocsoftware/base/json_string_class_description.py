@@ -1,6 +1,6 @@
-"""@package autogenlang
+"""@package langstringautogen
 Utility to automatically generate language strings using google translate api
-for the argparse libraries
+for a language string generation library
 """
 
 #==========================================================================

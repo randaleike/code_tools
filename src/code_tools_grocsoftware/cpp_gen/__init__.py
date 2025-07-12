@@ -1,5 +1,6 @@
-"""@package file_date
-Utilities to get the creation and last modification years of a file
+"""@package langstringautogen
+Utility to automatically generate language strings using google translate api
+for a language string generation library
 """
 
 #==========================================================================

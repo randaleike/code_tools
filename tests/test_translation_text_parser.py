@@ -24,19 +24,13 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import pytest
-
-
 import io
 import contextlib
-
-from dir_init import TESTFILEPATH
-from dir_init import pathincsetup
-pathincsetup()
+import pytest
 
 from code_tools_grocsoftware.base.json_string_class_description import TranslationTextParser
 
-class TestUnittest01TranslationTextParser:
+class Test01TranslationTextParser:
     """!
     @brief Unit test for the TranslationTextParser class
     """

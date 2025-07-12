@@ -24,11 +24,6 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-
-
-from dir_init import pathincsetup
-pathincsetup()
-
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.base.eula import EulaText
 from code_tools_grocsoftware.cpp_gen.file_gen_base import GenerateCppFileHelper

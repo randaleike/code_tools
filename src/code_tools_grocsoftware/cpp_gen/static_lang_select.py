@@ -1,6 +1,6 @@
-"""@package argparselangautogen
+"""@package langstringautogen
 Utility to automatically generate language strings using google translate api
-for the argparse libraries
+for a language string generation library
 """
 
 #==========================================================================
@@ -78,11 +78,10 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         """
         return self._endFunction(self.selectFunctionName)
 
-    def genFunction(self, outfile):
+    def genFunction(self)->list:
         """!
         @brief Generate the function body text
-
-        @param outfile {file} File to output the function to
+        @return list - Function body string list
         """
         # Generate the #if and includes
         functionBody = []
@@ -115,7 +114,7 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         # Complete the function
         functionBody.append(self.genFunctionEnd())
         functionBody.append("#endif // "+self.defStaticString+"\n")
-        outfile.writelines(functionBody)
+        return functionBody
 
     def genReturnFunctionCall(self, indent:int = 4)->list:
         """!
@@ -139,23 +138,22 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         externDef += "();\n"
         return externDef
 
-    def genUnitTest(self, getIsoMethod:str, outfile):
+    def genUnitTest(self, getIsoMethod:str)->list:
         """!
         @brief Generate all unit tests for the selection function
-
         @param getIsoMethod {string} Name of the ParserStringListInterface return ISO code method
-        @param outfile {file} File to output the function to
+        @return list - Unittest string list
         """
         # Generate block start code
-        blockStart = []
-        blockStart.append("#if ("+self.defStaticString+"\n")
-        blockStart.append(self.genExternDefinition())
-        outfile.writelines(blockStart)
+        unittestText = []
+        unittestText.append("#if "+self.defStaticString+"\n")
+        unittestText.append(self.genExternDefinition())
+        unittestText.append("\n") # white space for readability
 
         # Generate the testgenDoxyMethodComment
         breifDesc = "Test "+self.selectFunctionName+" selection case"
         testHeader = self.doxyCommentGen.genDoxyMethodComment(breifDesc, [])
-        outfile.writelines(testHeader)
+        unittestText.extend(testHeader)
 
         # Generate the tests
         bodyIndent = "".rjust(4, " ")
@@ -164,22 +162,24 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         testVarTest = testVar+"->"+getIsoMethod+"().c_str()"
 
         for langName in self.langJsonData.getLanguageList():
+            switch = self.langJsonData.getLanguageCompileSwitchData(langName)
             testBody = []
-            testBody.append("#if defined("+self.langJsonData.getLanguageCompileSwitchData(langName)+")\n")
+            testBody.append("#if defined("+switch+")\n")
             testBody.append("TEST(StaticSelectFunction"+langName.capitalize()+", CompileSwitchedValue)\n")
             testBody.append("{\n")
             testBody.append(bodyIndent+"// Generate the test language string object\n")
             testBody.append(bodyIndent+testVarDecl+" = "+self.selectFunctionName+"();\n")
-            testBody.append(bodyIndent+"EXPECT_STREQ(\""+self.langJsonData.getLanguageIsoCodeData(langName)+"\", "+testVarTest+";\n")
+            testBody.append(bodyIndent+"EXPECT_STREQ(\""+self.langJsonData.getLanguageIsoCodeData(langName)+"\", "+testVarTest+");\n")
             # Complete the function
             testBody.append("}\n")
-            testBody.append("#endif //end of #if defined("+self.langJsonData.getLanguageCompileSwitchData(langName)+")\n")
+            testBody.append("#endif //end of #if defined("+switch+")\n")
             testBody.append("\n") # whitespace for readability
 
-            outfile.writelines(testBody)
+            unittestText.extend(testBody)
 
         # Generate block end code
-        outfile.writelines(["#endif // "+self.defStaticString+"\n"])
+        unittestText.append("#endif // "+self.defStaticString+"\n")
+        return unittestText
 
     def genUnitTestFunctionCall(self, checkVarName:str, indent:int = 4)->list:
         """!
@@ -207,4 +207,4 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         """!
         @return tuple(str,str) - Unit test cpp file name, Test name
         """
-        return "LocalLanguageSelect_Static_test.cpp", "LocalLanguageSelect_Static_te"
+        return "LocalLanguageSelect_Static_test.cpp", "LocalLanguageSelect_Static_test"

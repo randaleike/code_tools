@@ -1,5 +1,6 @@
-"""@package commonProgramFileTools
-Utility to automatically generate language strings class using the json_string_class_description database
+"""@package langstringautogen
+Utility to automatically generate language strings using google translate api
+for a language string generation library
 """
 
 #==========================================================================
@@ -84,10 +85,10 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         """
         return self._endFunction(self.selectFunctionName)
 
-    def genFunction(self, outfile):
+    def genFunction(self)->list:
         """!
         @brief Generate the function body text
-        @param outfile {file} File to output the function to
+        @return list - Function body string list
         """
         # Generate the #if and includes
         functionBody = []
@@ -152,7 +153,7 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         # Complete the function
         functionBody.append(self.genFunctionEnd())
         functionBody.append("#endif // "+self.defOsString+"\n")
-        outfile.writelines(functionBody)
+        return functionBody
 
     def genReturnFunctionCall(self, indent:int = 4)->list:
         """!
@@ -222,45 +223,44 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         externDef += ");\n"
         return externDef
 
-    def genUnitTest(self, getIsoMethod:str, outfile):
+    def genUnitTest(self, getIsoMethod:str)->list:
         """!
         @brief Generate all unit tests for the selection function
-
         @param getIsoMethod {string} Name of the ParserStringListInterface return ISO code method
-        @param outfile {file} File to output the function to
+        @return list - Unittest text list
         """
         # Generate block start code
-        blockStart = []
-        blockStart.append("#if "+self.defOsString+"\n")
-        blockStart.append("\n") # white space for readability
-        blockStart.append(self._genInclude("<cstdlib>"))
-        blockStart.append(self.genExternDefinition())
-        blockStart.append("\n") # white space for readability
-        outfile.writelines(blockStart)
+        unittestBlock = ["#if "+self.defOsString+"\n"]
+        unittestBlock.append("\n") # white space for readability
+        unittestBlock.append(self._genInclude("<cstdlib>"))
+        unittestBlock.append(self.genExternDefinition())
+        unittestBlock.append("\n") # white space for readability
 
         # Generate the tests
         for langName in self.langJsonData.getLanguageList():
             langCode, regionList = self.langJsonData.getLanguageLANGData(langName)
+            isoCode = self.langJsonData.getLanguageIsoCodeData(langName)
+
             for region in regionList:
                 # Generate test for each region of known language
                 linuxEnvString = langCode+"_"+region+".UTF-8"
                 testName = langName.capitalize()+"_"+region+"_Selection"
                 testBody = self._genUnitTestTest(testName,
                                                  linuxEnvString,
-                                                 self.langJsonData.getLanguageIsoCodeData(langName),
+                                                 isoCode,
                                                  getIsoMethod)
                 testBody.append("\n") # whitespace for readability
-                outfile.writelines(testBody)
+                unittestBlock.extend(testBody)
 
             # Generate test for unknown region of known language
             unknownRegionTestName =langName.capitalize()+"_unknownRegion_Selection"
             unknownRegionEnv = langCode+"_XX.UTF-8"
             unknownRegionBody = self._genUnitTestTest(unknownRegionTestName,
                                                       unknownRegionEnv,
-                                                      self.langJsonData.getLanguageIsoCodeData(langName),
+                                                      isoCode,
                                                       getIsoMethod)
             unknownRegionBody.append("\n") # whitespace for readability
-            outfile.writelines(unknownRegionBody)
+            unittestBlock.extend(unknownRegionBody)
 
         # Generate test for unknown region of unknown language and expect default
         defaultLang, defaultIsoCode = self.langJsonData.getDefaultData()
@@ -268,10 +268,11 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
                                                 "xx_XX.UTF-8",
                                                 defaultIsoCode,
                                                 getIsoMethod)
-        outfile.writelines(unknownLangBody)
+        unittestBlock.extend(unknownLangBody)
 
         # Generate block end code
-        outfile.writelines(["#endif // "+self.defOsString+"\n"])
+        unittestBlock.append("#endif // "+self.defOsString+"\n")
+        return unittestBlock
 
     def genUnitTestFunctionCall(self, checkVarName:str, indent:int = 4)->list:
         """!

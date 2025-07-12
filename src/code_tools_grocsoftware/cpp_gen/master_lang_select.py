@@ -1,6 +1,6 @@
-"""@package argparselangautogen
+"""@package langstringautogen
 Utility to automatically generate language strings using google translate api
-for the argparse libraries
+for a language string generation library
 """
 
 #==========================================================================
@@ -77,11 +77,11 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
         """
         return self._endFunction(self.selectFunctionName)
 
-    def genFunction(self, outfile, osLangSelectors):
+    def genFunction(self, osLangSelectors)->list:
         """!
         @brief Generate the function body text
-        @param outfile {file} File to output the function to
         @param osLangSelectors {list} List of OS language selector function generation objects
+        @return list - Function body string list
         """
         # Generate function doxygen comment and start
         functionBody = []
@@ -106,7 +106,7 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
         # Complete the function
         functionBody.append("#endif // defined os\n")
         functionBody.append(self.genFunctionEnd())
-        outfile.writelines(functionBody)
+        return functionBody
 
     def genReturnFunctionCall(self, indent:int = 4)->list:
         """!
@@ -114,16 +114,16 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
         @param indent {number} Code indentation spaces
         @return list of strings Formatted code lines
         """
-        doCall = "return "+self.selectFunctionName+"();\n"
-        return [doCall.rjust(indent, " ")]
+        doCall = "".rjust(indent, " ")+"return "+self.selectFunctionName+"();\n"
+        return [doCall]
 
-    def genUnitTest(self, getIsoMethod:str, outfile, osLangSelectors):
+    def genUnitTest(self, getIsoMethod:str, osLangSelectors)->list:
         """!
         @brief Generate all unit tests for the selection function
 
         @param getIsoMethod {string} Name of the ParserStringListInterface return ISO code method
-        @param outfile {file} File to output the function to
         @param osLangSelectors {list} List of OS language selector function generation objects
+        @return list - Unittest text list
         """
         testBody = []
 
@@ -170,4 +170,4 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
         testBody.append(bodyIndent+testVarDecl+" = "+self.selectFunctionName+"();\n")
         testBody.append(bodyIndent+"EXPECT_STREQ("+getExpectedVal+", "+testVarTest+");\n")
         testBody.append(self.genFunctionEnd())
-        outfile.writelines(testBody)
+        return testBody

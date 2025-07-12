@@ -24,24 +24,21 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import pytest
 import os
-
-from unittest.mock import patch, MagicMock
-
 import io
 import contextlib
 
-from dir_init import TESTFILEPATH
-from dir_init import pathincsetup
-pathincsetup()
+import pytest
+from unittest.mock import patch, MagicMock
 
 from code_tools_grocsoftware.base.json_string_class_description import TranslationTextParser
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 
-class TestUnittest02StringClassDescription:
+from tests.dir_init import TESTFILEPATH
+
+class Test02StringClassDescription:
     """!
     @brief Unit test for the StringClassDescription class
     """

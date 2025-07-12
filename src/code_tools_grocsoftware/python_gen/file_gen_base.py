@@ -1,5 +1,6 @@
-"""@package commonProgramFileTools
-Utility classes for programming language file generation
+"""@package langstringautogen
+Utility to automatically generate language strings using google translate api
+for a language string generation library
 """
 
 #==========================================================================
@@ -26,7 +27,7 @@ Utility classes for programming language file generation
 
 from datetime import datetime
 
-from code_tools_grocsoftware.base.copyright_tools import CopyrightGenerator
+from code_tools_grocsoftware.base.copyright_generator import CopyrightGenerator
 from code_tools_grocsoftware.base.eula import EulaText
 
 from code_tools_grocsoftware.base.comment_gen_tools import PyCommentGenerator
@@ -285,7 +286,7 @@ class GeneratePythonFileHelper(object):
         if owner is not None:
             # Generate copyright and EULA text
             currentYear = datetime.now().year
-            copyrightEulaText.append(self.copyrightGenerator.createNewCopyright(owner, startYear, currentYear))
+            copyrightEulaText.append(self.copyrightGenerator.create_new_copyright(owner, startYear, currentYear))
             copyrightEulaText.append("") # white space for readability
             copyrightEulaText.append(self.eula.formatEulaName())
             copyrightEulaText.append("") # white space for readability

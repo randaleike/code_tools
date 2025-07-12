@@ -1,4 +1,4 @@
-"""@package LanguageDescriptionList
+"""@package langstringautogen
 Utility to create a json language description list
 """
 

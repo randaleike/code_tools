@@ -1,4 +1,4 @@
-"""@package comment_tools
+"""@package langstringautogen
 @brief Comment block find and generate tools
 Scan source files to find comment block(s). Utility to generate new comment blocks
 """

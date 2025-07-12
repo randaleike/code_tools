@@ -1,4 +1,4 @@
-"""@package eula_tools
+"""@package langstringautogen
 Utilities to create formatted End User License Agreement Text blocks
 """
 

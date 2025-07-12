@@ -1,4 +1,4 @@
-"""@package file_date
+"""@package langstringautogen
 Utilities to get the creation and last modification years of a file
 """
 
@@ -26,12 +26,11 @@ Utilities to get the creation and last modification years of a file
 
 __version__ = '0.8.3'
 
-__all__ = ["copyright_tools", "eula", "comment_block",
-           "comment_gen_tools", "doxygen_gen_tools", "param_return_tools",
-           "json_language_list", "json_string_class_description"]
+__all__ = ["copyright_generator", "eula", "comment_gen_tools", "doxygen_gen_tools",
+           "param_return_tools", "json_language_list", "json_string_class_description",
+           "insert_new_copyright_block"]
 
-from . import copyright_tools
-from . import comment_block
+from . import copyright_generator
 from . import eula
 
 from . import comment_gen_tools
@@ -41,3 +40,4 @@ from . import param_return_tools
 
 from . import json_language_list
 from . import json_string_class_description
+from . import insert_new_copyright_block

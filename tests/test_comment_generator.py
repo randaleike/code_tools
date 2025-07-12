@@ -25,11 +25,6 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-
-
-from dir_init import pathincsetup
-pathincsetup()
-
 from code_tools_grocsoftware.base.comment_gen_tools import CommentGenerator
 
 cCommentParms =   {'blockStart': "/*", 'blockEnd': "*/", 'blockLineStart': "", 'singleLine': "//"}
@@ -37,7 +32,7 @@ pyCommentParms =  {'blockStart': "\"\"\"", 'blockEnd':"\"\"\"", 'blockLineStart'
 shCommentParms =  {'blockStart': None, 'blockEnd': None, 'blockLineStart': "#", 'singleLine': "#"}
 batCommentParms = {'blockStart': None, 'blockEnd': None, 'blockLineStart': "REM ", 'singleLine': "REM ",}
 
-class TestUnittest07CommentGeneration:
+class Test07CommentGeneration:
     """!
     @brief Unit test for the CommentGenerator class
     """

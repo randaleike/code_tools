@@ -28,35 +28,30 @@ import os
 
 from unittest.mock import mock_open, patch
 
-from dir_init import pathincsetup
-pathincsetup()
-from dir_init import TESTFILEPATH
-
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.base.doxygen_gen_tools import CDoxyCommentGenerator
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 from code_tools_grocsoftware.cpp_gen.string_class_tools import BaseCppStringClassGenerator
 from code_tools_grocsoftware.cpp_gen.linux_lang_select import LinuxLangSelectFunctionGenerator
 
+from tests.dir_init import TESTFILEPATH
+
 testJsonList = os.path.join(TESTFILEPATH,"teststringlanglist.json")
 
-class fileCapture(object):
-    """!
-    Dummy file writelines capture class
-    """
-    def __init__(self):
-        self.captureList = []
-        self.callCount = 0
-        self.lineCount = 0
+def getExpectedExtern(paramDictList:list, intfRetPtrType:str, selectFunctionName:str)->str:
+    paramPrefix = ""
+    paramStr = ""
+    for paramDict in paramDictList:
+        paramType = ParamRetDict.getParamType(paramDict)
+        paramName = ParamRetDict.getParamName(paramDict)
+        paramStr += paramPrefix
+        paramStr += paramType
+        paramStr += " "
+        paramStr += paramName
+        paramPrefix = ", "
 
-    def writelines(self, writeList:list):
-        """!
-        @brief Capture the data
-        @param writeList {list} - String list to capture
-        """
-        self.callCount += 1
-        self.lineCount += len(writeList)
-        self.captureList.extend(writeList)
+    expectedStr = "extern "+intfRetPtrType+" "+selectFunctionName+"("+paramStr+");\n"
+    return expectedStr
 
 class TestClass01LinuxLangSelect:
     """!
@@ -139,19 +134,17 @@ class TestClass01LinuxLangSelect:
         @brief Test genFunction
         """
         cppGen = BaseCppStringClassGenerator()
-        dummy = fileCapture()
         langList = LanguageDescriptionList(testJsonList)
         testObj = LinuxLangSelectFunctionGenerator(langList)
 
-        testObj.genFunction(dummy)
+        captureList = testObj.genFunction()
 
-        assert dummy.callCount == 1
-        assert dummy.lineCount == 41
+        assert len(captureList) == 41
 
-        assert dummy.captureList[0] == "#if (defined(__linux__) || defined(__unix__))\n"
-        assert dummy.captureList[1] == cppGen._genInclude("<cstdlib>")
-        assert dummy.captureList[2] == cppGen._genInclude("<regex>")
-        assert dummy.captureList[3] == "\n"
+        assert captureList[0] == "#if (defined(__linux__) || defined(__unix__))\n"
+        assert captureList[1] == cppGen._genInclude("<cstdlib>")
+        assert captureList[2] == cppGen._genInclude("<regex>")
+        assert captureList[3] == "\n"
 
         expectedList = cppGen._defineFunctionWithDecorations(testObj.selectFunctionName,
                                                              "Determine the correct local language class from the input LANG environment setting",
@@ -159,18 +152,18 @@ class TestClass01LinuxLangSelect:
                                                              testObj.baseIntfRetPtrDict)
         expectedList.append("{\n")
         for index, expectedText in enumerate(expectedList):
-            assert dummy.captureList[index+4] == expectedText
+            assert captureList[index+4] == expectedText
 
         paramName = ParamRetDict.getParamName(testObj.paramDictList[0])
-        assert dummy.captureList[13] == "    // Check for valid input\n"
-        assert dummy.captureList[14] == "    if (nullptr != "+paramName+")\n"
-        assert dummy.captureList[15] == "    {\n"
-        assert dummy.captureList[16] == "        // Break the string into its components\n"
-        assert dummy.captureList[17] == "        std::cmatch searchMatch;\n"
-        assert dummy.captureList[18] == "        std::regex searchRegex(\"^([a-z]{2})_([A-Z]{2})\\\\.(UTF-[0-9]{1,2})\");\n"
-        assert dummy.captureList[19] == "        bool matched = std::regex_match("+paramName+", searchMatch, searchRegex);\n"
-        assert dummy.captureList[20] == "\n"
-        assert dummy.captureList[21] == "        // Determine the language\n"
+        assert captureList[13] == "    // Check for valid input\n"
+        assert captureList[14] == "    if (nullptr != "+paramName+")\n"
+        assert captureList[15] == "    {\n"
+        assert captureList[16] == "        // Break the string into its components\n"
+        assert captureList[17] == "        std::cmatch searchMatch;\n"
+        assert captureList[18] == "        std::regex searchRegex(\"^([a-z]{2})_([A-Z]{2})\\\\.(UTF-[0-9]{1,2})\");\n"
+        assert captureList[19] == "        bool matched = std::regex_match("+paramName+", searchMatch, searchRegex);\n"
+        assert captureList[20] == "\n"
+        assert captureList[21] == "        // Determine the language\n"
 
         first = True
         for index, langName in enumerate(langList.getLanguageList()):
@@ -185,23 +178,23 @@ class TestClass01LinuxLangSelect:
             ifLine += "\"))\n"
 
             listOffset = 22 + (index * 4)
-            assert dummy.captureList[listOffset] == "        "+ifLine
-            assert dummy.captureList[listOffset+1] == "        {\n"
-            assert dummy.captureList[listOffset+2] == "            "+cppGen._genMakePtrReturnStatement(langName)
-            assert dummy.captureList[listOffset+3] == "        }\n"
+            assert captureList[listOffset] == "        "+ifLine
+            assert captureList[listOffset+1] == "        {\n"
+            assert captureList[listOffset+2] == "            "+cppGen._genMakePtrReturnStatement(langName)
+            assert captureList[listOffset+3] == "        }\n"
 
-        assert dummy.captureList[30] == "        else //unknown language code, use default language\n"
-        assert dummy.captureList[31] == "        {\n"
+        assert captureList[30] == "        else //unknown language code, use default language\n"
+        assert captureList[31] == "        {\n"
         defaultLang, defaultIsoCode = langList.getDefaultData()
-        assert dummy.captureList[32] == "            "+cppGen._genMakePtrReturnStatement(defaultLang)
-        assert dummy.captureList[33] == "        }\n"
-        assert dummy.captureList[34] == "    }\n"
-        assert dummy.captureList[35] == "    else // null pointer input, use default language\n"
-        assert dummy.captureList[36] == "    {\n"
-        assert dummy.captureList[37] == "        "+cppGen._genMakePtrReturnStatement(defaultLang)
-        assert dummy.captureList[38] == "    } // end of if(nullptr != "+paramName+")\n"
-        assert dummy.captureList[39] == "} // end of "+testObj.selectFunctionName+"()\n"
-        assert dummy.captureList[40] == "#endif // "+testObj.defOsString+"\n"
+        assert captureList[32] == "            "+cppGen._genMakePtrReturnStatement(defaultLang)
+        assert captureList[33] == "        }\n"
+        assert captureList[34] == "    }\n"
+        assert captureList[35] == "    else // null pointer input, use default language\n"
+        assert captureList[36] == "    {\n"
+        assert captureList[37] == "        "+cppGen._genMakePtrReturnStatement(defaultLang)
+        assert captureList[38] == "    } // end of if(nullptr != "+paramName+")\n"
+        assert captureList[39] == "} // end of "+testObj.selectFunctionName+"()\n"
+        assert captureList[40] == "#endif // "+testObj.defOsString+"\n"
 
     def test008GenReturnFunctionCall(self):
         """!
@@ -220,7 +213,6 @@ class TestClass01LinuxLangSelect:
         @brief Test _genUnitTestTest
         """
         testObj = LinuxLangSelectFunctionGenerator(LanguageDescriptionList())
-        paramType = ParamRetDict.getParamType(testObj.paramDictList[0])
 
         doxyGen = CDoxyCommentGenerator()
         doxyDesc = "Test "+testObj.selectFunctionName+" envLang selection case"
@@ -240,3 +232,101 @@ class TestClass01LinuxLangSelect:
         assert strList[8] == "    "+testObj.baseIntfRetPtrType+" testVar = "+testObj.selectFunctionName+"(testLangCode.c_str());\n"
         assert strList[9] == "    EXPECT_STREQ(\"en\", testVar->getIsoCode().c_str());\n"
         assert strList[10] == "}\n"
+
+    def test010GenExternDefinition(self):
+        """!
+        @brief Test genExternDefinition
+        """
+        testObj = LinuxLangSelectFunctionGenerator(LanguageDescriptionList())
+        assert testObj.genExternDefinition() == getExpectedExtern(testObj.paramDictList, testObj.baseIntfRetPtrType, testObj.selectFunctionName)
+
+    def test011GenUnitTest(self):
+        """!
+        @brief Test genUnitTest
+        """
+        langList = LanguageDescriptionList(testJsonList)
+        testObj = LinuxLangSelectFunctionGenerator(langList)
+        textList = testObj.genUnitTest("getIsoCode")
+
+        # Test starting block
+        assert len(textList) == 425
+        assert textList[0] == "#if "+testObj.defOsString+"\n"
+        assert textList[1] == "\n"
+        assert textList[2] == "#include <cstdlib>\n"
+        assert textList[3] == testObj.genExternDefinition()
+        assert textList[4] == "\n"
+
+        # Match each test function
+        textIndex = 5
+        for langName in langList.getLanguageList():
+            langCode, regionList = langList.getLanguageLANGData(langName)
+            isoCode = langList.getLanguageIsoCodeData(langName)
+            for region in regionList:
+                linuxEnvString = langCode+"_"+region+".UTF-8"
+                testName = langName.capitalize()+"_"+region+"_Selection"
+                expectedTestText = testObj._genUnitTestTest(testName, linuxEnvString, isoCode, "getIsoCode")
+
+                for index, expectedLine in enumerate(expectedTestText):
+                    assert textList[textIndex+index] == expectedLine
+
+                textIndex += len(expectedTestText)
+                assert textList[textIndex] == "\n"
+                textIndex += 1
+
+            # Match unknown region test
+            unknownRegionTestName =langName.capitalize()+"_unknownRegion_Selection"
+            unknownRegionEnv = langCode+"_XX.UTF-8"
+            expectedTestText = testObj._genUnitTestTest(unknownRegionTestName, unknownRegionEnv, isoCode, "getIsoCode")
+            for index, expectedLine in enumerate(expectedTestText):
+                assert textList[textIndex+index] == expectedLine
+
+            textIndex += len(expectedTestText)
+            assert textList[textIndex] == "\n"
+            textIndex += 1
+
+        # Match default test
+        defaultLang, defaultIsoCode = langList.getDefaultData()
+        unknownLangBody = testObj._genUnitTestTest("UnknownLanguageDefaultSelection", "xx_XX.UTF-8", defaultIsoCode, "getIsoCode")
+        for index, expectedLine in enumerate(unknownLangBody):
+            assert textList[textIndex+index] == expectedLine
+
+        textIndex += len(expectedTestText)
+
+        # Match end
+        assert textList[424] == "#endif // "+testObj.defOsString+"\n"
+        assert textIndex == 424
+
+    def test012GenUnitTestFunctionCall(self):
+        """!
+        @brief Test genUnitTestFunctionCall
+        """
+        testObj = LinuxLangSelectFunctionGenerator(LanguageDescriptionList())
+        textList = testObj.genUnitTestFunctionCall("checkVar")
+
+        paramType = ParamRetDict.getParamType(testObj.paramDictList[0])
+
+        assert len(textList) == 2
+        assert textList[0] == "    "+paramType+" langId = getenv(\"LANG\");\n"
+        assert textList[1] == "    "+testObj.baseIntfRetPtrType+" checkVar = "+testObj.selectFunctionName+"(langId);\n"
+
+    def test013GetUnittestExternInclude(self):
+        """!
+        @brief Test getUnittestExternInclude
+        """
+        testObj = LinuxLangSelectFunctionGenerator(LanguageDescriptionList())
+        textList = testObj.getUnittestExternInclude()
+
+        assert len(textList) == 4
+        assert textList[0] == "#if "+testObj.defOsString+"\n"
+        assert textList[1] == "#include <cstdlib>\n"
+        assert textList[2] == getExpectedExtern(testObj.paramDictList, testObj.baseIntfRetPtrType, testObj.selectFunctionName)
+        assert textList[3] == "#endif // "+testObj.defOsString+"\n"
+
+    def test014GetUnittestFileName(self):
+        """!
+        @brief Test getUnittestFileName
+        """
+        testObj = LinuxLangSelectFunctionGenerator(LanguageDescriptionList())
+        cppName, testName = testObj.getUnittestFileName()
+        assert cppName == "LocalLanguageSelect_Linux_test.cpp"
+        assert testName == "LocalLanguageSelect_Linux_test"
