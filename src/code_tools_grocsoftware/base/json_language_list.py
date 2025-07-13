@@ -27,7 +27,7 @@ Utility to create a json language description list
 import re
 import json
 
-class LanguageDescriptionList(object):
+class LanguageDescriptionList():
     """!
     Language description list data
     """
@@ -47,7 +47,7 @@ class LanguageDescriptionList(object):
             self.filename = lang_list_file_name
 
         try:
-            lang_json_file = open(self.filename, 'r', encoding='utf-8')
+            lang_json_file = open(self.filename, 'r', encoding='utf-8') # pylint: disable=consider-using-with
         except FileNotFoundError:
             self.lang_json_data =  {'default':{'name':"english", 'isoCode':"en"}, 'languages':{}}
         else:
@@ -79,7 +79,7 @@ class LanguageDescriptionList(object):
         else:
             # Determine if we should overwrite existing
             commit = input("Overwrite existing "+entry_name+" entry? [Y/N]").upper()
-            if ((commit == 'Y') or (commit == "YES")):
+            if commit in ['Y', "YES"]:
                 commit_flag = True
         return commit_flag
 
@@ -89,10 +89,7 @@ class LanguageDescriptionList(object):
         @param entry_name {string} Name of the method that will be added
         """
         commit = input("Add new "+entry_name+" entry? [Y/N]").upper()
-        if ((commit == 'Y') or (commit == "YES")):
-            return True
-        else:
-            return False
+        return bool(commit in ['Y', "YES"])
 
     def _get_commit_flag(self, entry_name:str, entry_keys:list, override:bool = False)->bool:
         """!
@@ -102,9 +99,10 @@ class LanguageDescriptionList(object):
         @param override {boolean} True = force commit, False = ask user
         """
         if entry_name in entry_keys:
-            return self._get_commit_over_write_flag(entry_name, override)
+            flag = self._get_commit_over_write_flag(entry_name, override)
         else:
-            return self._get_commit_new_flag(entry_name)
+            flag = self._get_commit_new_flag(entry_name)
+        return flag
 
     def update(self):
         """!
@@ -119,13 +117,14 @@ class LanguageDescriptionList(object):
         @param lang_name (string) - Language name to use default if detection fails
         """
         if lang_name.lower() in self.lang_json_data['languages'].keys():
-            default_dict = {'name':lang_name, 'isoCode':self.lang_json_data['languages'][lang_name]['isoCode']}
+            default_dict = {'name':lang_name,
+                            'isoCode':self.lang_json_data['languages'][lang_name]['isoCode']}
             self.lang_json_data['default'] = default_dict
         else:
             self._print_error("You must select a current language as the default.")
             print("Available languages:")
-            for lang_name in list(self.lang_json_data['languages']):
-                print("  "+lang_name)
+            for available_name in list(self.lang_json_data['languages']):
+                print("  "+available_name)
 
     def get_default_data(self)->tuple:
         """!
@@ -137,9 +136,9 @@ class LanguageDescriptionList(object):
         return default_lang, default_iso_code
 
     @staticmethod
-    def _create_language_entry(linux_env_code:str = "", linux_region_list:list = [],
-                             windows_lang_id:list = [], windows_region_list:list = [],
-                             iso639Code:str = "", compile_switch:str = "")->dict:
+    def _create_language_entry(linux_env_code:str, linux_region_list:list,
+                               windows_lang_id:list, windows_region_list:list,
+                               iso_639_code:str, compile_switch:str)->dict:
         """!
         @brief Create a language dictionart entry
 
@@ -147,7 +146,7 @@ class LanguageDescriptionList(object):
         @param linux_region_list (list of strings) - Linux LANG region codes for this language
         @param windows_lang_id (list of numbers) - Windows LANGID & 0xFF value(s) for this language
         @param windows_region_list (list of numbers) - Windows LANGID value(s) for this language
-        @param iso639Code (string) - ISO 639 set 3 language code
+        @param iso_639_code (string) - ISO 639 set 3 language code
         @param compile_switch (string) - Language compile switch
 
         @return language dictionary object
@@ -156,7 +155,7 @@ class LanguageDescriptionList(object):
                     ('LANG_regions', linux_region_list),
                     ('LANGID', windows_lang_id),
                     ('LANGID_regions', windows_region_list),
-                    ('isoCode', iso639Code),
+                    ('isoCode', iso_639_code),
                     ('compileSwitch', compile_switch)]
         lang_entry = dict(lang_data)
         return lang_entry
@@ -190,7 +189,8 @@ class LanguageDescriptionList(object):
         @brief Get the LANG and LANG_regions data for the given entry_name language
         @param language_name {string} Language entry key to fetch the ptoperty value from
         @return tuple (string, list of strings) - Current ['languages'][entry_name]['LANG'] data,
-                                                  and ['languages'][entry_name]['LANGID_regions'] data
+                                                  and ['languages'][entry_name]['LANGID_regions']
+                                                  data
         """
         lang_code = self.lang_json_data['languages'][language_name]['LANG']
         region_list = self.lang_json_data['languages'][language_name]['LANG_regions']
@@ -222,7 +222,8 @@ class LanguageDescriptionList(object):
         @brief Return a tuple list of the usable language dictionary entries
         @return list of language entry property names
         """
-        entry_template = LanguageDescriptionList._create_language_entry()
+        # create empty dictionary just for the keys
+        entry_template = LanguageDescriptionList._create_language_entry("", [], [], [], "", "")
         return list(entry_template.keys())
 
     @staticmethod
@@ -234,20 +235,32 @@ class LanguageDescriptionList(object):
                         Description or None if the property_name is unknown
                         True if data is a list else False
         """
+        prop_type = None
+        prop_desc = None
+        is_list = False
         if property_name == 'LANG':
-            return "string", "Linux environment language code", False
+            prop_type = "string"
+            prop_desc = "Linux environment language code"
         elif property_name == 'LANG_regions':
-            return "string", "Linux environment region codes for this language code", True
+            prop_type = "string"
+            prop_desc = "Linux environment region codes for this language code"
+            is_list = True
         elif property_name == 'LANGID':
-            return "LANGID", "Windows LANGID & 0xFF language code(s)", True
+            prop_type = "LANGID"
+            prop_desc = "Windows LANGID & 0xFF language code(s)"
+            is_list = True
         elif property_name == 'LANGID_regions':
-            return "LANGID", "Windows full LANGID language code(s)", True
+            prop_type = "LANGID"
+            prop_desc = "Windows full LANGID language code(s)"
+            is_list = True
         elif property_name == 'isoCode':
-            return "string", "ISO 639 set 1 language code", False
+            prop_type = "string"
+            prop_desc = "ISO 639 set 1 language code"
         elif property_name == 'compileSwitch':
-            return "string", "Compile switch definition for the language", False
-        else:
-            return None, None, False
+            prop_type = "string"
+            prop_desc = "Compile switch definition for the language"
+
+        return prop_type, prop_desc, is_list
 
     @staticmethod
     def is_language_property_text(property_name:str)->bool:
@@ -257,20 +270,7 @@ class LanguageDescriptionList(object):
         @return boolean - True if the data is stored as text or
                           False if the data is stored as a number
         """
-        if property_name == 'LANG':
-            return True
-        elif property_name == 'LANG_regions':
-            return True
-        elif property_name == 'LANGID':
-            return False
-        elif property_name == 'LANGID_regions':
-            return False
-        elif property_name == 'isoCode':
-            return True
-        elif property_name == 'compileSwitch':
-            return True
-        else:
-            return False
+        return bool(property_name in ['LANG', 'LANG_regions', 'isoCode', 'compileSwitch'])
 
     @staticmethod
     def get_language_property_method_name(property_name:str)->str:
@@ -280,19 +280,20 @@ class LanguageDescriptionList(object):
         @return string CPP description or None if the property_name is unknown
         """
         if property_name == 'LANG':
-            return "getLANGLanguage"
+            retname = "getLANGLanguage"
         elif property_name == 'LANG_regions':
-            return "getLANGRegionList"
+            retname = "getLANGRegionList"
         elif property_name == 'LANGID':
-            return "getLANGIDCode"
+            retname = "getLANGIDCode"
         elif property_name == 'LANGID_regions':
-            return "getLANGIDList"
+            retname = "getLANGIDList"
         elif property_name == 'isoCode':
-            return "getLangIsoCode"
+            retname = "getLangIsoCode"
         elif property_name == 'compileSwitch':
-            return "getLanguageCompileSwitch"
+            retname = "getLanguageCompileSwitch"
         else:
-            return None
+            retname = None
+        return retname
 
     @staticmethod
     def get_language_iso_property_method_name()->str:
@@ -304,7 +305,7 @@ class LanguageDescriptionList(object):
 
     def add_language(self, lang_name:str, linux_env_code:str, linux_region_list:list,
                     windows_lang_id:list, windows_region_list:list,
-                    iso639Code:str, compile_switch:str):
+                    iso_639_code:str, compile_switch:str):
         """!
         @brief Add a language to the self.lang_json_data data
 
@@ -313,12 +314,12 @@ class LanguageDescriptionList(object):
         @param linux_region_list (list of strings) - Linux LANG region codes for this language
         @param windows_lang_id (list of numbers) - Windows LANGID & 0xFF value(s) for this language
         @param windows_region_list (list of numbers) - Windows LANGID value(s) for this language
-        @param iso639Code (string) - ISO 639 set 3 language code
+        @param iso_639_code (string) - ISO 639 set 3 language code
         @param compile_switch (string) - Language compile switch
         """
         lang_entry = self._create_language_entry(linux_env_code, linux_region_list,
-                                              windows_lang_id, windows_region_list,
-                                              iso639Code, compile_switch)
+                                                 windows_lang_id, windows_region_list,
+                                                 iso_639_code, compile_switch)
         self.lang_json_data['languages'][lang_name] = lang_entry
 
     def _input_language_name(self)->str:
@@ -327,8 +328,9 @@ class LanguageDescriptionList(object):
         @return string - language name
         """
         language_name = ""
-        while(language_name == ""):
-            name = input("Enter language name value to be used for class<lang> generation: ").lower()
+        while language_name == "":
+            prompt = "Enter language name value to be used for class<lang> generation: "
+            name = input(prompt).lower()
 
             # Check validity
             if re.match('^[a-z]+$', name):
@@ -345,8 +347,9 @@ class LanguageDescriptionList(object):
         @return string - translate code
         """
         iso_translate_id = ""
-        while(iso_translate_id == ""):
-            trans_id = input("Enter ISO 639-1 translate language code (2 lower case characters): ").lower()
+        while iso_translate_id == "":
+            prompt = "Enter ISO 639-1 translate language code (2 lower case characters): "
+            trans_id = input(prompt).lower()
 
             # Check validity
             if re.match('^[a-z]{2}$', trans_id):
@@ -363,8 +366,9 @@ class LanguageDescriptionList(object):
         @return string - linux language code
         """
         linux_lang_id = ""
-        while(linux_lang_id == ""):
-            linux_env_code = input("Enter linux language code (first 2 chars of 'LANG' environment value): ").lower()
+        while linux_lang_id == "":
+            desc = "(2 chars of the 'LANG' environment value)"
+            linux_env_code = input("Enter linux language code "+desc+": ").lower()
 
             # Check validity
             if re.match('^[a-z]{2}$', linux_env_code):
@@ -381,16 +385,18 @@ class LanguageDescriptionList(object):
         @return list of strings - linux region codes
         """
         linux_region_list = []
-        print ("Enter linux region code(s) (2 chars following the _ in the 'LANG' environment value).")
+        desc = "(2 chars following the _ in the 'LANG' environment value)"
+        print ("Enter linux region code(s) "+desc+".")
         print ("Enter empty string to exit.")
 
-        while (True):
+        more_data = True
+        while more_data:
             region = input("Region value: ").upper()
 
             # Check validity
             if region == "":
                 # End of list
-                break
+                more_data = False
             elif re.match('^[A-Z]{2}$', region):
                 # Valid region
                 linux_region_list.append(region)
@@ -405,22 +411,24 @@ class LanguageDescriptionList(object):
         @return tuple ([numbers], [numbers]) - windows LANGID codes.  First list is
                 unique user LANGID codees & 0x0FF. Second list is all LANGID codes from user)
         """
-        windows_idCodeList = []
-        windows_idCodes = []
+        windows_id_code_list = []
+        windows_id_match_codes = []
         print ("Enter Windows LANGID values. A value of 0 will exit.")
-        while (True):
+
+        more_data = True
+        while more_data:
             region = int(input("LANGID value: "))
             if region == 0:
-                break
+                more_data = False
             else:
-                if region not in windows_idCodeList:
-                    windows_idCodeList.append(region)
+                if region not in windows_id_code_list:
+                    windows_id_code_list.append(region)
 
                     win_id = region & 0x0FF
-                    if win_id not in windows_idCodes:
-                        windows_idCodes.append(win_id)
+                    if win_id not in windows_id_match_codes:
+                        windows_id_match_codes.append(win_id)
 
-        return windows_idCodes, windows_idCodeList
+        return windows_id_match_codes, windows_id_code_list
 
     def new_language(self, override:bool = False)->bool:
         """!
@@ -440,13 +448,14 @@ class LanguageDescriptionList(object):
             win_case_ids, win_lang_ids = self._input_windows_lang_ids()
 
             new_entry = self._create_language_entry(linux_lang_code, linux_lang_regions,
-                                                 win_case_ids, win_lang_ids, iso_code, compile_switch)
+                                                    win_case_ids, win_lang_ids, iso_code,
+                                                    compile_switch)
 
             # Print entry for user to inspect
             print("New Entry:")
             print(new_entry)
             commit = input("Is this correct? [Y/N]").upper()
-            if ((commit == 'Y') or (commit == "YES")):
+            if commit in ['Y', "YES"]:
                 entry_correct = True
 
 

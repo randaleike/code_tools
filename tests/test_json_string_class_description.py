@@ -28,15 +28,17 @@ import os
 import io
 import contextlib
 
-import pytest
 from unittest.mock import patch, MagicMock
+import pytest
 
-from code_tools_grocsoftware.base.json_string_class_description import TranslationTextParser
+from code_tools_grocsoftware.base.json_string_class_description import TransTxtParser
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 
 from tests.dir_init import TESTFILEPATH
+
+# pylint: disable=protected-access
 
 class Test02StringClassDescription:
     """!
@@ -356,8 +358,8 @@ class Test02StringClassDescription:
         """!
         @brief Test _define_translation_dict method
         """
-        trans_data_list = [(TranslationTextParser.parsed_type_text, "Simple text with "),
-                         (TranslationTextParser.parsed_type_param, "paramName")]
+        trans_data_list = [(TransTxtParser.parsed_type_text, "Simple text with "),
+                         (TransTxtParser.parsed_type_param, "paramName")]
 
         testobj = StringClassDescription()
         return_dict = testobj._define_translation_dict("es", trans_data_list)
@@ -365,9 +367,9 @@ class Test02StringClassDescription:
         assert len(return_dict) == 1
         assert isinstance(return_dict['es'], list)
         assert len(return_dict['es']) == 2
-        assert return_dict['es'][0][0] == TranslationTextParser.parsed_type_text
+        assert return_dict['es'][0][0] == TransTxtParser.parsed_type_text
         assert return_dict['es'][0][1] == "Simple text with "
-        assert return_dict['es'][1][0] == TranslationTextParser.parsed_type_param
+        assert return_dict['es'][1][0] == TransTxtParser.parsed_type_param
         assert return_dict['es'][1][1] == "paramName"
 
     def test24_define_translation_dict_no_list(self):
@@ -394,13 +396,13 @@ class Test02StringClassDescription:
         """!
         @brief Test add_manual_translation method, success
         """
-        trans_data_list = [(TranslationTextParser.parsed_type_text, "Simple text")]
+        trans_data_list = [(TransTxtParser.parsed_type_text, "Simple text")]
 
         testobj = StringClassDescription(self.test_json)
         assert testobj.add_manual_translation('getNotListTypeMessage', "es", trans_data_list)
         assert isinstance(testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es'], list)
         assert len(testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es']) == 1
-        assert testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es'][0][0] == TranslationTextParser.parsed_type_text
+        assert testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es'][0][0] == TransTxtParser.parsed_type_text
         assert testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es'][0][1] == "Simple text"
 
     def test27_add_manual_translation_fail_no_text_data(self):
@@ -414,7 +416,7 @@ class Test02StringClassDescription:
         """!
         @brief Test add_manual_translation method, fail for no text_data
         """
-        trans_data_list = [(TranslationTextParser.parsed_type_text, "Simple text")]
+        trans_data_list = [(TransTxtParser.parsed_type_text, "Simple text")]
         testobj = StringClassDescription(self.test_json)
         assert not testobj.add_manual_translation('getSomethingElse', "fr", trans_data_list)
 
@@ -470,9 +472,9 @@ class Test02StringClassDescription:
 
             trans_list = trans_method_desc['es']
             assert len(trans_list) ==2
-            assert trans_list[0][0] == TranslationTextParser.parsed_type_text
+            assert trans_list[0][0] == TransTxtParser.parsed_type_text
             assert trans_list[0][1] == "Patch Translated Method Text "
-            assert trans_list[1][0] == TranslationTextParser.parsed_type_param
+            assert trans_list[1][0] == TransTxtParser.parsed_type_param
             assert trans_list[1][1] == "nargs"
 
     def test33_define_translate_function_entry(self):
@@ -481,8 +483,8 @@ class Test02StringClassDescription:
         """
         testparams = [ParamRetDict.build_param_dict_with_mod("name", "string", "desc", 0)]
         testret = ParamRetDict.build_return_dict_with_mod("string","return string",0)
-        trans_list = [(TranslationTextParser.parsed_type_text, "Return text of "),
-                     (TranslationTextParser.parsed_type_param,"name")]
+        trans_list = [(TransTxtParser.parsed_type_text, "Return text of "),
+                     (TransTxtParser.parsed_type_param,"name")]
         testobj = StringClassDescription()
         function_dict = testobj._define_translate_function_entry("Brief Description", testparams, testret, "en", trans_list)
 
@@ -540,9 +542,9 @@ class Test02StringClassDescription:
         trans_string_list = testobj.get_tranlate_method_text_data('getNotListTypeMessage', 'en')
         assert isinstance(trans_string_list, list)
         assert len(trans_string_list) == 2
-        assert trans_string_list[0][0] == TranslationTextParser.parsed_type_text
+        assert trans_string_list[0][0] == TransTxtParser.parsed_type_text
         assert trans_string_list[0][1] == "Only list type arguments can have an argument count of "
-        assert trans_string_list[1][0] == TranslationTextParser.parsed_type_param
+        assert trans_string_list[1][0] == TransTxtParser.parsed_type_param
         assert trans_string_list[1][1] == "nargs"
 
     def test37_update(self):
@@ -567,7 +569,7 @@ class Test02StringClassDescription:
 
         xlate_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "Xlated units", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("units", "integer", "Units to translate", 0)]
-        translate_text_list = TranslationTextParser.parse_translate_string("Test string @units@")
+        translate_text_list = TransTxtParser.parse_translate_string("Test string @units@")
         new_xlate_entry = testobj._define_translate_function_entry("Brief xlate desc", param_list, xlate_ret_dict, "en", translate_text_list)
         testobj.string_jason_data['translateMethods']['testXlate'] = new_xlate_entry
 
@@ -617,9 +619,9 @@ class Test02StringClassDescription:
         assert len(updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']) == 1
         assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'], list)
         assert len(updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en']) == 2
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][0][0] == TranslationTextParser.parsed_type_text
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][0][0] == TransTxtParser.parsed_type_text
         assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][0][1] == "Test string "
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][1][0] == TranslationTextParser.parsed_type_param
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][1][0] == TransTxtParser.parsed_type_param
         assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][1][1] == "units"
 
         os.remove("temp.json")
@@ -643,3 +645,5 @@ class Test02StringClassDescription:
 
             for method_name in testobj.get_tranlate_method_list():
                 assert len(testobj.string_jason_data['translateMethods'][method_name]['translateDesc']) == 2
+
+# pylint: enable=protected-access

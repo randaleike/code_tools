@@ -612,7 +612,7 @@ class Test01CppFilehelper:
 
         test_text = helper._gen_class_open("MyTestClassName", "My class description")
         assert len(test_text) == 4
-        assert test_text[0] == "class MyTestClassName(object):\n"
+        assert test_text[0] == "class MyTestClassName():\n"
         assert test_text[1] == '    """!\n'
         assert test_text[2] == "      @brief My class description\n"
         assert test_text[3] == '    """\n'
@@ -692,7 +692,7 @@ class Test01CppFilehelper:
         var_list = []
         test_text = helper._declare_structure("MyTestStructName", var_list, 0, "Test structure")
         assert len(test_text) == 5
-        assert test_text[0] == "class MyTestStructName(object):\n"
+        assert test_text[0] == "class MyTestStructName():\n"
         assert test_text[1] == '    """!\n'
         assert test_text[2] == "      @brief Test structure\n"
         assert test_text[3] == '    """\n'
@@ -709,7 +709,7 @@ class Test01CppFilehelper:
         var_list = [member1, member2]
         test_text = helper._declare_structure("MyTestStructName", var_list, 0, "Test structure")
         assert len(test_text) == 7
-        assert test_text[0] == "class MyTestStructName(object):\n"
+        assert test_text[0] == "class MyTestStructName():\n"
         assert test_text[1] == '    """!\n'
         assert test_text[2] == "      @brief Test structure\n"
         assert test_text[3] == '    """\n'

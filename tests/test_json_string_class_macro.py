@@ -28,12 +28,12 @@ import io
 import contextlib
 from unittest.mock import patch, MagicMock
 
-from code_tools_grocsoftware.base.json_string_class_description import TranslationTextParser
+from code_tools_grocsoftware.base.json_string_class_description import TransTxtParser
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 
-class ExpectedStrHelper(object):
+class ExpectedStrHelper():
     @staticmethod
     def get_expected_return(expected_type:str, expected_desc:str, expected_type_mod:int)->str:
         """!
@@ -101,7 +101,7 @@ class ExpectedStrHelper(object):
             expected_str += "'"+lang+"': ["
 
             # Generate the parsed text list data
-            expected_text_list = TranslationTextParser.parse_translate_string(text_text)
+            expected_text_list = TransTxtParser.parse_translate_string(text_text)
             element_prefix = ""
             for element in expected_text_list:
                 expected_str += element_prefix
@@ -248,7 +248,7 @@ class Test03StringClassDescriptionMacroMethods:
             assert len(testobj.string_jason_data['translateMethods']['getTestString']['translateDesc']) == 1
             assert isinstance(testobj.string_jason_data['translateMethods']['getTestString']['translateDesc']['en'], list)
 
-            test_parsed_list = TranslationTextParser.parse_translate_string(test_trans_string)
+            test_parsed_list = TransTxtParser.parse_translate_string(test_trans_string)
             assert len(testobj.string_jason_data['translateMethods']['getTestString']['translateDesc']['en']) == len(test_parsed_list)
 
             for index, entry in enumerate(test_parsed_list):
@@ -342,7 +342,7 @@ class Test03StringClassDescriptionMacroMethods:
 
         assert testobj.string_jason_data['translateMethods']['get_test_int']['return'] == return_dict
 
-        trans_desc_list = TranslationTextParser.parse_translate_string("Test @goo@")
+        trans_desc_list = TransTxtParser.parse_translate_string("Test @goo@")
         assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']) == 1
         assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en'], list)
         assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en']) == len(trans_desc_list)
@@ -388,7 +388,7 @@ class Test03StringClassDescriptionMacroMethods:
             assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc'], dict)
             assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']) == 1
 
-            trans_desc_list = TranslationTextParser.parse_translate_string("Test override @goo2@")
+            trans_desc_list = TransTxtParser.parse_translate_string("Test override @goo2@")
             assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en'], list)
             assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en']) == len(trans_desc_list)
             for index in range(0, len(trans_desc_list)):
@@ -432,7 +432,7 @@ class Test03StringClassDescriptionMacroMethods:
             assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc'], dict)
             assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']) == 1
 
-            trans_desc_list = TranslationTextParser.parse_translate_string("Test @goo@")
+            trans_desc_list = TransTxtParser.parse_translate_string("Test @goo@")
             assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en'], list)
             assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en']) == len(trans_desc_list)
             for index in range(0, len(trans_desc_list)):
@@ -476,7 +476,7 @@ class Test03StringClassDescriptionMacroMethods:
             assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc'], dict)
             assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']) == 1
 
-            trans_desc_list = TranslationTextParser.parse_translate_string("Test override @goo2@")
+            trans_desc_list = TransTxtParser.parse_translate_string("Test override @goo2@")
             assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en'], list)
             assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en']) == len(trans_desc_list)
             for index in range(0, len(trans_desc_list)):

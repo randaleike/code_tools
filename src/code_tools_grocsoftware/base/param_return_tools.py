@@ -25,18 +25,21 @@ for a language string generation library
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-class ParamRetDict(object):
+class ParamRetDict():
     """!
     Parameter/Return value dictionary utility functions
     """
-
-    ## List return/parameter bit flag value, type_mod value & type_mod_list = 0 return/parameter is not a list, = 1 return/parameter is not a list
+    ## List return/parameter bit flag value, type_mod value & type_mod_list = 0
+    ## return/parameter is not a list, = 1 return/parameter is not a list
     type_mod_list:int  = 1<<0
-    ## Pointer return/parameter bit flag value, type_mod value & type_mod_list = 0 return/parameter is not a pointer, = 1 return/parameter is not a pointer
+    ## Pointer return/parameter bit flag value, type_mod value & type_mod_list = 0
+    ## return/parameter is not a pointer, = 1 return/parameter is not a pointer
     type_mod_ptr:int   = 1<<1
-    ## Reterence return/parameter bit flag value, type_mod value & type_mod_list = 0 return/parameter is not a reference, = 1 return/parameter is not a reference
+    ## Reference return/parameter bit flag value, type_mod value & type_mod_list = 0
+    ## return/parameter is not a reference, = 1 return/parameter is not a reference
     type_mod_ref:int   = 1<<2
-    ## Undefined return/parameter bit flag value, type_mod value & type_mod_list = 0 return/parameter cannot be unknown, = 1 return/parameter can be unknown
+    ## Undefined return/parameter bit flag value, type_mod value & type_mod_list = 0
+    ## return/parameter cannot be unknown, = 1 return/parameter can be unknown
     type_mod_undef:int = 1<<3
 
     ## Return/parameter type_mod array size value bit shift
@@ -45,7 +48,8 @@ class ParamRetDict(object):
     type_mod_array_mask:int  = 0xFFFF
 
     @staticmethod
-    def build_dict_mod_value(is_list:bool = False, is_reference:bool = False, is_ptr:bool = False, or_undef:bool = False) -> int:
+    def build_dict_mod_value(is_list:bool = False, is_reference:bool = False,
+                             is_ptr:bool = False, or_undef:bool = False) -> int:
         """!
         @brief Build a return data dictionary
         @param is_list {boolean} True if return is list, false if not
@@ -56,13 +60,13 @@ class ParamRetDict(object):
         """
         entry_type_mod = 0
         if is_list:
-           entry_type_mod |= ParamRetDict.type_mod_list
+            entry_type_mod |= ParamRetDict.type_mod_list
         if is_reference:
-           entry_type_mod |= ParamRetDict.type_mod_ref
+            entry_type_mod |= ParamRetDict.type_mod_ref
         if is_ptr:
-           entry_type_mod |= ParamRetDict.type_mod_ptr
+            entry_type_mod |= ParamRetDict.type_mod_ptr
         if or_undef:
-           entry_type_mod |= ParamRetDict.type_mod_undef
+            entry_type_mod |= ParamRetDict.type_mod_undef
         return entry_type_mod
 
     @staticmethod
@@ -70,7 +74,8 @@ class ParamRetDict(object):
         """!
         @brief Build a return data dictionary
         @param ret_type {string} Code type definition
-        @param ret_desc {string} Brief description of the return value for @return doxygen generation
+        @param ret_desc {string} Brief description of the return value for
+                                 @return doxygen generation
         @param entry_type_mod {integer} Type modification flags
         @return {dictionary} Return dictionary
         """
@@ -78,11 +83,13 @@ class ParamRetDict(object):
 
     @staticmethod
     def build_return_dict(ret_type:str, ret_desc:str = "", is_list:bool = False,
-                        is_reference:bool = False, is_ptr:bool = False, or_undef:bool = False) -> dict:
+                        is_reference:bool = False, is_ptr:bool = False,
+                        or_undef:bool = False) -> dict:
         """!
         @brief Build a return data dictionary
         @param ret_type {string} Code type definition
-        @param ret_desc {string} Brief description of the return value for @return doxygen generation
+        @param ret_desc {string} Brief description of the return value for @return
+                                 doxygen generation
         @param is_list {boolean} True if return is list, false if not
         @param is_reference {boolean} True if parameter needs a pointer decoration, false if not
         @param is_ptr {boolean} True if parameter needs a reference decoration, false if not
@@ -131,7 +138,8 @@ class ParamRetDict(object):
         return return_dict['typeMod']
 
     @staticmethod
-    def build_param_dict_with_mod(param_name:str, param_type:str, param_desc:str = "", entry_type_mod:int = 0) -> dict:
+    def build_param_dict_with_mod(param_name:str, param_type:str,
+                                  param_desc:str = "", entry_type_mod:int = 0) -> dict:
         """!
         @brief Build a return data dictionary
         @param param_name {string} Code param name
@@ -143,8 +151,9 @@ class ParamRetDict(object):
         return {'name':param_name, 'type':param_type, 'desc':param_desc, 'typeMod':entry_type_mod}
 
     @staticmethod
-    def build_param_dict(param_name:str, param_type:str, param_desc:str = "", is_list:bool = False,
-                       is_reference:bool = False, is_ptr:bool = False, or_undef:bool = False) -> dict:
+    def build_param_dict(param_name:str, param_type:str, param_desc:str = "",
+                         is_list:bool = False, is_reference:bool = False,
+                         is_ptr:bool = False, or_undef:bool = False) -> dict:
         """!
         @brief Build a return data dictionary
         @param param_name {string} Code param name
@@ -156,8 +165,8 @@ class ParamRetDict(object):
         @param or_undef {boolean} True if item can also be language undefined type, false if not
         @return {dictionary} Parameter dictionary
         """
-        entry_type_mod = ParamRetDict.build_dict_mod_value(is_list, is_reference, is_ptr, or_undef)
-        return ParamRetDict.build_param_dict_with_mod(param_name, param_type, param_desc, entry_type_mod)
+        mod = ParamRetDict.build_dict_mod_value(is_list, is_reference, is_ptr, or_undef)
+        return ParamRetDict.build_param_dict_with_mod(param_name, param_type, param_desc, mod)
 
     @staticmethod
     def get_param_data(param_dict:dict) -> tuple:
@@ -262,17 +271,22 @@ class ParamRetDict(object):
         @param type_mod {integer} Dictionary TypeMod entry
         @return int - Array size
         """
-        return ((type_mod >> ParamRetDict.type_mod_array_shift) & ParamRetDict.type_mod_array_mask)
+        mask = ParamRetDict.type_mod_array_mask
+        shift = ParamRetDict.type_mod_array_shift
+        size = (type_mod >> shift) & mask
+        return size
 
     @staticmethod
-    def set_type_mod_array_size(type_modIn:int, array_size:int)->int:
+    def set_type_mod_array_size(type_mod_input:int, array_size:int)->int:
         """!
         @brief Get the array size in the type modifier value
-        @param type_modIn {int} Current type_mod value
+        @param type_mod_input {int} Current type_mod value
         @param array_size {integer} Size of the array
         @return type_mod value with array set
         """
-        type_mod = type_modIn | ((array_size & ParamRetDict.type_mod_array_mask) << ParamRetDict.type_mod_array_shift)
+        mask = ParamRetDict.type_mod_array_mask
+        shift = ParamRetDict.type_mod_array_shift
+        type_mod = type_mod_input | ((array_size & mask) << shift)
         type_mod &= (~ParamRetDict.type_mod_list)  # Cannot be array and list
         return type_mod
 

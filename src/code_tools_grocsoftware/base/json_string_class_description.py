@@ -30,242 +30,9 @@ import json
 
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
+from code_tools_grocsoftware.base.translate_text_parser import TransTxtParser
 
-class TranslationTextParser(object):
-    """!
-    Translation text helper functions
-    """
-    ## Text string marker
-    parsed_type_text    = 'text'
-    ## Parameter name marker
-    parsed_type_param   = 'param'
-    ## Special character marker
-    parsed_type_special = 'special'
-
-    def __init__(self):
-        """!
-        @brief TranslationTextParser constructor
-        """
-        pass
-
-    @staticmethod
-    def make_text_entry(text_block:str)->tuple:
-        """!
-        @brief Make a parsed text tuple object
-        @param text_block {string} Text string for the tuple
-        @return tuple - (TranslationTextParser.parsed_type_text, text_block)
-        """
-        return (TranslationTextParser.parsed_type_text, text_block)
-
-    @staticmethod
-    def make_special_char_entry(text_block:str)->tuple:
-        """!
-        @brief Make a special character tuple object
-        @param text_block {string} Special character for the tuple
-        @return tuple - (TranslationTextParser.parsed_type_special, text_block)
-        """
-        return (TranslationTextParser.parsed_type_special, text_block[0])
-
-    @staticmethod
-    def make_param_entry(param_name:str)->tuple:
-        """!
-        @brief Make a parameter name tuple object
-        @param param_name {string} Special character for the tuple
-        @return tuple - (TranslationTextParser.parsed_type_param, param_name)
-        """
-        return (TranslationTextParser.parsed_type_param, param_name)
-
-    @staticmethod
-    def parse_text_block(text_block:str)->list:
-        """!
-        @brief Convert the input string to an output string stream
-        @param text_block {string} String to convert
-        @return list of dictionaries - List of dictionary entries descibing the parsed string
-        """
-        match_list = re.finditer(r'\\|\"', text_block)
-
-        string_list = []
-        previous_end = 0
-        for match_data in match_list:
-            # Add text data prior to first match if any
-            if match_data.start() > previous_end:
-                raw_text = r'{}'.format(text_block[previous_end:match_data.start()])
-                string_list.append(TranslationTextParser.make_text_entry(raw_text))
-
-            # Add the matched parameter
-            string_list.append(TranslationTextParser.make_special_char_entry(match_data.group()))
-            previous_end = match_data.end()
-
-        # Add the trailing string
-        if previous_end < len(text_block):
-            raw_text = r'{}'.format(text_block[previous_end:])
-            string_list.append(TranslationTextParser.make_text_entry(raw_text))
-
-        return string_list
-
-    @staticmethod
-    def parse_translate_string(base_string:str)->list:
-        """!
-        @brief Convert the input string to an output string stream
-        @param base_string {string} String to convert
-        @return list of tuples - List of tuples descibing the parsed string
-                                 tuple[0] = type, TranslationTextParser.parsed_type_text or TranslationTextParser.parsed_type_param
-                                 tuple[1] = data, if TranslationTextParser.parsed_type_text = text string
-                                                  if TranslationTextParser.parsed_type_param = parameter name
-        """
-        match_list = re.finditer(r'@[a-zA-Z_][a-zA-Z0-9_]*@', base_string)
-
-        string_list = []
-        previous_end = 0
-        for match_data in match_list:
-            # Add text data prior to first match if any
-            if match_data.start() > previous_end:
-                raw_text = r'{}'.format(base_string[previous_end:match_data.start()])
-                string_list.extend(TranslationTextParser.parse_text_block(raw_text))
-
-            # Add the matched parameter
-            string_list.append(TranslationTextParser.make_param_entry(match_data.group()[1:-1]))
-            previous_end = match_data.end()
-
-        # Add the trailing string
-        if previous_end < len(base_string):
-            raw_text = r'{}'.format(base_string[previous_end:])
-            string_list.extend(TranslationTextParser.parse_text_block(raw_text))
-
-        return string_list
-
-    @staticmethod
-    def assemble_parsed_str_data(string_tuple_list:list)->str:
-        """!
-        @brief Assemble the input string description tuple list into a translation string
-        @param string_tuple_list (list) List of string description tuples
-        @return string - Assempled text string ready for input into a language translation engine
-        """
-        return_text = ""
-        for desc_type, desc_data in string_tuple_list:
-            if TranslationTextParser.parsed_type_text == desc_type:
-                return_text += desc_data
-            elif TranslationTextParser.parsed_type_param == desc_type:
-                return_text += '@'
-                return_text += desc_data
-                return_text += '@'
-            elif TranslationTextParser.parsed_type_special == desc_type:
-                return_text += desc_data
-            else:
-                raise TypeError("Unknown string description tuple type: "+desc_type)
-
-        return return_text
-
-    @staticmethod
-    def assemble_stream(string_tuple_list:list, stream_operator:str = "<<")->str:
-        """!
-        @brief Assemble the input string description tuple list into a translation string
-        @param string_tuple_list (list) List of string description tuples
-        @param stream_operator (string) Language specific stream operator
-        @return string - Assempled text string ready for input into a language translation engine
-        """
-        return_text = ""
-        string_open = False
-
-        for desc_type, desc_data in string_tuple_list:
-            if TranslationTextParser.parsed_type_text == desc_type:
-                if not string_open:
-                    return_text += " "
-                    return_text += stream_operator
-                    return_text += " \""
-                    string_open = True
-                return_text += desc_data
-            elif TranslationTextParser.parsed_type_param == desc_type:
-                if string_open:
-                    return_text += "\" "
-                    return_text += stream_operator
-                    return_text += " "
-                    string_open = False
-                return_text += desc_data
-            elif TranslationTextParser.parsed_type_special == desc_type:
-                if not string_open:
-                    return_text += " "
-                    return_text += stream_operator
-                    return_text += " \""
-                    string_open = True
-                return_text += "\\"+desc_data
-            else:
-                raise TypeError("Unknown string description tuple type: "+desc_type)
-
-        # Close the open string if present
-        if string_open:
-            return_text += "\""
-            string_open = False
-        return return_text
-
-    @staticmethod
-    def assemble_test_return_string(string_tuple_list:list, value_xlate_dict:dict)->str:
-        """!
-        @brief Assemble the input string description tuple list into a translation string
-        @param string_tuple_list (list) List of string description tuples
-        @param value_xlate_dict (dict) Dictionary of param names and expected values
-        @return string - Assempled text string ready for input into a language translation
-                         expected string
-        """
-        return_text = ""
-        for desc_type, desc_data in string_tuple_list:
-            if TranslationTextParser.parsed_type_text == desc_type:
-                return_text += desc_data
-            elif TranslationTextParser.parsed_type_param == desc_type:
-                value, is_text = value_xlate_dict[desc_data]
-                return_text += value
-            elif TranslationTextParser.parsed_type_special == desc_type:
-                return_text += "\\"+desc_data
-            else:
-                raise TypeError("Unknown string description tuple type: "+desc_type)
-        return return_text
-
-    @staticmethod
-    def is_parsed_text_type(parsed_tuple:tuple)->bool:
-        """!
-        @brief Check if the input pget_parsed_str_dataarsed translation tuple is a text type
-        @return boolean - True if tuple[0] == TranslationTextParser.parsed_type_text
-                          else False
-        """
-        if parsed_tuple[0] == TranslationTextParser.parsed_type_text:
-            return True
-        else:
-            return False
-
-    @staticmethod
-    def is_parsed_param_type(parsed_tuple:tuple)->bool:
-        """!
-        @brief Check if the input parsed translation tuple is a parameter type
-        @return boolean - True if tuple[0] == TranslationTextParser.parsed_type_param
-                          else False
-        """
-        if parsed_tuple[0] == TranslationTextParser.parsed_type_param:
-            return True
-        else:
-            return False
-
-    @staticmethod
-    def is_parsed_special_type(parsed_tuple:tuple)->bool:
-        """!
-        @brief Check if the input parsed translation tuple is a special character type
-        @return boolean - True if tuple[0] == TranslationTextParser.parsed_type_param
-                          else False
-        """
-        if parsed_tuple[0] == TranslationTextParser.parsed_type_special:
-            return True
-        else:
-            return False
-
-    @staticmethod
-    def get_parsed_str_data(parsed_tuple:tuple)->bool:
-        """!
-        @brief Get the tuple string data field
-        @return string - pared_tuple data field
-        """
-        return parsed_tuple[1]
-
-
-class StringClassDescription(object):
+class StringClassDescription():
     """!
     String object class definitions
     """
@@ -282,7 +49,7 @@ class StringClassDescription(object):
         else:
             self.filename = string_def_file_name
         try:
-            lang_json_file = open(self.filename, 'r', encoding='utf-8')
+            lang_json_file = open(self.filename, 'r', encoding='utf-8') # pylint: disable=consider-using-with
         except FileNotFoundError:
             self.string_jason_data = {'baseClassName': "baseclass",
                                       'namespace': "myNamespace",
@@ -294,6 +61,33 @@ class StringClassDescription(object):
             lang_json_file.close()
 
         self.trans_client = None  # open it only if and when we need it
+
+    def __set_transmethod_text(self, methodname:str, lang_code:str, text:list):
+        """!
+        @brief Set the language text for the input method name and language ISO code
+        @param method_name {string} Translation method name dictionary id
+        @param lang_iso_code {string} Translation method language iso code id
+        @param text {list} Translated string data list
+        """
+        self.string_jason_data['translateMethods'][methodname]['translateDesc'][lang_code] = text
+
+    def __get_transmethod_text(self, methodname:str, lang_code:str)->list:
+        """!
+        @brief Set the language text for the input method name and language ISO code
+        @param method_name {string} Translation method name dictionary id
+        @param lang_iso_code {string} Translation method language iso code id
+        @return {list} Translated string data list
+        """
+        return self.string_jason_data['translateMethods'][methodname]['translateDesc'][lang_code]
+
+    def __get_transmethod_text_list(self, methodname:str)->list:
+        """!
+        @brief Set the language text for the input method name and language ISO code
+        @param method_name {string} Translation method name dictionary id
+        @param lang_iso_code {string} Translation method language iso code id
+        @return {list} Translated string data list
+        """
+        return list(self.string_jason_data['translateMethods'][methodname]['translateDesc'])
 
     def _get_commit_over_write_flag(self, entry_name:str, override:bool = False)->bool:
         """!
@@ -307,7 +101,7 @@ class StringClassDescription(object):
         else:
             # Determine if we should overwrite existing
             commit = input("Overwrite existing "+entry_name+" entry? [Y/N]").upper()
-            if ((commit == 'Y') or (commit == "YES")):
+            if commit in ['Y', "YES"]:
                 commit_flag = True
         return commit_flag
 
@@ -317,10 +111,7 @@ class StringClassDescription(object):
         @param entry_name {string} Name of the method that will be added
         """
         commit = input("Add new "+entry_name+" entry? [Y/N]").upper()
-        if ((commit == 'Y') or (commit == "YES")):
-            return True
-        else:
-            return False
+        return bool(commit in ['Y', "YES"])
 
     def _get_commit_flag(self, entry_name:str, entry_keys:list, override:bool = False)->bool:
         """!
@@ -330,9 +121,10 @@ class StringClassDescription(object):
         @param override {boolean} True = force commit, False = ask user
         """
         if entry_name in entry_keys:
-            return self._get_commit_over_write_flag(entry_name, override)
+            flag = self._get_commit_over_write_flag(entry_name, override)
         else:
-            return self._get_commit_new_flag(entry_name)
+            flag = self._get_commit_new_flag(entry_name)
+        return flag
 
     def set_base_class_name(self, class_name:str):
         """!
@@ -348,7 +140,8 @@ class StringClassDescription(object):
         """
         return self.string_jason_data['baseClassName']
 
-    def get_base_class_name_with_namespace(self, namespace_name:str, scope_operator:str = '::')->str:
+    def get_base_class_name_with_namespace(self, namespace_name:str,
+                                           scope_operator:str = '::')->str:
         """!
         @brief Return the base class name
         @param namespace_name {string} Namespace name
@@ -364,11 +157,14 @@ class StringClassDescription(object):
         @return string - Generated class name for the methods
         """
         if language_name is None:
-            return self.string_jason_data['baseClassName']
+            ret_name = self.string_jason_data['baseClassName']
         else:
-            return self.string_jason_data['baseClassName']+language_name.capitalize()
+            ret_name = self.string_jason_data['baseClassName']+language_name.capitalize()
+        return ret_name
 
-    def get_language_class_name_with_namespace(self, namespace_name:str, scope_operator:str = '::', language_name:str = None)->str:
+    def get_language_class_name_with_namespace(self, namespace_name:str,
+                                               scope_operator:str = '::',
+                                               language_name:str = None)->str:
         """!
         @brief Return the base class name
         @param namespace_name {string} Namespace name
@@ -379,19 +175,36 @@ class StringClassDescription(object):
         return namespace_name+scope_operator+self.get_language_class_name(language_name)
 
     def set_namespace_name(self, namespace:str):
+        """!
+        @brief Set the namespace name for code generation
+        @param namespace {string} Namespace name string to add to the JSON file
+        """
         self.string_jason_data['namespace'] = namespace
 
-    def get_namespace_name(self):
+    def get_namespace_name(self)->str:
+        """!
+        @brief Get the namespace name for code generation
+        @return string - Namespace name string from the JSON file
+        """
         return self.string_jason_data['namespace']
 
     def set_dynamic_compile_switch(self, switch:str):
+        """!
+        @brief Set the dynamic language compile switch for code generation
+        @param switch {string} Dynamic language compile switch string to add to the JSON file
+        """
         self.string_jason_data['dynamicCompileSwitch'] = switch
 
-    def get_dynamic_compile_switch(self):
+    def get_dynamic_compile_switch(self)->str:
+        """!
+        @brief Get the dynamic language compile switch for code generation
+        @return string - Dynamic language compile switch string from the JSON file
+        """
         return self.string_jason_data['dynamicCompileSwitch']
 
     def _define_property_function_entry(self, property_name:str = "", brief_desc:str = "",
-                                     ret_type:str = "", ret_desc:str = "", is_list:bool = False)->dict:
+                                     ret_type:str = "", ret_desc:str = "",
+                                     is_list:bool = False)->dict:
         """!
         @brief Define a property string return function dictionary and
                return the entry to the caller
@@ -444,16 +257,20 @@ class StringClassDescription(object):
         entry = self.string_jason_data['propertyMethods'][method_name]
         return entry['name'], entry['briefDesc'], entry['params'], entry['return']
 
-    def _define_translation_dict(self, translate_base_lang:str = "en", translate_text:list = None)->dict:
+    def _define_translation_dict(self, translate_base_lang:str = "en",
+                                 translate_text:list = None)->dict:
         """!
         @brief Create a translation dictionary
-        @param translate_base_lang {string} ISO 639-1 language code for the input translate_text string
+        @param translate_base_lang {string} ISO 639-1 language code for the input translate_text
+                                            string
         @param translate_text {list} Parsed text of the message
-        @return dictionary - {'base':<translate_base_lang>, 'text':<translate_text>} Translate method translation string dictionary
+        @return dictionary - {'base':<translate_base_lang>, 'text':<translate_text>} Translate
+                             method translation string dictionary
         """
         return {translate_base_lang: translate_text}
 
-    def add_manual_translation(self, method_name:str, base_lang:str = "en", text_data:list = None)->bool:
+    def add_manual_translation(self, method_name:str, base_lang:str = "en",
+                               text_data:list = None)->bool:
         """!
         @brief Add language text to the function definition
         @param method_name {string} Translation method name to add the language text to
@@ -461,14 +278,12 @@ class StringClassDescription(object):
         @param text_data {list} Parsed text of the message
         @return boolean - True if it was added, else false
         """
+        status = False
         if method_name in self.string_jason_data['translateMethods']:
             if text_data is not None:
-                self.string_jason_data['translateMethods'][method_name]['translateDesc'][base_lang] = text_data
-                return True
-            else:
-                return False
-        else:
-            return False
+                self.__set_transmethod_text(method_name, base_lang, text_data)
+                status = True
+        return status
 
     def _translate_text(self, source_lang:str, target_lang:str, text:str)->str:
         """!
@@ -478,22 +293,23 @@ class StringClassDescription(object):
         @param text {string} text to translate
         @return string - Translated text
         """
-        from google.cloud import translate_v2
+        from google.cloud import translate_v2   # pylint: disable=import-outside-toplevel
         if self.trans_client is None:
             self.trans_client = translate_v2.Client()
 
         if isinstance(text, bytes):
             text = text.decode("utf-8")
 
-        translated_textData = self.trans_client.translate(text,
-                                                          target_language=target_lang,
-                                                          format_='text',
-                                                          source_language=source_lang,
-                                                          model='nmt')
-        raw_translated_text = translated_textData['translatedText']
+        transtext = self.trans_client.translate(text,
+                                                target_language=target_lang,
+                                                format_='text',
+                                                source_language=source_lang,
+                                                model='nmt')
+        raw_translated_text = transtext['translatedText']
         return raw_translated_text
 
-    def _translate_method_text(self, method_name:str, json_lang_data:LanguageDescriptionList = None):
+    def _translate_method_text(self, method_name:str,
+                               json_lang_data:LanguageDescriptionList = None):
         """!
         @brief Add language text to the function definition
         @param method_name {string} Translation method name to add the language text to
@@ -502,7 +318,7 @@ class StringClassDescription(object):
         if json_lang_data is not None:
             # Get the list of supported languages and the list of existing translations
             language_list = json_lang_data.get_language_list()
-            existing_langages = list(self.string_jason_data['translateMethods'][method_name]['translateDesc'])
+            existing_langages = self.__get_transmethod_text_list(method_name)
 
             # Determine if any language translations are missing
             for language in language_list:
@@ -510,19 +326,22 @@ class StringClassDescription(object):
                 if lang_iso_code not in existing_langages:
                     # Use the first language
                     source_language = existing_langages[0]
-                    base_text_data = self.string_jason_data['translateMethods'][method_name]['translateDesc'][source_language]
-                    source_text = TranslationTextParser.assemble_parsed_str_data(base_text_data)
+                    base_text_data = self.__get_transmethod_text(method_name, source_language)
+                    source_text = TransTxtParser.assemble_parsed_str_data(base_text_data)
 
                     # Translate and parse for storage
-                    translated_text = self._translate_text(source_language, lang_iso_code, source_text)
-                    translated_textData = TranslationTextParser.parse_translate_string(translated_text)
-                    self.string_jason_data['translateMethods'][method_name]['translateDesc'][lang_iso_code] = translated_textData
+                    translated_text = self._translate_text(source_language,
+                                                           lang_iso_code,
+                                                           source_text)
+                    text = TransTxtParser.parse_translate_string(translated_text)
+                    self.__set_transmethod_text(method_name, lang_iso_code, text)
         else:
             pass
 
 
-    def _define_translate_function_entry(self, brief_desc:str = "", params_list:list = [], ret_dict:dict = {},
-                                      translate_base_lang:str = "en", translate_text:list = None)->dict:
+    def _define_translate_function_entry(self, brief_desc:str, params_list:list, ret_dict:dict,
+                                         trans_base_lang:str = "en",
+                                         trans_text:list = None)->dict:
         """!
         @brief Define a property string return function dictionary and
                return the entry to the caller
@@ -531,7 +350,8 @@ class StringClassDescription(object):
                                   doxygen comment block generation
         @param params_list {list of dictionaries} List of the function parameter dictionary entrys
         @param ret_dict {dict} Return data dictionary
-        @param translate_base_lang {string} ISO 639-1 language code for the input translate_text string
+        @param translate_base_lang {string} ISO 639-1 language code for the input translate_text
+                                            string
         @param translate_text {list} Parsed text of the message
 
         @return {'name':<string>, 'briefDesc':<string>, 'params':[],
@@ -541,7 +361,7 @@ class StringClassDescription(object):
         function_dict = {'briefDesc': brief_desc,
                          'params': params_list,
                          'return': ret_dict,
-                         'translateDesc': self._define_translation_dict(translate_base_lang, translate_text)
+                         'translateDesc': self._define_translation_dict(trans_base_lang, trans_text)
                         }
         return function_dict
 
@@ -562,14 +382,14 @@ class StringClassDescription(object):
         entry = self.string_jason_data['translateMethods'][method_name]
         return entry['briefDesc'], entry['params'], entry['return']
 
-    def get_tranlate_method_text_data(self, method_name:str, target_language:str)->list:
+    def get_tranlate_method_text_data(self, method_name:str, target_lang:str)->list:
         """!
         @brief Return the input method_name data
         @param method_name (string) Name of the method to retrive data from
-        @param target_language (string) Name of the target language to retrive
+        @param target_lang (string) Name of the target language to retrive
         @return (tuple list) - Parsed text list
         """
-        return self.string_jason_data['translateMethods'][method_name]['translateDesc'][target_language]
+        return self.string_jason_data['translateMethods'][method_name]['translateDesc'][target_lang]
 
     def _input_iso_translate_code(self)->str:
         """!
@@ -577,8 +397,10 @@ class StringClassDescription(object):
         @return string - translate code
         """
         iso_translate_id = ""
-        while(iso_translate_id == ""):
-            trans_id = input("Enter original string ISO 639-1 translate language code (2 lower case characters): ").lower()
+        while iso_translate_id == "":
+            prompt = "Enter original string ISO 639-1 translate language code " \
+                     "(2 lower case characters): "
+            trans_id = input(prompt).lower()
 
             # Check validity
             if re.match('^[a-z]{2}$', trans_id):
@@ -596,7 +418,7 @@ class StringClassDescription(object):
         @return string - Validated name value
         """
         validated_name = ""
-        while(validated_name == ""):
+        while validated_name == "":
             if method_name:
                 name = input("Enter method name: ")
             else:
@@ -619,16 +441,21 @@ class StringClassDescription(object):
         @param current_mod {int} Current type_mode value from ParamRetDict.build_dict_mod_value
         @return int - Modified type_mod value with array data added
         """
-        while True:
+        retry = True
+        final_mod = current_mod
+
+        while retry:
             array_size = input("Size of the array in entries: ")
             try:
                 int_array_size = int(array_size)
-                if (int_array_size > 0) and (int_array_size < 65536):
-                    return ParamRetDict.set_type_mod_array_size(current_mod, int_array_size)
+                if 0 < int_array_size < 65536:
+                    final_mod = ParamRetDict.set_type_mod_array_size(current_mod, int_array_size)
                 else:
                     print ("Error: must be a valid number between 1 and 65535")
-            except:
+            except TypeError:
                 print ("Error: must be an integer value")
+
+        return final_mod
 
     def _input_type_modifier(self)->int:
         """!
@@ -636,39 +463,27 @@ class StringClassDescription(object):
         @return int - ParamRetDict type_mod value,
         """
         # Check for list modification
-        is_listType = input("Is full type a list [y/n]:").lower()
-        if (is_listType == 'y') or (is_listType == 'yes'):
-            is_list = True
-        else:
-            is_list = False
+        is_list_type = input("Is full type a list [y/n]:").lower()
+        is_list = bool(is_list_type in ['y', 'yes'])
 
         # Check for pointer modification
-        is_ptrType = input("Is full type a pointer [y/n]:").lower()
-        if (is_ptrType == 'y') or (is_ptrType == 'yes'):
-            is_ptr = True
-        else:
-            is_ptr = False
+        is_ptr_type = input("Is full type a pointer [y/n]:").lower()
+        is_ptr = bool(is_ptr_type  in ['y', 'yes'])
 
         # Check for reference modification
         is_ref_type = input("Is full type a reference [y/n]:").lower()
-        if (is_ref_type == 'y') or (is_ref_type == 'yes'):
-            is_reference = True
-        else:
-            is_reference = False
+        is_reference = bool(is_ref_type in ['y', 'yes'])
 
         # Check for undefined modification
-        can_beUndef = input("Can value be undefined [y/n]:").lower()
-        if (can_beUndef == 'y') or (can_beUndef == 'yes'):
-            or_undef = True
-        else:
-            or_undef = False
+        can_be_undef = input("Can value be undefined [y/n]:").lower()
+        or_undef = bool(can_be_undef in ['y', 'yes'])
 
         # Generate basic modification
         type_mod = ParamRetDict.build_dict_mod_value(is_list, is_reference, is_ptr, or_undef)
 
         # Check for array modification
         is_array_type = input("Is full type an array [y/n]:").lower()
-        if (is_array_type == 'y') or (is_array_type == 'yes'):
+        if is_array_type in ['y', 'yes']:
             type_mod = self._input_array_modifier(type_mod)
 
         return type_mod
@@ -683,24 +498,27 @@ class StringClassDescription(object):
                         Boolean is reference type
         """
         var_type = ""
-        while(var_type == ""):
+        while var_type == "":
             if return_type:
                 prompt_str = "Enter return base type"
             else:
                 prompt_str = "Enter parameter base type"
-
-            input_type = input(prompt_str+" [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ").lower()
+            ## @todo add float
+            prompt_str += " [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: "
+            input_type = input(prompt_str).lower()
 
             # Check validity
-            if (input_type == "s") or (input_type=="size"):
+            if input_type in ["s", "size"]:
                 var_type = "size"
-            elif (input_type == "t") or (input_type=="text") or (input_type=="string"):
+            elif input_type in ["t", "text", "string"]:
                 var_type = "string"
-            elif (input_type == "i") or (input_type=="integer") or (input_type=="int"):
+            elif input_type in ["i", "integer", "int"]:
                 var_type = "integer"
-            elif (input_type == "u") or (input_type=="unsigned"):
+            elif input_type in ["u", "unsigned"]:
                 var_type = "unsigned"
-            elif (input_type == "c") or (input_type=="custom"):
+            elif input_type in ["f", "float"]:
+                var_type = "float"
+            elif input_type in ["c", "custom"]:
                 # Note: Custom type class must have a stream operator method defined.
                 custom_type = input("Enter custom type: ")
                 if re.match('^[a-zA-Z_][a-zA-Z0-9_:]*$', custom_type):
@@ -711,7 +529,10 @@ class StringClassDescription(object):
                     print (custom_type+" is not a valid code type name, try again.")
             else:
                 # invalid name
-                print("Error: \""+input_type+"\" unknown. Please select one of the options from the menu.")
+                errstr = "Error: \""
+                errstr += input_type
+                errstr += "\" unknown. Please select one of the options from the menu."
+                print(errstr)
 
         type_mod = self._input_type_modifier()
         return var_type, type_mod
@@ -761,23 +582,19 @@ class StringClassDescription(object):
             expected_param_list.append(param_name)
 
         # Break the string into it's component parts
-        parsed_str_data = TranslationTextParser.parse_translate_string(test_string)
+        parsed_str_data = TransTxtParser.parse_translate_string(test_string)
 
         # Check the broken string counts
-        match_count = 0
-        param_count = 0
+        mcount = 0
+        pcount = 0
         for parsed_data in parsed_str_data:
-            if TranslationTextParser.is_parsed_param_type(parsed_data):
-                param_count +=1
-                if TranslationTextParser.get_parsed_str_data(parsed_data) in expected_param_list:
-                    match_count+=1
+            if TransTxtParser.is_parsed_param_type(parsed_data):
+                pcount +=1
+                if TransTxtParser.get_parsed_str_data(parsed_data) in expected_param_list:
+                    mcount+=1
 
-        if (match_count == len(expected_param_list)) and (param_count == match_count):
-            # Return success
-            return True, match_count, param_count, parsed_str_data
-        else:
-            # Return failure
-            return False, match_count, param_count, parsed_str_data
+        status = bool((mcount == len(expected_param_list)) and (pcount == mcount))
+        return status, mcount, pcount, parsed_str_data
 
     def _input_translate_string(self, param_list:list)->list:
         """!
@@ -786,7 +603,7 @@ class StringClassDescription(object):
         @param param_list {list of dictionaries} List of parameter description dictionaries
                                                 for this function
 
-        @return list - Validated TranslationTextParser text/data list
+        @return list - Validated TransTxtParser text/data list
         """
         # Build parameter list help string
         expected_param_help = ""
@@ -800,40 +617,66 @@ class StringClassDescription(object):
             prefix = ", "
 
         # Get the translate string from the user
-        string_valid = False
+        strvalid = False
         translate_string = ""
 
-        print("Enter translation template string. Use @paramName@ in the string to indicate where the ")
-        print("function parameters should be inserted.")
-        print("Example with single input parameter name \"keyString\": Found argument key @keyString@")
+        print("Enter translation template string. Use @paramName@ in the string to indicate")
+        print("where the function parameters should be inserted.")
+        print("Example with single input parameter name \"keyString\": ")
+        print("  Found argument key @keyString@")
 
-        while not string_valid:
+        while not strvalid:
             translate_string = input("String:")
-            string_valid, match_count, param_count, parsed_string = self._validate_translate_string(param_list, translate_string)
+            strvalid, mcount, pcount, parsestr = self._validate_translate_string(param_list,
+                                                                                 translate_string)
 
-            if not string_valid:
-                if (len(param_list) > match_count) and (len(param_list) > param_count):
-                    print ("Error: Template parameter missing, found "+str(match_count)+" of "+str(len(param_list))+" expected template parameters.")
-                elif (len(param_list) > match_count) and (len(param_list) == param_count):
-                    print ("Error: Template parameter(s) misspelled, spelling error count "+str(param_count-match_count))
-                elif (len(param_list) == match_count) and (len(param_list) < param_count):
-                    print ("Error: Too many template parameters in input string, expected "+str(match_count)+" found "+str(param_count))
+            if not strvalid:
+                if (len(param_list) > mcount) and (len(param_list) > pcount):
+                    errstr = "Error: Template parameter missing, found "
+                    errstr += str(mcount)
+                    errstr += " of "
+                    errstr += str(len(param_list))
+                    errstr += " expected template parameters."
+                    print (errstr)
+                elif (len(param_list) > mcount) and (len(param_list) == pcount):
+                    errstr = "Error: Template parameter(s) misspelled, spelling error count "
+                    errstr += str(pcount-mcount)
+                    print (errstr)
+                elif (len(param_list) == mcount) and (len(param_list) < pcount):
+                    errstr = "Error: Too many template parameters in input string, expected "
+                    errstr += str(mcount)
+                    errstr += " found "
+                    errstr += str(pcount)
+                    print (errstr)
                 else:
                     print ("Error: Translation template parameter list does not match expected.")
-                    print ("   Found "+str(param_count)+" parameters of expected "+str(len(param_list))+" parameters in string.")
-                    print ("   Matched "+str(match_count)+" parameters of expected "+str(len(param_list))+" parameters in string.")
+                    fnd_str = "   Found "
+                    fnd_str += str(pcount)
+                    fnd_str += " parameters of expected "
+                    fnd_str += str(len(param_list))
+                    fnd_str += " parameters in string."
+                    print (fnd_str)
+                    matchstr = "   Matched "
+                    matchstr += str(mcount)
+                    matchstr += " parameters of expected "
+                    matchstr += str(len(param_list))
+                    matchstr += " parameters in string."
+                    print (matchstr)
+
                 print("User input template:")
                 print("    "+translate_string)
                 print("Expected parameter list:")
                 print("    "+expected_param_help)
 
-        return parsed_string
+        return parsestr
 
-    def new_translate_method_entry(self, language_list:LanguageDescriptionList = None, override:bool = False)->bool:
+    def new_translate_method_entry(self, language_list:LanguageDescriptionList = None,
+                                   override:bool = False)->bool:
         """!
         @brief Define and add a new translate string return function dictionary
                to the list of translate functions
-        @param language_list {LanguageDescriptionList | None} Supported language description data or None
+        @param language_list {LanguageDescriptionList | None} Supported language
+                                                              description data or None
         @param override {boolean} True = Override existing without asking
         @return boolean True if new entry was written, else false
         """
@@ -845,26 +688,32 @@ class StringClassDescription(object):
             method_desc = input("Enter brief function description for doxygen comment: ")
 
             param_list = []
-            param_count = int(input("Enter parameter count? [0-n]: "))
-            while(param_count > 0):
+            pcount = int(input("Enter parameter count? [0-n]: "))
+            while pcount > 0:
                 param_list.append(self._input_parameter_data())
-                param_count -= 1
+                pcount -= 1
 
             return_dict = self._input_return_data()
 
             language_base = self._input_iso_translate_code()
             translate_string = self._input_translate_string(param_list)
-            new_entry = self._define_translate_function_entry(method_desc, param_list, return_dict, language_base, translate_string)
+            new_entry = self._define_translate_function_entry(method_desc,
+                                                              param_list,
+                                                              return_dict,
+                                                              language_base,
+                                                              translate_string)
 
             # Print entry for user to inspect
             print("New Entry:")
             print(new_entry)
             commit = input("Is this correct? [Y/N]").upper()
-            if ((commit == 'Y') or (commit == "YES")):
+            if commit in ['Y', "YES"]:
                 entry_correct = True
 
         # Test existing for match
-        commit_flag = self._get_commit_flag(method_name, self.string_jason_data['translateMethods'].keys(), override)
+        commit_flag = self._get_commit_flag(method_name,
+                                            self.string_jason_data['translateMethods'].keys(),
+                                            override)
         if commit_flag:
             self.string_jason_data['translateMethods'][method_name] = new_entry
             self._translate_method_text(method_name, language_list)
@@ -872,28 +721,41 @@ class StringClassDescription(object):
         return commit_flag
 
     def add_translate_method_entry(self, method_name:str, method_desc:str, param_list:list,
-                                return_dict:dict, iso_lang_code:str, translate_string:str,
-                                override:bool = False, language_list:LanguageDescriptionList = None)->bool:
+                                   return_dict:dict, iso_lang_code:str, translate_string:str,
+                                   override:bool = False,
+                                   language_list:LanguageDescriptionList = None)->bool:
         """!
         @brief Add a new translate string return function dictionary
                to the list of translate functions
         @param method_name {string} Name of the function
-        @param method_desc {string} Brief description of the function for doxygen comment generation
-        @param param_list {list of dictionaries} List of the input parameter description dictionaries
+        @param method_desc {string} Brief description of the function for doxygen comment
+                                    generation
+        @param param_list {list of dictionaries} List of the input parameter description
+                                                 dictionaries
         @param return_dict {dict} Return dictionary definition
         @param iso_lang_code {string} ISO 639-1 language code of the input translate_string
-        @param translate_string {string} String to generate translations for        @return boolean True if new entry was written, else false
-
+        @param translate_string {string} String to generate translations for
         @param override {boolean} True = Override existing without asking
-        @param language_list {LanguageDescriptionList | None} Supported language description data or None
+        @param language_list {LanguageDescriptionList | None} Supported language description
+                                                              data or None
         @return boolean True if new entry was written, else false
         """
-        status, match_count, param_count, parsed_str_data = self._validate_translate_string(param_list, translate_string)
+        status, mcount, pcount, parsed_str = self._validate_translate_string(param_list,
+                                                                             translate_string)
         if not status:
-            print ("Error: Invalid translation string: "+translate_string+". param_count= "+str(param_count)+" match_count= "+str(match_count))
+            err_str = "Error: Invalid translation string: "
+            err_str += translate_string
+            err_str += ". pcount= "
+            err_str += str(pcount)
+            err_str += " mcount= "+str(mcount)
+            print (err_str)
             return False
 
-        new_entry = self._define_translate_function_entry(method_desc, param_list, return_dict, iso_lang_code, parsed_str_data)
+        new_entry = self._define_translate_function_entry(method_desc,
+                                                          param_list,
+                                                          return_dict,
+                                                          iso_lang_code,
+                                                          parsed_str)
 
         commit_flag = True
         if method_name in self.string_jason_data['translateMethods'].keys():
@@ -929,17 +791,17 @@ class StringClassDescription(object):
             max_index += 1
         print (option_text)
 
-        property_id = None
-        while property_id is None:
+        propid = None
+        while propid is None:
             property_index = int(input("Enter property [0 - "+str(max_index-1)+"]: "))
-            if (property_index >= 0) and (property_index < max_index):
-                property_id = property_options[property_index]
+            if 0 <= property_index < max_index:
+                propid = property_options[property_index]
             else:
                 print ("Valid input values are 0 to "+str(max_index-1)+", try again")
 
-        return_type, return_desc, is_list = LanguageDescriptionList.get_language_property_return_data(property_id)
-        method_name = LanguageDescriptionList.get_language_property_method_name(property_id)
-        return property_id, method_name, return_type, return_desc, is_list
+        rtype, rdesc, is_list = LanguageDescriptionList.get_language_property_return_data(propid)
+        method_name = LanguageDescriptionList.get_language_property_method_name(propid)
+        return propid, method_name, rtype, rdesc, is_list
 
     def new_property_method_entry(self, override:bool = False)->bool:
         """!
@@ -952,20 +814,26 @@ class StringClassDescription(object):
         entry_correct = False
 
         while not entry_correct:
-            property_name, method_name, return_type, return_desc, is_list = self._get_property_return_data()
+            property_name, method_name, return_type, return_desc, is_list = self._get_property_return_data() # pylint: disable=line-too-long
             method_desc = "Get the "+return_desc+" for this object"
 
-            new_entry = self._define_property_function_entry(property_name, method_desc, return_type, return_desc, is_list)
+            new_entry = self._define_property_function_entry(property_name,
+                                                             method_desc,
+                                                             return_type,
+                                                             return_desc,
+                                                             is_list)
 
             # Print entry for user to inspect
             print(method_name+":")
             print(new_entry)
             commit = input("Is this correct? [Y/N]").upper()
-            if ((commit == 'Y') or (commit == "YES")):
+            if commit in ['Y', "YES"]:
                 entry_correct = True
 
         # Check for existing for match
-        commit_flag = self._get_commit_flag(method_name, self.string_jason_data['propertyMethods'].keys(), override)
+        commit_flag = self._get_commit_flag(method_name,
+                                            self.string_jason_data['propertyMethods'].keys(),
+                                            override)
         if commit_flag:
             self.string_jason_data['propertyMethods'][method_name] = new_entry
 
@@ -975,7 +843,8 @@ class StringClassDescription(object):
         """!
         @brief Add a new translate string return function dictionary
                to the list of translate functions
-        @param property_name {string} LanguageDescriptionList.get_language_property_list() property key
+        @param property_name {string} LanguageDescriptionList.get_language_property_list()
+                                      property key
         @param override {boolean} True = Override existing without asking
         @return boolean True if new entry was written, else false
         """
@@ -985,13 +854,16 @@ class StringClassDescription(object):
 
         # Property exists, generate the new entry
         if property_name in property_list:
-            return_type, return_desc, is_list = LanguageDescriptionList.get_language_property_return_data(property_name)
+            return_type, return_desc, is_list = LanguageDescriptionList.get_language_property_return_data(property_name) # pylint: disable=line-too-long
             method_desc = "Get the "+return_desc+" for this object"
             method_name = LanguageDescriptionList.get_language_property_method_name(property_name)
 
-            new_entry = self._define_property_function_entry(property_name, method_desc, return_type, return_desc, is_list)
+            new_entry = self._define_property_function_entry(property_name, method_desc,
+                                                             return_type, return_desc, is_list)
 
-            commit_flag = self._get_commit_flag(method_name, self.string_jason_data['propertyMethods'].keys(), override)
+            commit_flag = self._get_commit_flag(method_name,
+                                                self.string_jason_data['propertyMethods'].keys(),
+                                                override)
             if commit_flag:
                 # Add the entry
                 self.string_jason_data['propertyMethods'][method_name] = new_entry

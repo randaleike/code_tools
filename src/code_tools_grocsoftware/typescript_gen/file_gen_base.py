@@ -39,7 +39,7 @@ from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 # File generation helper class
 #============================================================================
 #============================================================================
-class GenerateTypeScriptFileHelper(object):
+class GenerateTypeScriptFileHelper():
     """!
     @brief File generation helper class.
 

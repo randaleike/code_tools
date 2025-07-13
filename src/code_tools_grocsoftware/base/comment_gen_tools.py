@@ -29,18 +29,21 @@ class CommentGenerator:
     """!
     @brief Comment block generation helper class
     """
-    def __init__(self, comment_markers:dict, line_length:int|None = None, eoltext:str|None = None, use_single_line:bool = False):
+    def __init__(self, comment_markers:dict, line_length:int = None,
+                 eoltext:str = None, use_single_line:bool = False):
         """!
         @brief Constructor
 
-        @param comment_markers (CommentBlockDelim dictionary) - Comment deliminter markers for the input file type.
+        @param comment_markers (CommentBlockDelim dictionary) - Comment deliminter markers for the
+                                                                input file type.
         @param line_length (integer): Total length of the padded line including comment
                                      start and end of line text.  None if it's just the
                                      comment start
         @param eoltext (string): String to end the padded line with or None if no end
                                  of line is required.
-        @param use_single_line (boolean): True use single line comment text even if comment blocking
-                                        is available. False (default) use comment blocking if available
+        @param use_single_line (boolean): True use single line comment text even if comment
+                                          blocking is available. False (default) use comment
+                                          blocking if available
         """
         ## Comment block markers typical for the file type
         self.comment_data = comment_markers
@@ -48,7 +51,8 @@ class CommentGenerator:
         self.line_length = line_length
         ## End of line text to be appended to each comment line in a comment block
         self.eoltext = eoltext
-        ## Length of the end of line text.  This length will shorten the max line length by the length amount
+        ## Length of the end of line text.  This length will shorten the max line length by the
+        ## length amount
         self.eol_length = 0
         ## Force use of single line comment text even if block comment markers are available
         self.use_single_line = False
@@ -222,7 +226,7 @@ class CCommentGenerator(CommentGenerator):
     """!
     C,Cxx,H,Hxx comment generator
     """
-    def __init__(self, line_length:int|None = None, eoltext:str|None = None, use_single_line:bool = False):
+    def __init__(self, line_length:int = None, eoltext:str = None, use_single_line:bool = False):
         """!
         @brief Constructor
 
@@ -231,17 +235,21 @@ class CCommentGenerator(CommentGenerator):
                                      comment start
         @param eoltext (string): String to end the padded line with or None if no end
                                  of line is required.
-        @param use_single_line (boolean): True use single line comment text even if comment blocking
-                                        is available. False (default) use comment blocking if available
+        @param use_single_line (boolean): True use single line comment text even if comment
+                                          blocking is available. False (default) use comment
+                                          blocking if available
         """
-        header_gen_comment_param = {'blockStart': "/*", 'blockEnd': "*/", 'blockLineStart': "* ", 'singleLine': "//"}
+        header_gen_comment_param = {'blockStart': "/*",
+                                    'blockEnd': "*/",
+                                    'blockLineStart': "* ",
+                                    'singleLine': "//"}
         super().__init__(header_gen_comment_param, line_length, eoltext, use_single_line)
 
 class PyCommentGenerator(CommentGenerator):
     """!
     Python comment generator
     """
-    def __init__(self, line_length:int|None = None, eoltext:str|None = None, use_single_line:bool = False):
+    def __init__(self, line_length:int = None, eoltext:str = None, use_single_line:bool = False):
         """!
         @brief Constructor
 
@@ -250,17 +258,21 @@ class PyCommentGenerator(CommentGenerator):
                                      comment start
         @param eoltext (string): String to end the padded line with or None if no end
                                  of line is required.
-        @param use_single_line (boolean): True use single line comment text even if comment blocking
-                                        is available. False (default) use comment blocking if available
+        @param use_single_line (boolean): True use single line comment text even if comment
+                                          blocking is available. False (default) use comment
+                                          blocking if available
         """
-        header_gen_comment_param = {'blockStart': '"""', 'blockEnd': '"""', 'blockLineStart': "", 'singleLine': "#"}
+        header_gen_comment_param = {'blockStart': '"""',
+                                    'blockEnd': '"""',
+                                    'blockLineStart': "",
+                                    'singleLine': "#"}
         super().__init__(header_gen_comment_param, line_length, eoltext, use_single_line)
 
 class TsCommentGenerator(CommentGenerator):
     """!
     Typescript comment generator
     """
-    def __init__(self, line_length:int|None = None, eoltext:str|None = None, use_single_line:bool = False):
+    def __init__(self, line_length:int = None, eoltext:str = None, use_single_line:bool = False):
         """!
         @brief Constructor
 
@@ -269,17 +281,21 @@ class TsCommentGenerator(CommentGenerator):
                                      comment start
         @param eoltext (string): String to end the padded line with or None if no end
                                  of line is required.
-        @param use_single_line (boolean): True use single line comment text even if comment blocking
-                                        is available. False (default) use comment blocking if available
+        @param use_single_line (boolean): True use single line comment text even if comment
+                                          blocking is available. False (default) use comment
+                                          blocking if available
         """
-        header_gen_comment_param = {'blockStart': "/*", 'blockEnd': "*/", 'blockLineStart': "* ", 'singleLine': "//"}
+        header_gen_comment_param = {'blockStart': "/*",
+                                    'blockEnd': "*/", \
+                                    'blockLineStart': "* ",
+                                    'singleLine': "//"}
         super().__init__(header_gen_comment_param, line_length, eoltext, use_single_line)
 
 class JsCommentGenerator(CommentGenerator):
     """!
     Javascript comment generator
     """
-    def __init__(self, line_length:int|None = None, eoltext:str|None = None, use_single_line:bool = False):
+    def __init__(self, line_length:int = None, eoltext:str = None, use_single_line:bool = False):
         """!
         @brief Constructor
 
@@ -288,17 +304,21 @@ class JsCommentGenerator(CommentGenerator):
                                      comment start
         @param eoltext (string): String to end the padded line with or None if no end
                                  of line is required.
-        @param use_single_line (boolean): True use single line comment text even if comment blocking
-                                        is available. False (default) use comment blocking if available
+        @param use_single_line (boolean): True use single line comment text even if comment
+                                          blocking is available. False (default) use comment
+                                          blocking if available
         """
-        header_gen_comment_param = {'blockStart': "/*", 'blockEnd': "*/", 'blockLineStart': "* ", 'singleLine': "//"}
+        header_gen_comment_param = {'blockStart': "/*",
+                                    'blockEnd': "*/",
+                                    'blockLineStart': "* ",
+                                    'singleLine': "//"}
         super().__init__(header_gen_comment_param, line_length, eoltext, use_single_line)
 
 class BashCommentGenerator(CommentGenerator):
     """!
     Bash comment generator
     """
-    def __init__(self, line_length:int|None = None, eoltext:str|None = None, use_single_line:bool = True):
+    def __init__(self, line_length:int = None, eoltext:str = None, use_single_line:bool = True):
         """!
         @brief Constructor
 
@@ -307,17 +327,21 @@ class BashCommentGenerator(CommentGenerator):
                                      comment start
         @param eoltext (string): String to end the padded line with or None if no end
                                  of line is required.
-        @param use_single_line (boolean): True use single line comment text even if comment blocking
-                                        is available. False (default) use comment blocking if available
+        @param use_single_line (boolean): True use single line comment text even if comment
+                                          blocking is available. False (default) use comment
+                                          blocking if available
         """
-        header_gen_comment_param = {'blockStart': None, 'blockEnd': None, 'blockLineStart': "#", 'singleLine': "#"}
+        header_gen_comment_param = {'blockStart': None,
+                                    'blockEnd': None,
+                                    'blockLineStart': "#",
+                                    'singleLine': "#"}
         super().__init__(header_gen_comment_param, line_length, eoltext, use_single_line)
 
 class BatchCommentGenerator(CommentGenerator):
     """!
     Bash comment generator
     """
-    def __init__(self, line_length:int|None = None, eoltext:str|None = None, use_single_line:bool = True):
+    def __init__(self, line_length:int = None, eoltext:str = None, use_single_line:bool = True):
         """!
         @brief Constructor
 
@@ -326,8 +350,12 @@ class BatchCommentGenerator(CommentGenerator):
                                      comment start
         @param eoltext (string): String to end the padded line with or None if no end
                                  of line is required.
-        @param use_single_line (boolean): True use single line comment text even if comment blocking
-                                        is available. False (default) use comment blocking if available
+        @param use_single_line (boolean): True use single line comment text even if comment
+                                          blocking is available. False (default) use comment
+                                          blocking if available
         """
-        header_gen_comment_param = {'blockStart': None, 'blockEnd': None, 'blockLineStart': "REM ", 'singleLine': "REM ",}
+        header_gen_comment_param = {'blockStart': None,
+                                    'blockEnd': None,
+                                    'blockLineStart': "REM ",
+                                    'singleLine': "REM ",}
         super().__init__(header_gen_comment_param, line_length, eoltext, use_single_line)

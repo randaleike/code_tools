@@ -590,24 +590,26 @@ class Test01JsonLanguageList:
         assert len(lang_list) == 1
         assert "english" in lang_list
 
-class Test02JsonLanguageListInput:
+class Test03JsonLanguageListInput:
     """!
     Test input methods
     """
     @classmethod
     def setup_class(cls):
+        """!
+        @brief Class setup method
+        """
         cls.test_json = os.path.join(TESTFILEPATH, "testdata.json")
 
 
     @classmethod
     def teardown_class(cls):
+        """!
+        @brief Class teardown method
+        """
         if os.path.exists("jsonLanguageDescriptionList.json"):
             os.remove("jsonLanguageDescriptionList.json")   # Delete in case it was accidently created
 
-
-    """!
-    @brief Unit test for the LanguageDescriptionList class input functions
-    """
     def test01_input_language_name_good(self):
         """!
         @brief Test _input_language_name() method, good first try

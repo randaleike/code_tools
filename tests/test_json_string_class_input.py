@@ -29,7 +29,7 @@ import io
 import contextlib
 from unittest.mock import patch, MagicMock
 
-from code_tools_grocsoftware.base.json_string_class_description import TranslationTextParser
+from code_tools_grocsoftware.base.json_string_class_description import TransTxtParser
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 
@@ -735,9 +735,9 @@ class Test02StringClassDescription:
         assert param_count == 1
         assert isinstance(parsed_str_data, list)
         assert len(parsed_str_data) == 2
-        assert parsed_str_data[0][0] == TranslationTextParser.parsed_type_text
+        assert parsed_str_data[0][0] == TransTxtParser.parsed_type_text
         assert parsed_str_data[0][1] == "Test string with input "
-        assert parsed_str_data[1][0] == TranslationTextParser.parsed_type_param
+        assert parsed_str_data[1][0] == TransTxtParser.parsed_type_param
         assert parsed_str_data[1][1] == "foo"
 
     def test27_validate_translate_string_pass_two(self):
@@ -753,13 +753,13 @@ class Test02StringClassDescription:
         assert param_count == 2
         assert isinstance(parsed_str_data, list)
         assert len(parsed_str_data) == 4
-        assert parsed_str_data[0][0] == TranslationTextParser.parsed_type_text
+        assert parsed_str_data[0][0] == TransTxtParser.parsed_type_text
         assert parsed_str_data[0][1] == "Test string with input "
-        assert parsed_str_data[1][0] == TranslationTextParser.parsed_type_param
+        assert parsed_str_data[1][0] == TransTxtParser.parsed_type_param
         assert parsed_str_data[1][1] == "foo"
-        assert parsed_str_data[2][0] == TranslationTextParser.parsed_type_text
+        assert parsed_str_data[2][0] == TransTxtParser.parsed_type_text
         assert parsed_str_data[2][1] == " and "
-        assert parsed_str_data[3][0] == TranslationTextParser.parsed_type_param
+        assert parsed_str_data[3][0] == TransTxtParser.parsed_type_param
         assert parsed_str_data[3][1] == "moo"
 
     def test28_validate_translate_string_fail(self):
@@ -775,9 +775,9 @@ class Test02StringClassDescription:
         assert param_count == 1
         assert isinstance(parsed_str_data, list)
         assert len(parsed_str_data) == 2
-        assert parsed_str_data[0][0] == TranslationTextParser.parsed_type_text
+        assert parsed_str_data[0][0] == TransTxtParser.parsed_type_text
         assert parsed_str_data[0][1] == "Test string with input "
-        assert parsed_str_data[1][0] == TranslationTextParser.parsed_type_param
+        assert parsed_str_data[1][0] == TransTxtParser.parsed_type_param
         assert parsed_str_data[1][1] == "foo"
 
     def test29_validate_translate_string_fail_too_many(self):
@@ -792,13 +792,13 @@ class Test02StringClassDescription:
         assert param_count == 2
         assert isinstance(parsed_str_data, list)
         assert len(parsed_str_data) == 4
-        assert parsed_str_data[0][0] == TranslationTextParser.parsed_type_text
+        assert parsed_str_data[0][0] == TransTxtParser.parsed_type_text
         assert parsed_str_data[0][1] == "Test string with input "
-        assert parsed_str_data[1][0] == TranslationTextParser.parsed_type_param
+        assert parsed_str_data[1][0] == TransTxtParser.parsed_type_param
         assert parsed_str_data[1][1] == "foo"
-        assert parsed_str_data[2][0] == TranslationTextParser.parsed_type_text
+        assert parsed_str_data[2][0] == TransTxtParser.parsed_type_text
         assert parsed_str_data[2][1] == " and "
-        assert parsed_str_data[3][0] == TranslationTextParser.parsed_type_param
+        assert parsed_str_data[3][0] == TransTxtParser.parsed_type_param
         assert parsed_str_data[3][1] == "moo"
 
     def test30_input_translate_string_good(self):
@@ -812,9 +812,9 @@ class Test02StringClassDescription:
             parsed_str_data = testobj._input_translate_string(param_list)
             assert isinstance(parsed_str_data, list)
             assert len(parsed_str_data) == 2
-            assert parsed_str_data[0][0] == TranslationTextParser.parsed_type_text
+            assert parsed_str_data[0][0] == TransTxtParser.parsed_type_text
             assert parsed_str_data[0][1] == "Test string with input "
-            assert parsed_str_data[1][0] == TranslationTextParser.parsed_type_param
+            assert parsed_str_data[1][0] == TransTxtParser.parsed_type_param
             assert parsed_str_data[1][1] == "foo"
 
             expected_str = "Enter translation template string. Use @paramName@ in the string to indicate where the \n"

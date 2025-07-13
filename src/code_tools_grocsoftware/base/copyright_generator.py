@@ -24,7 +24,7 @@ for a language string generation library
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-class CopyrightGenerator(object):
+class CopyrightGenerator():
     """!
     @brief Copyright message generator
 
@@ -34,7 +34,7 @@ class CopyrightGenerator(object):
     """
 
     @staticmethod
-    def _is_multi_year(create_year:int, last_modify_year:int|None)->bool:
+    def is_multi_year(create_year:int, last_modify_year:int|None)->bool:
         """!
         Determine if this is a multi or single year message
 
@@ -43,13 +43,11 @@ class CopyrightGenerator(object):
 
         @return bool - True if last_modify_year is not None and last_modify_year != create_year
         """
+        retval = False
         if last_modify_year is not None:
             if last_modify_year != create_year:
-                return True
-            else:
-                return False
-        else:
-            return False
+                retval = True
+        return retval
 
 
     def create_new_copyright(self, owner:str, create_year:int,
@@ -64,7 +62,7 @@ class CopyrightGenerator(object):
         @return string : New owner copyright message
         """
         # Get last modify if not supplied
-        if CopyrightGenerator._is_multi_year(create_year, last_modify_year):
+        if CopyrightGenerator.is_multi_year(create_year, last_modify_year):
             copyright_str = "Copyright (c) "+str(create_year)+"-"+str(last_modify_year)+" "+owner
         else:
             copyright_str = "Copyright (c) "+str(create_year)+" "+owner

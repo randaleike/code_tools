@@ -39,7 +39,7 @@ from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 # File generation helper class
 #============================================================================
 #============================================================================
-class GenerateCppFileHelper(object):
+class GenerateCppFileHelper():
     """!
     @brief File generation helper class.
 

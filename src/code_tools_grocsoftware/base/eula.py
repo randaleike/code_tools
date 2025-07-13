@@ -26,6 +26,7 @@ Utilities to create formatted End User License Agreement Text blocks
 
 import re
 
+# pylint: disable=line-too-long
 eula = {
        'MIT_open': {'text': ["Permission is hereby granted, free of charge, to any person obtaining a " \
                              "copy of self software and associated documentation files (the \"Software\"), " \
@@ -163,8 +164,9 @@ eula = {
                             "DAMAGE."],
                     'name': "BSD License"},
              }
+# pylint: enable=line-too-long
 
-class EulaText(object):
+class EulaText():
     """!
     EULA text helper class
     """
@@ -183,11 +185,11 @@ class EulaText(object):
         self.eula_name = ""
 
         if eula_type is None:
-            if custom_eula is None:
-                raise Exception("ERROR: Standard or custom EULA is required.")
-            else:
+            if custom_eula is not None:
                 self.raw_eula_text = custom_eula
                 self.eula_name = ""
+            else:
+                raise TypeError("ERROR: Standard or custom EULA is required.")
         else:
             self.raw_eula_text = self.get_eula_text(eula_type)
             self.eula_name = self.get_eula_name(eula_type)
@@ -203,11 +205,10 @@ class EulaText(object):
         @return list or None: list of strings for the requested EULA or
                                 None if the input eula_type is unknown.
         """
-        # pylint: disable=locally-disabled, disable=C0201
-        if eula_type in eula.keys():
-            return eula[eula_type]['text']
-        else:
-            return None
+        ret_text = None
+        if eula_type in eula:
+            ret_text = eula[eula_type]['text']
+        return ret_text
 
     @staticmethod
     def get_eula_name(eula_type:str)->str|None:
@@ -221,12 +222,10 @@ class EulaText(object):
         @return string or None: Name strings for the requested EULA or
                                 None if the input eula_type is unknown.
         """
-        # pylint: disable=locally-disabled, disable=C0201
-        if eula_type in eula.keys():
-            return eula[eula_type]['name']
-        else:
-            return None
-
+        ret_name = None
+        if eula_type in eula:
+            ret_name = eula[eula_type]['name']
+        return ret_name
 
     @staticmethod
     def _output_line(line_text:str, max_length:int = 80, pad:bool = False)->str:
@@ -241,9 +240,10 @@ class EulaText(object):
         @return Formated line of text
         """
         if pad:
-            return line_text.ljust(max_length, ' ')
+            ret_text = line_text.ljust(max_length, ' ')
         else:
-            return line_text
+            ret_text = line_text
+        return ret_text
 
     @staticmethod
     def _output_multi_line(raw_text:str, max_length:int = 80, pad:bool = False)->list:
@@ -311,9 +311,10 @@ class EulaText(object):
         @return string - formatted name text
         """
         if pad:
-            return self.eula_name.ljust(max_length, ' ')
+            ret_text = self.eula_name.ljust(max_length, ' ')
         else:
-            return self.eula_name
+            ret_text = self.eula_name
+        return ret_text
 
 
     def format_eula_text(self, max_length:int = 80, pad:bool = False)->list:
