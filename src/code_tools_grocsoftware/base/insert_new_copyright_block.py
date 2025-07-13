@@ -34,7 +34,7 @@ def insert_new_copyright_block(input_file, output_filename:str, comment_block_da
     @param input_file (file): Existing text file
     @param output_filename (filename string): Name of the file to output updated text to
     @param comment_block_data (dictionary): Comment block locations to update
-    @param comment_marker (dictionary): commentBlockDelim object to use for comment block
+    @param comment_marker (dictionary): comment_block_delim object to use for comment block
                                         replacement
     @param new_copyright_msg (string): New copyright message to write to the new file
     @param new_eula (list of strings): New license text to add to the copyright comment block

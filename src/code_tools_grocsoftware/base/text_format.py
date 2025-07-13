@@ -27,57 +27,57 @@ for a language string generation library
 
 import re
 
-def MultiLineFormat(rawText:str, maxLength:int = 80, padchar:str|None = None)->list:
+def MultiLineFormat(raw_text:str, max_length:int = 80, padchar:str|None = None)->list:
     """!
     @brief Break the long text string into a list of strings that do not
-           exceed the maxLength input parameter
+           exceed the max_length input parameter
 
-    @param rawText (string) - Long EULA line text
-    @param maxLength (integer) - Maximum line length for the EULA text, default = 80
+    @param raw_text (string) - Long EULA line text
+    @param max_length (integer) - Maximum line length for the EULA text, default = 80
     @param pad (char) - Character to pad the end of the line with or
                         None if no padding is required
 
     @return list of strings, List of strings broken at the appropriate length
     """
 
-    formattedText = []
+    formatted_text = []
 
-    while len(rawText) > maxLength:
+    while len(raw_text) > max_length:
         # Find a good breaking point
-        currentIndex = maxLength-1
-        while (re.match(r'[\s,\.-]',rawText[currentIndex]) is None) and (currentIndex > 0):
-            currentIndex -= 1
+        current_index = max_length-1
+        while (re.match(r'[\s,\.-]',raw_text[current_index]) is None) and (current_index > 0):
+            current_index -= 1
 
-        if currentIndex == 0:
+        if current_index == 0:
             # No good break found, just truncate and max length
-            formattedText.append(rawText[:maxLength])
-            rawText = rawText[maxLength:]
+            formatted_text.append(raw_text[:max_length])
+            raw_text = raw_text[max_length:]
         else:
             # Good break found, truncate to the good location
             # Get the partial text and strip the trailing space if present
-            newLine = rawText[:currentIndex]
-            newLine.strip()
+            new_line = raw_text[:current_index]
+            new_line.strip()
 
             # Add the new line to the list
             if padchar is not None:
-                formattedText.append(newLine.ljust(maxLength, padchar))
+                formatted_text.append(new_line.ljust(max_length, padchar))
             else:
-                formattedText.append(newLine)
+                formatted_text.append(new_line)
 
             # Strip the preceeding space if present
-            while rawText[currentIndex] == ' ':
-                currentIndex += 1
+            while raw_text[current_index] == ' ':
+                current_index += 1
 
             # Get the remaining string
-            rawText = rawText[currentIndex:]
+            raw_text = raw_text[current_index:]
 
     # Strip leading and trailing spaces for the last line
-    newLine = rawText.strip()
-    if newLine != '':
+    new_line = raw_text.strip()
+    if new_line != '':
         # Add the last line to the list
         if padchar is not None:
-            formattedText.append(newLine.ljust(maxLength, padchar))
+            formatted_text.append(new_line.ljust(max_length, padchar))
         else:
-            formattedText.append(newLine)
+            formatted_text.append(new_line)
 
-    return formattedText
+    return formatted_text

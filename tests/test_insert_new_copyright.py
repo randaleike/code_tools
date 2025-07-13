@@ -36,7 +36,7 @@ from code_tools_grocsoftware.base.insert_new_copyright_block import insert_new_c
 from tests.dir_init import TESTFILEPATH
 TEST_FILE_BASE_DIR = TESTFILEPATH
 
-cCommentParms =   {'blockStart': "/*", 'blockEnd': "*/", 'blockLineStart': "", 'singleLine': "//"}
+c_comment_parms =   {'blockStart': "/*", 'blockEnd': "*/", 'blockLineStart': "", 'singleLine': "//"}
 pyCommentParms =  {'blockStart': "\"\"\"", 'blockEnd':"\"\"\"", 'blockLineStart': "", 'singleLine': "#"}
 shCommentParms =  {'blockStart': None, 'blockEnd': None, 'blockLineStart': "#", 'singleLine': "#"}
 batCommentParms = {'blockStart': None, 'blockEnd': None, 'blockLineStart': "REM ", 'singleLine': "REM ",}
@@ -50,10 +50,10 @@ class TestClass03InsertNewCopyrightBlock:
         """!
         @brief On test start open the input file
         """
-        cls._inputFileName = os.path.join(TEST_FILE_BASE_DIR, "copyrighttest.h")
+        cls._input_file_name = os.path.join(TEST_FILE_BASE_DIR, "copyrighttest.h")
         cls._input_file = None
         # pylint: disable=consider-using-with
-        cls._input_file = open(cls._inputFileName, mode='rt', encoding='utf-8')
+        cls._input_file = open(cls._input_file_name, mode='rt', encoding='utf-8')
         # pylint: enable=consider-using-with
 
     @classmethod
@@ -80,7 +80,7 @@ class TestClass03InsertNewCopyrightBlock:
                     status = insert_new_copyright_block(self._input_file,
                                                         "test.c.out",
                                                         comment_blk_loc,
-                                                        cCommentParms,
+                                                        c_comment_parms,
                                                         "* Copyright (c) 2022-2023 Randal Eike\n",
                                                         ["test eula"])
                     assert not status
@@ -96,7 +96,7 @@ class TestClass03InsertNewCopyrightBlock:
                            'copyrightMsgs': [
                                {'lineOffset': 3,
                                 'text':" Copyright (c) 2022-2023 Randal Eike\n"}] }
-        test_comment_markers = cCommentParms
+        test_comment_markers = c_comment_parms
         test_comment_markers['blockLineStart'] = '*'
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
@@ -148,7 +148,7 @@ class TestClass03InsertNewCopyrightBlock:
                                 {'lineOffset': 3,
                                  'text':" Copyright (c) 2022-2023 Randal Eike\n"}] }
 
-        test_comment_markers = cCommentParms
+        test_comment_markers = c_comment_parms
         test_comment_markers['blockLineStart'] = '*'
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
@@ -205,7 +205,7 @@ class TestClass03InsertNewCopyrightBlock:
                                }
                             ]
                           }
-        test_comment_markers = cCommentParms
+        test_comment_markers = c_comment_parms
         test_comment_markers['blockLineStart'] = '*'
 
         with patch("builtins.open", mock_open()) as mock_wfile:

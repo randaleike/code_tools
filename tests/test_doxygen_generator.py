@@ -33,546 +33,546 @@ class UnittestDoxygenCommentBlock:
     """!
     Doxygen comment block test cases
     """
-    def setUpParams(self, blockStart:str|None, blockEnd:str|None, blockLine:str|None, singleLine:str|None, addParam:bool):
+    def set_up_params(self, block_start:str|None, block_end:str|None, block_line:str|None, single_line:str|None, add_param:bool):
         """!
-        @brief Common test setUp routine
+        @brief Common test set_up routine
 
-        @param blockStart {string|None} Doxygen comment block start for the programming language
-        @param blockEnd {string|None} Doxygen comment block end for the programming language
-        @param blockLine {string|None} Doxygen comment block line prefix for the programming language
-        @param singleLine {string|None} Doxygen comment single line start for the programming language
-        @param addParam {boolean} True, add parameter type to documentation comment, False, do not add type to comment
+        @param block_start {string|None} Doxygen comment block start for the programming language
+        @param block_end {string|None} Doxygen comment block end for the programming language
+        @param block_line {string|None} Doxygen comment block line prefix for the programming language
+        @param single_line {string|None} Doxygen comment single line start for the programming language
+        @param add_param {boolean} True, add parameter type to documentation comment, False, do not add type to comment
         """
-        self.blockStart = blockStart
-        self.blockEnd = blockEnd
-        self.blockLine = blockLine
-        self.singleLine = singleLine
-        self.addParam = addParam
+        self.block_start = block_start
+        self.block_end = block_end
+        self.block_line = block_line
+        self.single_line = single_line
+        self.add_param = add_param
 
-        self.tstGen = DoxyCommentGenerator(blockStart, blockEnd, blockLine, singleLine, addParam)
-        if blockStart is not None:
-            self.descFormatAdjust = len(blockStart)
-            self.expectedBlockStart = blockStart
-            if blockEnd == '"""':
-                self.expectedBlockEnd = blockEnd
+        self.tst_gen = DoxyCommentGenerator(block_start, block_end, block_line, single_line, add_param)
+        if block_start is not None:
+            self.desc_format_adjust = len(block_start)
+            self.expected_block_start = block_start
+            if block_end == '"""':
+                self.expected_block_end = block_end
             else:
-                self.expectedBlockEnd = " "+blockEnd
-            self.expectedBlockPrefix = " "+blockLine+" "
-        elif singleLine is not None:
-            self.descFormatAdjust = len(singleLine)
-            self.expectedBlockStart = singleLine
-            self.expectedBlockEnd = ""
-            self.expectedBlockPrefix = singleLine+" "
+                self.expected_block_end = " "+block_end
+            self.expected_block_prefix = " "+block_line+" "
+        elif single_line is not None:
+            self.desc_format_adjust = len(single_line)
+            self.expected_block_start = single_line
+            self.expected_block_end = ""
+            self.expected_block_prefix = single_line+" "
 
     """!
     @brief Unit test for the TextFileCommentBlock class
     """
-    def test01DoxyGenConstructor(self):
+    def test01_doxy_gen_constructor(self):
         """!
         @brief Test the constructor
         """
-        assert self.tstGen.blockStart == self.blockStart
-        assert self.tstGen.blockEnd == self.blockEnd
-        assert self.tstGen.blockLineStart == self.blockLine
-        assert self.tstGen.singleLineStart == self.singleLine
+        assert self.tst_gen.block_start == self.block_start
+        assert self.tst_gen.block_end == self.block_end
+        assert self.tst_gen.block_line_start == self.block_line
+        assert self.tst_gen.single_line_start == self.single_line
 
-        assert self.tstGen.formatMaxLength == 120
-        assert self.tstGen.descFormatMax == 120-self.descFormatAdjust
+        assert self.tst_gen.format_max_length == 120
+        assert self.tst_gen.desc_format_max == 120-self.desc_format_adjust
 
-        assert self.tstGen.addParamType == self.addParam
-        assert self.tstGen.groupCounter == 0
+        assert self.tst_gen.add_param_type == self.add_param
+        assert self.tst_gen.group_counter == 0
 
-    def test02GenBlockPrefix(self):
+    def test02_gen_block_prefix(self):
         """!
         @brief Test the block line prefix generation
         """
-        tstStr = self.tstGen._genCommentBlockPrefix()
-        assert tstStr == self.expectedBlockPrefix
+        tst_str = self.tst_gen._gen_comment_block_prefix()
+        assert tst_str == self.expected_block_prefix
 
-    def test03GenBlockStart(self):
+    def test03_gen_block_start(self):
         """!
         @brief Test the block start generation
         """
-        tstStr = self.tstGen._genBlockStart()
-        assert tstStr == self.expectedBlockStart
+        tst_str = self.tst_gen._gen_block_start()
+        assert tst_str == self.expected_block_start
 
-    def test04GenBlockEnd(self):
+    def test04_gen_block_end(self):
         """!
         @brief Test the block end generation
         """
-        tstStr = self.tstGen._genBlockEnd()
-        assert tstStr == self.expectedBlockEnd
+        tst_str = self.tst_gen._gen_block_end()
+        assert tst_str == self.expected_block_end
 
-    def test05GenBriefDescShort(self):
+    def test05_gen_brief_desc_short(self):
         """!
         @brief Test the brief description block with short description
         """
-        prefix = "  "+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 80
-        tstStrList = self.tstGen._genBriefDesc("Brief description short", prefix)
-        assert len(tstStrList) == 1
-        assert tstStrList[0] == prefix+"@brief Brief description short\n"
+        prefix = "  "+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 80
+        tst_strList = self.tst_gen._gen_brief_desc("Brief description short", prefix)
+        assert len(tst_strList) == 1
+        assert tst_strList[0] == prefix+"@brief Brief description short\n"
 
-    def test06GenBriefDescLong(self):
+    def test06_gen_brief_desc_long(self):
         """!
         @brief Test the brief description block with long description
         """
-        prefix = "  "+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 79+len(prefix)
-        tstStrList = self.tstGen._genBriefDesc("Brief description long. Long meandering description to make sure that the text wraps at least one line.  Just to make sure.",
+        prefix = "  "+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 79+len(prefix)
+        tst_strList = self.tst_gen._gen_brief_desc("Brief description long. Long meandering description to make sure that the text wraps at least one line.  Just to make sure.",
                                                prefix)
-        assert len(tstStrList) == 2
-        assert tstStrList[0] == prefix+"@brief Brief description long. Long meandering description to make sure that the\n"
-        assert tstStrList[1] == prefix+"       text wraps at least one line.  Just to make sure.\n"
+        assert len(tst_strList) == 2
+        assert tst_strList[0] == prefix+"@brief Brief description long. Long meandering description to make sure that the\n"
+        assert tst_strList[1] == prefix+"       text wraps at least one line.  Just to make sure.\n"
 
-    def test07GenLongDescShort(self):
+    def test07_gen_long_desc_short(self):
         """!
         @brief Test the long description block with short description
         """
-        prefix = "  "+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 80+len(prefix)
-        tstStrList = self.tstGen._genLongDesc(prefix, "Short description line")
-        assert len(tstStrList) == 1
-        assert tstStrList[0] == prefix+"Short description line\n"
+        prefix = "  "+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 80+len(prefix)
+        tst_strList = self.tst_gen._gen_long_desc(prefix, "Short description line")
+        assert len(tst_strList) == 1
+        assert tst_strList[0] == prefix+"Short description line\n"
 
-    def test08GenLongDescShortLong(self):
+    def test08_gen_long_desc_short_long(self):
         """!
         @brief Test the long description block with long description
         """
-        prefix = "  "+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 80+len(prefix)
-        tstStrList = self.tstGen._genLongDesc(prefix,
+        prefix = "  "+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 80+len(prefix)
+        tst_strList = self.tst_gen._gen_long_desc(prefix,
                                               "Long description line. Long meandering description to make sure that the text wraps at least one line.  Just to make sure.")
-        assert len(tstStrList) == 2
-        assert tstStrList[0] == prefix+"Long description line. Long meandering description to make sure that the text wraps\n"
-        assert tstStrList[1] == prefix+"at least one line.  Just to make sure.\n"
+        assert len(tst_strList) == 2
+        assert tst_strList[0] == prefix+"Long description line. Long meandering description to make sure that the text wraps\n"
+        assert tst_strList[1] == prefix+"at least one line.  Just to make sure.\n"
 
-    def test09GenRetDocShortDesc(self):
+    def test09_gen_ret_doc_short_desc(self):
         """!
         @brief Test the generate return documentation with short description
         """
-        prefix = "  "+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 80+len(prefix)
-        retDict = ParamRetDict.buildReturnDict("string", "Short desciption")
-        tstStrList = self.tstGen._genCommentReturnText(retDict, prefix)
-        assert len(tstStrList) == 1
-        expectedStr  = prefix
-        expectedStr += "@return "
-        expectedStr += ParamRetDict.getReturnType(retDict)
-        expectedStr += " - "
-        expectedStr += ParamRetDict.getReturnDesc(retDict)
-        expectedStr += "\n"
-        assert tstStrList[0] == expectedStr
+        prefix = "  "+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 80+len(prefix)
+        ret_dict = ParamRetDict.build_return_dict("string", "Short desciption")
+        tst_strList = self.tst_gen._gen_comment_return_text(ret_dict, prefix)
+        assert len(tst_strList) == 1
+        expected_str  = prefix
+        expected_str += "@return "
+        expected_str += ParamRetDict.get_return_type(ret_dict)
+        expected_str += " - "
+        expected_str += ParamRetDict.get_return_desc(ret_dict)
+        expected_str += "\n"
+        assert tst_strList[0] == expected_str
 
-    def test10GenRetDocLongDesc(self):
+    def test10_gen_ret_doc_long_desc(self):
         """!
         @brief Test the generate return documentation with long description
         """
-        prefix = "  "+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 78+len(prefix)
-        retDict = ParamRetDict.buildReturnDict("string", "Long meandering desciption of the return data designed to make sure that the line wraps")
-        tstStrList = self.tstGen._genCommentReturnText(retDict, prefix)
-        assert len(tstStrList) == 2
+        prefix = "  "+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 78+len(prefix)
+        ret_dict = ParamRetDict.build_return_dict("string", "Long meandering desciption of the return data designed to make sure that the line wraps")
+        tst_strList = self.tst_gen._gen_comment_return_text(ret_dict, prefix)
+        assert len(tst_strList) == 2
 
-        expectedStr  = prefix
-        expectedStr += "@return "
-        expectedStr += ParamRetDict.getReturnType(retDict)
-        expectedStr += " - Long meandering desciption of the return data designed to make\n"
-        assert tstStrList[0] == expectedStr
+        expected_str  = prefix
+        expected_str += "@return "
+        expected_str += ParamRetDict.get_return_type(ret_dict)
+        expected_str += " - Long meandering desciption of the return data designed to make\n"
+        assert tst_strList[0] == expected_str
 
-        expectedStr1  = prefix
-        expectedStr1 += "                 sure that the line wraps\n"
-        assert tstStrList[1] == expectedStr1
+        expected_str1  = prefix
+        expected_str1 += "                 sure that the line wraps\n"
+        assert tst_strList[1] == expected_str1
 
-    def test11GenParamDocShortDesc(self):
+    def test11_gen_param_doc_short_desc(self):
         """!
         @brief Test the generate parameter documentation with short description
         """
-        prefix = "  "+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 80+len(prefix)
-        paramDict = ParamRetDict.buildParamDictWithMod("foo", "string", "Short desciption", 0)
-        tstStrList = self.tstGen._genCommentParamText(paramDict, prefix)
+        prefix = "  "+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 80+len(prefix)
+        param_dict = ParamRetDict.build_param_dict_with_mod("foo", "string", "Short desciption", 0)
+        tst_strList = self.tst_gen._gen_comment_param_text(param_dict, prefix)
 
-        expectedStr  = prefix
-        expectedStr += "@param "
-        expectedStr += ParamRetDict.getParamName(paramDict)
-        expectedStr += " "
+        expected_str  = prefix
+        expected_str += "@param "
+        expected_str += ParamRetDict.get_param_name(param_dict)
+        expected_str += " "
 
-        if self.addParam:
-            expectedStr += "{"
-            expectedStr += ParamRetDict.getParamType(paramDict)
-            expectedStr += "} "
+        if self.add_param:
+            expected_str += "{"
+            expected_str += ParamRetDict.get_param_type(param_dict)
+            expected_str += "} "
 
-        expectedStr += ParamRetDict.getParamDesc(paramDict)
-        expectedStr += "\n"
+        expected_str += ParamRetDict.get_param_desc(param_dict)
+        expected_str += "\n"
 
-        assert len(tstStrList) == 1
-        assert tstStrList[0] == expectedStr
+        assert len(tst_strList) == 1
+        assert tst_strList[0] == expected_str
 
-    def test12GenParamDocLongDesc(self):
+    def test12_gen_param_doc_long_desc(self):
         """!
         @brief Test the generate parameter documentation with long description
         """
-        prefix = "  "+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 76+len(prefix)
-        paramDict = ParamRetDict.buildParamDictWithMod("moo", "string", "Long meandering desciption of the return data designed to make sure that the line wraps")
-        tstStrList = self.tstGen._genCommentParamText(paramDict, prefix)
+        prefix = "  "+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 76+len(prefix)
+        param_dict = ParamRetDict.build_param_dict_with_mod("moo", "string", "Long meandering desciption of the return data designed to make sure that the line wraps")
+        tst_strList = self.tst_gen._gen_comment_param_text(param_dict, prefix)
 
-        expectedStr  = prefix
-        expectedStr += "@param "
-        expectedStr += ParamRetDict.getParamName(paramDict)
-        expectedStr += " "
+        expected_str  = prefix
+        expected_str += "@param "
+        expected_str += ParamRetDict.get_param_name(param_dict)
+        expected_str += " "
 
-        if self.addParam:
-            expectedStr += "{"
-            expectedStr += ParamRetDict.getParamType(paramDict)
-            expectedStr += "} Long meandering desciption of the return data designed to\n"
+        if self.add_param:
+            expected_str += "{"
+            expected_str += ParamRetDict.get_param_type(param_dict)
+            expected_str += "} Long meandering desciption of the return data designed to\n"
         else:
-            expectedStr += "Long meandering desciption of the return data designed to make sure\n"
+            expected_str += "Long meandering desciption of the return data designed to make sure\n"
 
 
-        expectedStr1  = prefix
-        if self.addParam:
-            expectedStr1 += "                    make sure that the line wraps\n"
+        expected_str1  = prefix
+        if self.add_param:
+            expected_str1 += "                    make sure that the line wraps\n"
         else:
-            expectedStr1 += "           that the line wraps\n"
+            expected_str1 += "           that the line wraps\n"
 
-        assert len(tstStrList) == 2
-        assert tstStrList[0] == expectedStr
-        assert tstStrList[1] == expectedStr1
+        assert len(tst_strList) == 2
+        assert tst_strList[0] == expected_str
+        assert tst_strList[1] == expected_str1
 
-    def test13GenMethodDocBriefOnly(self):
+    def test13_gen_method_doc_brief_only(self):
         """!
         @brief Test the generate method documentation
         """
         prefix = "".rjust(4, ' ')
-        blockprefix = prefix+self.expectedBlockPrefix
-        retDict = ParamRetDict.buildReturnDict("string", "Short return desciption")
-        paramDictList = [ParamRetDict.buildParamDictWithMod("moo", "string", "Short str param desciption"),
-                         ParamRetDict.buildParamDictWithMod("foo", "int", "Short int param desciption")]
+        blockprefix = prefix+self.expected_block_prefix
+        ret_dict = ParamRetDict.build_return_dict("string", "Short return desciption")
+        param_dict_list = [ParamRetDict.build_param_dict_with_mod("moo", "string", "Short str param desciption"),
+                         ParamRetDict.build_param_dict_with_mod("foo", "int", "Short int param desciption")]
 
-        tstStrList = self.tstGen.genDoxyMethodComment("Brief method description", paramDictList, retDict, blockIndent=4)
+        tst_strList = self.tst_gen.gen_doxy_method_comment("Brief method description", param_dict_list, ret_dict, block_indent=4)
 
-        assert len(tstStrList) == 8
-        assert tstStrList[0] == prefix+self.expectedBlockStart+"\n"
-        assert tstStrList[1] == blockprefix+"@brief Brief method description\n"
-        assert tstStrList[2] == blockprefix+"\n"
+        assert len(tst_strList) == 8
+        assert tst_strList[0] == prefix+self.expected_block_start+"\n"
+        assert tst_strList[1] == blockprefix+"@brief Brief method description\n"
+        assert tst_strList[2] == blockprefix+"\n"
 
-        paramPrefix = blockprefix+"@param "
-        param1Expected = paramPrefix+ParamRetDict.getParamName(paramDictList[0])+" "
-        if self.addParam:
+        param_prefix = blockprefix+"@param "
+        param1Expected = param_prefix+ParamRetDict.get_param_name(param_dict_list[0])+" "
+        if self.add_param:
             param1Expected += "{"
-            param1Expected += ParamRetDict.getParamType(paramDictList[0])
+            param1Expected += ParamRetDict.get_param_type(param_dict_list[0])
             param1Expected += "} "
 
         param1Expected += "Short str param desciption\n"
 
-        param2Expected = paramPrefix+ParamRetDict.getParamName(paramDictList[1])+" "
-        if self.addParam:
+        param2Expected = param_prefix+ParamRetDict.get_param_name(param_dict_list[1])+" "
+        if self.add_param:
             param2Expected += "{"
-            param2Expected += ParamRetDict.getParamType(paramDictList[1])
+            param2Expected += ParamRetDict.get_param_type(param_dict_list[1])
             param2Expected += "} "
 
         param2Expected += "Short int param desciption\n"
 
-        assert tstStrList[3] == param1Expected
-        assert tstStrList[4] == param2Expected
-        assert tstStrList[5] == blockprefix+"\n"
+        assert tst_strList[3] == param1Expected
+        assert tst_strList[4] == param2Expected
+        assert tst_strList[5] == blockprefix+"\n"
 
-        returnExpected  = blockprefix+"@return "
-        returnExpected += ParamRetDict.getReturnType(retDict)
-        returnExpected += " - Short return desciption\n"
-        assert tstStrList[6] == returnExpected
+        return_expected  = blockprefix+"@return "
+        return_expected += ParamRetDict.get_return_type(ret_dict)
+        return_expected += " - Short return desciption\n"
+        assert tst_strList[6] == return_expected
 
-        assert tstStrList[7] == prefix+self.expectedBlockEnd+"\n"
+        assert tst_strList[7] == prefix+self.expected_block_end+"\n"
 
-    def test14GenMethodDocBriefAndLong(self):
+    def test14_gen_method_doc_brief_and_long(self):
         """!
         @brief Test the generate method documentation, with long description
         """
         prefix = "".rjust(4, ' ')
-        blockprefix = prefix+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 77+len(blockprefix)
-        retDict = ParamRetDict.buildReturnDict("string", "Short return desciption")
-        paramDictList = [ParamRetDict.buildParamDictWithMod("moo", "string", "Short str param desciption"),
-                         ParamRetDict.buildParamDictWithMod("foo", "int", "Short int param desciption")]
+        blockprefix = prefix+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 77+len(blockprefix)
+        ret_dict = ParamRetDict.build_return_dict("string", "Short return desciption")
+        param_dict_list = [ParamRetDict.build_param_dict_with_mod("moo", "string", "Short str param desciption"),
+                         ParamRetDict.build_param_dict_with_mod("foo", "int", "Short int param desciption")]
 
-        longMethodDesc = "Long meandering method description. Not sure what there is to say, just going on until I can make sure it will wrap"
-        tstStrList = self.tstGen.genDoxyMethodComment("Brief method description", paramDictList, retDict, longMethodDesc, 4)
+        long_method_desc = "Long meandering method description. Not sure what there is to say, just going on until I can make sure it will wrap"
+        tst_strList = self.tst_gen.gen_doxy_method_comment("Brief method description", param_dict_list, ret_dict, long_method_desc, 4)
 
-        assert len(tstStrList) == 11
-        assert tstStrList[0] == prefix+self.expectedBlockStart+"\n"
-        assert tstStrList[1] == blockprefix+"@brief Brief method description\n"
-        assert tstStrList[2] == blockprefix+"\n"
-        assert tstStrList[3] == blockprefix+"Long meandering method description. Not sure what there is to say, just going on\n"
-        assert tstStrList[4] == blockprefix+"until I can make sure it will wrap\n"
-        assert tstStrList[5] == blockprefix+"\n"
+        assert len(tst_strList) == 11
+        assert tst_strList[0] == prefix+self.expected_block_start+"\n"
+        assert tst_strList[1] == blockprefix+"@brief Brief method description\n"
+        assert tst_strList[2] == blockprefix+"\n"
+        assert tst_strList[3] == blockprefix+"Long meandering method description. Not sure what there is to say, just going on\n"
+        assert tst_strList[4] == blockprefix+"until I can make sure it will wrap\n"
+        assert tst_strList[5] == blockprefix+"\n"
 
-        paramPrefix = blockprefix+"@param "
-        param1Expected = paramPrefix+ParamRetDict.getParamName(paramDictList[0])+" "
-        if self.addParam:
+        param_prefix = blockprefix+"@param "
+        param1Expected = param_prefix+ParamRetDict.get_param_name(param_dict_list[0])+" "
+        if self.add_param:
             param1Expected += "{"
-            param1Expected += ParamRetDict.getParamType(paramDictList[0])
+            param1Expected += ParamRetDict.get_param_type(param_dict_list[0])
             param1Expected += "} "
 
         param1Expected += "Short str param desciption\n"
 
-        param2Expected = paramPrefix+ParamRetDict.getParamName(paramDictList[1])+" "
-        if self.addParam:
+        param2Expected = param_prefix+ParamRetDict.get_param_name(param_dict_list[1])+" "
+        if self.add_param:
             param2Expected += "{"
-            param2Expected += ParamRetDict.getParamType(paramDictList[1])
+            param2Expected += ParamRetDict.get_param_type(param_dict_list[1])
             param2Expected += "} "
 
         param2Expected += "Short int param desciption\n"
 
-        assert tstStrList[6] == param1Expected
-        assert tstStrList[7] == param2Expected
-        assert tstStrList[8] == blockprefix+"\n"
+        assert tst_strList[6] == param1Expected
+        assert tst_strList[7] == param2Expected
+        assert tst_strList[8] == blockprefix+"\n"
 
-        returnExpected  = blockprefix+"@return "
-        returnExpected += ParamRetDict.getReturnType(retDict)
-        returnExpected += " - Short return desciption\n"
-        assert tstStrList[9] == returnExpected
+        return_expected  = blockprefix+"@return "
+        return_expected += ParamRetDict.get_return_type(ret_dict)
+        return_expected += " - Short return desciption\n"
+        assert tst_strList[9] == return_expected
 
-        assert tstStrList[10] == prefix+self.expectedBlockEnd+"\n"
+        assert tst_strList[10] == prefix+self.expected_block_end+"\n"
 
-    def test15GenClassDocBriefOnly(self):
+    def test15_gen_class_doc_brief_only(self):
         """!
         @brief Test the generate class documentation
         """
         prefix = "".rjust(4, ' ')
-        blockprefix = prefix+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 78+len(prefix)
-        tstStrList = self.tstGen.genDoxyClassComment("Brief class description", blockIndent=4)
+        blockprefix = prefix+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 78+len(prefix)
+        tst_strList = self.tst_gen.gen_doxy_class_comment("Brief class description", block_indent=4)
 
-        assert len(tstStrList) == 3
-        assert tstStrList[0] == prefix+self.expectedBlockStart+"\n"
-        assert tstStrList[1] == blockprefix+"@brief Brief class description\n"
-        assert tstStrList[2] == prefix+self.expectedBlockEnd+"\n"
+        assert len(tst_strList) == 3
+        assert tst_strList[0] == prefix+self.expected_block_start+"\n"
+        assert tst_strList[1] == blockprefix+"@brief Brief class description\n"
+        assert tst_strList[2] == prefix+self.expected_block_end+"\n"
 
-    def test16GenClassDocBriefAndLong(self):
+    def test16_gen_class_doc_brief_and_long(self):
         """!
         @brief Test the generate class documentation
         """
         prefix = "".rjust(4, ' ')
-        blockprefix = prefix+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 78+len(prefix)
-        longClassDesc = "Long meandering class description. Not sure what there is to say, just going on until I can make sure it will wrap"
-        tstStrList = self.tstGen.genDoxyClassComment("Brief class description", longClassDesc, 4)
+        blockprefix = prefix+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 78+len(prefix)
+        long_class_desc = "Long meandering class description. Not sure what there is to say, just going on until I can make sure it will wrap"
+        tst_strList = self.tst_gen.gen_doxy_class_comment("Brief class description", long_class_desc, 4)
 
-        assert len(tstStrList) == 6
-        assert tstStrList[0] == prefix+self.expectedBlockStart+"\n"
-        assert tstStrList[1] == blockprefix+"@brief Brief class description\n"
-        assert tstStrList[2] == blockprefix+"\n"
-        assert tstStrList[3] == blockprefix+"Long meandering class description. Not sure what there is to say, just going on\n"
-        assert tstStrList[4] == blockprefix+"until I can make sure it will wrap\n"
-        assert tstStrList[5] == prefix+self.expectedBlockEnd+"\n"
+        assert len(tst_strList) == 6
+        assert tst_strList[0] == prefix+self.expected_block_start+"\n"
+        assert tst_strList[1] == blockprefix+"@brief Brief class description\n"
+        assert tst_strList[2] == blockprefix+"\n"
+        assert tst_strList[3] == blockprefix+"Long meandering class description. Not sure what there is to say, just going on\n"
+        assert tst_strList[4] == blockprefix+"until I can make sure it will wrap\n"
+        assert tst_strList[5] == prefix+self.expected_block_end+"\n"
 
-    def test17GenDefGroupFull(self):
+    def test17_gen_def_group_full(self):
         """!
         @brief Test the generate group definition documentation, full definition
         """
-        tstStrList = self.tstGen.genDoxyDefgroup("test.x", "Fred", "Test Fred group")
-        assert len(tstStrList) == 6
-        assert tstStrList[0] == self.expectedBlockStart+"\n"
-        assert tstStrList[1] == self.expectedBlockPrefix+"@file test.x\n"
-        assert tstStrList[2] == self.expectedBlockPrefix+"@defgroup Fred Test Fred group\n"
-        assert tstStrList[3] == self.expectedBlockPrefix+"@ingroup Fred\n"
-        assert tstStrList[4] == self.expectedBlockPrefix+"@{\n"
-        assert tstStrList[5] == self.expectedBlockEnd+"\n"
+        tst_strList = self.tst_gen.gen_doxy_defgroup("test.x", "Fred", "Test Fred group")
+        assert len(tst_strList) == 6
+        assert tst_strList[0] == self.expected_block_start+"\n"
+        assert tst_strList[1] == self.expected_block_prefix+"@file test.x\n"
+        assert tst_strList[2] == self.expected_block_prefix+"@defgroup Fred Test Fred group\n"
+        assert tst_strList[3] == self.expected_block_prefix+"@ingroup Fred\n"
+        assert tst_strList[4] == self.expected_block_prefix+"@{\n"
+        assert tst_strList[5] == self.expected_block_end+"\n"
 
-    def test18GenDefGroupOnly(self):
+    def test18_gen_def_group_only(self):
         """!
         @brief Test the generate group definition documentation, group only
         """
-        tstStrList = self.tstGen.genDoxyDefgroup("test.x", "Fred")
-        assert len(tstStrList) == 5
-        assert tstStrList[0] == self.expectedBlockStart+"\n"
-        assert tstStrList[1] == self.expectedBlockPrefix+"@file test.x\n"
-        assert tstStrList[2] == self.expectedBlockPrefix+"@ingroup Fred\n"
-        assert tstStrList[3] == self.expectedBlockPrefix+"@{\n"
-        assert tstStrList[4] == self.expectedBlockEnd+"\n"
+        tst_strList = self.tst_gen.gen_doxy_defgroup("test.x", "Fred")
+        assert len(tst_strList) == 5
+        assert tst_strList[0] == self.expected_block_start+"\n"
+        assert tst_strList[1] == self.expected_block_prefix+"@file test.x\n"
+        assert tst_strList[2] == self.expected_block_prefix+"@ingroup Fred\n"
+        assert tst_strList[3] == self.expected_block_prefix+"@{\n"
+        assert tst_strList[4] == self.expected_block_end+"\n"
 
-    def test18GenDefEndGroupWithNoOpen(self):
+    def test18_gen_def_end_group_with_no_open(self):
         """!
         @brief Test the generate end group documentation if no group was opened
         """
-        assert self.tstGen.genDoxyGroupEnd() is None
+        assert self.tst_gen.gen_doxy_group_end() is None
 
-    def test19GenDefEndGroupWithOneOpen(self):
+    def test19_gen_def_end_group_with_one_open(self):
         """!
         @brief Test the generate end group documentation where one group was opened
         """
-        self.tstGen.genDoxyDefgroup("test.x", "Fred")
-        tstStr = self.tstGen.genDoxyGroupEnd()
-        assert tstStr is not None
-        assert tstStr == self.expectedBlockStart+"@}"+self.expectedBlockEnd+"\n"
+        self.tst_gen.gen_doxy_defgroup("test.x", "Fred")
+        tst_str = self.tst_gen.gen_doxy_group_end()
+        assert tst_str is not None
+        assert tst_str == self.expected_block_start+"@}"+self.expected_block_end+"\n"
 
         # Verify the group counter is 0
-        assert self.tstGen.genDoxyGroupEnd() is None
+        assert self.tst_gen.gen_doxy_group_end() is None
 
-    def test20GenDefEndGroupWithTwoOpen(self):
+    def test20_gen_def_end_group_with_two_open(self):
         """!
         @brief Test the generate end group documentation where two groups were opened
         """
-        self.tstGen.genDoxyDefgroup("test.x", "Fred")
-        self.tstGen.genDoxyDefgroup("test.x", "Barney")
-        tstStr = self.tstGen.genDoxyGroupEnd()
-        assert tstStr is not None
-        assert tstStr == self.expectedBlockStart+"@}"+self.expectedBlockEnd+"\n"
+        self.tst_gen.gen_doxy_defgroup("test.x", "Fred")
+        self.tst_gen.gen_doxy_defgroup("test.x", "Barney")
+        tst_str = self.tst_gen.gen_doxy_group_end()
+        assert tst_str is not None
+        assert tst_str == self.expected_block_start+"@}"+self.expected_block_end+"\n"
 
-        tstStr1 = self.tstGen.genDoxyGroupEnd()
-        assert tstStr1 is not None
-        assert tstStr1 == self.expectedBlockStart+"@}"+self.expectedBlockEnd+"\n"
+        tst_str1 = self.tst_gen.gen_doxy_group_end()
+        assert tst_str1 is not None
+        assert tst_str1 == self.expected_block_start+"@}"+self.expected_block_end+"\n"
 
         # Verify the group counter is 0
-        assert self.tstGen.genDoxyGroupEnd() is None
+        assert self.tst_gen.gen_doxy_group_end() is None
 
-    def test21GenSingleLineComment(self):
+    def test21_gen_single_line_comment(self):
         """!
         @brief Test the generate single line comment
         """
-        assert self.tstGen.genSingleLineStart() == self.singleLine
+        assert self.tst_gen.gen_single_line_start() == self.single_line
 
-    def test21GenVarDoc(self):
+    def test21_gen_var_doc(self):
         """!
         @brief Test the generate single line comment
         """
-        assert self.tstGen.genDoxyVarDocStr("Short description") == self.singleLine+"< Short description"
-        assert self.tstGen.genDoxyVarDocStr("Foo description") == self.singleLine+"< Foo description"
+        assert self.tst_gen.gen_doxy_var_doc_str("Short description") == self.single_line+"< Short description"
+        assert self.tst_gen.gen_doxy_var_doc_str("Foo description") == self.single_line+"< Foo description"
 
-    def test22GenMethodDocNoReturn(self):
+    def test22_gen_method_doc_no_return(self):
         """!
         @brief Test the generate method documentation
         """
         prefix = "".rjust(4, ' ')
-        blockprefix = prefix+self.expectedBlockPrefix
-        paramDictList = [ParamRetDict.buildParamDictWithMod("moo", "string", "Short str param desciption"),
-                         ParamRetDict.buildParamDictWithMod("foo", "int", "Short int param desciption")]
+        blockprefix = prefix+self.expected_block_prefix
+        param_dict_list = [ParamRetDict.build_param_dict_with_mod("moo", "string", "Short str param desciption"),
+                         ParamRetDict.build_param_dict_with_mod("foo", "int", "Short int param desciption")]
 
-        tstStrList = self.tstGen.genDoxyMethodComment("Brief method description", paramDictList, None, blockIndent=4)
+        tst_strList = self.tst_gen.gen_doxy_method_comment("Brief method description", param_dict_list, None, block_indent=4)
 
-        assert len(tstStrList) == 7
-        assert tstStrList[0] == prefix+self.expectedBlockStart+"\n"
-        assert tstStrList[1] == blockprefix+"@brief Brief method description\n"
-        assert tstStrList[2] == blockprefix+"\n"
+        assert len(tst_strList) == 7
+        assert tst_strList[0] == prefix+self.expected_block_start+"\n"
+        assert tst_strList[1] == blockprefix+"@brief Brief method description\n"
+        assert tst_strList[2] == blockprefix+"\n"
 
-        paramPrefix = blockprefix+"@param "
-        param1Expected = paramPrefix+ParamRetDict.getParamName(paramDictList[0])+" "
-        if self.addParam:
+        param_prefix = blockprefix+"@param "
+        param1Expected = param_prefix+ParamRetDict.get_param_name(param_dict_list[0])+" "
+        if self.add_param:
             param1Expected += "{"
-            param1Expected += ParamRetDict.getParamType(paramDictList[0])
+            param1Expected += ParamRetDict.get_param_type(param_dict_list[0])
             param1Expected += "} "
 
         param1Expected += "Short str param desciption\n"
 
-        param2Expected = paramPrefix+ParamRetDict.getParamName(paramDictList[1])+" "
-        if self.addParam:
+        param2Expected = param_prefix+ParamRetDict.get_param_name(param_dict_list[1])+" "
+        if self.add_param:
             param2Expected += "{"
-            param2Expected += ParamRetDict.getParamType(paramDictList[1])
+            param2Expected += ParamRetDict.get_param_type(param_dict_list[1])
             param2Expected += "} "
 
         param2Expected += "Short int param desciption\n"
 
-        assert tstStrList[3] == param1Expected
-        assert tstStrList[4] == param2Expected
-        assert tstStrList[5] == blockprefix+"\n"
-        assert tstStrList[6] == prefix+self.expectedBlockEnd+"\n"
+        assert tst_strList[3] == param1Expected
+        assert tst_strList[4] == param2Expected
+        assert tst_strList[5] == blockprefix+"\n"
+        assert tst_strList[6] == prefix+self.expected_block_end+"\n"
 
-    def test23GenMethodDocEmptyParamList(self):
+    def test23_gen_method_doc_empty_param_list(self):
         """!
         @brief Test the generate method documentation
         """
         prefix = "".rjust(4, ' ')
-        blockprefix = prefix+self.expectedBlockPrefix
-        retDict = ParamRetDict.buildReturnDict("string", "Short return desciption")
-        tstStrList = self.tstGen.genDoxyMethodComment("Brief method description", [], retDict, blockIndent=4)
+        blockprefix = prefix+self.expected_block_prefix
+        ret_dict = ParamRetDict.build_return_dict("string", "Short return desciption")
+        tst_strList = self.tst_gen.gen_doxy_method_comment("Brief method description", [], ret_dict, block_indent=4)
 
-        assert len(tstStrList) == 5
-        assert tstStrList[0] == prefix+self.expectedBlockStart+"\n"
-        assert tstStrList[1] == blockprefix+"@brief Brief method description\n"
-        assert tstStrList[2] == blockprefix+"\n"
-        returnExpected  = blockprefix+"@return "
-        returnExpected += ParamRetDict.getReturnType(retDict)
-        returnExpected += " - Short return desciption\n"
-        assert tstStrList[3] == returnExpected
+        assert len(tst_strList) == 5
+        assert tst_strList[0] == prefix+self.expected_block_start+"\n"
+        assert tst_strList[1] == blockprefix+"@brief Brief method description\n"
+        assert tst_strList[2] == blockprefix+"\n"
+        return_expected  = blockprefix+"@return "
+        return_expected += ParamRetDict.get_return_type(ret_dict)
+        return_expected += " - Short return desciption\n"
+        assert tst_strList[3] == return_expected
 
-        assert tstStrList[4] == prefix+self.expectedBlockEnd+"\n"
+        assert tst_strList[4] == prefix+self.expected_block_end+"\n"
 
-    def test24GenMethodDocEmptyParamListNoReturn(self):
+    def test24_gen_method_doc_empty_param_list_no_return(self):
         """!
         @brief Test the generate method documentation
         """
         prefix = "".rjust(4, ' ')
-        blockprefix = prefix+self.expectedBlockPrefix
-        tstStrList = self.tstGen.genDoxyMethodComment("Brief method description", [], None, blockIndent=4)
+        blockprefix = prefix+self.expected_block_prefix
+        tst_strList = self.tst_gen.gen_doxy_method_comment("Brief method description", [], None, block_indent=4)
 
-        assert len(tstStrList) == 4
-        assert tstStrList[0] == prefix+self.expectedBlockStart+"\n"
-        assert tstStrList[1] == blockprefix+"@brief Brief method description\n"
-        assert tstStrList[2] == blockprefix+"\n"
-        assert tstStrList[3] == prefix+self.expectedBlockEnd+"\n"
+        assert len(tst_strList) == 4
+        assert tst_strList[0] == prefix+self.expected_block_start+"\n"
+        assert tst_strList[1] == blockprefix+"@brief Brief method description\n"
+        assert tst_strList[2] == blockprefix+"\n"
+        assert tst_strList[3] == prefix+self.expected_block_end+"\n"
 
-    def test25GenLongNone(self):
+    def test25_gen_long_none(self):
         """!
         @brief Test the long description block with None long description
         """
-        prefix = "  "+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 80+len(prefix)
-        tstStrList = self.tstGen._genLongDesc(prefix)
-        assert len(tstStrList) == 0
+        prefix = "  "+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 80+len(prefix)
+        tst_strList = self.tst_gen._gen_long_desc(prefix)
+        assert len(tst_strList) == 0
 
-    def test26GenClassDocBriefNone(self):
+    def test26_gen_class_doc_brief_none(self):
         """!
         @brief Test the generate class documentation
         """
         prefix = "".rjust(4, ' ')
-        blockprefix = prefix+self.expectedBlockPrefix
-        self.tstGen.descFormatMax = 78+len(prefix)
-        tstStrList = self.tstGen.genDoxyClassComment(None, "Long class description", blockIndent=4)
+        blockprefix = prefix+self.expected_block_prefix
+        self.tst_gen.desc_format_max = 78+len(prefix)
+        tst_strList = self.tst_gen.gen_doxy_class_comment(None, "Long class description", block_indent=4)
 
-        assert len(tstStrList) == 3
-        assert tstStrList[0] == prefix+self.expectedBlockStart+"\n"
-        assert tstStrList[1] == blockprefix+"Long class description\n"
-        assert tstStrList[2] == prefix+self.expectedBlockEnd+"\n"
+        assert len(tst_strList) == 3
+        assert tst_strList[0] == prefix+self.expected_block_start+"\n"
+        assert tst_strList[1] == blockprefix+"Long class description\n"
+        assert tst_strList[2] == prefix+self.expected_block_end+"\n"
 
-    def test27GenDefGroupNone(self):
+    def test27_gen_def_group_none(self):
         """!
         @brief Test the generate group definition documentation, None group
         """
-        tstStrList = self.tstGen.genDoxyDefgroup("test.x")
-        assert len(tstStrList) == 3
-        assert tstStrList[0] == self.expectedBlockStart+"\n"
-        assert tstStrList[1] == self.expectedBlockPrefix+"@file test.x\n"
-        assert tstStrList[2] == self.expectedBlockEnd+"\n"
+        tst_strList = self.tst_gen.gen_doxy_defgroup("test.x")
+        assert len(tst_strList) == 3
+        assert tst_strList[0] == self.expected_block_start+"\n"
+        assert tst_strList[1] == self.expected_block_prefix+"@file test.x\n"
+        assert tst_strList[2] == self.expected_block_end+"\n"
 
 class TestUnittestDoxygenCCommentBlock(UnittestDoxygenCommentBlock):
     """!
     Doxygen comment block test cases
     """
     def setup_method(self):
-        self.setUpParams('/**', '*/', '*', '//!', False)
+        self.set_up_params('/**', '*/', '*', '//!', False)
 
 class TestUnittestDoxygenPyCommentBlock(UnittestDoxygenCommentBlock):
     """!
     Doxygen comment block test cases
     """
     def setup_method(self):
-        self.setUpParams('"""!', '"""', '', '##!', True)
+        self.set_up_params('"""!', '"""', '', '##!', True)
 
 class TestUnittestDoxygenJsTsCommentBlock(UnittestDoxygenCommentBlock):
     """!
     Doxygen comment block test cases
     """
     def setup_method(self):
-        self.setUpParams('/**', '*/', '*', '//!', True)
+        self.set_up_params('/**', '*/', '*', '//!', True)
 
 class TestUnittestDoxygenSinglLineCommentBlock(UnittestDoxygenCommentBlock):
     """!
     Doxygen comment block test cases
     """
     def setup_method(self):
-        self.setUpParams(None, None, None, '##!', True)
+        self.set_up_params(None, None, None, '##!', True)
 
 from code_tools_grocsoftware.base.doxygen_gen_tools import CDoxyCommentGenerator
 from code_tools_grocsoftware.base.doxygen_gen_tools import PyDoxyCommentGenerator
@@ -583,50 +583,50 @@ class TestUnittestDoxygenProgCommentBlock:
     """!
     Doxygen comment block test cases
     """
-    def test01CGeneratorConstructor(self):
-        tstGen = CDoxyCommentGenerator()
-        assert tstGen.blockStart == "/**"
-        assert tstGen.blockEnd == "*/"
-        assert tstGen.blockLineStart == "*"
-        assert tstGen.singleLineStart == "//!"
-        assert not tstGen.addParamType
+    def test01_c_generator_constructor(self):
+        tst_gen = CDoxyCommentGenerator()
+        assert tst_gen.block_start == "/**"
+        assert tst_gen.block_end == "*/"
+        assert tst_gen.block_line_start == "*"
+        assert tst_gen.single_line_start == "//!"
+        assert not tst_gen.add_param_type
 
-    def test02TsGeneratorConstructor(self):
-        tstGen = TsDoxyCommentGenerator()
-        assert tstGen.blockStart == "/**"
-        assert tstGen.blockEnd == "*/"
-        assert tstGen.blockLineStart == "*"
-        assert tstGen.singleLineStart == "//!"
-        assert tstGen.addParamType
+    def test02_ts_generator_constructor(self):
+        tst_gen = TsDoxyCommentGenerator()
+        assert tst_gen.block_start == "/**"
+        assert tst_gen.block_end == "*/"
+        assert tst_gen.block_line_start == "*"
+        assert tst_gen.single_line_start == "//!"
+        assert tst_gen.add_param_type
 
-    def test03JsGeneratorConstructor(self):
-        tstGen = JsDoxyCommentGenerator()
-        assert tstGen.blockStart == "/**"
-        assert tstGen.blockEnd == "*/"
-        assert tstGen.blockLineStart == "*"
-        assert tstGen.singleLineStart == "//!"
-        assert tstGen.addParamType
+    def test03_js_generator_constructor(self):
+        tst_gen = JsDoxyCommentGenerator()
+        assert tst_gen.block_start == "/**"
+        assert tst_gen.block_end == "*/"
+        assert tst_gen.block_line_start == "*"
+        assert tst_gen.single_line_start == "//!"
+        assert tst_gen.add_param_type
 
-    def test04PyGeneratorConstructor(self):
-        tstGen = PyDoxyCommentGenerator()
-        assert tstGen.blockStart == '"""!'
-        assert tstGen.blockEnd == '"""'
-        assert tstGen.blockLineStart == ""
-        assert tstGen.singleLineStart == "##"
-        assert tstGen.addParamType
+    def test04_py_generator_constructor(self):
+        tst_gen = PyDoxyCommentGenerator()
+        assert tst_gen.block_start == '"""!'
+        assert tst_gen.block_end == '"""'
+        assert tst_gen.block_line_start == ""
+        assert tst_gen.single_line_start == "##"
+        assert tst_gen.add_param_type
 
-    def test05NullGeneratorConstructor(self):
-        tstGen = DoxyCommentGenerator(None, None, None, None)
-        assert tstGen.blockStart is None
-        assert tstGen.blockEnd is None
-        assert tstGen.blockLineStart is None
-        assert tstGen.singleLineStart is None
-        assert not tstGen.addParamType
+    def test05_null_generator_constructor(self):
+        tst_gen = DoxyCommentGenerator(None, None, None, None)
+        assert tst_gen.block_start is None
+        assert tst_gen.block_end is None
+        assert tst_gen.block_line_start is None
+        assert tst_gen.single_line_start is None
+        assert not tst_gen.add_param_type
 
         with pytest.raises(Exception) as context:
-            prefix = tstGen._genCommentBlockPrefix()
+            prefix = tst_gen._gen_comment_block_prefix()
         assert "ERROR: Can't have a doxygen comment if there are no comment markers." in str(context.value)
 
         with pytest.raises(Exception) as context:
-            prefix = tstGen._genBlockStart()
+            prefix = tst_gen._gen_block_start()
         assert "ERROR: Can't have a doxygen comment if there are no comment markers." in str(context.value)

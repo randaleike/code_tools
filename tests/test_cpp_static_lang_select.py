@@ -34,240 +34,240 @@ from code_tools_grocsoftware.cpp_gen.string_class_tools import BaseCppStringClas
 from code_tools_grocsoftware.cpp_gen.static_lang_select import StaticLangSelectFunctionGenerator
 
 from tests.dir_init import TESTFILEPATH
-testJsonList = os.path.join(TESTFILEPATH,"teststringlanglist.json")
+test_json_list = os.path.join(TESTFILEPATH,"teststringlanglist.json")
 
-def getExpectedExtern(paramDictList:list, intfRetPtrType:str, selectFunctionName:str)->str:
-    paramPrefix = ""
-    paramStr = ""
-    for paramDict in paramDictList:
-        paramType = ParamRetDict.getParamType(paramDict)
-        paramName = ParamRetDict.getParamName(paramDict)
-        paramStr += paramPrefix
-        paramStr += paramType
-        paramStr += " "
-        paramStr += paramName
-        paramPrefix = ", "
+def get_expected_extern(param_dict_list:list, intf_ret_ptr_type:str, select_function_name:str)->str:
+    param_prefix = ""
+    param_str = ""
+    for param_dict in param_dict_list:
+        param_type = ParamRetDict.get_param_type(param_dict)
+        param_name = ParamRetDict.get_param_name(param_dict)
+        param_str += param_prefix
+        param_str += param_type
+        param_str += " "
+        param_str += param_name
+        param_prefix = ", "
 
-    expectedStr = "extern "+intfRetPtrType+" "+selectFunctionName+"("+paramStr+");\n"
-    return expectedStr
+    expected_str = "extern "+intf_ret_ptr_type+" "+select_function_name+"("+param_str+");\n"
+    return expected_str
 
 class TestClass01StaticLangSelect:
     """!
     @brief Unit test for the BaseCppStringClassGenerator class
     """
-    def test001ConstructorDefault(self):
+    def test001_constructor_default(self):
         """!
         @brief Test constructor, default input
         """
-        testObj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
+        test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
 
-        assert testObj.baseClassName == "BaseClass"
-        assert testObj.dynamicCompileSwitch == "DYNAMIC_INTERNATIONALIZATION"
-        assert testObj.selectFunctionName == "getBaseClass_Static"
-        assert testObj.defStaticString == "!defined(DYNAMIC_INTERNATIONALIZATION)"
-        assert isinstance(testObj.langJsonData, LanguageDescriptionList)
-        assert isinstance(testObj.doxyCommentGen, CDoxyCommentGenerator)
+        assert test_obj.base_class_name == "BaseClass"
+        assert test_obj.dynamic_compile_switch == "DYNAMIC_INTERNATIONALIZATION"
+        assert test_obj.select_function_name == "getBaseClass_Static"
+        assert test_obj.def_static_string == "!defined(DYNAMIC_INTERNATIONALIZATION)"
+        assert isinstance(test_obj.lang_json_data, LanguageDescriptionList)
+        assert isinstance(test_obj.doxy_comment_gen, CDoxyCommentGenerator)
 
-    def test002ConstructorNonDefault(self):
+    def test002_constructor_non_default(self):
         """!
         @brief Test constructor, with input
         """
-        testObj = StaticLangSelectFunctionGenerator(LanguageDescriptionList(), "George", "MIT_open", "TestBaseClass", "TEST_DYNAM_SWITCH")
+        test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList(), "George", "MIT_open", "TestBaseClass", "TEST_DYNAM_SWITCH")
 
-        assert testObj.baseClassName == "TestBaseClass"
-        assert testObj.dynamicCompileSwitch == "TEST_DYNAM_SWITCH"
-        assert testObj.selectFunctionName == "getTestBaseClass_Static"
-        assert testObj.defStaticString == "!defined(TEST_DYNAM_SWITCH)"
-        assert isinstance(testObj.langJsonData, LanguageDescriptionList)
-        assert isinstance(testObj.doxyCommentGen, CDoxyCommentGenerator)
+        assert test_obj.base_class_name == "TestBaseClass"
+        assert test_obj.dynamic_compile_switch == "TEST_DYNAM_SWITCH"
+        assert test_obj.select_function_name == "getTestBaseClass_Static"
+        assert test_obj.def_static_string == "!defined(TEST_DYNAM_SWITCH)"
+        assert isinstance(test_obj.lang_json_data, LanguageDescriptionList)
+        assert isinstance(test_obj.doxy_comment_gen, CDoxyCommentGenerator)
 
-    def test003GetFunctionName(self):
+    def test003_get_function_name(self):
         """!
-        @brief Test getFunctionName
+        @brief Test get_function_name
         """
-        testObj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
-        assert testObj.getFunctionName() == "getBaseClass_Static"
+        test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
+        assert test_obj.get_function_name() == "getBaseClass_Static"
 
-    def test004GetOsDefine(self):
+    def test004_get_os_define(self):
         """!
-        @brief Test getOsDefine
+        @brief Test get_os_define
         """
-        testObj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
-        assert testObj.getOsDefine() == "!defined(DYNAMIC_INTERNATIONALIZATION)"
+        test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
+        assert test_obj.get_os_define() == "!defined(DYNAMIC_INTERNATIONALIZATION)"
 
-    def test005GetOsDynamicDefine(self):
+    def test005_get_os_dynamic_define(self):
         """!
-        @brief Test getOsDynamicDefine
+        @brief Test get_os_dynamic_define
         """
-        testObj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
-        assert testObj.getOsDynamicDefine() == "!defined(DYNAMIC_INTERNATIONALIZATION)"
+        test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
+        assert test_obj.get_os_dynamic_define() == "!defined(DYNAMIC_INTERNATIONALIZATION)"
 
-    def test006GenFunctionDefine(self):
+    def test006_gen_function_define(self):
         """!
-        @brief Test genFunctionDefine
+        @brief Test gen_function_define
         """
-        cppGen = BaseCppStringClassGenerator()
-        testObj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
-        expectedList = cppGen._defineFunctionWithDecorations(testObj.selectFunctionName,
+        cpp_gen = BaseCppStringClassGenerator()
+        test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
+        expected_list = cpp_gen._define_function_with_decorations(test_obj.select_function_name,
                                                              "Determine the correct local language class from the compile switch setting",
                                                              [],
-                                                             testObj.baseIntfRetPtrDict)
-        expectedList.append("{\n")
+                                                             test_obj.base_intf_ret_ptr_dict)
+        expected_list.append("{\n")
 
-        testList = testObj.genFunctionDefine()
-        assert len(testList) == len(expectedList)
-        for index, expectedText in enumerate(expectedList):
-            assert testList[index] == expectedText
+        test_list = test_obj.gen_function_define()
+        assert len(test_list) == len(expected_list)
+        for index, expected_text in enumerate(expected_list):
+            assert test_list[index] == expected_text
 
-    def test007GenFunctionEnd(self):
+    def test007_gen_function_end(self):
         """!
-        @brief Test genFunctionEnd
+        @brief Test gen_function_end
         """
-        testObj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
-        assert testObj.genFunctionEnd() == "} // end of "+testObj.selectFunctionName+"()\n"
+        test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
+        assert test_obj.gen_function_end() == "} // end of "+test_obj.select_function_name+"()\n"
 
-    def test008GenFunction(self):
+    def test008_gen_function(self):
         """!
-        @brief Test genFunction
+        @brief Test gen_function
         """
-        cppGen = BaseCppStringClassGenerator()
-        langList = LanguageDescriptionList(testJsonList)
-        testObj = StaticLangSelectFunctionGenerator(langList)
+        cpp_gen = BaseCppStringClassGenerator()
+        lang_list = LanguageDescriptionList(test_json_list)
+        test_obj = StaticLangSelectFunctionGenerator(lang_list)
 
-        captureList = testObj.genFunction()
+        capture_list = test_obj.gen_function()
 
-        assert len(captureList) == 17
-        assert captureList[0] == "#if !defined(DYNAMIC_INTERNATIONALIZATION)\n"
+        assert len(capture_list) == 17
+        assert capture_list[0] == "#if !defined(DYNAMIC_INTERNATIONALIZATION)\n"
 
-        expectedList = cppGen._defineFunctionWithDecorations(testObj.selectFunctionName,
+        expected_list = cpp_gen._define_function_with_decorations(test_obj.select_function_name,
                                                              "Determine the correct local language class from the compile switch setting",
                                                              [],
-                                                             testObj.baseIntfRetPtrDict)
-        expectedList.append("{\n")
-        for index, expectedText in enumerate(expectedList):
-            assert captureList[index+1] == expectedText
+                                                             test_obj.base_intf_ret_ptr_dict)
+        expected_list.append("{\n")
+        for index, expected_text in enumerate(expected_list):
+            assert capture_list[index+1] == expected_text
 
-        listIndex = len(expectedList) + 1
+        list_index = len(expected_list) + 1
         first = True
-        for index, langName in enumerate(langList.getLanguageList()):
-            langCode, regionList = langList.getLanguageLANGData(langName)
+        for index, lang_name in enumerate(lang_list.get_language_list()):
+            lang_code, region_list = lang_list.get_language_lang_data(lang_name)
             if first:
-                ifLine = "#if "
+                if_line = "#if "
                 first = False
             else:
-                ifLine = "#elif "
-            ifLine += "defined("+langList.getLanguageCompileSwitchData(langName)+")\n"
+                if_line = "#elif "
+            if_line += "defined("+lang_list.get_language_compile_switch_data(lang_name)+")\n"
 
-            assert captureList[listIndex] == "  "+ifLine
-            assert captureList[listIndex+1] == "    "+cppGen._genMakePtrReturnStatement(langName)
-            listIndex += 2
+            assert capture_list[list_index] == "  "+if_line
+            assert capture_list[list_index+1] == "    "+cpp_gen._gen_make_ptr_return_statement(lang_name)
+            list_index += 2
 
-        assert captureList[listIndex] == "  #else //undefined language compile switch, use default\n"
-        assert captureList[listIndex+1] == "    #error one of the language compile switches must be defined\n"
-        assert captureList[listIndex+2] == "  #endif //end of language #if/#elifcompile switch chain\n"
-        assert captureList[listIndex+3] == "} // end of "+testObj.selectFunctionName+"()\n"
-        assert captureList[listIndex+4] == "#endif // "+testObj.defStaticString+"\n"
+        assert capture_list[list_index] == "  #else //undefined language compile switch, use default\n"
+        assert capture_list[list_index+1] == "    #error one of the language compile switches must be defined\n"
+        assert capture_list[list_index+2] == "  #endif //end of language #if/#elifcompile switch chain\n"
+        assert capture_list[list_index+3] == "} // end of "+test_obj.select_function_name+"()\n"
+        assert capture_list[list_index+4] == "#endif // "+test_obj.def_static_string+"\n"
 
-    def test009GenReturnFunctionCall(self):
+    def test009_gen_return_function_call(self):
         """!
-        @brief Test genReturnFunctionCall
+        @brief Test gen_return_function_call
         """
-        testObj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
-        strList = testObj.genReturnFunctionCall()
-        assert len(strList) == 1
-        assert strList[0] == "    return "+testObj.selectFunctionName+"();\n"
+        test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
+        str_list = test_obj.gen_return_function_call()
+        assert len(str_list) == 1
+        assert str_list[0] == "    return "+test_obj.select_function_name+"();\n"
 
-    def test010GenExternDefinition(self):
+    def test010_gen_extern_definition(self):
         """!
-        @brief Test genExternDefinition
+        @brief Test gen_extern_definition
         """
-        testObj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
-        assert testObj.genExternDefinition() == "extern "+testObj.baseIntfRetPtrType+" "+testObj.selectFunctionName+"();\n"
+        test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
+        assert test_obj.gen_extern_definition() == "extern "+test_obj.base_intf_ret_ptr_type+" "+test_obj.select_function_name+"();\n"
 
-    def test011GenUnitTest(self):
+    def test011_gen_unit_test(self):
         """!
-        @brief Test genUnitTest
+        @brief Test gen_unit_test
         """
-        langList = LanguageDescriptionList(testJsonList)
-        testObj = StaticLangSelectFunctionGenerator(langList)
-        textList = testObj.genUnitTest("getIsoCode")
+        lang_list = LanguageDescriptionList(test_json_list)
+        test_obj = StaticLangSelectFunctionGenerator(lang_list)
+        text_list = test_obj.gen_unit_test("get_iso_code")
 
         # Test starting block
-        assert len(textList) == 26
-        assert textList[0] == "#if "+testObj.defStaticString+"\n"
-        assert textList[1] == testObj.genExternDefinition()
-        assert textList[2] == "\n"
+        assert len(text_list) == 26
+        assert text_list[0] == "#if "+test_obj.def_static_string+"\n"
+        assert text_list[1] == test_obj.gen_extern_definition()
+        assert text_list[2] == "\n"
 
-        doxyGen = CDoxyCommentGenerator()
-        doxyDesc = "Test "+testObj.selectFunctionName+" selection case"
-        doxyBody = doxyGen.genDoxyMethodComment(doxyDesc, [])
+        doxy_gen = CDoxyCommentGenerator()
+        doxy_desc = "Test "+test_obj.select_function_name+" selection case"
+        doxy_body = doxy_gen.gen_doxy_method_comment(doxy_desc, [])
 
-        assert textList[3] == doxyBody[0]
-        assert textList[4] == doxyBody[1]
-        assert textList[5] == doxyBody[2]
-        assert textList[6] == doxyBody[3]
+        assert text_list[3] == doxy_body[0]
+        assert text_list[4] == doxy_body[1]
+        assert text_list[5] == doxy_body[2]
+        assert text_list[6] == doxy_body[3]
 
         # Match each test function
-        textIndex = 7
-        for langName in langList.getLanguageList():
-            isoCode = langList.getLanguageIsoCodeData(langName)
-            switch = langList.getLanguageCompileSwitchData(langName)
+        text_index = 7
+        for lang_name in lang_list.get_language_list():
+            iso_code = lang_list.get_language_iso_code_data(lang_name)
+            switch = lang_list.get_language_compile_switch_data(lang_name)
 
             # Match language
-            expectedBody = ["#if defined("+switch+")\n"]
-            expectedBody.append("TEST(StaticSelectFunction"+langName.capitalize()+", CompileSwitchedValue)\n")
-            expectedBody.append("{\n")
-            expectedBody.append("    // Generate the test language string object\n")
-            expectedBody.append("    "+testObj.baseIntfRetPtrType+" testVar = "+testObj.selectFunctionName+"();\n")
-            expectedBody.append("    EXPECT_STREQ(\""+isoCode+"\", testVar->getIsoCode().c_str());\n")
+            expected_body = ["#if defined("+switch+")\n"]
+            expected_body.append("TEST(StaticSelectFunction"+lang_name.capitalize()+", CompileSwitchedValue)\n")
+            expected_body.append("{\n")
+            expected_body.append("    // Generate the test language string object\n")
+            expected_body.append("    "+test_obj.base_intf_ret_ptr_type+" test_var = "+test_obj.select_function_name+"();\n")
+            expected_body.append("    EXPECT_STREQ(\""+iso_code+"\", test_var->get_iso_code().c_str());\n")
 
             # Complete the function
-            expectedBody.append("}\n")
-            expectedBody.append("#endif //end of #if defined("+switch+")\n")
-            expectedBody.append("\n") # whitespace for readability
+            expected_body.append("}\n")
+            expected_body.append("#endif //end of #if defined("+switch+")\n")
+            expected_body.append("\n") # whitespace for readability
 
-            assert textList[textIndex+0] == expectedBody[0]
-            assert textList[textIndex+1] == expectedBody[1]
-            assert textList[textIndex+2] == expectedBody[2]
-            assert textList[textIndex+3] == expectedBody[3]
-            assert textList[textIndex+4] == expectedBody[4]
-            assert textList[textIndex+5] == expectedBody[5]
-            assert textList[textIndex+6] == expectedBody[6]
-            assert textList[textIndex+7] == expectedBody[7]
-            assert textList[textIndex+8] == expectedBody[8]
-            textIndex += 9
+            assert text_list[text_index+0] == expected_body[0]
+            assert text_list[text_index+1] == expected_body[1]
+            assert text_list[text_index+2] == expected_body[2]
+            assert text_list[text_index+3] == expected_body[3]
+            assert text_list[text_index+4] == expected_body[4]
+            assert text_list[text_index+5] == expected_body[5]
+            assert text_list[text_index+6] == expected_body[6]
+            assert text_list[text_index+7] == expected_body[7]
+            assert text_list[text_index+8] == expected_body[8]
+            text_index += 9
 
         # Match end
-        assert textList[textIndex] == "#endif // "+testObj.defStaticString+"\n"
-        assert textIndex == 25
+        assert text_list[text_index] == "#endif // "+test_obj.def_static_string+"\n"
+        assert text_index == 25
 
-    def test012GenUnitTestFunctionCall(self):
+    def test012_gen_unit_test_function_call(self):
         """!
-        @brief Test genUnitTestFunctionCall
+        @brief Test gen_unittest_function_call
         """
-        testObj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
-        textList = testObj.genUnitTestFunctionCall("checkVar")
+        test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
+        text_list = test_obj.gen_unittest_function_call("check_var")
 
-        assert len(textList) == 1
-        assert textList[0] == "    "+testObj.baseIntfRetPtrType+" checkVar = "+testObj.selectFunctionName+"();\n"
+        assert len(text_list) == 1
+        assert text_list[0] == "    "+test_obj.base_intf_ret_ptr_type+" check_var = "+test_obj.select_function_name+"();\n"
 
-    def test013GetUnittestExternInclude(self):
+    def test013_get_unittest_extern_include(self):
         """!
-        @brief Test getUnittestExternInclude
+        @brief Test get_unittest_extern_include
         """
-        testObj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
-        textList = testObj.getUnittestExternInclude()
+        test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
+        text_list = test_obj.get_unittest_extern_include()
 
-        assert len(textList) == 3
-        assert textList[0] == "#if "+testObj.defStaticString+"\n"
-        assert textList[1] == getExpectedExtern([], testObj.baseIntfRetPtrType, testObj.selectFunctionName)
-        assert textList[2] == "#endif // "+testObj.defStaticString+"\n"
+        assert len(text_list) == 3
+        assert text_list[0] == "#if "+test_obj.def_static_string+"\n"
+        assert text_list[1] == get_expected_extern([], test_obj.base_intf_ret_ptr_type, test_obj.select_function_name)
+        assert text_list[2] == "#endif // "+test_obj.def_static_string+"\n"
 
-    def test014GetUnittestFileName(self):
+    def test014_get_unittest_file_name(self):
         """!
-        @brief Test getUnittestFileName
+        @brief Test get_unittest_file_name
         """
-        testObj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
-        cppName, testName = testObj.getUnittestFileName()
-        assert cppName == "LocalLanguageSelect_Static_test.cpp"
-        assert testName == "LocalLanguageSelect_Static_test"
+        test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
+        cpp_name, test_name = test_obj.get_unittest_file_name()
+        assert cpp_name == "LocalLanguageSelect_Static_test.cpp"
+        assert test_name == "LocalLanguageSelect_Static_test"

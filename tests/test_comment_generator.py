@@ -27,407 +27,407 @@ Unittest for programmer base tools utility
 
 from code_tools_grocsoftware.base.comment_gen_tools import CommentGenerator
 
-cCommentParms =   {'blockStart': "/*", 'blockEnd': "*/", 'blockLineStart': "", 'singleLine': "//"}
-pyCommentParms =  {'blockStart': "\"\"\"", 'blockEnd':"\"\"\"", 'blockLineStart': "", 'singleLine': "#"}
-shCommentParms =  {'blockStart': None, 'blockEnd': None, 'blockLineStart': "#", 'singleLine': "#"}
+c_comment_parms =   {'blockStart': "/*", 'blockEnd': "*/", 'blockLineStart': "", 'singleLine': "//"}
+py_comment_parms =  {'blockStart': "\"\"\"", 'blockEnd':"\"\"\"", 'blockLineStart': "", 'singleLine': "#"}
+sh_comment_parms =  {'blockStart': None, 'blockEnd': None, 'blockLineStart': "#", 'singleLine': "#"}
 batCommentParms = {'blockStart': None, 'blockEnd': None, 'blockLineStart': "REM ", 'singleLine': "REM ",}
 
 class Test07CommentGeneration:
     """!
     @brief Unit test for the CommentGenerator class
     """
-    def test001CHeaderGenerationDefault(self):
+    def test001_c_header_generation_default(self):
         """!
         @brief Test c file type files comment block header generation
         default constructor
         """
-        generator = CommentGenerator(cCommentParms)
+        generator = CommentGenerator(c_comment_parms)
 
-        header = generator.buildCommentBlockHeader()
+        header = generator.build_comment_block_header()
         assert len(header) == 1
         assert header[0] == "/*"
 
-        header = generator.buildCommentBlockHeader(2)
+        header = generator.build_comment_block_header(2)
         assert len(header) == 2
         assert header[0] == "/*"
         assert header[1] == ""
 
-        header = generator.buildCommentBlockHeader(3)
+        header = generator.build_comment_block_header(3)
         assert len(header) == 3
         assert header[0] == "/*"
         assert header[1] == ""
         assert header[2] == ""
 
-    def test002CHeaderGenerationPad(self):
+    def test002_c_header_generation_pad(self):
         """!
         @brief Test c file type files comment block header generation
         padded line constructor
         """
-        generator = CommentGenerator(cCommentParms, 10)
+        generator = CommentGenerator(c_comment_parms, 10)
 
-        header = generator.buildCommentBlockHeader(1, '=')
+        header = generator.build_comment_block_header(1, '=')
         assert len(header) == 1
         assert header[0] == "/*========"
 
-        header = generator.buildCommentBlockHeader(2, '=')
+        header = generator.build_comment_block_header(2, '=')
         assert len(header) == 2
         assert header[0] == "/*========"
         assert header[1] == "=========="
 
-        header = generator.buildCommentBlockHeader(3, '=')
+        header = generator.build_comment_block_header(3, '=')
         assert len(header) == 3
         assert header[0] == "/*========"
         assert header[1] == "=========="
         assert header[2] == "=========="
 
-    def test003CHeaderGenerationPadAndEol(self):
+    def test003_c_header_generation_pad_and_eol(self):
         """!
         @brief Test c file type files comment block header generation
         padded line and end of line constructor
         """
-        generator = CommentGenerator(cCommentParms, 10, "*")
+        generator = CommentGenerator(c_comment_parms, 10, "*")
 
-        header = generator.buildCommentBlockHeader(1, '=')
+        header = generator.build_comment_block_header(1, '=')
         assert len(header) == 1
         assert header[0] == "/*=======*"
 
-        header = generator.buildCommentBlockHeader(2, '=')
+        header = generator.build_comment_block_header(2, '=')
         assert len(header) == 2
         assert header[0] == "/*=======*"
         assert header[1] == "=========*"
 
-        header = generator.buildCommentBlockHeader(3, '=')
+        header = generator.build_comment_block_header(3, '=')
         assert len(header) == 3
         assert header[0] == "/*=======*"
         assert header[1] == "=========*"
         assert header[2] == "=========*"
 
-    def test004CHeaderGenerationPadAndEol2(self):
+    def test004_c_header_generation_pad_and_eol2(self):
         """!
         @brief Test c file type files comment block header generation
         padded line and end of line constructor
         """
-        generator = CommentGenerator(cCommentParms, 10, " *")
+        generator = CommentGenerator(c_comment_parms, 10, " *")
 
-        header = generator.buildCommentBlockHeader(1, '=')
+        header = generator.build_comment_block_header(1, '=')
         assert len(header) == 1
         assert header[0] == "/*====== *"
 
-        header = generator.buildCommentBlockHeader(2, '=')
+        header = generator.build_comment_block_header(2, '=')
         assert len(header) == 2
         assert header[0] == "/*====== *"
         assert header[1] == "======== *"
 
-        header = generator.buildCommentBlockHeader(3, '=')
+        header = generator.build_comment_block_header(3, '=')
         assert header[0] == "/*====== *"
         assert header[1] == "======== *"
         assert header[2] == "======== *"
 
 
-    def test005CHeaderGenerationForceSingle(self):
+    def test005_c_header_generation_force_single(self):
         """!
         @brief Test c file type files comment block header generation
         forced single line constructor
         """
-        generator = CommentGenerator(cCommentParms, useSingleLine = True)
+        generator = CommentGenerator(c_comment_parms, use_single_line = True)
 
-        header = generator.buildCommentBlockHeader()
+        header = generator.build_comment_block_header()
         assert len(header) == 1
         assert header[0] == "//"
 
-        header = generator.buildCommentBlockHeader(2)
+        header = generator.build_comment_block_header(2)
         assert len(header) == 2
         assert header[0] == "//"
         assert header[1] == "//"
 
-        header = generator.buildCommentBlockHeader(3)
+        header = generator.build_comment_block_header(3)
         assert len(header) == 3
         assert header[0] == "//"
         assert header[1] == "//"
         assert header[2] == "//"
 
-    def test006CHeaderGenerationForceSinglePad(self):
+    def test006_c_header_generation_force_single_pad(self):
         """!
         @brief Test c file type files comment block header generation
         padded, forced single line constructor
         """
-        generator = CommentGenerator(cCommentParms, 10, useSingleLine = True)
+        generator = CommentGenerator(c_comment_parms, 10, use_single_line = True)
 
-        header = generator.buildCommentBlockHeader(1)
+        header = generator.build_comment_block_header(1)
         assert len(header) == 1
         assert header[0] == "//--------"
 
-        header = generator.buildCommentBlockHeader(2)
+        header = generator.build_comment_block_header(2)
         assert len(header) == 2
         assert header[0] == "//--------"
         assert header[1] == "//--------"
 
-        header = generator.buildCommentBlockHeader(3, '=')
+        header = generator.build_comment_block_header(3, '=')
         assert len(header) == 3
         assert header[0] == "//========"
         assert header[1] == "//========"
         assert header[2] == "//========"
 
-    def test007CHeaderGenerationForceSinglePadEol(self):
+    def test007_c_header_generation_force_single_pad_eol(self):
         """!
         @brief Test c file type files comment block header generation
         padded, end of line text, forced single line constructor
         """
-        generator = CommentGenerator(cCommentParms, 10, " *", useSingleLine = True)
+        generator = CommentGenerator(c_comment_parms, 10, " *", use_single_line = True)
 
-        header = generator.buildCommentBlockHeader(1, '=')
+        header = generator.build_comment_block_header(1, '=')
         assert len(header) == 1
         assert header[0] == "//====== *"
 
-        header = generator.buildCommentBlockHeader(2)
+        header = generator.build_comment_block_header(2)
         assert len(header) == 2
         assert header[0] == "//------ *"
         assert header[1] == "//------ *"
 
-        header = generator.buildCommentBlockHeader(3, '=')
+        header = generator.build_comment_block_header(3, '=')
         assert len(header) == 3
         assert header[0] == "//====== *"
         assert header[1] == "//====== *"
         assert header[2] == "//====== *"
 
-    def test011CFooterGenerationDefault(self):
+    def test011_c_footer_generation_default(self):
         """!
         @brief Test c file type files comment block footer generation
         default constructor
         """
-        generator = CommentGenerator(cCommentParms)
+        generator = CommentGenerator(c_comment_parms)
 
-        footer = generator.buildCommentBlockFooter()
+        footer = generator.build_comment_block_footer()
         assert len(footer) == 1
         assert footer[0] == "*/"
 
-        footer = generator.buildCommentBlockFooter(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(footer) == 2
         assert footer[0] == ""
         assert footer[1] == "*/"
 
-        footer = generator.buildCommentBlockFooter(3)
+        footer = generator.build_comment_block_footer(3)
         assert len(footer) == 3
         assert footer[0] == ""
         assert footer[1] == ""
         assert footer[2] == "*/"
 
-    def test012CFooterGenerationPad(self):
+    def test012_c_footer_generation_pad(self):
         """!
         @brief Test c file type files comment block footer generation
         padded line constructor
         """
-        generator = CommentGenerator(cCommentParms, 10)
+        generator = CommentGenerator(c_comment_parms, 10)
 
-        footer = generator.buildCommentBlockFooter(1, '=')
+        footer = generator.build_comment_block_footer(1, '=')
         assert len(footer) == 1
         assert footer[0] == "========*/"
 
-        footer = generator.buildCommentBlockFooter(2, '=')
+        footer = generator.build_comment_block_footer(2, '=')
         assert len(footer) == 2
         assert footer[0] == "=========="
         assert footer[1] == "========*/"
 
-        footer = generator.buildCommentBlockFooter(3, '=')
+        footer = generator.build_comment_block_footer(3, '=')
         assert len(footer) == 3
         assert footer[0] == "=========="
         assert footer[1] == "=========="
         assert footer[2] == "========*/"
 
-    def test013CFooterGenerationPadAndEol(self):
+    def test013_c_footer_generation_pad_and_eol(self):
         """!
         @brief Test c file type files comment block footer generation
         padded line and end of line constructor
         """
-        generator = CommentGenerator(cCommentParms, 10, "*")
+        generator = CommentGenerator(c_comment_parms, 10, "*")
 
-        footer = generator.buildCommentBlockFooter(1, '=')
+        footer = generator.build_comment_block_footer(1, '=')
         assert len(footer) == 1
         assert footer[0] == "========*/"
 
-        footer = generator.buildCommentBlockFooter(2, '=')
+        footer = generator.build_comment_block_footer(2, '=')
         assert len(footer) == 2
         assert footer[0] == "=========*"
         assert footer[1] == "========*/"
 
-        footer = generator.buildCommentBlockFooter(3, '=')
+        footer = generator.build_comment_block_footer(3, '=')
         assert len(footer) == 3
         assert footer[0] == "=========*"
         assert footer[1] == "=========*"
         assert footer[2] == "========*/"
 
-    def test014CFooterGenerationPadAndEol2(self):
+    def test014_c_footer_generation_pad_and_eol2(self):
         """!
         @brief Test c file type files comment block footer generation
         padded line and end of line constructor
         """
-        generator = CommentGenerator(cCommentParms, 10, " *")
+        generator = CommentGenerator(c_comment_parms, 10, " *")
 
-        footer = generator.buildCommentBlockFooter(1, '=')
+        footer = generator.build_comment_block_footer(1, '=')
         assert len(footer) == 1
         assert footer[0] == "========*/"
 
-        footer = generator.buildCommentBlockFooter(2, '=')
+        footer = generator.build_comment_block_footer(2, '=')
         assert len(footer) == 2
         assert footer[0] == "======== *"
         assert footer[1] == "========*/"
 
-        footer = generator.buildCommentBlockFooter(3, '=')
+        footer = generator.build_comment_block_footer(3, '=')
         assert footer[0] == "======== *"
         assert footer[1] == "======== *"
         assert footer[2] == "========*/"
 
-    def test015CFooterGenerationForceSingle(self):
+    def test015_c_footer_generation_force_single(self):
         """!
         @brief Test c file type files comment footer footer generation
         forced single line constructor
         """
-        generator = CommentGenerator(cCommentParms, useSingleLine = True)
+        generator = CommentGenerator(c_comment_parms, use_single_line = True)
 
-        footer = generator.buildCommentBlockFooter()
+        footer = generator.build_comment_block_footer()
         assert len(footer) == 1
         assert footer[0] == "//"
 
-        footer = generator.buildCommentBlockFooter(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(footer) == 2
         assert footer[0] == "//"
         assert footer[1] == "//"
 
-        footer = generator.buildCommentBlockFooter(3)
+        footer = generator.build_comment_block_footer(3)
         assert len(footer) == 3
         assert footer[0] == "//"
         assert footer[1] == "//"
         assert footer[2] == "//"
 
-    def test016CFooterGenerationForceSinglePad(self):
+    def test016_c_footer_generation_force_single_pad(self):
         """!
         @brief Test c file type files comment block footer generation
         padded, forced single line constructor
         """
-        generator = CommentGenerator(cCommentParms, 10, useSingleLine = True)
+        generator = CommentGenerator(c_comment_parms, 10, use_single_line = True)
 
-        footer = generator.buildCommentBlockFooter(1, '=')
+        footer = generator.build_comment_block_footer(1, '=')
         assert len(footer) == 1
         assert footer[0] == "//========"
 
-        footer = generator.buildCommentBlockFooter(2,)
+        footer = generator.build_comment_block_footer(2,)
         assert footer[0] == "//--------"
         assert footer[1] == "//--------"
 
-        footer = generator.buildCommentBlockFooter(3, '=')
+        footer = generator.build_comment_block_footer(3, '=')
         assert len(footer) == 3
         assert footer[0] == "//========"
         assert footer[1] == "//========"
         assert footer[2] == "//========"
 
-    def test017CFooterGenerationForceSinglePadEol(self):
+    def test017_c_footer_generation_force_single_pad_eol(self):
         """!
         @brief Test c file type files comment block footer generation
         padded, end of line text, forced single line constructor
         """
-        generator = CommentGenerator(cCommentParms, 10, " *", useSingleLine = True)
+        generator = CommentGenerator(c_comment_parms, 10, " *", use_single_line = True)
 
-        footer = generator.buildCommentBlockFooter(1, '=')
+        footer = generator.build_comment_block_footer(1, '=')
         assert len(footer) == 1
         assert footer[0] == "//====== *"
 
-        footer = generator.buildCommentBlockFooter(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(footer) == 2
         assert footer[0] == "//------ *"
         assert footer[1] == "//------ *"
 
-        footer = generator.buildCommentBlockFooter(3, '=')
+        footer = generator.build_comment_block_footer(3, '=')
         assert len(footer) == 3
         assert footer[0] == "//====== *"
         assert footer[1] == "//====== *"
         assert footer[2] == "//====== *"
 
-    def test021CWrap(self):
+    def test021_c_wrap(self):
         """!
         @brief Test c file type files comment line wrapper generation
         Default constructor
         """
-        generator = CommentGenerator(cCommentParms)
+        generator = CommentGenerator(c_comment_parms)
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "test line"
 
-    def test022CWrapPad(self):
+    def test022_c_wrap_pad(self):
         """!
         @brief Test c file type files comment line wrapper generation
         padded
         """
-        generator = CommentGenerator(cCommentParms, 10)
+        generator = CommentGenerator(c_comment_parms, 10)
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "test line"
 
-    def test022CWrapPad1(self):
+    def test022_c_wrap_pad1(self):
         """!
         @brief Test c file type files comment line wrapper generation
         padded
         """
-        generator = CommentGenerator(cCommentParms, 12)
+        generator = CommentGenerator(c_comment_parms, 12)
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "test line"
 
-    def test023CWrapSingle(self):
+    def test023_c_wrap_single(self):
         """!
         @brief Test c file type files comment block footer generation
         forced single line constructor
         """
-        generator = CommentGenerator(cCommentParms, useSingleLine = True)
+        generator = CommentGenerator(c_comment_parms, use_single_line = True)
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "// test line"
 
-    def test024CWrapSingle(self):
+    def test024_c_wrap_single(self):
         """!
         @brief Test c file type files comment block footer generation
         padded, forced single line constructor
         """
-        generator = CommentGenerator(cCommentParms, 15, useSingleLine = True)
+        generator = CommentGenerator(c_comment_parms, 15, use_single_line = True)
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "// test line"
 
-    def test025CWrapPadAndEol(self):
+    def test025_c_wrap_pad_and_eol(self):
         """!
         @brief Test c file type files comment line wrapper generation
         padded, end of line
         """
-        generator = CommentGenerator(cCommentParms, 12, " *")
+        generator = CommentGenerator(c_comment_parms, 12, " *")
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "test line  *"
 
-    def test026CWrapPadAndEol(self):
+    def test026_c_wrap_pad_and_eol(self):
         """!
         @brief Test c file type files comment line wrapper generation
         padded, end of line, forced single line
         """
-        generator = CommentGenerator(cCommentParms, 15, " *", useSingleLine = True)
+        generator = CommentGenerator(c_comment_parms, 15, " *", use_single_line = True)
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "// test line  *"
 
-    def test031PythonDefault(self):
+    def test031_python_default(self):
         """!
         @brief Test python file type files comment generation
         default constructor
         """
-        generator = CommentGenerator(pyCommentParms)
+        generator = CommentGenerator(py_comment_parms)
 
-        header = generator.buildCommentBlockHeader()
-        footer = generator.buildCommentBlockFooter()
+        header = generator.build_comment_block_header()
+        footer = generator.build_comment_block_footer()
         assert len(header) == 1
         assert header[0] == "\"\"\""
         assert len(footer) == 1
         assert footer[0] == "\"\"\""
 
-        header = generator.buildCommentBlockHeader(2)
-        footer = generator.buildCommentBlockFooter(2)
+        header = generator.build_comment_block_header(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(header) == 2
         assert header[0] == "\"\"\""
         assert header[1] == ""
@@ -435,25 +435,25 @@ class Test07CommentGeneration:
         assert footer[0] == ""
         assert footer[1] == "\"\"\""
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "test line"
 
-    def test032PythonPad(self):
+    def test032_python_pad(self):
         """!
         @brief Test python file type files comment generation
         padded
         """
-        generator = CommentGenerator(pyCommentParms, 10)
+        generator = CommentGenerator(py_comment_parms, 10)
 
-        header = generator.buildCommentBlockHeader()
-        footer = generator.buildCommentBlockFooter()
+        header = generator.build_comment_block_header()
+        footer = generator.build_comment_block_footer()
         assert len(header) == 1
         assert header[0] == "\"\"\"-------"
         assert len(footer) == 1
         assert footer[0] == "-------\"\"\""
 
-        header = generator.buildCommentBlockHeader(2)
-        footer = generator.buildCommentBlockFooter(2)
+        header = generator.build_comment_block_header(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(header) == 2
         assert header[0] == "\"\"\"-------"
         assert header[1] == "----------"
@@ -461,25 +461,25 @@ class Test07CommentGeneration:
         assert footer[0] == "----------"
         assert footer[1] == "-------\"\"\""
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "test line"
 
-    def test033PythonPadEol(self):
+    def test033_python_pad_eol(self):
         """!
         @brief Test python file type files comment generation
         padded, end of line
         """
-        generator = CommentGenerator(pyCommentParms, 13, " *")
+        generator = CommentGenerator(py_comment_parms, 13, " *")
 
-        header = generator.buildCommentBlockHeader()
-        footer = generator.buildCommentBlockFooter()
+        header = generator.build_comment_block_header()
+        footer = generator.build_comment_block_footer()
         assert len(header) == 1
         assert header[0] == "\"\"\"-------- *"
         assert len(footer) == 1
         assert footer[0] == "----------\"\"\""
 
-        header = generator.buildCommentBlockHeader(2)
-        footer = generator.buildCommentBlockFooter(2)
+        header = generator.build_comment_block_header(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(header) == 2
         assert header[0] == "\"\"\"-------- *"
         assert header[1] == "----------- *"
@@ -487,25 +487,25 @@ class Test07CommentGeneration:
         assert footer[0] == "----------- *"
         assert footer[1] == "----------\"\"\""
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "test line   *"
 
-    def test034PythonForceSingle(self):
+    def test034_python_force_single(self):
         """!
         @brief Test python file type files comment generation
         force single
         """
-        generator = CommentGenerator(pyCommentParms, useSingleLine = True)
+        generator = CommentGenerator(py_comment_parms, use_single_line = True)
 
-        header = generator.buildCommentBlockHeader()
-        footer = generator.buildCommentBlockFooter()
+        header = generator.build_comment_block_header()
+        footer = generator.build_comment_block_footer()
         assert len(header) == 1
         assert header[0] == "#"
         assert len(footer) == 1
         assert footer[0] == "#"
 
-        header = generator.buildCommentBlockHeader(2)
-        footer = generator.buildCommentBlockFooter(2)
+        header = generator.build_comment_block_header(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(header) == 2
         assert header[0] == "#"
         assert header[1] == "#"
@@ -513,25 +513,25 @@ class Test07CommentGeneration:
         assert footer[0] == "#"
         assert footer[1] == "#"
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "# test line"
 
-    def test035PythonPadForceSingle(self):
+    def test035_python_pad_force_single(self):
         """!
         @brief Test python file type files comment generation
         padded, force single
         """
-        generator = CommentGenerator(pyCommentParms, 12, useSingleLine = True)
+        generator = CommentGenerator(py_comment_parms, 12, use_single_line = True)
 
-        header = generator.buildCommentBlockHeader(1, '=')
-        footer = generator.buildCommentBlockFooter(1, '=')
+        header = generator.build_comment_block_header(1, '=')
+        footer = generator.build_comment_block_footer(1, '=')
         assert len(header) == 1
         assert header[0] == "#==========="
         assert len(footer) == 1
         assert footer[0] == "#==========="
 
-        header = generator.buildCommentBlockHeader(2, '=')
-        footer = generator.buildCommentBlockFooter(2, '=')
+        header = generator.build_comment_block_header(2, '=')
+        footer = generator.build_comment_block_footer(2, '=')
         assert len(header) == 2
         assert header[0] == "#==========="
         assert header[1] == "#==========="
@@ -539,25 +539,25 @@ class Test07CommentGeneration:
         assert footer[0] == "#==========="
         assert footer[1] == "#==========="
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "# test line"
 
-    def test036PythonPadEolForceSingle(self):
+    def test036_python_pad_eol_force_single(self):
         """!
         @brief Test python file type files comment generation
         padded, end of line, force single
         """
-        generator = CommentGenerator(pyCommentParms, 15, " *", useSingleLine = True)
+        generator = CommentGenerator(py_comment_parms, 15, " *", use_single_line = True)
 
-        header = generator.buildCommentBlockHeader(1, '=')
-        footer = generator.buildCommentBlockFooter(1, '=')
+        header = generator.build_comment_block_header(1, '=')
+        footer = generator.build_comment_block_footer(1, '=')
         assert len(header) == 1
         assert header[0] == "#============ *"
         assert len(footer) == 1
         assert footer[0] == "#============ *"
 
-        header = generator.buildCommentBlockHeader(2, '=')
-        footer = generator.buildCommentBlockFooter(2, '=')
+        header = generator.build_comment_block_header(2, '=')
+        footer = generator.build_comment_block_footer(2, '=')
         assert len(header) == 2
         assert header[0] == "#============ *"
         assert header[1] == "#============ *"
@@ -565,25 +565,25 @@ class Test07CommentGeneration:
         assert footer[0] == "#============ *"
         assert footer[1] == "#============ *"
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "# test line   *"
 
-    def test041ShellDefault(self):
+    def test041_shell_default(self):
         """!
         @brief Test shell script file type files comment generation
         default constructor
         """
-        generator = CommentGenerator(shCommentParms)
+        generator = CommentGenerator(sh_comment_parms)
 
-        header = generator.buildCommentBlockHeader()
-        footer = generator.buildCommentBlockFooter()
+        header = generator.build_comment_block_header()
+        footer = generator.build_comment_block_footer()
         assert len(header) == 1
         assert header[0] == "#"
         assert len(footer) == 1
         assert footer[0] == "#"
 
-        header = generator.buildCommentBlockHeader(2)
-        footer = generator.buildCommentBlockFooter(2)
+        header = generator.build_comment_block_header(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(header) == 2
         assert header[0] == "#"
         assert header[1] == "#"
@@ -591,25 +591,25 @@ class Test07CommentGeneration:
         assert footer[0] == "#"
         assert footer[1] == "#"
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "# test line"
 
-    def test042ShellPad(self):
+    def test042_shell_pad(self):
         """!
         @brief Test shell script file type files comment generation
         padded
         """
-        generator = CommentGenerator(shCommentParms, 10)
+        generator = CommentGenerator(sh_comment_parms, 10)
 
-        header = generator.buildCommentBlockHeader()
-        footer = generator.buildCommentBlockFooter()
+        header = generator.build_comment_block_header()
+        footer = generator.build_comment_block_footer()
         assert len(header) == 1
         assert header[0] == "#---------"
         assert len(footer) == 1
         assert footer[0] == "#---------"
 
-        header = generator.buildCommentBlockHeader(2)
-        footer = generator.buildCommentBlockFooter(2)
+        header = generator.build_comment_block_header(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(header) == 2
         assert header[0] == "#---------"
         assert header[1] == "#---------"
@@ -617,25 +617,25 @@ class Test07CommentGeneration:
         assert footer[0] == "#---------"
         assert footer[1] == "#---------"
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "# test line"
 
-    def test043ShellPadEol(self):
+    def test043_shell_pad_eol(self):
         """!
         @brief Test shell script file type files comment generation
         padded, end of line
         """
-        generator = CommentGenerator(shCommentParms, 13, " *")
+        generator = CommentGenerator(sh_comment_parms, 13, " *")
 
-        header = generator.buildCommentBlockHeader()
-        footer = generator.buildCommentBlockFooter()
+        header = generator.build_comment_block_header()
+        footer = generator.build_comment_block_footer()
         assert len(header) == 1
         assert header[0] == "#---------- *"
         assert len(footer) == 1
         assert footer[0] == "#---------- *"
 
-        header = generator.buildCommentBlockHeader(2)
-        footer = generator.buildCommentBlockFooter(2)
+        header = generator.build_comment_block_header(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(header) == 2
         assert header[0] == "#---------- *"
         assert header[1] == "#---------- *"
@@ -643,25 +643,25 @@ class Test07CommentGeneration:
         assert footer[0] == "#---------- *"
         assert footer[1] == "#---------- *"
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "# test line *"
 
-    def test044ShellForce(self):
+    def test044_shell_force(self):
         """!
         @brief Test shell script file type files comment generation
         force single
         """
-        generator = CommentGenerator(shCommentParms, useSingleLine = True)
+        generator = CommentGenerator(sh_comment_parms, use_single_line = True)
 
-        header = generator.buildCommentBlockHeader()
-        footer = generator.buildCommentBlockFooter()
+        header = generator.build_comment_block_header()
+        footer = generator.build_comment_block_footer()
         assert len(header) == 1
         assert header[0] == "#"
         assert len(footer) == 1
         assert footer[0] == "#"
 
-        header = generator.buildCommentBlockHeader(2)
-        footer = generator.buildCommentBlockFooter(2)
+        header = generator.build_comment_block_header(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(header) == 2
         assert header[0] == "#"
         assert header[1] == "#"
@@ -669,25 +669,25 @@ class Test07CommentGeneration:
         assert footer[0] == "#"
         assert footer[1] == "#"
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "# test line"
 
-    def test045ShellForcePad(self):
+    def test045_shell_force_pad(self):
         """!
         @brief Test shell script file type files comment generation
         force single, padded
         """
-        generator = CommentGenerator(shCommentParms, 10, useSingleLine = True)
+        generator = CommentGenerator(sh_comment_parms, 10, use_single_line = True)
 
-        header = generator.buildCommentBlockHeader()
-        footer = generator.buildCommentBlockFooter()
+        header = generator.build_comment_block_header()
+        footer = generator.build_comment_block_footer()
         assert len(header) == 1
         assert header[0] == "#---------"
         assert len(footer) == 1
         assert footer[0] == "#---------"
 
-        header = generator.buildCommentBlockHeader(2)
-        footer = generator.buildCommentBlockFooter(2)
+        header = generator.build_comment_block_header(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(header) == 2
         assert header[0] == "#---------"
         assert header[1] == "#---------"
@@ -695,25 +695,25 @@ class Test07CommentGeneration:
         assert footer[0] == "#---------"
         assert footer[1] == "#---------"
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "# test line"
 
-    def test046ShellForcePadEol(self):
+    def test046_shell_force_pad_eol(self):
         """!
         @brief Test shell script file type files comment generation
         force single, padded, end of line
         """
-        generator = CommentGenerator(shCommentParms, 13, " *", useSingleLine = True)
+        generator = CommentGenerator(sh_comment_parms, 13, " *", use_single_line = True)
 
-        header = generator.buildCommentBlockHeader()
-        footer = generator.buildCommentBlockFooter()
+        header = generator.build_comment_block_header()
+        footer = generator.build_comment_block_footer()
         assert len(header) == 1
         assert header[0] == "#---------- *"
         assert len(footer) == 1
         assert footer[0] == "#---------- *"
 
-        header = generator.buildCommentBlockHeader(2)
-        footer = generator.buildCommentBlockFooter(2)
+        header = generator.build_comment_block_header(2)
+        footer = generator.build_comment_block_footer(2)
         assert len(header) == 2
         assert header[0] == "#---------- *"
         assert header[1] == "#---------- *"
@@ -721,120 +721,120 @@ class Test07CommentGeneration:
         assert footer[0] == "#---------- *"
         assert footer[1] == "#---------- *"
 
-        wrap = generator.wrapCommentLine("test line")
+        wrap = generator.wrap_comment_line("test line")
         assert wrap == "# test line *"
 
-    def test050GenSingleLine(self):
+    def test050_gen_single_line(self):
         """!
         @brief Test file type files single line comment generation
         """
-        generator = CommentGenerator(shCommentParms)
-        assert generator.generateSingleLineComment("test text") == "# test text"
+        generator = CommentGenerator(sh_comment_parms)
+        assert generator.generate_single_line_comment("test text") == "# test text"
 
-        generator1 = CommentGenerator(cCommentParms)
-        assert generator1.generateSingleLineComment("test text") == "// test text"
+        generator1 = CommentGenerator(c_comment_parms)
+        assert generator1.generate_single_line_comment("test text") == "// test text"
 
-        generator2 = CommentGenerator(pyCommentParms)
-        assert generator2.generateSingleLineComment("test text") == "# test text"
+        generator2 = CommentGenerator(py_comment_parms)
+        assert generator2.generate_single_line_comment("test text") == "# test text"
 
-    def test051TestCCommentConstructor(self):
+    def test051_test_c_comment_constructor(self):
         """!
         @brief Test all generatoe constructors
         """
         from code_tools_grocsoftware.base.comment_gen_tools import CCommentGenerator
 
         generator = CCommentGenerator()
-        assert generator.lineLength is None
+        assert generator.line_length is None
         assert generator.eoltext is None
-        assert not generator.useSingleLine
-        assert generator.eolLength == 0
-        assert generator.commentData['blockStart'] == '/*'
-        assert generator.commentData['blockEnd'] == '*/'
-        assert generator.commentData['blockLineStart'] == '* '
-        assert generator.commentData['singleLine'] == '//'
-        assert generator.eolLength == 0
+        assert not generator.use_single_line
+        assert generator.eol_length == 0
+        assert generator.comment_data['blockStart'] == '/*'
+        assert generator.comment_data['blockEnd'] == '*/'
+        assert generator.comment_data['blockLineStart'] == '* '
+        assert generator.comment_data['singleLine'] == '//'
+        assert generator.eol_length == 0
 
-    def test052TestPyCommentConstructor(self):
+    def test052_test_py_comment_constructor(self):
         """!
         @brief Test all generatoe constructors
         """
         from code_tools_grocsoftware.base.comment_gen_tools import PyCommentGenerator
 
         generator = PyCommentGenerator()
-        assert generator.lineLength is None
+        assert generator.line_length is None
         assert generator.eoltext is None
-        assert not generator.useSingleLine
-        assert generator.eolLength == 0
-        assert generator.commentData['blockStart'] == '"""'
-        assert generator.commentData['blockEnd'] == '"""'
-        assert generator.commentData['blockLineStart'] == ''
-        assert generator.commentData['singleLine'] == '#'
-        assert generator.eolLength == 0
+        assert not generator.use_single_line
+        assert generator.eol_length == 0
+        assert generator.comment_data['blockStart'] == '"""'
+        assert generator.comment_data['blockEnd'] == '"""'
+        assert generator.comment_data['blockLineStart'] == ''
+        assert generator.comment_data['singleLine'] == '#'
+        assert generator.eol_length == 0
 
-    def test053TestTsCommentConstructor(self):
+    def test053_test_ts_comment_constructor(self):
         """!
         @brief Test all generatoe constructors
         """
         from code_tools_grocsoftware.base.comment_gen_tools import TsCommentGenerator
 
         generator = TsCommentGenerator()
-        assert generator.lineLength is None
+        assert generator.line_length is None
         assert generator.eoltext is None
-        assert not generator.useSingleLine
-        assert generator.eolLength == 0
-        assert generator.commentData['blockStart'] == '/*'
-        assert generator.commentData['blockEnd'] == '*/'
-        assert generator.commentData['blockLineStart'] == '* '
-        assert generator.commentData['singleLine'] == '//'
-        assert generator.eolLength == 0
+        assert not generator.use_single_line
+        assert generator.eol_length == 0
+        assert generator.comment_data['blockStart'] == '/*'
+        assert generator.comment_data['blockEnd'] == '*/'
+        assert generator.comment_data['blockLineStart'] == '* '
+        assert generator.comment_data['singleLine'] == '//'
+        assert generator.eol_length == 0
 
-    def test054TestJsCommentConstructor(self):
+    def test054_test_js_comment_constructor(self):
         """!
         @brief Test all generatoe constructors
         """
         from code_tools_grocsoftware.base.comment_gen_tools import JsCommentGenerator
 
         generator = JsCommentGenerator()
-        assert generator.lineLength is None
+        assert generator.line_length is None
         assert generator.eoltext is None
-        assert not generator.useSingleLine
-        assert generator.eolLength == 0
-        assert generator.commentData['blockStart'] == '/*'
-        assert generator.commentData['blockEnd'] == '*/'
-        assert generator.commentData['blockLineStart'] == '* '
-        assert generator.commentData['singleLine'] == '//'
-        assert generator.eolLength == 0
+        assert not generator.use_single_line
+        assert generator.eol_length == 0
+        assert generator.comment_data['blockStart'] == '/*'
+        assert generator.comment_data['blockEnd'] == '*/'
+        assert generator.comment_data['blockLineStart'] == '* '
+        assert generator.comment_data['singleLine'] == '//'
+        assert generator.eol_length == 0
 
-    def test055TestJsCommentConstructor(self):
+    def test055_test_js_comment_constructor(self):
         """!
         @brief Test all generatoe constructors
         """
         from code_tools_grocsoftware.base.comment_gen_tools import BashCommentGenerator
 
         generator = BashCommentGenerator()
-        assert generator.lineLength is None
+        assert generator.line_length is None
         assert generator.eoltext is None
-        assert generator.useSingleLine
-        assert generator.eolLength == 0
-        assert generator.commentData['blockStart'] is None
-        assert generator.commentData['blockEnd'] is None
-        assert generator.commentData['blockLineStart'] == '#'
-        assert generator.commentData['singleLine'] == '#'
-        assert generator.eolLength == 0
+        assert generator.use_single_line
+        assert generator.eol_length == 0
+        assert generator.comment_data['blockStart'] is None
+        assert generator.comment_data['blockEnd'] is None
+        assert generator.comment_data['blockLineStart'] == '#'
+        assert generator.comment_data['singleLine'] == '#'
+        assert generator.eol_length == 0
 
-    def test056TestJsCommentConstructor(self):
+    def test056_test_js_comment_constructor(self):
         """!
         @brief Test all generatoe constructors
         """
         from code_tools_grocsoftware.base.comment_gen_tools import BatchCommentGenerator
 
         generator = BatchCommentGenerator()
-        assert generator.lineLength is None
+        assert generator.line_length is None
         assert generator.eoltext is None
-        assert generator.useSingleLine
-        assert generator.eolLength == 0
-        assert generator.commentData['blockStart'] is None
-        assert generator.commentData['blockEnd'] is None
-        assert generator.commentData['blockLineStart'] == 'REM '
-        assert generator.commentData['singleLine'] == 'REM '
-        assert generator.eolLength == 0
+        assert generator.use_single_line
+        assert generator.eol_length == 0
+        assert generator.comment_data['blockStart'] is None
+        assert generator.comment_data['blockEnd'] is None
+        assert generator.comment_data['blockLineStart'] == 'REM '
+        assert generator.comment_data['singleLine'] == 'REM '
+        assert generator.eol_length == 0

@@ -15,11 +15,11 @@ then
     echo "Remove dist"
     rm -rf ./dist
 fi
-if [ -d "./code_tools_grocsoftware/code_tools_grocsoftware.egg-info" ]
+if [ -d "./src/code_tools_grocsoftware/code_tools_grocsoftware.egg-info" ]
 then
     # Clean egg-info
     echo "Remove .egg-info"
-    rm -rf ./code_tools_grocsoftware/code_tools_grocsoftware.egg-info
+    rm -rf ./src/code_tools_grocsoftware/code_tools_grocsoftware.egg-info
 fi
 
 # check for doc files

@@ -33,326 +33,326 @@ class TestClass01StringClass_tools:
     """!
     @brief Unit test for the BaseCppStringClassGenerator class
     """
-    def test001ConstructorDefault(self):
+    def test001_constructor_default(self):
         """!
         @brief Test constructor, default input
         """
-        testObj = BaseCppStringClassGenerator()
+        test_obj = BaseCppStringClassGenerator()
 
-        assert testObj.owner == "BaseCppStringClassGenerator"
-        assert testObj.baseClassName == "BaseClass"
-        assert testObj.dynamicCompileSwitch == "DYNAMIC_INTERNATIONALIZATION"
-        assert testObj.ifDynamicDefined == "defined(DYNAMIC_INTERNATIONALIZATION)"
-        assert testObj.baseIntfRetPtrType == "std::shared_ptr<BaseClass>"
-        assert testObj.baseIntfRetPtrDict == ParamRetDict.buildReturnDict('sharedptr',
+        assert test_obj.owner == "BaseCppStringClassGenerator"
+        assert test_obj.base_class_name == "BaseClass"
+        assert test_obj.dynamic_compile_switch == "DYNAMIC_INTERNATIONALIZATION"
+        assert test_obj.if_dynamic_defined == "defined(DYNAMIC_INTERNATIONALIZATION)"
+        assert test_obj.base_intf_ret_ptr_type == "std::shared_ptr<BaseClass>"
+        assert test_obj.base_intf_ret_ptr_dict == ParamRetDict.build_return_dict('sharedptr',
                                                                                       "Shared pointer to BaseClass<lang> based on OS local language")
-        assert testObj.typeXlationDict['LANGID'] == "LANGID"
-        assert testObj.typeXlationDict['sharedptr'] == "std::shared_ptr<BaseClass>"
-        assert testObj.typeXlationDict['strstream'] == "std::stringstream"
+        assert test_obj.type_xlation_dict['LANGID'] == "LANGID"
+        assert test_obj.type_xlation_dict['sharedptr'] == "std::shared_ptr<BaseClass>"
+        assert test_obj.type_xlation_dict['strstream'] == "std::stringstream"
 
-        assert testObj.versionMajor == 0
-        assert testObj.versionMinor == 4
-        assert testObj.versionPatch == 1
+        assert test_obj.version_major == 0
+        assert test_obj.version_minor == 4
+        assert test_obj.version_patch == 1
 
-        assert testObj.autoToolName == testObj.__class__.__name__+"V0.4.1"
-        assert testObj.groupName == "LocalLanguageSelection"
+        assert test_obj.auto_tool_name == test_obj.__class__.__name__+"V0.4.1"
+        assert test_obj.group_name == "LocalLanguageSelection"
 
-        assert testObj.groupDesc == "Local language detection and selection utility"
-        assert testObj.declareIndent == 8
-        assert testObj.functionIndent == 4
+        assert test_obj.group_desc == "Local language detection and selection utility"
+        assert test_obj.declare_indent == 8
+        assert test_obj.function_indent == 4
 
     """!
     @brief Unit test for the BaseCppStringClassGenerator class
     """
-    def test002ConstructorBasic(self):
+    def test002_constructor_basic(self):
         """!
         @brief Test constructor
         """
-        testObj = BaseCppStringClassGenerator("me", "MIT_open", "TestBaseClass", "BASE_DYNAMIC_SWITCH")
+        test_obj = BaseCppStringClassGenerator("me", "MIT_open", "TestBaseClass", "BASE_DYNAMIC_SWITCH")
 
-        assert testObj.owner == "me"
-        assert testObj.baseClassName == "TestBaseClass"
-        assert testObj.dynamicCompileSwitch == "BASE_DYNAMIC_SWITCH"
-        assert testObj.ifDynamicDefined == "defined(BASE_DYNAMIC_SWITCH)"
-        assert testObj.baseIntfRetPtrType == "std::shared_ptr<TestBaseClass>"
-        assert testObj.baseIntfRetPtrDict == ParamRetDict.buildReturnDict('sharedptr',
+        assert test_obj.owner == "me"
+        assert test_obj.base_class_name == "TestBaseClass"
+        assert test_obj.dynamic_compile_switch == "BASE_DYNAMIC_SWITCH"
+        assert test_obj.if_dynamic_defined == "defined(BASE_DYNAMIC_SWITCH)"
+        assert test_obj.base_intf_ret_ptr_type == "std::shared_ptr<TestBaseClass>"
+        assert test_obj.base_intf_ret_ptr_dict == ParamRetDict.build_return_dict('sharedptr',
                                                                                       "Shared pointer to TestBaseClass<lang> based on OS local language")
-        assert testObj.typeXlationDict['LANGID'] == "LANGID"
-        assert testObj.typeXlationDict['sharedptr'] == "std::shared_ptr<TestBaseClass>"
-        assert testObj.typeXlationDict['strstream'] == "std::stringstream"
+        assert test_obj.type_xlation_dict['LANGID'] == "LANGID"
+        assert test_obj.type_xlation_dict['sharedptr'] == "std::shared_ptr<TestBaseClass>"
+        assert test_obj.type_xlation_dict['strstream'] == "std::stringstream"
 
-        assert testObj.versionMajor == 0
-        assert testObj.versionMinor == 4
-        assert testObj.versionPatch == 1
+        assert test_obj.version_major == 0
+        assert test_obj.version_minor == 4
+        assert test_obj.version_patch == 1
 
-        assert testObj.autoToolName == testObj.__class__.__name__+"V0.4.1"
-        assert testObj.groupName == "LocalLanguageSelection"
+        assert test_obj.auto_tool_name == test_obj.__class__.__name__+"V0.4.1"
+        assert test_obj.group_name == "LocalLanguageSelection"
 
-        assert testObj.groupDesc == "Local language detection and selection utility"
-        assert testObj.declareIndent == 8
-        assert testObj.functionIndent == 4
+        assert test_obj.group_desc == "Local language detection and selection utility"
+        assert test_obj.declare_indent == 8
+        assert test_obj.function_indent == 4
 
-    def test003GetTypes(self):
+    def test003_get_types(self):
         """!
-        @brief Test _getStringType, _getCharType and _getStrStreamType
+        @brief Test _get_string_type, _get_char_type and _get_str_stream_type
         """
-        testObj = BaseCppStringClassGenerator()
-        assert testObj._getStringType() == testObj.typeXlationDict['string']
-        assert testObj._getCharType() == testObj.typeXlationDict['char']
-        assert testObj._getStrStreamType() == testObj.typeXlationDict['strstream']
+        test_obj = BaseCppStringClassGenerator()
+        assert test_obj._get_string_type() == test_obj.type_xlation_dict['string']
+        assert test_obj._get_char_type() == test_obj.type_xlation_dict['char']
+        assert test_obj._get_str_stream_type() == test_obj.type_xlation_dict['strstream']
 
-    def test004GenMakePtrReturnStatement(self):
+    def test004_gen_make_ptr_return_statement(self):
         """!
-        @brief Test _genMakePtrReturnStatement
+        @brief Test _gen_make_ptr_return_statement
         """
-        testObj = BaseCppStringClassGenerator()
-        assert testObj._genMakePtrReturnStatement() == "return std::make_shared<BaseClass>();\n"
-        assert testObj._genMakePtrReturnStatement("oompa") == "return std::make_shared<BaseClassOompa>();\n"
+        test_obj = BaseCppStringClassGenerator()
+        assert test_obj._gen_make_ptr_return_statement() == "return std::make_shared<BaseClass>();\n"
+        assert test_obj._gen_make_ptr_return_statement("oompa") == "return std::make_shared<BaseClassOompa>();\n"
 
-    def test005GetVersion(self):
+    def test005_get_version(self):
         """!
-        @brief Test _getVersion
+        @brief Test _get_version
         """
-        testObj = BaseCppStringClassGenerator()
-        assert testObj._getVersion() == "V"+str(testObj.versionMajor)+"."+str(testObj.versionMinor)+"."+str(testObj.versionPatch)
+        test_obj = BaseCppStringClassGenerator()
+        assert test_obj._get_version() == "V"+str(test_obj.version_major)+"."+str(test_obj.version_minor)+"."+str(test_obj.version_patch)
 
-    def test006GenerateFileHeader(self):
+    def test006_generate_file_header(self):
         """!
-        @brief Test _generateFileHeader
+        @brief Test _generate_file_header
         """
-        testObj = BaseCppStringClassGenerator("Tester", "MIT_open")
-        strList = testObj._generateFileHeader()
-        eulaData = EulaText('MIT_open')
-        eulaName = eulaData.formatEulaName()
-        eulaText = eulaData.formatEulaText()
-        assert len(strList) == 27
-        assert strList[0] == "/*------------------------------------------------------------------------------\n"
-        assert strList[1] == "* Copyright (c) 2025 Tester\n"
-        assert strList[2] == "* \n"
-        assert strList[3] == "* "+eulaName+"\n"
-        assert strList[4] == "* \n"
+        test_obj = BaseCppStringClassGenerator("Tester", "MIT_open")
+        str_list = test_obj._generate_file_header()
+        eula_data = EulaText('MIT_open')
+        eula_name = eula_data.format_eula_name()
+        eula_text = eula_data.format_eula_text()
+        assert len(str_list) == 27
+        assert str_list[0] == "/*------------------------------------------------------------------------------\n"
+        assert str_list[1] == "* Copyright (c) 2025 Tester\n"
+        assert str_list[2] == "* \n"
+        assert str_list[3] == "* "+eula_name+"\n"
+        assert str_list[4] == "* \n"
 
-        for index, eulaLine in enumerate(eulaText):
-            assert strList[index+5] == "* "+eulaLine+"\n"
+        for index, eula_line in enumerate(eula_text):
+            assert str_list[index+5] == "* "+eula_line+"\n"
 
-        assert strList[23] == "* \n"
-        assert strList[24] == "* This file was autogenerated by "+testObj.autoToolName+" do not edit\n"
-        assert strList[25] == "* \n"
-        assert strList[26] == "* ----------------------------------------------------------------------------*/\n"
+        assert str_list[23] == "* \n"
+        assert str_list[24] == "* This file was autogenerated by "+test_obj.auto_tool_name+" do not edit\n"
+        assert str_list[25] == "* \n"
+        assert str_list[26] == "* ----------------------------------------------------------------------------*/\n"
 
-    def test007GenerateHFileName(self):
+    def test007_generate_h_file_name(self):
         """!
         @brief Test _generateHFileName
         """
-        testObj = BaseCppStringClassGenerator()
-        assert testObj._generateHFileName() == testObj.baseClassName+".h"
-        assert testObj._generateHFileName("klingon") == testObj.baseClassName+"klingon".capitalize()+".h"
+        test_obj = BaseCppStringClassGenerator()
+        assert test_obj._generateHFileName() == test_obj.base_class_name+".h"
+        assert test_obj._generateHFileName("klingon") == test_obj.base_class_name+"klingon".capitalize()+".h"
 
-    def test008GenerateCppFileName(self):
+    def test008_generate_cpp_file_name(self):
         """!
-        @brief Test _generateCppFileName
+        @brief Test _generate_cpp_file_name
         """
-        testObj = BaseCppStringClassGenerator()
-        assert testObj._generateCppFileName() == testObj.baseClassName+".cpp"
-        assert testObj._generateCppFileName("romulan") == testObj.baseClassName+"romulan".capitalize()+".cpp"
+        test_obj = BaseCppStringClassGenerator()
+        assert test_obj._generate_cpp_file_name() == test_obj.base_class_name+".cpp"
+        assert test_obj._generate_cpp_file_name("romulan") == test_obj.base_class_name+"romulan".capitalize()+".cpp"
 
-    def test009GenerateUnittestFileName(self):
+    def test009_generate_unittest_file_name(self):
         """!
-        @brief Test _generateUnittestFileName
+        @brief Test _generate_unittest_file_name
         """
-        testObj = BaseCppStringClassGenerator()
-        assert testObj._generateUnittestFileName() == testObj.baseClassName+"_test.cpp"
-        assert testObj._generateUnittestFileName("gorn") == testObj.baseClassName+"gorn".capitalize()+"_test.cpp"
+        test_obj = BaseCppStringClassGenerator()
+        assert test_obj._generate_unittest_file_name() == test_obj.base_class_name+"_test.cpp"
+        assert test_obj._generate_unittest_file_name("gorn") == test_obj.base_class_name+"gorn".capitalize()+"_test.cpp"
 
-    def test010GenerateUnittestTargetName(self):
+    def test010_generate_unittest_target_name(self):
         """!
-        @brief Test _generateUnittestTargetName
+        @brief Test _generate_unittest_target_name
         """
-        testObj = BaseCppStringClassGenerator()
-        assert testObj._generateUnittestTargetName() == testObj.baseClassName+"_test"
-        assert testObj._generateUnittestTargetName("telerite") == testObj.baseClassName+"telerite".capitalize()+"_test"
+        test_obj = BaseCppStringClassGenerator()
+        assert test_obj._generate_unittest_target_name() == test_obj.base_class_name+"_test"
+        assert test_obj._generate_unittest_target_name("telerite") == test_obj.base_class_name+"telerite".capitalize()+"_test"
 
-    def test011GenerateMockHFileName(self):
+    def test011_generate_mock_h_file_name(self):
         """!
-        @brief Test _generateMockHFileName
+        @brief Test _generate_mockHFileName
         """
-        testObj = BaseCppStringClassGenerator()
-        assert testObj._generateMockHFileName() == "mock_"+testObj.baseClassName+".h"
-        assert testObj._generateMockHFileName("latin") == "mock_"+testObj.baseClassName+"latin".capitalize()+".h"
+        test_obj = BaseCppStringClassGenerator()
+        assert test_obj._generate_mockHFileName() == "mock_"+test_obj.base_class_name+".h"
+        assert test_obj._generate_mockHFileName("latin") == "mock_"+test_obj.base_class_name+"latin".capitalize()+".h"
 
-    def test012GenerateMockCppFileName(self):
+    def test012_generate_mock_cpp_file_name(self):
         """!
-        @brief Test _generateMockCppFileName
+        @brief Test _generate_mockCppFileName
         """
-        testObj = BaseCppStringClassGenerator()
-        assert testObj._generateMockCppFileName() == "mock_"+testObj.baseClassName+".cpp"
-        assert testObj._generateMockCppFileName("latin") == "mock_"+testObj.baseClassName+"latin".capitalize()+".cpp"
+        test_obj = BaseCppStringClassGenerator()
+        assert test_obj._generate_mockCppFileName() == "mock_"+test_obj.base_class_name+".cpp"
+        assert test_obj._generate_mockCppFileName("latin") == "mock_"+test_obj.base_class_name+"latin".capitalize()+".cpp"
 
-    def test013WriteMethodMin(self):
+    def test013_write_method_min(self):
         """!
-        @brief Test _writeMethod, minimum
+        @brief Test _write_method, minimum
         """
-        testObj = BaseCppStringClassGenerator()
-        cGen = GenerateCppFileHelper()
-        returnDict = ParamRetDict.buildReturnDict('string', "Return description")
-        strList = testObj._writeMethod("TestMethod", "Test method description", [], returnDict, None, None)
-        expectedList = cGen._declareFunctionWithDecorations("TestMethod",
+        test_obj = BaseCppStringClassGenerator()
+        c_gen = GenerateCppFileHelper()
+        return_dict = ParamRetDict.build_return_dict('string', "Return description")
+        str_list = test_obj._write_method("TestMethod", "Test method description", [], return_dict, None, None)
+        expected_list = c_gen._declare_function_with_decorations("TestMethod",
                                                             "Test method description",
                                                             [],
-                                                            returnDict,
-                                                            testObj.declareIndent,
+                                                            return_dict,
+                                                            test_obj.declare_indent,
                                                             True,
                                                             None,
                                                             "const")
-        assert len(strList) == len(expectedList)
-        for index, expectedStr in enumerate(expectedList):
-            assert strList[index] == expectedStr
+        assert len(str_list) == len(expected_list)
+        for index, expected_str in enumerate(expected_list):
+            assert str_list[index] == expected_str
 
-    def test014WriteMethodMinWithDoxygen(self):
+    def test014_write_method_min_with_doxygen(self):
         """!
-        @brief Test _writeMethod, minimum with doxygen
+        @brief Test _write_method, minimum with doxygen
         """
-        testObj = BaseCppStringClassGenerator()
-        cGen = GenerateCppFileHelper()
-        returnDict = ParamRetDict.buildReturnDict('string', "Return description")
-        strList = testObj._writeMethod("TestMethod", "Test method description", [], returnDict, None, None, False)
-        expectedList = cGen._declareFunctionWithDecorations("TestMethod",
+        test_obj = BaseCppStringClassGenerator()
+        c_gen = GenerateCppFileHelper()
+        return_dict = ParamRetDict.build_return_dict('string', "Return description")
+        str_list = test_obj._write_method("TestMethod", "Test method description", [], return_dict, None, None, False)
+        expected_list = c_gen._declare_function_with_decorations("TestMethod",
                                                             "Test method description",
                                                             [],
-                                                            returnDict,
-                                                            testObj.declareIndent,
+                                                            return_dict,
+                                                            test_obj.declare_indent,
                                                             False,
                                                             None,
                                                             "const")
-        assert len(strList) == len(expectedList)
-        for index, expectedStr in enumerate(expectedList):
-            assert strList[index] == expectedStr
+        assert len(str_list) == len(expected_list)
+        for index, expected_str in enumerate(expected_list):
+            assert str_list[index] == expected_str
 
-    def test015WriteMethodWithPrefix(self):
+    def test015_write_method_with_prefix(self):
         """!
-        @brief Test _writeMethod, with prefix
+        @brief Test _write_method, with prefix
         """
-        testObj = BaseCppStringClassGenerator()
-        cGen = GenerateCppFileHelper()
-        returnDict = ParamRetDict.buildReturnDict('string', "Return description")
-        strList = testObj._writeMethod("TestMethod", "Test method description", [], returnDict, "virtual", None)
-        expectedList = cGen._declareFunctionWithDecorations("TestMethod",
+        test_obj = BaseCppStringClassGenerator()
+        c_gen = GenerateCppFileHelper()
+        return_dict = ParamRetDict.build_return_dict('string', "Return description")
+        str_list = test_obj._write_method("TestMethod", "Test method description", [], return_dict, "virtual", None)
+        expected_list = c_gen._declare_function_with_decorations("TestMethod",
                                                             "Test method description",
                                                             [],
-                                                            returnDict,
-                                                            testObj.declareIndent,
+                                                            return_dict,
+                                                            test_obj.declare_indent,
                                                             True,
                                                             "virtual",
                                                             "const")
-        assert len(strList) == len(expectedList)
-        for index, expectedStr in enumerate(expectedList):
-            assert strList[index] == expectedStr
+        assert len(str_list) == len(expected_list)
+        for index, expected_str in enumerate(expected_list):
+            assert str_list[index] == expected_str
 
-    def test016WriteMethodWithPostfix(self):
+    def test016_write_method_with_postfix(self):
         """!
-        @brief Test _writeMethod, with postfix
+        @brief Test _write_method, with postfix
         """
-        testObj = BaseCppStringClassGenerator()
-        cGen = GenerateCppFileHelper()
-        returnDict = ParamRetDict.buildReturnDict('string', "Return description")
-        paramDict = ParamRetDict.buildParamDict("foo", "integer", "Integer description")
-        strList = testObj._writeMethod("TestMethod", "Test method description", [paramDict], returnDict, "virtual", "final")
-        expectedList = cGen._declareFunctionWithDecorations("TestMethod",
+        test_obj = BaseCppStringClassGenerator()
+        c_gen = GenerateCppFileHelper()
+        return_dict = ParamRetDict.build_return_dict('string', "Return description")
+        param_dict = ParamRetDict.build_param_dict("foo", "integer", "Integer description")
+        str_list = test_obj._write_method("TestMethod", "Test method description", [param_dict], return_dict, "virtual", "final")
+        expected_list = c_gen._declare_function_with_decorations("TestMethod",
                                                             "Test method description",
-                                                            [paramDict],
-                                                            returnDict,
-                                                            testObj.declareIndent,
+                                                            [param_dict],
+                                                            return_dict,
+                                                            test_obj.declare_indent,
                                                             True,
                                                             "virtual",
                                                             "final")
-        assert len(strList) == len(expectedList)
-        for index, expectedStr in enumerate(expectedList):
-            assert strList[index] == expectedStr
+        assert len(str_list) == len(expected_list)
+        for index, expected_str in enumerate(expected_list):
+            assert str_list[index] == expected_str
 
-    def test017WriteMethodWithPostfixOnly(self):
+    def test017_write_method_with_postfix_only(self):
         """!
-        @brief Test _writeMethod, with postfix
+        @brief Test _write_method, with postfix
         """
-        testObj = BaseCppStringClassGenerator()
-        cGen = GenerateCppFileHelper()
-        returnDict = ParamRetDict.buildReturnDict('string', "Return description")
-        paramList = []
-        strList = testObj._writeMethod("TestMethod", "Test method description", paramList, returnDict, "virtual", "final")
-        expectedList = cGen._declareFunctionWithDecorations("TestMethod",
+        test_obj = BaseCppStringClassGenerator()
+        c_gen = GenerateCppFileHelper()
+        return_dict = ParamRetDict.build_return_dict('string', "Return description")
+        param_list = []
+        str_list = test_obj._write_method("TestMethod", "Test method description", param_list, return_dict, "virtual", "final")
+        expected_list = c_gen._declare_function_with_decorations("TestMethod",
                                                             "Test method description",
-                                                            paramList,
-                                                            returnDict,
-                                                            testObj.declareIndent,
+                                                            param_list,
+                                                            return_dict,
+                                                            test_obj.declare_indent,
                                                             True,
                                                             "virtual",
                                                             "const final")
-        assert len(strList) == len(expectedList)
-        for index, expectedStr in enumerate(expectedList):
-            assert strList[index] == expectedStr
+        assert len(str_list) == len(expected_list)
+        for index, expected_str in enumerate(expected_list):
+            assert str_list[index] == expected_str
 
-    def test018WriteMockMethodMin(self):
+    def test018_write_mock_method_min(self):
         """!
-        @brief Test _writeMethod, minimum
+        @brief Test _write_method, minimum
         """
-        testObj = BaseCppStringClassGenerator()
+        test_obj = BaseCppStringClassGenerator()
 
-        cGen = GenerateCppFileHelper()
-        returnDict = ParamRetDict.buildReturnDict('string', "Return description")
-        expectedDecl = cGen._declareType(ParamRetDict.getReturnType(returnDict), ParamRetDict.getParamTypeMod(returnDict))
-        expectedParms = cGen._genFunctionParams([])
-        expectedMock = "        MOCK_METHOD("+expectedDecl+", TestMethod, "+expectedParms+", (const));\n"
+        c_gen = GenerateCppFileHelper()
+        return_dict = ParamRetDict.build_return_dict('string', "Return description")
+        expected_decl = c_gen._declare_type(ParamRetDict.get_return_type(return_dict), ParamRetDict.get_param_type_mod(return_dict))
+        expected_parms = c_gen._gen_function_params([])
+        expected_mock = "        MOCK_METHOD("+expected_decl+", TestMethod, "+expected_parms+", (const));\n"
 
-        strList = testObj._writeMockMethod("TestMethod", [], returnDict, None)
-        assert len(strList) == 1
-        assert strList[0] == expectedMock
+        str_list = test_obj._write_mock_method("TestMethod", [], return_dict, None)
+        assert len(str_list) == 1
+        assert str_list[0] == expected_mock
 
-    def test019WriteMockMethodWithParam(self):
+    def test019_write_mock_method_with_param(self):
         """!
-        @brief Test _writeMethod, with param
+        @brief Test _write_method, with param
         """
-        testObj = BaseCppStringClassGenerator()
+        test_obj = BaseCppStringClassGenerator()
 
-        cGen = GenerateCppFileHelper()
-        returnDict = ParamRetDict.buildReturnDict('string', "Return description")
-        paramList = [ParamRetDict.buildParamDict("foo", "integer", "Integer description")]
-        expectedDecl = cGen._declareType(ParamRetDict.getReturnType(returnDict), ParamRetDict.getParamTypeMod(returnDict))
-        expectedParms = cGen._genFunctionParams(paramList)
-        expectedMock = "        MOCK_METHOD("+expectedDecl+", TestMethod, "+expectedParms+");\n"
+        c_gen = GenerateCppFileHelper()
+        return_dict = ParamRetDict.build_return_dict('string', "Return description")
+        param_list = [ParamRetDict.build_param_dict("foo", "integer", "Integer description")]
+        expected_decl = c_gen._declare_type(ParamRetDict.get_return_type(return_dict), ParamRetDict.get_param_type_mod(return_dict))
+        expected_parms = c_gen._gen_function_params(param_list)
+        expected_mock = "        MOCK_METHOD("+expected_decl+", TestMethod, "+expected_parms+");\n"
 
-        strList = testObj._writeMockMethod("TestMethod", paramList, returnDict, None)
-        assert len(strList) == 1
-        assert strList[0] == expectedMock
+        str_list = test_obj._write_mock_method("TestMethod", param_list, return_dict, None)
+        assert len(str_list) == 1
+        assert str_list[0] == expected_mock
 
-    def test020WriteMockMethodWithPostfix(self):
+    def test020_write_mock_method_with_postfix(self):
         """!
-        @brief Test _writeMethod, with postfix
+        @brief Test _write_method, with postfix
         """
-        testObj = BaseCppStringClassGenerator()
+        test_obj = BaseCppStringClassGenerator()
 
-        cGen = GenerateCppFileHelper()
-        returnDict = ParamRetDict.buildReturnDict('string', "Return description")
-        paramList = []
-        expectedDecl = cGen._declareType(ParamRetDict.getReturnType(returnDict), ParamRetDict.getParamTypeMod(returnDict))
-        expectedParms = cGen._genFunctionParams(paramList)
-        expectedMock = "        MOCK_METHOD("+expectedDecl+", TestMethod, "+expectedParms+", (const, override));\n"
+        c_gen = GenerateCppFileHelper()
+        return_dict = ParamRetDict.build_return_dict('string', "Return description")
+        param_list = []
+        expected_decl = c_gen._declare_type(ParamRetDict.get_return_type(return_dict), ParamRetDict.get_param_type_mod(return_dict))
+        expected_parms = c_gen._gen_function_params(param_list)
+        expected_mock = "        MOCK_METHOD("+expected_decl+", TestMethod, "+expected_parms+", (const, override));\n"
 
-        strList = testObj._writeMockMethod("TestMethod", paramList, returnDict, "override")
-        assert len(strList) == 1
-        assert strList[0] == expectedMock
+        str_list = test_obj._write_mock_method("TestMethod", param_list, return_dict, "override")
+        assert len(str_list) == 1
+        assert str_list[0] == expected_mock
 
-    def test021WriteMockMethodWithParamPostfix(self):
+    def test021_write_mock_method_with_param_postfix(self):
         """!
-        @brief Test _writeMethod, with param and postfix
+        @brief Test _write_method, with param and postfix
         """
-        testObj = BaseCppStringClassGenerator()
+        test_obj = BaseCppStringClassGenerator()
 
-        cGen = GenerateCppFileHelper()
-        returnDict = ParamRetDict.buildReturnDict('string', "Return description")
-        paramList = [ParamRetDict.buildParamDict("foo", "integer", "Integer description")]
-        expectedDecl = cGen._declareType(ParamRetDict.getReturnType(returnDict), ParamRetDict.getParamTypeMod(returnDict))
-        expectedParms = cGen._genFunctionParams(paramList)
-        expectedMock = "        MOCK_METHOD("+expectedDecl+", TestMethod, "+expectedParms+", (override));\n"
+        c_gen = GenerateCppFileHelper()
+        return_dict = ParamRetDict.build_return_dict('string', "Return description")
+        param_list = [ParamRetDict.build_param_dict("foo", "integer", "Integer description")]
+        expected_decl = c_gen._declare_type(ParamRetDict.get_return_type(return_dict), ParamRetDict.get_param_type_mod(return_dict))
+        expected_parms = c_gen._gen_function_params(param_list)
+        expected_mock = "        MOCK_METHOD("+expected_decl+", TestMethod, "+expected_parms+", (override));\n"
 
-        strList = testObj._writeMockMethod("TestMethod", paramList, returnDict, "override")
-        assert len(strList) == 1
-        assert strList[0] == expectedMock
+        str_list = test_obj._write_mock_method("TestMethod", param_list, return_dict, "override")
+        assert len(str_list) == 1
+        assert str_list[0] == expected_mock

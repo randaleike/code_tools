@@ -32,142 +32,142 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
     """!
     Methods for master language select function generation
     """
-    def __init__(self, owner:str|None = None, eulaName:str|None = None, baseClassName:str = "BaseClass",
-                 methodName:str = "getLocalParserStringListInterface",
-                 dynamicCompileSwitch:str = "DYNAMIC_INTERNATIONALIZATION"):
+    def __init__(self, owner:str|None = None, eula_name:str|None = None, base_class_name:str = "BaseClass",
+                 method_name:str = "getLocalParserStringListInterface",
+                 dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
         """!
         @brief MasterSelectFunctionGenerator constructor
         @param owner {string|None} Owner name to use in the copyright header message or None to use tool name
-        @param eulaName {string|None} Name of the EULA to pass down to the BaseCppStringClassGenerator parent
-        @param baseClassName {string} Name of the base class for name generation
-        @param methodName {string} Function name to be used for generation
-        @param dynnamicCompileSwitch {string} Dynamic compile switch for #if generation
+        @param eula_name {string|None} Name of the EULA to pass down to the BaseCppStringClassGenerator parent
+        @param base_class_name {string} Name of the base class for name generation
+        @param method_name {string} Function name to be used for generation
+        @param dynnamic_compile_switch {string} Dynamic compile switch for #if generation
         """
-        super().__init__(owner, eulaName, baseClassName, dynamicCompileSwitch)
-        self.selectFunctionName = baseClassName+"::"+methodName
-        self.selectBaseFunctionName = methodName
+        super().__init__(owner, eula_name, base_class_name, dynamic_compile_switch)
+        self.select_function_name = base_class_name+"::"+method_name
+        self.select_base_function_name = method_name
 
-        self.briefDesc = "Determine the OS use OS specific functions to determine the correct local language" \
+        self.brief_desc = "Determine the OS use OS specific functions to determine the correct local language" \
                          "based on the OS specific local language setting and return the correct class object"
-        self.doxyCommentGen = CDoxyCommentGenerator()
+        self.doxy_comment_gen = CDoxyCommentGenerator()
 
-    def getFunctionName(self)->str:
-        return self.selectFunctionName
+    def get_function_name(self)->str:
+        return self.select_function_name
 
-    def getFunctionDesc(self)->tuple:
+    def get_function_desc(self)->tuple:
         """!
         @brief Generate a function declatation text block with doxygen comment
         @return tuple - Function (name, description, return dictionary, param list)
         """
-        return self.selectBaseFunctionName, self.briefDesc, self.baseIntfRetPtrDict, []
+        return self.select_base_function_name, self.brief_desc, self.base_intf_ret_ptr_dict, []
 
-    def genFunctionDefine(self)->list:
+    def gen_function_define(self)->list:
         """!
         @brief Get the function declaration string for the given name
         @return string list - Function comment block and declaration start
         """
-        codeList = self._defineFunctionWithDecorations(self.selectFunctionName, self.briefDesc, [], self.baseIntfRetPtrDict)
-        codeList.append("{\n")
-        return codeList
+        code_list = self._define_function_with_decorations(self.select_function_name, self.brief_desc, [], self.base_intf_ret_ptr_dict)
+        code_list.append("{\n")
+        return code_list
 
-    def genFunctionEnd(self)->str:
+    def gen_function_end(self)->str:
         """!
         @brief Get the function declaration string for the given name
         @return string - Function close with comment
         """
-        return self._endFunction(self.selectFunctionName)
+        return self._end_function(self.select_function_name)
 
-    def genFunction(self, osLangSelectors)->list:
+    def gen_function(self, os_lang_selectors)->list:
         """!
         @brief Generate the function body text
-        @param osLangSelectors {list} List of OS language selector function generation objects
+        @param os_lang_selectors {list} List of OS language selector function generation objects
         @return list - Function body string list
         """
         # Generate function doxygen comment and start
-        functionBody = []
-        functionBody.extend(self.genFunctionDefine())
-        bodyIndent = 4
-        bodyPrefix = "".rjust(bodyIndent, ' ')
+        function_body = []
+        function_body.extend(self.gen_function_define())
+        body_indent = 4
+        body_prefix = "".rjust(body_indent, ' ')
 
         # Generate OS calls
-        firstOs = True
-        for osSelector in osLangSelectors:
-            if firstOs:
-                functionBody.append("#if "+osSelector.getOsDefine()+"\n")
-                firstOs = False
+        first_os = True
+        for os_selector in os_lang_selectors:
+            if first_os:
+                function_body.append("#if "+os_selector.get_os_define()+"\n")
+                first_os = False
             else:
-                functionBody.append("#elif "+osSelector.getOsDefine()+"\n")
-            functionBody.extend(osSelector.genReturnFunctionCall(bodyIndent))
+                function_body.append("#elif "+os_selector.get_os_define()+"\n")
+            function_body.extend(os_selector.gen_return_function_call(body_indent))
 
         # Add the #else case
-        functionBody.append("#else // not defined os\n")
-        functionBody.append(bodyPrefix+"#error No language generation method defined for this OS\n")
+        function_body.append("#else // not defined os\n")
+        function_body.append(body_prefix+"#error No language generation method defined for this OS\n")
 
         # Complete the function
-        functionBody.append("#endif // defined os\n")
-        functionBody.append(self.genFunctionEnd())
-        return functionBody
+        function_body.append("#endif // defined os\n")
+        function_body.append(self.gen_function_end())
+        return function_body
 
-    def genReturnFunctionCall(self, indent:int = 4)->list:
+    def gen_return_function_call(self, indent:int = 4)->list:
         """!
         @brief Generate the call code for the linux dynamic lang selection function
         @param indent {number} Code indentation spaces
         @return list of strings Formatted code lines
         """
-        doCall = "".rjust(indent, " ")+"return "+self.selectFunctionName+"();\n"
-        return [doCall]
+        do_call = "".rjust(indent, " ")+"return "+self.select_function_name+"();\n"
+        return [do_call]
 
-    def genUnitTest(self, getIsoMethod:str, osLangSelectors)->list:
+    def gen_unit_test(self, get_iso_method:str, os_lang_selectors)->list:
         """!
         @brief Generate all unit tests for the selection function
 
-        @param getIsoMethod {string} Name of the ParserStringListInterface return ISO code method
-        @param osLangSelectors {list} List of OS language selector function generation objects
+        @param get_iso_method {string} Name of the ParserStringListInterface return ISO code method
+        @param os_lang_selectors {list} List of OS language selector function generation objects
         @return list - Unittest text list
         """
-        testBody = []
+        test_body = []
 
         # generate the externals
-        for osSelector in osLangSelectors:
-            testBody.extend(osSelector.getUnittestExternInclude())
-        testBody.append("\n") # whitespace for readability
+        for os_selector in os_lang_selectors:
+            test_body.extend(os_selector.get_unittest_extern_include())
+        test_body.append("\n") # whitespace for readability
 
         # Generate the test
-        testBlockName = "SelectFunction"
-        bodyIndentIndex = 4
-        bodyIndent = "".rjust(bodyIndentIndex, " ")
-        breifDesc = "Test "+self.selectFunctionName+" selection case"
-        testBody.extend(self.doxyCommentGen.genDoxyMethodComment(breifDesc, []))
+        test_block_name = "SelectFunction"
+        body_indentIndex = 4
+        body_indent = "".rjust(body_indentIndex, " ")
+        breif_desc = "Test "+self.select_function_name+" selection case"
+        test_body.extend(self.doxy_comment_gen.gen_doxy_method_comment(breif_desc, []))
 
-        testVar = "testVar"
-        testVarDecl = self.baseIntfRetPtrType+" "+testVar
-        testBody.append("TEST("+testBlockName+", TestLocalSelectMethod)\n")
-        testBody.append("{\n")
+        test_var = "test_var"
+        test_varDecl = self.base_intf_ret_ptr_type+" "+test_var
+        test_body.append("TEST("+test_block_name+", TestLocalSelectMethod)\n")
+        test_body.append("{\n")
 
         # Generate OS calls
-        firstOs = True
-        expectedParser = "localStringParser"
-        for osSelector in osLangSelectors:
-            if firstOs:
-                testBody.append("#if "+osSelector.getOsDefine()+"\n")
-                firstOs = False
+        first_os = True
+        expected_parser = "localStringParser"
+        for os_selector in os_lang_selectors:
+            if first_os:
+                test_body.append("#if "+os_selector.get_os_define()+"\n")
+                first_os = False
             else:
-                testBody.append("#elif "+osSelector.getOsDefine()+"\n")
-            testBody.append(bodyIndent+"// Get the expected value\n")
-            testBody.extend(osSelector.genUnitTestFunctionCall(expectedParser, bodyIndentIndex))
+                test_body.append("#elif "+os_selector.get_os_define()+"\n")
+            test_body.append(body_indent+"// Get the expected value\n")
+            test_body.extend(os_selector.gen_unittest_function_call(expected_parser, body_indentIndex))
 
         # Add the #else case
-        testBody.append("#else // not defined os\n")
-        testBody.append(bodyIndent+"#error No language generation defined for this OS\n")
+        test_body.append("#else // not defined os\n")
+        test_body.append(body_indent+"#error No language generation defined for this OS\n")
 
         # Complete the function
-        testBody.append("#endif // defined os\n")
-        getExpectedVal = expectedParser+"->"+getIsoMethod+"().c_str()"
-        testVarTest = testVar+"->"+getIsoMethod+"().c_str()"
-        testBody.append("\n") # whitespace for readability
+        test_body.append("#endif // defined os\n")
+        get_expected_val = expected_parser+"->"+get_iso_method+"().c_str()"
+        test_varTest = test_var+"->"+get_iso_method+"().c_str()"
+        test_body.append("\n") # whitespace for readability
 
-        testBody.append(bodyIndent+"// Generate the test language string object\n")
-        testBody.append(bodyIndent+testVarDecl+" = "+self.selectFunctionName+"();\n")
-        testBody.append(bodyIndent+"EXPECT_STREQ("+getExpectedVal+", "+testVarTest+");\n")
-        testBody.append(self.genFunctionEnd())
-        return testBody
+        test_body.append(body_indent+"// Generate the test language string object\n")
+        test_body.append(body_indent+test_varDecl+" = "+self.select_function_name+"();\n")
+        test_body.append(body_indent+"EXPECT_STREQ("+get_expected_val+", "+test_varTest+");\n")
+        test_body.append(self.gen_function_end())
+        return test_body

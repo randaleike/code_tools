@@ -31,286 +31,286 @@ class Test01Buildmodification:
     """!
     @brief Unit test for the ParamRetDict class
     """
-    def test01BuildMod(self):
+    def test01_build_mod(self):
         """!
         @brief Test build modification value function, default modification
         """
-        testMod = ParamRetDict.buildDictModValue()
-        assert 0 == testMod
+        test_mod = ParamRetDict.build_dict_mod_value()
+        assert 0 == test_mod
 
-    def test02BuildModList(self):
+    def test02_build_mod_list(self):
         """!
         @brief Test build modification value function, list modification
         """
-        testMod = ParamRetDict.buildDictModValue(isList=True)
-        assert ParamRetDict.typeModList == testMod
+        test_mod = ParamRetDict.build_dict_mod_value(is_list=True)
+        assert ParamRetDict.type_mod_list == test_mod
 
-    def test03BuildModRef(self):
+    def test03_build_mod_ref(self):
         """!
         @brief Test build modification value function, reference modification
         """
-        testMod = ParamRetDict.buildDictModValue(isReference=True)
-        assert ParamRetDict.typeModRef == testMod
+        test_mod = ParamRetDict.build_dict_mod_value(is_reference=True)
+        assert ParamRetDict.type_mod_ref == test_mod
 
-    def test04BuildModPtr(self):
+    def test04_build_mod_ptr(self):
         """!
         @brief Test build modification value function, pointer modification
         """
-        testMod = ParamRetDict.buildDictModValue(isPtr=True)
-        assert ParamRetDict.typeModPtr == testMod
+        test_mod = ParamRetDict.build_dict_mod_value(is_ptr=True)
+        assert ParamRetDict.type_mod_ptr == test_mod
 
-    def test05BuildModUndefined(self):
+    def test05_build_mod_undefined(self):
         """!
         @brief Test build modification value function, undefined modification
         """
-        testMod = ParamRetDict.buildDictModValue(orUndef=True)
-        assert ParamRetDict.typeModUndef == testMod
+        test_mod = ParamRetDict.build_dict_mod_value(or_undef=True)
+        assert ParamRetDict.type_mod_undef == test_mod
 
-    def test06BuildModMultiple(self):
+    def test06_build_mod_multiple(self):
         """!
         @brief Test build modification value function, multiple modifications
         """
-        testMod = ParamRetDict.buildDictModValue(True, True, True, True)
-        assert 0x0F == testMod
+        test_mod = ParamRetDict.build_dict_mod_value(True, True, True, True)
+        assert 0x0F == test_mod
 
-    def test07TestIsFunctionsTrue(self):
+    def test07_test_is_functions_true(self):
         """!
         @brief Test the mod check functions
         """
-        testMod = ParamRetDict.buildDictModValue(True, True, True, True)
-        assert ParamRetDict.isModList(testMod)
-        assert ParamRetDict.isModPointer(testMod)
-        assert ParamRetDict.isModReference(testMod)
-        assert ParamRetDict.isOrUndefType(testMod)
+        test_mod = ParamRetDict.build_dict_mod_value(True, True, True, True)
+        assert ParamRetDict.is_mod_list(test_mod)
+        assert ParamRetDict.is_mod_pointer(test_mod)
+        assert ParamRetDict.is_mod_reference(test_mod)
+        assert ParamRetDict.is_or_undef_type(test_mod)
 
-    def test08TestIsFunctionsTrue(self):
+    def test08_test_is_functions_true(self):
         """!
         @brief Test the mod check functions
         """
-        testMod = ParamRetDict.buildDictModValue()
-        assert not ParamRetDict.isModList(testMod)
-        assert not ParamRetDict.isModPointer(testMod)
-        assert not ParamRetDict.isModReference(testMod)
-        assert not ParamRetDict.isOrUndefType(testMod)
+        test_mod = ParamRetDict.build_dict_mod_value()
+        assert not ParamRetDict.is_mod_list(test_mod)
+        assert not ParamRetDict.is_mod_pointer(test_mod)
+        assert not ParamRetDict.is_mod_reference(test_mod)
+        assert not ParamRetDict.is_or_undef_type(test_mod)
 
-    def test09TestIsFunctionsFalse(self):
+    def test09_test_is_functions_false(self):
         """!
         @brief Test the mod check functions
         """
-        testMod = ParamRetDict.buildDictModValue()
-        assert not ParamRetDict.isModList(testMod)
-        assert not ParamRetDict.isModPointer(testMod)
-        assert not ParamRetDict.isModReference(testMod)
-        assert not ParamRetDict.isOrUndefType(testMod)
+        test_mod = ParamRetDict.build_dict_mod_value()
+        assert not ParamRetDict.is_mod_list(test_mod)
+        assert not ParamRetDict.is_mod_pointer(test_mod)
+        assert not ParamRetDict.is_mod_reference(test_mod)
+        assert not ParamRetDict.is_or_undef_type(test_mod)
 
-    def test10TestSetTypeModArraySize(self):
+    def test10_test_set_type_mod_array_size(self):
         """!
         @brief Test the get array size value
         """
-        testList = [0,1,2,37,62,100,1000,10000]
-        for testValue in testList:
-            expectedVal = (testValue & ParamRetDict.typeModArrayMask) << ParamRetDict.typeModArrayShift
-            assert expectedVal == ParamRetDict.setTypeModArraySize(0, testValue)
+        test_list = [0,1,2,37,62,100,1000,10000]
+        for test_value in test_list:
+            expected_val = (test_value & ParamRetDict.type_mod_array_mask) << ParamRetDict.type_mod_array_shift
+            assert expected_val == ParamRetDict.set_type_mod_array_size(0, test_value)
 
-    def test11TestSetTypeModArraySizePtrOverride(self):
+    def test11_test_set_type_mod_array_size_ptr_override(self):
         """!
         @brief Test the get array size value
         """
-        testList = [0,1,2,37,62,100,1000,10000]
-        for testValue in testList:
-            expectedVal = (testValue & ParamRetDict.typeModArrayMask) << ParamRetDict.typeModArrayShift
-            assert expectedVal == ParamRetDict.setTypeModArraySize(ParamRetDict.typeModList, testValue)
+        test_list = [0,1,2,37,62,100,1000,10000]
+        for test_value in test_list:
+            expected_val = (test_value & ParamRetDict.type_mod_array_mask) << ParamRetDict.type_mod_array_shift
+            assert expected_val == ParamRetDict.set_type_mod_array_size(ParamRetDict.type_mod_list, test_value)
 
-    def test12TestGetArraySize(self):
+    def test12_test_get_array_size(self):
         """!
         @brief Test the get array size value
         """
-        testList = [0,1,2,37,62,100,1000,10000]
-        for testValue in testList:
-            testMod = ParamRetDict.setTypeModArraySize(0, testValue)
-            assert testValue == ParamRetDict.getArraySize(testMod)
+        test_list = [0,1,2,37,62,100,1000,10000]
+        for test_value in test_list:
+            test_mod = ParamRetDict.set_type_mod_array_size(0, test_value)
+            assert test_value == ParamRetDict.get_array_size(test_mod)
 
-    def test13TestSetArraySize(self):
+    def test13_test_set_array_size(self):
         """!
         @brief Test the get array size value
         """
-        testList = [0,1,2,37,62,100,1000,10000]
-        testDict = {'typeMod':0}
+        test_list = [0,1,2,37,62,100,1000,10000]
+        test_dict = {'typeMod':0}
 
-        for testValue in testList:
-            testDict['typeMod'] = 0
+        for test_value in test_list:
+            test_dict['typeMod'] = 0
 
-            ParamRetDict.setArraySize(testDict, testValue)
-            assert testValue == ParamRetDict.getArraySize(testDict['typeMod'])
+            ParamRetDict.set_array_size(test_dict, test_value)
+            assert test_value == ParamRetDict.get_array_size(test_dict['typeMod'])
 
 class Test02ReturnDict:
     """!
     @brief Unit test for the ParamRetDict class
     """
 
-    def test01BuildReturnDictDefaultMod(self):
+    def test01_build_return_dict_default_mod(self):
         """!
         @brief Test build return dictionary function, default modification
         """
-        testDict = ParamRetDict.buildReturnDict("string", "Test return base description")
-        keyList = list(testDict.keys())
-        assert 3 == len(keyList)
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        test_dict = ParamRetDict.build_return_dict("string", "Test return base description")
+        key_list = list(test_dict.keys())
+        assert 3 == len(key_list)
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "string" == testDict['type']
-        assert "Test return base description" == testDict['desc']
-        assert 0 == testDict['typeMod']
+        assert "string" == test_dict['type']
+        assert "Test return base description" == test_dict['desc']
+        assert 0 == test_dict['typeMod']
 
-    def test02BuildReturnDictListMod(self):
+    def test02_build_return_dict_list_mod(self):
         """!
         @brief Test build return dictionary function, list modification
         """
-        testDict = ParamRetDict.buildReturnDict("string", "Test return list modification", True)
-        keyList = list(testDict.keys())
-        assert 3 == len(keyList)
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        test_dict = ParamRetDict.build_return_dict("string", "Test return list modification", True)
+        key_list = list(test_dict.keys())
+        assert 3 == len(key_list)
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "string" == testDict['type']
-        assert "Test return list modification" == testDict['desc']
-        assert ParamRetDict.typeModList == testDict['typeMod']
+        assert "string" == test_dict['type']
+        assert "Test return list modification" == test_dict['desc']
+        assert ParamRetDict.type_mod_list == test_dict['typeMod']
 
-    def test03BuildReturnDictRefMod(self):
+    def test03_build_return_dict_ref_mod(self):
         """!
         @brief Test build return dictionary function, reference modification
         """
-        testDict = ParamRetDict.buildReturnDict("integer", "Test return reference modification", isReference=True)
-        keyList = list(testDict.keys())
-        assert 3 == len(keyList)
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        test_dict = ParamRetDict.build_return_dict("integer", "Test return reference modification", is_reference=True)
+        key_list = list(test_dict.keys())
+        assert 3 == len(key_list)
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "integer" == testDict['type']
-        assert "Test return reference modification" == testDict['desc']
-        assert ParamRetDict.typeModRef == testDict['typeMod']
+        assert "integer" == test_dict['type']
+        assert "Test return reference modification" == test_dict['desc']
+        assert ParamRetDict.type_mod_ref == test_dict['typeMod']
 
-    def test04BuildReturnDictPtrMod(self):
+    def test04_build_return_dict_ptr_mod(self):
         """!
         @brief Test build return dictionary function, pointer modification
         """
-        testDict = ParamRetDict.buildReturnDict("integer", "Test return pointer modification", isPtr=True)
-        keyList = list(testDict.keys())
-        assert 3 == len(keyList)
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        test_dict = ParamRetDict.build_return_dict("integer", "Test return pointer modification", is_ptr=True)
+        key_list = list(test_dict.keys())
+        assert 3 == len(key_list)
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "integer" == testDict['type']
-        assert "Test return pointer modification" == testDict['desc']
-        assert ParamRetDict.typeModPtr == testDict['typeMod']
+        assert "integer" == test_dict['type']
+        assert "Test return pointer modification" == test_dict['desc']
+        assert ParamRetDict.type_mod_ptr == test_dict['typeMod']
 
-    def test05BuildReturnDictUndefinedMod(self):
+    def test05_build_return_dict_undefined_mod(self):
         """!
         @brief Test build return dictionary function, undefined modification
         """
-        testDict = ParamRetDict.buildReturnDict("unsigned", "Test return undefined modification", orUndef=True)
-        keyList = list(testDict.keys())
-        assert 3 == len(keyList)
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        test_dict = ParamRetDict.build_return_dict("unsigned", "Test return undefined modification", or_undef=True)
+        key_list = list(test_dict.keys())
+        assert 3 == len(key_list)
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "unsigned" == testDict['type']
-        assert "Test return undefined modification" == testDict['desc']
-        assert ParamRetDict.typeModUndef == testDict['typeMod']
+        assert "unsigned" == test_dict['type']
+        assert "Test return undefined modification" == test_dict['desc']
+        assert ParamRetDict.type_mod_undef == test_dict['typeMod']
 
-    def test06BuildReturnDictMultipleMods(self):
+    def test06_build_return_dict_multiple_mods(self):
         """!
         @brief Test build return dictionary function, multiple modifications
         """
-        testDict = ParamRetDict.buildReturnDict("size", "Test return multiple modifications",
-                                                isList=True, isReference=True, isPtr=True, orUndef=True)
-        keyList = list(testDict.keys())
-        assert 3 == len(keyList)
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        test_dict = ParamRetDict.build_return_dict("size", "Test return multiple modifications",
+                                                is_list=True, is_reference=True, is_ptr=True, or_undef=True)
+        key_list = list(test_dict.keys())
+        assert 3 == len(key_list)
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "size" == testDict['type']
-        assert "Test return multiple modifications" == testDict['desc']
-        expectedMod = ParamRetDict.typeModList|ParamRetDict.typeModPtr|ParamRetDict.typeModRef|ParamRetDict.typeModUndef
-        assert expectedMod == testDict['typeMod']
+        assert "size" == test_dict['type']
+        assert "Test return multiple modifications" == test_dict['desc']
+        expected_mod = ParamRetDict.type_mod_list|ParamRetDict.type_mod_ptr|ParamRetDict.type_mod_ref|ParamRetDict.type_mod_undef
+        assert expected_mod == test_dict['typeMod']
 
-    def test07BuildReturnDictDefaultPlusArray(self):
+    def test07_build_return_dict_default_plus_array(self):
         """!
         @brief Test build return dictionary function, add array set
         """
-        testDict = ParamRetDict.buildReturnDict("float", "Test return array post modification")
-        ParamRetDict.setArraySize(testDict, 7)
+        test_dict = ParamRetDict.build_return_dict("float", "Test return array post modification")
+        ParamRetDict.set_array_size(test_dict, 7)
 
-        keyList = list(testDict.keys())
-        assert 3 == len(keyList)
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        key_list = list(test_dict.keys())
+        assert 3 == len(key_list)
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "float" == testDict['type']
-        assert "Test return array post modification" == testDict['desc']
-        expectedMod = 7 << ParamRetDict.typeModArrayShift
-        assert expectedMod == testDict['typeMod']
+        assert "float" == test_dict['type']
+        assert "Test return array post modification" == test_dict['desc']
+        expected_mod = 7 << ParamRetDict.type_mod_array_shift
+        assert expected_mod == test_dict['typeMod']
 
-    def test08BuildReturnDictPtrPlusArray(self):
+    def test08_build_return_dict_ptr_plus_array(self):
         """!
         @brief Test build return dictionary function, pointer modification plus array set
         """
-        testDict = ParamRetDict.buildReturnDict("float", "Test return ptr array post modification", isPtr=True)
-        ParamRetDict.setArraySize(testDict, 8)
+        test_dict = ParamRetDict.build_return_dict("float", "Test return ptr array post modification", is_ptr=True)
+        ParamRetDict.set_array_size(test_dict, 8)
 
-        keyList = list(testDict.keys())
-        assert 3 == len(keyList)
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        key_list = list(test_dict.keys())
+        assert 3 == len(key_list)
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "float" == testDict['type']
-        assert "Test return ptr array post modification" == testDict['desc']
-        expectedMod = (8 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModPtr
-        assert expectedMod == testDict['typeMod']
+        assert "float" == test_dict['type']
+        assert "Test return ptr array post modification" == test_dict['desc']
+        expected_mod = (8 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_ptr
+        assert expected_mod == test_dict['typeMod']
 
-    def test09BuildReturnDictWithInputMod(self):
+    def test09_build_return_dict_with_input_mod(self):
         """!
         @brief Test build return dictionary function, pointer modification plus array set
         """
-        testDict = ParamRetDict.buildReturnDictWithMod("struct", "Test return dictionary with mode input", 55)
+        test_dict = ParamRetDict.build_return_dict_with_mod("struct", "Test return dictionary with mode input", 55)
 
-        keyList = list(testDict.keys())
-        assert 3 == len(keyList)
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        key_list = list(test_dict.keys())
+        assert 3 == len(key_list)
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "struct" == testDict['type']
-        assert "Test return dictionary with mode input" == testDict['desc']
-        assert 55 == testDict['typeMod']
+        assert "struct" == test_dict['type']
+        assert "Test return dictionary with mode input" == test_dict['desc']
+        assert 55 == test_dict['typeMod']
 
-    def test10GetReturnData(self):
+    def test10_get_return_data(self):
         """!
         @brief Test return dictionary get data function
         """
-        testDict = ParamRetDict.buildReturnDictWithMod("struct", "Test return dictionary with mode input", ParamRetDict.typeModList)
-        assert "struct" == ParamRetDict.getReturnType(testDict)
-        assert "Test return dictionary with mode input" == ParamRetDict.getReturnDesc(testDict)
-        assert ParamRetDict.typeModList == ParamRetDict.getReturnTypeMod(testDict)
+        test_dict = ParamRetDict.build_return_dict_with_mod("struct", "Test return dictionary with mode input", ParamRetDict.type_mod_list)
+        assert "struct" == ParamRetDict.get_return_type(test_dict)
+        assert "Test return dictionary with mode input" == ParamRetDict.get_return_desc(test_dict)
+        assert ParamRetDict.type_mod_list == ParamRetDict.get_return_type_mod(test_dict)
 
-    def test11GetReturnDataTuple(self):
+    def test11_get_return_data_tuple(self):
         """!
         @brief Test return dictionary get data tuple function
         """
-        testDict = ParamRetDict.buildReturnDictWithMod("struct", "Test return dictionary with mode input", ParamRetDict.typeModPtr)
+        test_dict = ParamRetDict.build_return_dict_with_mod("struct", "Test return dictionary with mode input", ParamRetDict.type_mod_ptr)
 
-        retType, retDesc, retMode = ParamRetDict.getReturnData(testDict)
-        assert "struct" == retType
-        assert "Test return dictionary with mode input" == retDesc
-        assert ParamRetDict.typeModPtr == retMode
+        ret_type, ret_desc, ret_mode = ParamRetDict.get_return_data(test_dict)
+        assert "struct" == ret_type
+        assert "Test return dictionary with mode input" == ret_desc
+        assert ParamRetDict.type_mod_ptr == ret_mode
 
 
 class Test03ParamDict:
@@ -318,186 +318,186 @@ class Test03ParamDict:
     @brief Unit test for the ParamRetDict class
     """
 
-    def test01BuildParamDictDefaultMod(self):
+    def test01_build_param_dict_default_mod(self):
         """!
         @brief Test build parameter dictionary function, default modification
         """
-        testDict = ParamRetDict.buildParamDict("foo", "string", "Test parameter base description")
-        keyList = list(testDict.keys())
-        assert 4 == len(keyList)
-        assert 'name' in keyList
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        test_dict = ParamRetDict.build_param_dict("foo", "string", "Test parameter base description")
+        key_list = list(test_dict.keys())
+        assert 4 == len(key_list)
+        assert 'name' in key_list
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "foo" == testDict['name']
-        assert "string" == testDict['type']
-        assert "Test parameter base description" == testDict['desc']
-        assert 0 == testDict['typeMod']
+        assert "foo" == test_dict['name']
+        assert "string" == test_dict['type']
+        assert "Test parameter base description" == test_dict['desc']
+        assert 0 == test_dict['typeMod']
 
-    def test02BuildParamDictListMod(self):
+    def test02_build_param_dict_list_mod(self):
         """!
         @brief Test build parameter dictionary function, list modification
         """
-        testDict = ParamRetDict.buildParamDict("moo", "string", "Test parameter list modification", True)
-        keyList = list(testDict.keys())
-        assert 4 == len(keyList)
-        assert 'name' in keyList
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        test_dict = ParamRetDict.build_param_dict("moo", "string", "Test parameter list modification", True)
+        key_list = list(test_dict.keys())
+        assert 4 == len(key_list)
+        assert 'name' in key_list
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "moo" == testDict['name']
-        assert "string" == testDict['type']
-        assert "Test parameter list modification" == testDict['desc']
-        assert ParamRetDict.typeModList == testDict['typeMod']
+        assert "moo" == test_dict['name']
+        assert "string" == test_dict['type']
+        assert "Test parameter list modification" == test_dict['desc']
+        assert ParamRetDict.type_mod_list == test_dict['typeMod']
 
-    def test03BuildParamDictRefMod(self):
+    def test03_build_param_dict_ref_mod(self):
         """!
         @brief Test build parameter dictionary function, reference modification
         """
-        testDict = ParamRetDict.buildParamDict("goo", "integer", "Test parameter reference modification", isReference=True)
-        keyList = list(testDict.keys())
-        assert 4 == len(keyList)
-        assert 'name' in keyList
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        test_dict = ParamRetDict.build_param_dict("goo", "integer", "Test parameter reference modification", is_reference=True)
+        key_list = list(test_dict.keys())
+        assert 4 == len(key_list)
+        assert 'name' in key_list
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "goo" == testDict['name']
-        assert "integer" == testDict['type']
-        assert "Test parameter reference modification" == testDict['desc']
-        assert ParamRetDict.typeModRef == testDict['typeMod']
+        assert "goo" == test_dict['name']
+        assert "integer" == test_dict['type']
+        assert "Test parameter reference modification" == test_dict['desc']
+        assert ParamRetDict.type_mod_ref == test_dict['typeMod']
 
-    def test04BuildParamDictPtrMod(self):
+    def test04_build_param_dict_ptr_mod(self):
         """!
         @brief Test build parameter dictionary function, pointer modification
         """
-        testDict = ParamRetDict.buildParamDict("shoo", "integer", "Test parameter pointer modification", isPtr=True)
-        keyList = list(testDict.keys())
-        assert 4 == len(keyList)
-        assert 'name' in keyList
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        test_dict = ParamRetDict.build_param_dict("shoo", "integer", "Test parameter pointer modification", is_ptr=True)
+        key_list = list(test_dict.keys())
+        assert 4 == len(key_list)
+        assert 'name' in key_list
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "shoo" == testDict['name']
-        assert "integer" == testDict['type']
-        assert "Test parameter pointer modification" == testDict['desc']
-        assert ParamRetDict.typeModPtr == testDict['typeMod']
+        assert "shoo" == test_dict['name']
+        assert "integer" == test_dict['type']
+        assert "Test parameter pointer modification" == test_dict['desc']
+        assert ParamRetDict.type_mod_ptr == test_dict['typeMod']
 
-    def test05BuildParamDictUndefinedMod(self):
+    def test05_build_param_dict_undefined_mod(self):
         """!
         @brief Test build parameter dictionary function, undefined modification
         """
-        testDict = ParamRetDict.buildParamDict("too", "unsigned", "Test parameter undefined modification", orUndef=True)
-        keyList = list(testDict.keys())
-        assert 4 == len(keyList)
-        assert 'name' in keyList
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        test_dict = ParamRetDict.build_param_dict("too", "unsigned", "Test parameter undefined modification", or_undef=True)
+        key_list = list(test_dict.keys())
+        assert 4 == len(key_list)
+        assert 'name' in key_list
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "too" == testDict['name']
-        assert "unsigned" == testDict['type']
-        assert "Test parameter undefined modification" == testDict['desc']
-        assert ParamRetDict.typeModUndef == testDict['typeMod']
+        assert "too" == test_dict['name']
+        assert "unsigned" == test_dict['type']
+        assert "Test parameter undefined modification" == test_dict['desc']
+        assert ParamRetDict.type_mod_undef == test_dict['typeMod']
 
-    def test06BuildParamDictMultipleMods(self):
+    def test06_build_param_dict_multiple_mods(self):
         """!
         @brief Test build parameter dictionary function, multiple modifications
         """
-        testDict = ParamRetDict.buildParamDict("yoo", "size", "Test parameter multiple modifications",
-                                                isList=True, isReference=True, isPtr=True, orUndef=True)
-        keyList = list(testDict.keys())
-        assert 4 == len(keyList)
-        assert 'name' in keyList
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        test_dict = ParamRetDict.build_param_dict("yoo", "size", "Test parameter multiple modifications",
+                                                is_list=True, is_reference=True, is_ptr=True, or_undef=True)
+        key_list = list(test_dict.keys())
+        assert 4 == len(key_list)
+        assert 'name' in key_list
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "yoo" == testDict['name']
-        assert "size" == testDict['type']
-        assert "Test parameter multiple modifications" == testDict['desc']
-        expectedMod = ParamRetDict.typeModList|ParamRetDict.typeModPtr|ParamRetDict.typeModRef|ParamRetDict.typeModUndef
-        assert expectedMod == testDict['typeMod']
+        assert "yoo" == test_dict['name']
+        assert "size" == test_dict['type']
+        assert "Test parameter multiple modifications" == test_dict['desc']
+        expected_mod = ParamRetDict.type_mod_list|ParamRetDict.type_mod_ptr|ParamRetDict.type_mod_ref|ParamRetDict.type_mod_undef
+        assert expected_mod == test_dict['typeMod']
 
-    def test07BuildParamDictDefaultPlusArray(self):
+    def test07_build_param_dict_default_plus_array(self):
         """!
         @brief Test build parameter dictionary function, add array set
         """
-        testDict = ParamRetDict.buildParamDict("pi", "float", "Test parameter array post modification")
-        ParamRetDict.setArraySize(testDict, 7)
+        test_dict = ParamRetDict.build_param_dict("pi", "float", "Test parameter array post modification")
+        ParamRetDict.set_array_size(test_dict, 7)
 
-        keyList = list(testDict.keys())
-        assert 4 == len(keyList)
-        assert 'name' in keyList
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        key_list = list(test_dict.keys())
+        assert 4 == len(key_list)
+        assert 'name' in key_list
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "pi" == testDict['name']
-        assert "float" == testDict['type']
-        assert "Test parameter array post modification" == testDict['desc']
-        expectedMod = 7 << ParamRetDict.typeModArrayShift
-        assert expectedMod == testDict['typeMod']
+        assert "pi" == test_dict['name']
+        assert "float" == test_dict['type']
+        assert "Test parameter array post modification" == test_dict['desc']
+        expected_mod = 7 << ParamRetDict.type_mod_array_shift
+        assert expected_mod == test_dict['typeMod']
 
-    def test08BuildParamDictPtrPlusArray(self):
+    def test08_build_param_dict_ptr_plus_array(self):
         """!
         @brief Test build parameter dictionary function, pointer modification plus array set
         """
-        testDict = ParamRetDict.buildParamDict("rugbyPlayers", "string", "Test parameter ptr array post modification", isPtr=True)
-        ParamRetDict.setArraySize(testDict, 23)
+        test_dict = ParamRetDict.build_param_dict("rugbyPlayers", "string", "Test parameter ptr array post modification", is_ptr=True)
+        ParamRetDict.set_array_size(test_dict, 23)
 
-        keyList = list(testDict.keys())
-        assert 4 == len(keyList)
-        assert 'name' in keyList
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        key_list = list(test_dict.keys())
+        assert 4 == len(key_list)
+        assert 'name' in key_list
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "rugbyPlayers" == testDict['name']
-        assert "string" == testDict['type']
-        assert "Test parameter ptr array post modification" == testDict['desc']
-        expectedMod = (23 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModPtr
-        assert expectedMod == testDict['typeMod']
+        assert "rugbyPlayers" == test_dict['name']
+        assert "string" == test_dict['type']
+        assert "Test parameter ptr array post modification" == test_dict['desc']
+        expected_mod = (23 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_ptr
+        assert expected_mod == test_dict['typeMod']
 
-    def test09BuildParamDictWithInputMod(self):
+    def test09_build_param_dict_with_input_mod(self):
         """!
         @brief Test build parameter dictionary function, pointer modification plus array set
         """
-        testDict = ParamRetDict.buildParamDictWithMod("employees", "struct", "Test parameter dictionary with mode input", 0x0440002)
+        test_dict = ParamRetDict.build_param_dict_with_mod("employees", "struct", "Test parameter dictionary with mode input", 0x0440002)
 
-        keyList = list(testDict.keys())
-        assert 4 == len(keyList)
-        assert 'name' in keyList
-        assert 'type' in keyList
-        assert 'desc' in keyList
-        assert 'typeMod' in keyList
+        key_list = list(test_dict.keys())
+        assert 4 == len(key_list)
+        assert 'name' in key_list
+        assert 'type' in key_list
+        assert 'desc' in key_list
+        assert 'typeMod' in key_list
 
-        assert "employees" == testDict['name']
-        assert "struct" == testDict['type']
-        assert "Test parameter dictionary with mode input" == testDict['desc']
-        assert 0x0440002 == testDict['typeMod']
+        assert "employees" == test_dict['name']
+        assert "struct" == test_dict['type']
+        assert "Test parameter dictionary with mode input" == test_dict['desc']
+        assert 0x0440002 == test_dict['typeMod']
 
-    def test10GetParamData(self):
+    def test10_get_param_data(self):
         """!
         @brief Test parameter dictionary get data function
         """
-        testDict = ParamRetDict.buildParamDictWithMod("employees", "struct", "Test parameter dictionary with mode input", 0x0440002)
-        assert "employees" == ParamRetDict.getParamName(testDict)
-        assert "struct" == ParamRetDict.getParamType(testDict)
-        assert "Test parameter dictionary with mode input" == ParamRetDict.getParamDesc(testDict)
-        assert 0x0440002 == ParamRetDict.getParamTypeMod(testDict)
+        test_dict = ParamRetDict.build_param_dict_with_mod("employees", "struct", "Test parameter dictionary with mode input", 0x0440002)
+        assert "employees" == ParamRetDict.get_param_name(test_dict)
+        assert "struct" == ParamRetDict.get_param_type(test_dict)
+        assert "Test parameter dictionary with mode input" == ParamRetDict.get_param_desc(test_dict)
+        assert 0x0440002 == ParamRetDict.get_param_type_mod(test_dict)
 
-    def test11GetParamDataTuple(self):
+    def test11_get_param_data_tuple(self):
         """!
         @brief Test parameter dictionary get data tuple function
         """
-        testDict = ParamRetDict.buildParamDictWithMod("uid", "integer", "Test parameter dictionary with mode input", ParamRetDict.typeModPtr)
-        paramName, paramType, paramDesc, paramMode = ParamRetDict.getParamData(testDict)
+        test_dict = ParamRetDict.build_param_dict_with_mod("uid", "integer", "Test parameter dictionary with mode input", ParamRetDict.type_mod_ptr)
+        param_name, param_type, param_desc, param_mode = ParamRetDict.get_param_data(test_dict)
 
-        assert "uid" == paramName
-        assert "integer" == paramType
-        assert "Test parameter dictionary with mode input" == paramDesc
-        assert ParamRetDict.typeModPtr == paramMode
+        assert "uid" == param_name
+        assert "integer" == param_type
+        assert "Test parameter dictionary with mode input" == param_desc
+        assert ParamRetDict.type_mod_ptr == param_mode

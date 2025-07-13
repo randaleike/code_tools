@@ -44,7 +44,7 @@ class Test02StringClassDescription:
     """
     @classmethod
     def setup_class(cls):
-        cls.testJson = os.path.join(TESTFILEPATH, "teststrdesc.json")
+        cls.test_json = os.path.join(TESTFILEPATH, "teststrdesc.json")
         cls.testlanglist = os.path.join(TESTFILEPATH, "teststringlanglist.json")
 
 
@@ -56,496 +56,496 @@ class Test02StringClassDescription:
             os.remove("temp.json")   # Delete in case it was accidently not deleted
 
 
-    def test01DefaultConstructor(self):
+    def test01_default_constructor(self):
         """!
         @brief Test Default constructor()
         """
         testobj = StringClassDescription()
         pytest.raises(FileNotFoundError)
         assert testobj.filename == "jsonStringClassDescription.json"
-        assert testobj.stringJasonData['baseClassName'] == "baseclass"
-        assert testobj.stringJasonData['namespace'] == "myNamespace"
-        assert testobj.stringJasonData['dynamicCompileSwitch'] == "DYNAMIC_INTERNATIONALIZATION"
-        assert len(testobj.stringJasonData['propertyMethods']) == 0
-        assert len(testobj.stringJasonData['translateMethods']) == 0
+        assert testobj.string_jason_data['baseClassName'] == "baseclass"
+        assert testobj.string_jason_data['namespace'] == "myNamespace"
+        assert testobj.string_jason_data['dynamicCompileSwitch'] == "DYNAMIC_INTERNATIONALIZATION"
+        assert len(testobj.string_jason_data['propertyMethods']) == 0
+        assert len(testobj.string_jason_data['translateMethods']) == 0
 
-    def test02ConstructorWithFile(self):
+    def test02_constructor_with_file(self):
         """!
         @brief Test Default constructor()
         """
-        testobj = StringClassDescription(self.testJson)
-        assert testobj.filename == self.testJson
-        assert testobj.stringJasonData['baseClassName'] == "ParserStringListInterface"
-        assert testobj.stringJasonData['namespace'] == "argparser"
-        assert testobj.stringJasonData['dynamicCompileSwitch'] == "TEST_DYNAMIC_INTERNATIONALIZATION"
-        assert len(testobj.stringJasonData['propertyMethods']) == 1
-        assert list(testobj.stringJasonData['propertyMethods'])[0] == 'getLangIsoCode'
-        assert len(testobj.stringJasonData['translateMethods']) == 1
-        assert list(testobj.stringJasonData['translateMethods'])[0] == 'getNotListTypeMessage'
+        testobj = StringClassDescription(self.test_json)
+        assert testobj.filename == self.test_json
+        assert testobj.string_jason_data['baseClassName'] == "ParserStringListInterface"
+        assert testobj.string_jason_data['namespace'] == "argparser"
+        assert testobj.string_jason_data['dynamicCompileSwitch'] == "TEST_DYNAMIC_INTERNATIONALIZATION"
+        assert len(testobj.string_jason_data['propertyMethods']) == 1
+        assert list(testobj.string_jason_data['propertyMethods'])[0] == 'getLangIsoCode'
+        assert len(testobj.string_jason_data['translateMethods']) == 1
+        assert list(testobj.string_jason_data['translateMethods'])[0] == 'getNotListTypeMessage'
 
-    def test03GetCommitOverwriteFlagNo(self):
+    def test03_get_commit_overwrite_flag_no(self):
         """!
-        @brief Test _getCommitOverWriteFlag method, no answer
+        @brief Test _get_commit_over_write_flag method, no answer
         """
         testobj = StringClassDescription()
-        with patch('builtins.input', side_effect='n') as inMock:
-            assert not testobj._getCommitOverWriteFlag("testEntry")
-            inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='n') as in_mock:
+            assert not testobj._get_commit_over_write_flag("test_entry")
+            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='N') as inMock:
-            assert not testobj._getCommitOverWriteFlag("testEntry")
-            inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='N') as in_mock:
+            assert not testobj._get_commit_over_write_flag("test_entry")
+            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='No') as inMock:
-            assert not testobj._getCommitOverWriteFlag("testEntry")
-            inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='No') as in_mock:
+            assert not testobj._get_commit_over_write_flag("test_entry")
+            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
 
-    def test04GetCommitOverwriteFlagYes(self):
+    def test04_get_commit_overwrite_flag_yes(self):
         """!
-        @brief Test _getCommitOverWriteFlag method, Yes answer
+        @brief Test _get_commit_over_write_flag method, Yes answer
         """
         testobj = StringClassDescription()
-        with patch('builtins.input', side_effect='y') as inMock:
-            assert testobj._getCommitOverWriteFlag("testEntry")
-            inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='y') as in_mock:
+            assert testobj._get_commit_over_write_flag("test_entry")
+            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='Y') as inMock:
-            assert testobj._getCommitOverWriteFlag("testEntry")
-            inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='Y') as in_mock:
+            assert testobj._get_commit_over_write_flag("test_entry")
+            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='yes') as inMock:
-            assert testobj._getCommitOverWriteFlag("testEntry")
-            inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='yes') as in_mock:
+            assert testobj._get_commit_over_write_flag("test_entry")
+            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='YES') as inMock:
-            assert testobj._getCommitOverWriteFlag("testEntry")
-            inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='YES') as in_mock:
+            assert testobj._get_commit_over_write_flag("test_entry")
+            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='Yes') as inMock:
-            assert testobj._getCommitOverWriteFlag("testEntry")
-            inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='Yes') as in_mock:
+            assert testobj._get_commit_over_write_flag("test_entry")
+            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
 
-    def test05GetCommitOverwriteFlagOverride(self):
+    def test05_get_commit_overwrite_flag_override(self):
         """!
-        @brief Test _getCommitOverWriteFlag method, override=True
+        @brief Test _get_commit_over_write_flag method, override=True
         """
         testobj = StringClassDescription()
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
-            assert testobj._getCommitOverWriteFlag("testEntry", True)
+            assert testobj._get_commit_over_write_flag("test_entry", True)
             assert output.getvalue() == ""
 
-    def test06GetCommitNewFlagNo(self):
+    def test06_get_commit_new_flag_no(self):
         """!
-        @brief Test _getCommitNewFlag method, no answer
+        @brief Test _get_commit_new_flag method, no answer
         """
         testobj = StringClassDescription()
-        with patch('builtins.input', side_effect='n') as inMock:
-            assert not testobj._getCommitNewFlag("testEntry")
-            inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='n') as in_mock:
+            assert not testobj._get_commit_new_flag("test_entry")
+            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='N') as inMock:
-            assert not testobj._getCommitNewFlag("testEntry")
-            inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='N') as in_mock:
+            assert not testobj._get_commit_new_flag("test_entry")
+            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='no') as inMock:
-            assert not testobj._getCommitNewFlag("testEntry")
-            inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='no') as in_mock:
+            assert not testobj._get_commit_new_flag("test_entry")
+            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='NO') as inMock:
-            assert not testobj._getCommitNewFlag("testEntry")
-            inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='NO') as in_mock:
+            assert not testobj._get_commit_new_flag("test_entry")
+            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='No') as inMock:
-            assert not testobj._getCommitNewFlag("testEntry")
-            inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='No') as in_mock:
+            assert not testobj._get_commit_new_flag("test_entry")
+            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
 
-    def test07GetCommitNewFlagYes(self):
+    def test07_get_commit_new_flag_yes(self):
         """!
-        @brief Test _getCommitNewFlag method, Yes answer
+        @brief Test _get_commit_new_flag method, Yes answer
         """
         testobj = StringClassDescription()
-        with patch('builtins.input', side_effect='y') as inMock:
-            assert testobj._getCommitNewFlag("testEntry")
-            inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='y') as in_mock:
+            assert testobj._get_commit_new_flag("test_entry")
+            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='Y') as inMock:
-            assert testobj._getCommitNewFlag("testEntry")
-            inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='Y') as in_mock:
+            assert testobj._get_commit_new_flag("test_entry")
+            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='yes') as inMock:
-            assert testobj._getCommitNewFlag("testEntry")
-            inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='yes') as in_mock:
+            assert testobj._get_commit_new_flag("test_entry")
+            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='YES') as inMock:
-            assert testobj._getCommitNewFlag("testEntry")
-            inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='YES') as in_mock:
+            assert testobj._get_commit_new_flag("test_entry")
+            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='Yes') as inMock:
-            assert testobj._getCommitNewFlag("testEntry")
-            inMock.assert_called_once_with("Add new testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='Yes') as in_mock:
+            assert testobj._get_commit_new_flag("test_entry")
+            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
 
-    def test08GetCommitFlag(self):
+    def test08_get_commit_flag(self):
         """!
-        @brief Test _getCommitFlag method
+        @brief Test _get_commit_flag method
         """
         testobj = StringClassDescription()
-        with patch('builtins.input', side_effect='y') as inMock:
-            assert testobj._getCommitFlag("testEntry",['testEntry'])
-            inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
-        with patch('builtins.input', side_effect='n') as inMock:
-            assert not testobj._getCommitFlag("testEntry",['testEntry'])
-            inMock.assert_called_once_with("Overwrite existing testEntry entry? [Y/N]")
+        with patch('builtins.input', side_effect='y') as in_mock:
+            assert testobj._get_commit_flag("test_entry",['test_entry'])
+            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
+        with patch('builtins.input', side_effect='n') as in_mock:
+            assert not testobj._get_commit_flag("test_entry",['test_entry'])
+            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
 
-        with patch('builtins.input', side_effect='y') as inMock:
-            assert testobj._getCommitFlag("test33",['testEntry'])
-            inMock.assert_called_once_with("Add new test33 entry? [Y/N]")
-        with patch('builtins.input', side_effect='n') as inMock:
-            assert not testobj._getCommitFlag("test33",['testEntry'])
-            inMock.assert_called_once_with("Add new test33 entry? [Y/N]")
+        with patch('builtins.input', side_effect='y') as in_mock:
+            assert testobj._get_commit_flag("test33",['test_entry'])
+            in_mock.assert_called_once_with("Add new test33 entry? [Y/N]")
+        with patch('builtins.input', side_effect='n') as in_mock:
+            assert not testobj._get_commit_flag("test33",['test_entry'])
+            in_mock.assert_called_once_with("Add new test33 entry? [Y/N]")
 
-        assert testobj._getCommitFlag("testEntry",['testEntry'], True)
+        assert testobj._get_commit_flag("test_entry",['test_entry'], True)
 
-        with patch('builtins.input', side_effect='y') as inMock:
-            assert testobj._getCommitFlag("test33",['testEntry'], True)
-            inMock.assert_called_once_with("Add new test33 entry? [Y/N]")
-        with patch('builtins.input', side_effect='n') as inMock:
-            assert not testobj._getCommitFlag("test33",['testEntry'], True)
-            inMock.assert_called_once_with("Add new test33 entry? [Y/N]")
+        with patch('builtins.input', side_effect='y') as in_mock:
+            assert testobj._get_commit_flag("test33",['test_entry'], True)
+            in_mock.assert_called_once_with("Add new test33 entry? [Y/N]")
+        with patch('builtins.input', side_effect='n') as in_mock:
+            assert not testobj._get_commit_flag("test33",['test_entry'], True)
+            in_mock.assert_called_once_with("Add new test33 entry? [Y/N]")
 
-    def test09SetBaseClassName(self):
+    def test09_set_base_class_name(self):
         """!
-        @brief Test setBaseClassName method
+        @brief Test set_base_class_name method
         """
         testobj = StringClassDescription()
-        assert testobj.stringJasonData['baseClassName'] == "baseclass"
-        testobj.setBaseClassName("NewClassName")
-        assert testobj.stringJasonData['baseClassName'] == "NewClassName"
+        assert testobj.string_jason_data['baseClassName'] == "baseclass"
+        testobj.set_base_class_name("NewClassName")
+        assert testobj.string_jason_data['baseClassName'] == "NewClassName"
 
-    def test10GetBaseClassName(self):
+    def test10_get_base_class_name(self):
         """!
-        @brief Test getBaseClassName method
+        @brief Test get_base_class_name method
         """
         testobj = StringClassDescription()
-        assert testobj.stringJasonData['baseClassName'] == testobj.getBaseClassName()
+        assert testobj.string_jason_data['baseClassName'] == testobj.get_base_class_name()
 
-    def test11GetBaseClassNameWithNamespace(self):
+    def test11_get_base_class_name_with_namespace(self):
         """!
-        @brief Test getBaseClassNameWithNamespace method
+        @brief Test get_base_class_nameWithNamespace method
         """
         testobj = StringClassDescription()
-        assert testobj.getBaseClassNameWithNamespace("Foo",".") == "Foo.baseclass"
+        assert testobj.get_base_class_name_with_namespace("Foo",".") == "Foo.baseclass"
 
-    def test12GetLanguageClassName(self):
+    def test12_get_language_class_name(self):
         """!
-        @brief Test getLanguageClassName method
+        @brief Test get_language_class_name method
         """
         testobj = StringClassDescription()
-        assert testobj.getLanguageClassName() == "baseclass"
-        assert testobj.getLanguageClassName("english") == "baseclassEnglish"
+        assert testobj.get_language_class_name() == "baseclass"
+        assert testobj.get_language_class_name("english") == "baseclassEnglish"
 
-    def test13GetLanguageClassNameWithNamespace(self):
+    def test13_get_language_class_name_with_namespace(self):
         """!
-        @brief Test getLanguageClassNameWithNamespace method
+        @brief Test get_language_class_name_with_namespace method
         """
         testobj = StringClassDescription()
-        assert testobj.getLanguageClassNameWithNamespace("Moo") == "Moo::baseclass"
-        assert testobj.getLanguageClassNameWithNamespace("Moo", ",", "english") == "Moo,baseclassEnglish"
+        assert testobj.get_language_class_name_with_namespace("Moo") == "Moo::baseclass"
+        assert testobj.get_language_class_name_with_namespace("Moo", ",", "english") == "Moo,baseclassEnglish"
 
-    def test14SetNamespaceName(self):
+    def test14_set_namespace_name(self):
         """!
-        @brief Test setNamespaceName method
+        @brief Test set_namespace_name method
         """
         testobj = StringClassDescription()
-        assert testobj.stringJasonData['namespace'] == "myNamespace"
-        testobj.setNamespaceName("NewNamespace")
-        assert testobj.stringJasonData['namespace'] == "NewNamespace"
+        assert testobj.string_jason_data['namespace'] == "myNamespace"
+        testobj.set_namespace_name("NewNamespace")
+        assert testobj.string_jason_data['namespace'] == "NewNamespace"
 
-    def test15GetNamespaceName(self):
+    def test15_get_namespace_name(self):
         """!
-        @brief Test getNamespaceName method
+        @brief Test get_namespace_name method
         """
         testobj = StringClassDescription()
-        assert testobj.stringJasonData['namespace'] == testobj.getNamespaceName()
+        assert testobj.string_jason_data['namespace'] == testobj.get_namespace_name()
 
-    def test16SetDynamicCompileSwitch(self):
+    def test16_set_dynamic_compile_switch(self):
         """!
-        @brief Test setDynamicCompileSwitch method
+        @brief Test set_dynamic_compile_switch method
         """
         testobj = StringClassDescription()
-        assert testobj.stringJasonData['dynamicCompileSwitch'] == "DYNAMIC_INTERNATIONALIZATION"
-        testobj.setDynamicCompileSwitch("MY_DYNAMIC_SWITCH")
-        assert testobj.stringJasonData['dynamicCompileSwitch'] == "MY_DYNAMIC_SWITCH"
+        assert testobj.string_jason_data['dynamicCompileSwitch'] == "DYNAMIC_INTERNATIONALIZATION"
+        testobj.set_dynamic_compile_switch("MY_DYNAMIC_SWITCH")
+        assert testobj.string_jason_data['dynamicCompileSwitch'] == "MY_DYNAMIC_SWITCH"
 
-    def test17GetDynamicCompileSwitch(self):
+    def test17_get_dynamic_compile_switch(self):
         """!
-        @brief Test getDynamicCompileSwitch method
+        @brief Test get_dynamic_compile_switch method
         """
         testobj = StringClassDescription()
-        assert testobj.stringJasonData['dynamicCompileSwitch'] == testobj.getDynamicCompileSwitch()
+        assert testobj.string_jason_data['dynamicCompileSwitch'] == testobj.get_dynamic_compile_switch()
 
-    def test18DefinePropertyFunctionEntry(self):
+    def test18_define_property_function_entry(self):
         """!
-        @brief Test _definePropertyFunctionEntry method
+        @brief Test _define_property_function_entry method
         """
         testobj = StringClassDescription()
-        propertyDict = testobj._definePropertyFunctionEntry("silly", "Silly property", "integer", "Some number")
-        assert propertyDict['name'] == "silly"
-        assert propertyDict['briefDesc'] == "Silly property"
-        assert isinstance(propertyDict['params'], list)
-        assert len(propertyDict['params']) == 0
-        assert isinstance(propertyDict['return'], dict)
-        assert len(propertyDict['return']) == 3
-        assert propertyDict['return']['type'] == "integer"
-        assert propertyDict['return']['desc'] == "Some number"
-        assert propertyDict['return']['typeMod'] == 0
+        property_dict = testobj._define_property_function_entry("silly", "Silly property", "integer", "Some number")
+        assert property_dict['name'] == "silly"
+        assert property_dict['briefDesc'] == "Silly property"
+        assert isinstance(property_dict['params'], list)
+        assert len(property_dict['params']) == 0
+        assert isinstance(property_dict['return'], dict)
+        assert len(property_dict['return']) == 3
+        assert property_dict['return']['type'] == "integer"
+        assert property_dict['return']['desc'] == "Some number"
+        assert property_dict['return']['typeMod'] == 0
 
-        propertyDict = testobj._definePropertyFunctionEntry("billy", "Billy property", "size", "Some size list", True)
-        assert propertyDict['name'] == "billy"
-        assert propertyDict['briefDesc'] == "Billy property"
-        assert isinstance(propertyDict['params'], list)
-        assert len(propertyDict['params']) == 0
-        assert isinstance(propertyDict['return'], dict)
-        assert len(propertyDict['return']) == 3
-        assert propertyDict['return']['type'] == "size"
-        assert propertyDict['return']['desc'] == "Some size list"
-        assert propertyDict['return']['typeMod'] == ParamRetDict.typeModList
+        property_dict = testobj._define_property_function_entry("billy", "Billy property", "size", "Some size list", True)
+        assert property_dict['name'] == "billy"
+        assert property_dict['briefDesc'] == "Billy property"
+        assert isinstance(property_dict['params'], list)
+        assert len(property_dict['params']) == 0
+        assert isinstance(property_dict['return'], dict)
+        assert len(property_dict['return']) == 3
+        assert property_dict['return']['type'] == "size"
+        assert property_dict['return']['desc'] == "Some size list"
+        assert property_dict['return']['typeMod'] == ParamRetDict.type_mod_list
 
-    def test19GetPropertyMethodList(self):
+    def test19_get_property_method_list(self):
         """!
-        @brief Test getPropertyMethodList method
+        @brief Test get_property_method_list method
         """
-        testobj = StringClassDescription(self.testJson)
-        propertyList = testobj.getPropertyMethodList()
-        assert len(propertyList) == 1
-        assert propertyList[0] == 'getLangIsoCode'
+        testobj = StringClassDescription(self.test_json)
+        property_list = testobj.get_property_method_list()
+        assert len(property_list) == 1
+        assert property_list[0] == 'getLangIsoCode'
 
-    def test20GetIsoPropertyMethodName(self):
+    def test20_get_iso_property_method_name(self):
         """!
-        @brief Test getIsoPropertyMethodName method
+        @brief Test get_iso_property_method_name method
         """
-        testobj = StringClassDescription(self.testJson)
-        name = testobj.getIsoPropertyMethodName()
+        testobj = StringClassDescription(self.test_json)
+        name = testobj.get_iso_property_method_name()
         assert name == 'getLangIsoCode'
 
-    def test21GetIsoPropertyMethodNameFail(self):
+    def test21_get_iso_property_method_name_fail(self):
         """!
-        @brief Test getIsoPropertyMethodName method
+        @brief Test get_iso_property_method_name method
         """
         testobj = StringClassDescription()
-        name = testobj.getIsoPropertyMethodName()
+        name = testobj.get_iso_property_method_name()
         assert name is None
 
-    def test22GetPropertyMethodData(self):
+    def test22_get_property_method_data(self):
         """!
-        @brief Test getPropertyMethodData method
+        @brief Test get_property_method_data method
         """
-        testobj = StringClassDescription(self.testJson)
-        propertyName, propertyDesc, paramList, returnDict = testobj.getPropertyMethodData('getLangIsoCode')
-        assert propertyName == 'isoCode'
-        assert propertyDesc == 'Get the ISO 639 set 1 language code for this object'
-        assert isinstance(paramList, list)
-        assert len(paramList) == 0
-        assert isinstance(returnDict, dict)
-        assert len(returnDict) == 3
-        assert returnDict['type'] == 'string'
-        assert returnDict['desc'] == 'ISO 639 set 1 language code'
-        assert returnDict['typeMod'] == 0
+        testobj = StringClassDescription(self.test_json)
+        property_name, property_desc, param_list, return_dict = testobj.get_property_method_data('getLangIsoCode')
+        assert property_name == 'isoCode'
+        assert property_desc == 'Get the ISO 639 set 1 language code for this object'
+        assert isinstance(param_list, list)
+        assert len(param_list) == 0
+        assert isinstance(return_dict, dict)
+        assert len(return_dict) == 3
+        assert return_dict['type'] == 'string'
+        assert return_dict['desc'] == 'ISO 639 set 1 language code'
+        assert return_dict['typeMod'] == 0
 
-    def test23DefineTranslationDict(self):
+    def test23_define_translation_dict(self):
         """!
-        @brief Test _defineTranslationDict method
+        @brief Test _define_translation_dict method
         """
-        transDataList = [(TranslationTextParser.parsedTypeText, "Simple text with "),
-                         (TranslationTextParser.parsedTypeParam, "paramName")]
+        trans_data_list = [(TranslationTextParser.parsed_type_text, "Simple text with "),
+                         (TranslationTextParser.parsed_type_param, "paramName")]
 
         testobj = StringClassDescription()
-        returnDict = testobj._defineTranslationDict("es", transDataList)
-        assert isinstance(returnDict, dict)
-        assert len(returnDict) == 1
-        assert isinstance(returnDict['es'], list)
-        assert len(returnDict['es']) == 2
-        assert returnDict['es'][0][0] == TranslationTextParser.parsedTypeText
-        assert returnDict['es'][0][1] == "Simple text with "
-        assert returnDict['es'][1][0] == TranslationTextParser.parsedTypeParam
-        assert returnDict['es'][1][1] == "paramName"
+        return_dict = testobj._define_translation_dict("es", trans_data_list)
+        assert isinstance(return_dict, dict)
+        assert len(return_dict) == 1
+        assert isinstance(return_dict['es'], list)
+        assert len(return_dict['es']) == 2
+        assert return_dict['es'][0][0] == TranslationTextParser.parsed_type_text
+        assert return_dict['es'][0][1] == "Simple text with "
+        assert return_dict['es'][1][0] == TranslationTextParser.parsed_type_param
+        assert return_dict['es'][1][1] == "paramName"
 
-    def test24DefineTranslationDictNoList(self):
+    def test24_define_translation_dict_no_list(self):
         """!
-        @brief Test _defineTranslationDict method, no translation text list
+        @brief Test _define_translation_dict method, no translation text list
         """
         testobj = StringClassDescription()
-        returnDict = testobj._defineTranslationDict("zh")
-        assert isinstance(returnDict, dict)
-        assert len(returnDict) == 1
-        assert returnDict['zh'] is None
+        return_dict = testobj._define_translation_dict("zh")
+        assert isinstance(return_dict, dict)
+        assert len(return_dict) == 1
+        assert return_dict['zh'] is None
 
-    def test25DefineTranslationDictDefault(self):
+    def test25_define_translation_dict_default(self):
         """!
-        @brief Test _defineTranslationDict method, no input
+        @brief Test _define_translation_dict method, no input
         """
         testobj = StringClassDescription()
-        returnDict = testobj._defineTranslationDict()
-        assert isinstance(returnDict, dict)
-        assert len(returnDict) == 1
-        assert returnDict['en'] is None
+        return_dict = testobj._define_translation_dict()
+        assert isinstance(return_dict, dict)
+        assert len(return_dict) == 1
+        assert return_dict['en'] is None
 
-    def test26AddManualTranslation(self):
+    def test26_add_manual_translation(self):
         """!
-        @brief Test addManualTranslation method, success
+        @brief Test add_manual_translation method, success
         """
-        transDataList = [(TranslationTextParser.parsedTypeText, "Simple text")]
+        trans_data_list = [(TranslationTextParser.parsed_type_text, "Simple text")]
 
-        testobj = StringClassDescription(self.testJson)
-        assert testobj.addManualTranslation('getNotListTypeMessage', "es", transDataList)
-        assert isinstance(testobj.stringJasonData['translateMethods']['getNotListTypeMessage']['translateDesc']['es'], list)
-        assert len(testobj.stringJasonData['translateMethods']['getNotListTypeMessage']['translateDesc']['es']) == 1
-        assert testobj.stringJasonData['translateMethods']['getNotListTypeMessage']['translateDesc']['es'][0][0] == TranslationTextParser.parsedTypeText
-        assert testobj.stringJasonData['translateMethods']['getNotListTypeMessage']['translateDesc']['es'][0][1] == "Simple text"
+        testobj = StringClassDescription(self.test_json)
+        assert testobj.add_manual_translation('getNotListTypeMessage', "es", trans_data_list)
+        assert isinstance(testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es'], list)
+        assert len(testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es']) == 1
+        assert testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es'][0][0] == TranslationTextParser.parsed_type_text
+        assert testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es'][0][1] == "Simple text"
 
-    def test27AddManualTranslationFailNoTextData(self):
+    def test27_add_manual_translation_fail_no_text_data(self):
         """!
-        @brief Test addManualTranslation method, fail for no textData
+        @brief Test add_manual_translation method, fail for no text_data
         """
-        testobj = StringClassDescription(self.testJson)
-        assert not testobj.addManualTranslation('getNotListTypeMessage', "fr")
+        testobj = StringClassDescription(self.test_json)
+        assert not testobj.add_manual_translation('getNotListTypeMessage', "fr")
 
-    def test28AddManualTranslationFailNoMethodName(self):
+    def test28_add_manual_translation_fail_no_method_name(self):
         """!
-        @brief Test addManualTranslation method, fail for no textData
+        @brief Test add_manual_translation method, fail for no text_data
         """
-        transDataList = [(TranslationTextParser.parsedTypeText, "Simple text")]
-        testobj = StringClassDescription(self.testJson)
-        assert not testobj.addManualTranslation('getSomethingElse', "fr", transDataList)
+        trans_data_list = [(TranslationTextParser.parsed_type_text, "Simple text")]
+        testobj = StringClassDescription(self.test_json)
+        assert not testobj.add_manual_translation('getSomethingElse', "fr", trans_data_list)
 
-    def test29TranslateText(self):
+    def test29_translate_text(self):
         """!
-        @brief Test _translateText method, dummy translate
+        @brief Test _translate_text method, dummy translate
         """
-        class dummyTranslate:
+        class dummy_translate:
             def translate(self, text, target_language, format_, source_language, model):
                 return {'translatedText': "Translated Text"}
 
         testobj = StringClassDescription()
-        testobj.transClient = dummyTranslate()
-        assert testobj._translateText("en", "zh", "Some Text") == "Translated Text"
+        testobj.trans_client = dummy_translate()
+        assert testobj._translate_text("en", "zh", "Some Text") == "Translated Text"
 
-    def test30TranslateTextMockGoogle(self):
+    def test30_translate_text_mock_google(self):
         """!
-        @brief Test _translateText method, mock google.translate client
+        @brief Test _translate_text method, mock google.translate client
         """
-        class mockDummyTranslate:
+        class mock_dummy_translate:
             def translate(self, text, target_language, format_, source_language, model):
                 return {'translatedText': "Patch Translated Text"}
 
         testobj = StringClassDescription()
-        with patch('google.cloud.translate_v2.Client', MagicMock(return_value=mockDummyTranslate())):
-            assert testobj._translateText("fr", "en", "Some Other Text") == "Patch Translated Text"
+        with patch('google.cloud.translate_v2.Client', MagicMock(return_value=mock_dummy_translate())):
+            assert testobj._translate_text("fr", "en", "Some Other Text") == "Patch Translated Text"
 
-    def test31TranslateMethodTextNoLangList(self):
+    def test31_translate_method_text_no_lang_list(self):
         """!
-        @brief Test _translateText method, no language list
+        @brief Test _translate_text method, no language list
         """
-        testobj = StringClassDescription(self.testJson)
-        testobj._translateMethodText("getNotListTypeMessage")
-        transMethodDesc = testobj.stringJasonData['translateMethods']['getNotListTypeMessage']['translateDesc']
-        assert len(transMethodDesc) == 1
-        assert 'en' in list(transMethodDesc)
+        testobj = StringClassDescription(self.test_json)
+        testobj._translate_method_text("getNotListTypeMessage")
+        trans_method_desc = testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']
+        assert len(trans_method_desc) == 1
+        assert 'en' in list(trans_method_desc)
 
-    def test32TranslateMethodTextMockGoogle(self):
+    def test32_translate_method_text_mock_google(self):
         """!
-        @brief Test _translateText method, mock google.translate client
+        @brief Test _translate_text method, mock google.translate client
         """
-        class mockDummyTranslate:
+        class mock_dummy_translate:
             def translate(self, text, target_language, format_, source_language, model):
                 return {'translatedText': "Patch Translated Method Text @nargs@"}
 
-        langList = LanguageDescriptionList(self.testlanglist)
-        testobj = StringClassDescription(self.testJson)
-        with patch('google.cloud.translate_v2.Client', MagicMock(return_value=mockDummyTranslate())):
-            testobj._translateMethodText("getNotListTypeMessage", langList)
-            transMethodDesc = testobj.stringJasonData['translateMethods']['getNotListTypeMessage']['translateDesc']
-            assert len(transMethodDesc) == 2
-            assert 'es' in list(transMethodDesc)
+        lang_list = LanguageDescriptionList(self.testlanglist)
+        testobj = StringClassDescription(self.test_json)
+        with patch('google.cloud.translate_v2.Client', MagicMock(return_value=mock_dummy_translate())):
+            testobj._translate_method_text("getNotListTypeMessage", lang_list)
+            trans_method_desc = testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']
+            assert len(trans_method_desc) == 2
+            assert 'es' in list(trans_method_desc)
 
-            transList = transMethodDesc['es']
-            assert len(transList) ==2
-            assert transList[0][0] == TranslationTextParser.parsedTypeText
-            assert transList[0][1] == "Patch Translated Method Text "
-            assert transList[1][0] == TranslationTextParser.parsedTypeParam
-            assert transList[1][1] == "nargs"
+            trans_list = trans_method_desc['es']
+            assert len(trans_list) ==2
+            assert trans_list[0][0] == TranslationTextParser.parsed_type_text
+            assert trans_list[0][1] == "Patch Translated Method Text "
+            assert trans_list[1][0] == TranslationTextParser.parsed_type_param
+            assert trans_list[1][1] == "nargs"
 
-    def test33DefineTranslateFunctionEntry(self):
+    def test33_define_translate_function_entry(self):
         """!
-        @brief Test _defineTranslateFunctionEntry method
+        @brief Test _define_translate_function_entry method
         """
-        testparams = [ParamRetDict.buildParamDictWithMod("name", "string", "desc", 0)]
-        testret = ParamRetDict.buildReturnDictWithMod("string","return string",0)
-        transList = [(TranslationTextParser.parsedTypeText, "Return text of "),
-                     (TranslationTextParser.parsedTypeParam,"name")]
+        testparams = [ParamRetDict.build_param_dict_with_mod("name", "string", "desc", 0)]
+        testret = ParamRetDict.build_return_dict_with_mod("string","return string",0)
+        trans_list = [(TranslationTextParser.parsed_type_text, "Return text of "),
+                     (TranslationTextParser.parsed_type_param,"name")]
         testobj = StringClassDescription()
-        functionDict = testobj._defineTranslateFunctionEntry("Brief Description", testparams, testret, "en", transList)
+        function_dict = testobj._define_translate_function_entry("Brief Description", testparams, testret, "en", trans_list)
 
-        assert functionDict['briefDesc'] == "Brief Description"
-        assert isinstance(functionDict['params'], list)
-        assert len(functionDict['params']) == len(testparams)
-        for index, parmDict in enumerate(testparams):
-            assert isinstance(functionDict['params'][index], dict)
+        assert function_dict['briefDesc'] == "Brief Description"
+        assert isinstance(function_dict['params'], list)
+        assert len(function_dict['params']) == len(testparams)
+        for index, parm_dict in enumerate(testparams):
+            assert isinstance(function_dict['params'][index], dict)
             for id in list(testret):
-                assert len(functionDict['params'][index]) == len(parmDict)
-                assert functionDict['params'][index][id] == parmDict[id]
+                assert len(function_dict['params'][index]) == len(parm_dict)
+                assert function_dict['params'][index][id] == parm_dict[id]
 
-        assert isinstance(functionDict['return'], dict)
-        assert len(functionDict['return']) == len(testret)
+        assert isinstance(function_dict['return'], dict)
+        assert len(function_dict['return']) == len(testret)
         for id in list(testret):
-            assert functionDict['return'][id] == testret[id]
+            assert function_dict['return'][id] == testret[id]
 
-        assert isinstance(functionDict['translateDesc'], dict)
-        assert len(functionDict['translateDesc']) == 1
-        assert len(functionDict['translateDesc']['en']) == len(transList)
-        for index, transTuple in enumerate(transList):
-            assert functionDict['translateDesc']['en'][index][0] == transTuple[0]
-            assert functionDict['translateDesc']['en'][index][1] == transTuple[1]
+        assert isinstance(function_dict['translateDesc'], dict)
+        assert len(function_dict['translateDesc']) == 1
+        assert len(function_dict['translateDesc']['en']) == len(trans_list)
+        for index, trans_tuple in enumerate(trans_list):
+            assert function_dict['translateDesc']['en'][index][0] == trans_tuple[0]
+            assert function_dict['translateDesc']['en'][index][1] == trans_tuple[1]
 
-    def test34GetTranlateMethodList(self):
+    def test34_get_tranlate_method_list(self):
         """!
-        @brief Test getTranlateMethodList method
+        @brief Test get_tranlate_method_list method
         """
-        testobj = StringClassDescription(self.testJson)
-        transFuncList = testobj.getTranlateMethodList()
-        assert len(transFuncList) == 1
-        assert transFuncList[0] == 'getNotListTypeMessage'
+        testobj = StringClassDescription(self.test_json)
+        trans_func_list = testobj.get_tranlate_method_list()
+        assert len(trans_func_list) == 1
+        assert trans_func_list[0] == 'getNotListTypeMessage'
 
-    def test35GetTranlateMethodFunctionData(self):
+    def test35_get_tranlate_method_function_data(self):
         """!
-        @brief Test getTranlateMethodFunctionData method
+        @brief Test get_tranlate_method_function_data method
         """
-        testobj = StringClassDescription(self.testJson)
-        briefDesc, paramData, returnData = testobj.getTranlateMethodFunctionData('getNotListTypeMessage')
+        testobj = StringClassDescription(self.test_json)
+        brief_desc, param_data, return_data = testobj.get_tranlate_method_function_data('getNotListTypeMessage')
 
-        assert briefDesc == 'Return non-list varg error message'
-        assert isinstance(paramData, list)
-        assert len(paramData) == 1
-        assert isinstance(paramData[0], dict)
-        assert len(paramData[0]) == 4
+        assert brief_desc == 'Return non-list varg error message'
+        assert isinstance(param_data, list)
+        assert len(param_data) == 1
+        assert isinstance(param_data[0], dict)
+        assert len(param_data[0]) == 4
 
-        assert isinstance(returnData, dict)
-        assert len(returnData) == 3
+        assert isinstance(return_data, dict)
+        assert len(return_data) == 3
 
-    def test36GetTranlateMethodTextData(self):
+    def test36_get_tranlate_method_text_data(self):
         """!
-        @brief Test getTranlateMethodTextData method
+        @brief Test get_tranlate_method_text_data method
         """
-        testobj = StringClassDescription(self.testJson)
-        transStringList = testobj.getTranlateMethodTextData('getNotListTypeMessage', 'en')
-        assert isinstance(transStringList, list)
-        assert len(transStringList) == 2
-        assert transStringList[0][0] == TranslationTextParser.parsedTypeText
-        assert transStringList[0][1] == "Only list type arguments can have an argument count of "
-        assert transStringList[1][0] == TranslationTextParser.parsedTypeParam
-        assert transStringList[1][1] == "nargs"
+        testobj = StringClassDescription(self.test_json)
+        trans_string_list = testobj.get_tranlate_method_text_data('getNotListTypeMessage', 'en')
+        assert isinstance(trans_string_list, list)
+        assert len(trans_string_list) == 2
+        assert trans_string_list[0][0] == TranslationTextParser.parsed_type_text
+        assert trans_string_list[0][1] == "Only list type arguments can have an argument count of "
+        assert trans_string_list[1][0] == TranslationTextParser.parsed_type_param
+        assert trans_string_list[1][1] == "nargs"
 
-    def test37Update(self):
+    def test37_update(self):
         """!
         @brief Test update()
         """
@@ -553,93 +553,93 @@ class Test02StringClassDescription:
         testobj = StringClassDescription("temp.json")
         pytest.raises(FileNotFoundError)
         assert testobj.filename == "temp.json"
-        assert testobj.stringJasonData['baseClassName'] == "baseclass"
-        assert testobj.stringJasonData['namespace'] == "myNamespace"
-        assert testobj.stringJasonData['dynamicCompileSwitch'] == "DYNAMIC_INTERNATIONALIZATION"
-        assert len(testobj.stringJasonData['propertyMethods']) == 0
-        assert len(testobj.stringJasonData['translateMethods']) == 0
+        assert testobj.string_jason_data['baseClassName'] == "baseclass"
+        assert testobj.string_jason_data['namespace'] == "myNamespace"
+        assert testobj.string_jason_data['dynamicCompileSwitch'] == "DYNAMIC_INTERNATIONALIZATION"
+        assert len(testobj.string_jason_data['propertyMethods']) == 0
+        assert len(testobj.string_jason_data['translateMethods']) == 0
 
-        testobj.stringJasonData['baseClassName'] = "foobar"
-        testobj.stringJasonData['namespace'] = "planetx"
-        testobj.stringJasonData['dynamicCompileSwitch'] = "MAGIC"
-        newPropertyEntry = testobj._definePropertyFunctionEntry("Distance", "Distance to star in AU", "integer", "AU to star")
-        testobj.stringJasonData['propertyMethods']['testProperty'] = newPropertyEntry
+        testobj.string_jason_data['baseClassName'] = "foobar"
+        testobj.string_jason_data['namespace'] = "planetx"
+        testobj.string_jason_data['dynamicCompileSwitch'] = "MAGIC"
+        new_property_entry = testobj._define_property_function_entry("Distance", "Distance to star in AU", "integer", "AU to star")
+        testobj.string_jason_data['propertyMethods']['testProperty'] = new_property_entry
 
-        xlateRetDict = ParamRetDict.buildReturnDictWithMod("integer", "Xlated units", 0)
-        paramList = [ParamRetDict.buildParamDictWithMod("units", "integer", "Units to translate", 0)]
-        translateTextList = TranslationTextParser.parseTranslateString("Test string @units@")
-        newXlateEntry = testobj._defineTranslateFunctionEntry("Brief xlate desc", paramList, xlateRetDict, "en", translateTextList)
-        testobj.stringJasonData['translateMethods']['testXlate'] = newXlateEntry
+        xlate_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "Xlated units", 0)
+        param_list = [ParamRetDict.build_param_dict_with_mod("units", "integer", "Units to translate", 0)]
+        translate_text_list = TranslationTextParser.parse_translate_string("Test string @units@")
+        new_xlate_entry = testobj._define_translate_function_entry("Brief xlate desc", param_list, xlate_ret_dict, "en", translate_text_list)
+        testobj.string_jason_data['translateMethods']['testXlate'] = new_xlate_entry
 
         testobj.update()
         updateobj = StringClassDescription("temp.json")
 
         assert updateobj.filename == "temp.json"
-        assert updateobj.stringJasonData['baseClassName'] == "foobar"
-        assert updateobj.stringJasonData['namespace'] == "planetx"
-        assert updateobj.stringJasonData['dynamicCompileSwitch'] == "MAGIC"
+        assert updateobj.string_jason_data['baseClassName'] == "foobar"
+        assert updateobj.string_jason_data['namespace'] == "planetx"
+        assert updateobj.string_jason_data['dynamicCompileSwitch'] == "MAGIC"
 
-        assert len(updateobj.stringJasonData['propertyMethods']) == 1
+        assert len(updateobj.string_jason_data['propertyMethods']) == 1
 
-        assert isinstance(updateobj.stringJasonData['propertyMethods']['testProperty'], dict)
-        assert len(updateobj.stringJasonData['propertyMethods']['testProperty']) == 4
-        assert updateobj.stringJasonData['propertyMethods']['testProperty']['name'] == 'Distance'
-        assert updateobj.stringJasonData['propertyMethods']['testProperty']['briefDesc'] == 'Distance to star in AU'
+        assert isinstance(updateobj.string_jason_data['propertyMethods']['testProperty'], dict)
+        assert len(updateobj.string_jason_data['propertyMethods']['testProperty']) == 4
+        assert updateobj.string_jason_data['propertyMethods']['testProperty']['name'] == 'Distance'
+        assert updateobj.string_jason_data['propertyMethods']['testProperty']['briefDesc'] == 'Distance to star in AU'
 
-        assert isinstance(updateobj.stringJasonData['propertyMethods']['testProperty']['params'], list)
-        assert len(updateobj.stringJasonData['propertyMethods']['testProperty']['params']) == 0
+        assert isinstance(updateobj.string_jason_data['propertyMethods']['testProperty']['params'], list)
+        assert len(updateobj.string_jason_data['propertyMethods']['testProperty']['params']) == 0
 
-        assert isinstance(updateobj.stringJasonData['propertyMethods']['testProperty']['return'], dict)
-        assert len(updateobj.stringJasonData['propertyMethods']['testProperty']['return']) == 3
-        assert updateobj.stringJasonData['propertyMethods']['testProperty']['return']['type'] == "integer"
-        assert updateobj.stringJasonData['propertyMethods']['testProperty']['return']['desc'] == "AU to star"
-        assert updateobj.stringJasonData['propertyMethods']['testProperty']['return']['typeMod'] == 0
+        assert isinstance(updateobj.string_jason_data['propertyMethods']['testProperty']['return'], dict)
+        assert len(updateobj.string_jason_data['propertyMethods']['testProperty']['return']) == 3
+        assert updateobj.string_jason_data['propertyMethods']['testProperty']['return']['type'] == "integer"
+        assert updateobj.string_jason_data['propertyMethods']['testProperty']['return']['desc'] == "AU to star"
+        assert updateobj.string_jason_data['propertyMethods']['testProperty']['return']['typeMod'] == 0
 
-        assert len(updateobj.stringJasonData['translateMethods']) == 1
-        assert isinstance(updateobj.stringJasonData['translateMethods']['testXlate'], dict)
-        assert len(updateobj.stringJasonData['translateMethods']['testXlate']) == 4
-        assert isinstance(updateobj.stringJasonData['translateMethods']['testXlate']['params'], list)
-        assert len(updateobj.stringJasonData['translateMethods']['testXlate']['params']) == 1
-        assert isinstance(updateobj.stringJasonData['translateMethods']['testXlate']['params'][0], dict)
-        assert len(updateobj.stringJasonData['translateMethods']['testXlate']['params'][0]) == 4
-        assert updateobj.stringJasonData['translateMethods']['testXlate']['params'][0]['name'] == "units"
-        assert updateobj.stringJasonData['translateMethods']['testXlate']['params'][0]['type'] == "integer"
-        assert updateobj.stringJasonData['translateMethods']['testXlate']['params'][0]['desc'] == "Units to translate"
-        assert updateobj.stringJasonData['translateMethods']['testXlate']['params'][0]['typeMod'] == 0
+        assert len(updateobj.string_jason_data['translateMethods']) == 1
+        assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate'], dict)
+        assert len(updateobj.string_jason_data['translateMethods']['testXlate']) == 4
+        assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate']['params'], list)
+        assert len(updateobj.string_jason_data['translateMethods']['testXlate']['params']) == 1
+        assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate']['params'][0], dict)
+        assert len(updateobj.string_jason_data['translateMethods']['testXlate']['params'][0]) == 4
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['params'][0]['name'] == "units"
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['params'][0]['type'] == "integer"
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['params'][0]['desc'] == "Units to translate"
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['params'][0]['typeMod'] == 0
 
-        assert isinstance(updateobj.stringJasonData['translateMethods']['testXlate']['return'], dict)
-        assert len(updateobj.stringJasonData['translateMethods']['testXlate']['return']) == 3
-        assert updateobj.stringJasonData['translateMethods']['testXlate']['return']['type'] == "integer"
-        assert updateobj.stringJasonData['translateMethods']['testXlate']['return']['desc'] == "Xlated units"
-        assert updateobj.stringJasonData['translateMethods']['testXlate']['return']['typeMod'] == 0
+        assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate']['return'], dict)
+        assert len(updateobj.string_jason_data['translateMethods']['testXlate']['return']) == 3
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['return']['type'] == "integer"
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['return']['desc'] == "Xlated units"
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['return']['typeMod'] == 0
 
-        assert isinstance(updateobj.stringJasonData['translateMethods']['testXlate']['translateDesc'], dict)
-        assert len(updateobj.stringJasonData['translateMethods']['testXlate']['translateDesc']) == 1
-        assert isinstance(updateobj.stringJasonData['translateMethods']['testXlate']['translateDesc']['en'], list)
-        assert len(updateobj.stringJasonData['translateMethods']['testXlate']['translateDesc']['en']) == 2
-        assert updateobj.stringJasonData['translateMethods']['testXlate']['translateDesc']['en'][0][0] == TranslationTextParser.parsedTypeText
-        assert updateobj.stringJasonData['translateMethods']['testXlate']['translateDesc']['en'][0][1] == "Test string "
-        assert updateobj.stringJasonData['translateMethods']['testXlate']['translateDesc']['en'][1][0] == TranslationTextParser.parsedTypeParam
-        assert updateobj.stringJasonData['translateMethods']['testXlate']['translateDesc']['en'][1][1] == "units"
+        assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc'], dict)
+        assert len(updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']) == 1
+        assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'], list)
+        assert len(updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en']) == 2
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][0][0] == TranslationTextParser.parsed_type_text
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][0][1] == "Test string "
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][1][0] == TranslationTextParser.parsed_type_param
+        assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][1][1] == "units"
 
         os.remove("temp.json")
 
-    def test38UpdateTranlations(self):
+    def test38_update_tranlations(self):
         """!
-        @brief Test updateTranlations()
+        @brief Test update_tranlations()
         """
-        class mockDummyTranslate:
+        class mock_dummy_translate:
             def translate(self, text, target_language, format_, source_language, model):
                 return {'translatedText': text}
 
-        testobj = StringClassDescription(self.testJson)
-        langList = LanguageDescriptionList(self.testlanglist)
+        testobj = StringClassDescription(self.test_json)
+        lang_list = LanguageDescriptionList(self.testlanglist)
 
-        for methodName in testobj.getTranlateMethodList():
-            assert len(testobj.stringJasonData['translateMethods'][methodName]['translateDesc']) == 1
+        for method_name in testobj.get_tranlate_method_list():
+            assert len(testobj.string_jason_data['translateMethods'][method_name]['translateDesc']) == 1
 
-        with patch('google.cloud.translate_v2.Client', MagicMock(return_value=mockDummyTranslate())):
-            testobj.updateTranlations(langList)
+        with patch('google.cloud.translate_v2.Client', MagicMock(return_value=mock_dummy_translate())):
+            testobj.update_tranlations(lang_list)
 
-            for methodName in testobj.getTranlateMethodList():
-                assert len(testobj.stringJasonData['translateMethods'][methodName]['translateDesc']) == 2
+            for method_name in testobj.get_tranlate_method_list():
+                assert len(testobj.string_jason_data['translateMethods'][method_name]['translateDesc']) == 2

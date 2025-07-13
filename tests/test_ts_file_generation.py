@@ -35,893 +35,893 @@ class Test01CppFilehelper:
     """!
     @brief Unit test for the GenerateTypeScriptFileHelper class
     """
-    def test01Constructor(self):
+    def test01_constructor(self):
         """!
         @brief Test the constructor
         """
         helper = GenerateTypeScriptFileHelper()
 
-        assert helper.copyrightGenerator is not None
+        assert helper.copyright_generator is not None
         assert helper.eula is not None
-        assert helper.doxyCommentGen is not None
-        assert helper.headerCommentGen is not None
-        assert helper.levelTabSize == 4
+        assert helper.doxy_comment_gen is not None
+        assert helper.header_comment_gen is not None
+        assert helper.level_tab_size == 4
 
-        assert len(list(helper.typeXlationDict.keys())) == 6
-        assert helper.typeXlationDict['string'] == "string"
-        assert helper.typeXlationDict['text'] == "string"
-        assert helper.typeXlationDict['size'] == "number"
-        assert helper.typeXlationDict['integer'] == "number"
-        assert helper.typeXlationDict['unsigned'] == "number"
-        assert helper.typeXlationDict['tuple'] == "tuple"
+        assert len(list(helper.type_xlation_dict.keys())) == 6
+        assert helper.type_xlation_dict['string'] == "string"
+        assert helper.type_xlation_dict['text'] == "string"
+        assert helper.type_xlation_dict['size'] == "number"
+        assert helper.type_xlation_dict['integer'] == "number"
+        assert helper.type_xlation_dict['unsigned'] == "number"
+        assert helper.type_xlation_dict['tuple'] == "tuple"
 
         helper = GenerateTypeScriptFileHelper("GNU_V11")
 
-        assert helper.copyrightGenerator is not None
+        assert helper.copyright_generator is not None
         assert helper.eula is not None
-        assert helper.doxyCommentGen is not None
-        assert helper.headerCommentGen is not None
-        assert helper.levelTabSize == 4
+        assert helper.doxy_comment_gen is not None
+        assert helper.header_comment_gen is not None
+        assert helper.level_tab_size == 4
 
-        assert len(list(helper.typeXlationDict.keys())) == 6
-        assert helper.typeXlationDict['string'] == "string"
-        assert helper.typeXlationDict['text'] == "string"
-        assert helper.typeXlationDict['size'] == "number"
-        assert helper.typeXlationDict['integer'] == "number"
-        assert helper.typeXlationDict['unsigned'] == "number"
-        assert helper.typeXlationDict['tuple'] == "tuple"
+        assert len(list(helper.type_xlation_dict.keys())) == 6
+        assert helper.type_xlation_dict['string'] == "string"
+        assert helper.type_xlation_dict['text'] == "string"
+        assert helper.type_xlation_dict['size'] == "number"
+        assert helper.type_xlation_dict['integer'] == "number"
+        assert helper.type_xlation_dict['unsigned'] == "number"
+        assert helper.type_xlation_dict['tuple'] == "tuple"
 
-    def test02DeclareTypeBase(self):
+    def test02_declare_type_base(self):
         """!
-        @brief Test the _declareType method, no modification
+        @brief Test the _declare_type method, no modification
         """
         helper = GenerateTypeScriptFileHelper()
 
         # Test the xlate path
-        assert helper._declareType('string') == "string"
-        assert helper._declareType('text') == "string"
-        assert helper._declareType('size') == "number"
-        assert helper._declareType('integer') == "number"
-        assert helper._declareType('unsigned') == "number"
-        assert helper._declareType('tuple') == "tuple"
+        assert helper._declare_type('string') == "string"
+        assert helper._declare_type('text') == "string"
+        assert helper._declare_type('size') == "number"
+        assert helper._declare_type('integer') == "number"
+        assert helper._declare_type('unsigned') == "number"
+        assert helper._declare_type('tuple') == "tuple"
 
         # Test the non-xlate path
-        assert helper._declareType('MyClass') == "MyClass"
+        assert helper._declare_type('MyClass') == "MyClass"
 
-    def test03DeclareTypePtr(self):
+    def test03_declare_type_ptr(self):
         """!
-        @brief Test the _declareType method, pointer modification
+        @brief Test the _declare_type method, pointer modification
         """
         helper = GenerateTypeScriptFileHelper()
 
         # Test the xlate path
-        assert helper._declareType('string', ParamRetDict.typeModPtr) == "string"
-        assert helper._declareType('text', ParamRetDict.typeModPtr) == "string"
-        assert helper._declareType('size', ParamRetDict.typeModPtr) == "number"
-        assert helper._declareType('integer', ParamRetDict.typeModPtr) == "number"
-        assert helper._declareType('unsigned', ParamRetDict.typeModPtr) == "number"
-        assert helper._declareType('tuple', ParamRetDict.typeModPtr) == "tuple"
+        assert helper._declare_type('string', ParamRetDict.type_mod_ptr) == "string"
+        assert helper._declare_type('text', ParamRetDict.type_mod_ptr) == "string"
+        assert helper._declare_type('size', ParamRetDict.type_mod_ptr) == "number"
+        assert helper._declare_type('integer', ParamRetDict.type_mod_ptr) == "number"
+        assert helper._declare_type('unsigned', ParamRetDict.type_mod_ptr) == "number"
+        assert helper._declare_type('tuple', ParamRetDict.type_mod_ptr) == "tuple"
 
-    def test04DeclareTypeRef(self):
+    def test04_declare_type_ref(self):
         """!
-        @brief Test the _declareType method, pointer modification
+        @brief Test the _declare_type method, pointer modification
         """
         helper = GenerateTypeScriptFileHelper()
 
         # Test the xlate path
-        assert helper._declareType('string', ParamRetDict.typeModRef) == "string"
-        assert helper._declareType('text', ParamRetDict.typeModRef) == "string"
-        assert helper._declareType('size', ParamRetDict.typeModRef) == "number"
-        assert helper._declareType('integer', ParamRetDict.typeModRef) == "number"
-        assert helper._declareType('unsigned', ParamRetDict.typeModRef) == "number"
-        assert helper._declareType('tuple', ParamRetDict.typeModRef) == "tuple"
+        assert helper._declare_type('string', ParamRetDict.type_mod_ref) == "string"
+        assert helper._declare_type('text', ParamRetDict.type_mod_ref) == "string"
+        assert helper._declare_type('size', ParamRetDict.type_mod_ref) == "number"
+        assert helper._declare_type('integer', ParamRetDict.type_mod_ref) == "number"
+        assert helper._declare_type('unsigned', ParamRetDict.type_mod_ref) == "number"
+        assert helper._declare_type('tuple', ParamRetDict.type_mod_ref) == "tuple"
 
-    def test05DeclareTypeList(self):
+    def test05_declare_type_list(self):
         """!
-        @brief Test the _declareType method, list modification
+        @brief Test the _declare_type method, list modification
         """
         helper = GenerateTypeScriptFileHelper()
 
         # Test the xlate path
-        assert helper._declareType('string', ParamRetDict.typeModList) == "string[]"
-        assert helper._declareType('text', ParamRetDict.typeModList) == "string[]"
-        assert helper._declareType('size', ParamRetDict.typeModList) == "number[]"
-        assert helper._declareType('integer', ParamRetDict.typeModList) == "number[]"
-        assert helper._declareType('unsigned', ParamRetDict.typeModList) == "number[]"
-        assert helper._declareType('tuple', ParamRetDict.typeModList) == "tuple[]"
+        assert helper._declare_type('string', ParamRetDict.type_mod_list) == "string[]"
+        assert helper._declare_type('text', ParamRetDict.type_mod_list) == "string[]"
+        assert helper._declare_type('size', ParamRetDict.type_mod_list) == "number[]"
+        assert helper._declare_type('integer', ParamRetDict.type_mod_list) == "number[]"
+        assert helper._declare_type('unsigned', ParamRetDict.type_mod_list) == "number[]"
+        assert helper._declare_type('tuple', ParamRetDict.type_mod_list) == "tuple[]"
 
-    def test06DeclareTypeListPtr(self):
+    def test06_declare_type_list_ptr(self):
         """!
-        @brief Test the _declareType method, list and pointer modification
+        @brief Test the _declare_type method, list and pointer modification
         """
         helper = GenerateTypeScriptFileHelper()
 
         # Test the xlate path
-        typemod = ParamRetDict.typeModList | ParamRetDict.typeModPtr
-        assert helper._declareType('string', typemod) == "string[]"
-        assert helper._declareType('text', typemod) == "string[]"
-        assert helper._declareType('size', typemod) == "number[]"
-        assert helper._declareType('integer', typemod) == "number[]"
-        assert helper._declareType('unsigned', typemod) == "number[]"
-        assert helper._declareType('tuple', typemod) == "tuple[]"
+        typemod = ParamRetDict.type_mod_list | ParamRetDict.type_mod_ptr
+        assert helper._declare_type('string', typemod) == "string[]"
+        assert helper._declare_type('text', typemod) == "string[]"
+        assert helper._declare_type('size', typemod) == "number[]"
+        assert helper._declare_type('integer', typemod) == "number[]"
+        assert helper._declare_type('unsigned', typemod) == "number[]"
+        assert helper._declare_type('tuple', typemod) == "tuple[]"
 
-    def test07DeclareTypeListRef(self):
+    def test07_declare_type_list_ref(self):
         """!
-        @brief Test the _declareType method, list and reference modification
+        @brief Test the _declare_type method, list and reference modification
         """
         helper = GenerateTypeScriptFileHelper()
 
         # Test the xlate path
-        typemod = ParamRetDict.typeModList | ParamRetDict.typeModRef
-        assert helper._declareType('string', typemod) == "string[]"
-        assert helper._declareType('text', typemod) == "string[]"
-        assert helper._declareType('size', typemod) == "number[]"
-        assert helper._declareType('integer', typemod) == "number[]"
-        assert helper._declareType('unsigned', typemod) == "number[]"
-        assert helper._declareType('tuple', typemod) == "tuple[]"
+        typemod = ParamRetDict.type_mod_list | ParamRetDict.type_mod_ref
+        assert helper._declare_type('string', typemod) == "string[]"
+        assert helper._declare_type('text', typemod) == "string[]"
+        assert helper._declare_type('size', typemod) == "number[]"
+        assert helper._declare_type('integer', typemod) == "number[]"
+        assert helper._declare_type('unsigned', typemod) == "number[]"
+        assert helper._declare_type('tuple', typemod) == "tuple[]"
 
-    def test08DeclareTypeArray(self):
+    def test08_declare_type_array(self):
         """!
-        @brief Test the _declareType method, array modification
+        @brief Test the _declare_type method, array modification
         """
         helper = GenerateTypeScriptFileHelper()
 
         # Test the xlate path
-        assert helper._declareType('string', 5 << ParamRetDict.typeModArrayShift) == "string[]"
-        assert helper._declareType('text', 7 << ParamRetDict.typeModArrayShift) == "string[]"
-        assert helper._declareType('size', 10 << ParamRetDict.typeModArrayShift) == "number[]"
-        assert helper._declareType('integer', 20 << ParamRetDict.typeModArrayShift) == "number[]"
-        assert helper._declareType('unsigned', 13 << ParamRetDict.typeModArrayShift) == "number[]"
-        assert helper._declareType('tuple', 14 << ParamRetDict.typeModArrayShift) == "tuple[]"
+        assert helper._declare_type('string', 5 << ParamRetDict.type_mod_array_shift) == "string[]"
+        assert helper._declare_type('text', 7 << ParamRetDict.type_mod_array_shift) == "string[]"
+        assert helper._declare_type('size', 10 << ParamRetDict.type_mod_array_shift) == "number[]"
+        assert helper._declare_type('integer', 20 << ParamRetDict.type_mod_array_shift) == "number[]"
+        assert helper._declare_type('unsigned', 13 << ParamRetDict.type_mod_array_shift) == "number[]"
+        assert helper._declare_type('tuple', 14 << ParamRetDict.type_mod_array_shift) == "tuple[]"
 
-    def test09DeclareTypeArrayPtr(self):
+    def test09_declare_type_array_ptr(self):
         """!
-        @brief Test the _declareType method, array and pointer modification
+        @brief Test the _declare_type method, array and pointer modification
         """
         helper = GenerateTypeScriptFileHelper()
 
         # Test the xlate path
-        typemod = (8 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModPtr
-        assert helper._declareType('string', typemod) == "string[]"
-        assert helper._declareType('text', typemod) == "string[]"
-        assert helper._declareType('size', typemod) == "number[]"
-        assert helper._declareType('integer', typemod) == "number[]"
-        assert helper._declareType('unsigned', typemod) == "number[]"
-        assert helper._declareType('tuple', typemod) == "tuple[]"
+        typemod = (8 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_ptr
+        assert helper._declare_type('string', typemod) == "string[]"
+        assert helper._declare_type('text', typemod) == "string[]"
+        assert helper._declare_type('size', typemod) == "number[]"
+        assert helper._declare_type('integer', typemod) == "number[]"
+        assert helper._declare_type('unsigned', typemod) == "number[]"
+        assert helper._declare_type('tuple', typemod) == "tuple[]"
 
-    def test10DeclareTypeArrayRef(self):
+    def test10_declare_type_array_ref(self):
         """!
-        @brief Test the _declareType method, array and reference modification
+        @brief Test the _declare_type method, array and reference modification
         """
         helper = GenerateTypeScriptFileHelper()
 
         # Test the xlate path
-        typemod = (8 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModRef
-        assert helper._declareType('string', typemod) == "string[]"
-        assert helper._declareType('text', typemod) == "string[]"
-        assert helper._declareType('size', typemod) == "number[]"
-        assert helper._declareType('integer', typemod) == "number[]"
-        assert helper._declareType('unsigned', typemod) == "number[]"
+        typemod = (8 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_ref
+        assert helper._declare_type('string', typemod) == "string[]"
+        assert helper._declare_type('text', typemod) == "string[]"
+        assert helper._declare_type('size', typemod) == "number[]"
+        assert helper._declare_type('integer', typemod) == "number[]"
+        assert helper._declare_type('unsigned', typemod) == "number[]"
 
-    def test11DeclareTypeUndef(self):
+    def test11_declare_type_undef(self):
         """!
-        @brief Test the _declareType method, all with undef modification
+        @brief Test the _declare_type method, all with undef modification
         """
         helper = GenerateTypeScriptFileHelper()
 
         # Test the xlate path
-        assert helper._declareType('string', ParamRetDict.typeModUndef) == "string|undefined"
+        assert helper._declare_type('string', ParamRetDict.type_mod_undef) == "string|undefined"
 
-        typemod = ParamRetDict.typeModUndef | ParamRetDict.typeModPtr
-        assert helper._declareType('string', typemod) == "string|undefined"
+        typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ptr
+        assert helper._declare_type('string', typemod) == "string|undefined"
 
-        typemod = ParamRetDict.typeModUndef | ParamRetDict.typeModRef
-        assert helper._declareType('string', typemod) == "string|undefined"
+        typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ref
+        assert helper._declare_type('string', typemod) == "string|undefined"
 
-        typemod = (8 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModUndef
-        assert helper._declareType('string', typemod) == "string[]|undefined"
+        typemod = (8 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_undef
+        assert helper._declare_type('string', typemod) == "string[]|undefined"
 
-        typemod = ParamRetDict.typeModUndef | ParamRetDict.typeModList
-        assert helper._declareType('string', typemod) == "string[]|undefined"
+        typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list
+        assert helper._declare_type('string', typemod) == "string[]|undefined"
 
-        typemod = (25 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModUndef | ParamRetDict.typeModPtr
-        assert helper._declareType('string', typemod) == "string[]|undefined"
+        typemod = (25 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ptr
+        assert helper._declare_type('string', typemod) == "string[]|undefined"
 
-        typemod = (7 << ParamRetDict.typeModArrayShift) | ParamRetDict.typeModUndef | ParamRetDict.typeModRef
-        assert helper._declareType('string', typemod) == "string[]|undefined"
+        typemod = (7 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ref
+        assert helper._declare_type('string', typemod) == "string[]|undefined"
 
-        typemod = ParamRetDict.typeModUndef | ParamRetDict.typeModList
-        assert helper._declareType('string', typemod) == "string[]|undefined"
+        typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list
+        assert helper._declare_type('string', typemod) == "string[]|undefined"
 
-        typemod = ParamRetDict.typeModUndef | ParamRetDict.typeModList | ParamRetDict.typeModPtr
-        assert helper._declareType('string', typemod) == "string[]|undefined"
+        typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list | ParamRetDict.type_mod_ptr
+        assert helper._declare_type('string', typemod) == "string[]|undefined"
 
-        typemod = ParamRetDict.typeModUndef | ParamRetDict.typeModList | ParamRetDict.typeModRef
-        assert helper._declareType('string', typemod) == "string[]|undefined"
+        typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list | ParamRetDict.type_mod_ref
+        assert helper._declare_type('string', typemod) == "string[]|undefined"
 
-    def test12XlateParamList(self):
+    def test12_xlate_param_list(self):
         """!
-        @brief Test the _xlateParams method
+        @brief Test the _xlate_params method
         """
         helper = GenerateTypeScriptFileHelper()
-        genParamList = []
-        genParamList.append(ParamRetDict.buildParamDictWithMod("foo", "integer", "myint", 0))
-        genParamList.append(ParamRetDict.buildParamDictWithMod("moo", "size", "mysize", ParamRetDict.typeModPtr))
-        genParamList.append(ParamRetDict.buildParamDictWithMod("goo", "string", "mystr", ParamRetDict.typeModList))
+        gen_param_list = []
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("goo", "string", "mystr", ParamRetDict.type_mod_list))
 
-        xlateList = helper._xlateParams(genParamList)
-        assert len(xlateList) == len(genParamList)
-        assert ParamRetDict.getParamName(xlateList[0]) == ParamRetDict.getParamName(genParamList[0])
-        assert ParamRetDict.getParamType(xlateList[0]) == "number"
-        assert ParamRetDict.getParamDesc(xlateList[0]) == ParamRetDict.getParamDesc(genParamList[0])
-        assert ParamRetDict.getParamTypeMod(xlateList[0]) == 0
+        xlate_list = helper._xlate_params(gen_param_list)
+        assert len(xlate_list) == len(gen_param_list)
+        assert ParamRetDict.get_param_name(xlate_list[0]) == ParamRetDict.get_param_name(gen_param_list[0])
+        assert ParamRetDict.get_param_type(xlate_list[0]) == "number"
+        assert ParamRetDict.get_param_desc(xlate_list[0]) == ParamRetDict.get_param_desc(gen_param_list[0])
+        assert ParamRetDict.get_param_type_mod(xlate_list[0]) == 0
 
-        assert ParamRetDict.getParamName(xlateList[1]) == ParamRetDict.getParamName(genParamList[1])
-        assert ParamRetDict.getParamType(xlateList[1]) == "number"
-        assert ParamRetDict.getParamDesc(xlateList[1]) == ParamRetDict.getParamDesc(genParamList[1])
-        assert ParamRetDict.getParamTypeMod(xlateList[1]) == 0
+        assert ParamRetDict.get_param_name(xlate_list[1]) == ParamRetDict.get_param_name(gen_param_list[1])
+        assert ParamRetDict.get_param_type(xlate_list[1]) == "number"
+        assert ParamRetDict.get_param_desc(xlate_list[1]) == ParamRetDict.get_param_desc(gen_param_list[1])
+        assert ParamRetDict.get_param_type_mod(xlate_list[1]) == 0
 
-        assert ParamRetDict.getParamName(xlateList[2]) == ParamRetDict.getParamName(genParamList[2])
-        assert ParamRetDict.getParamType(xlateList[2]) == "string[]"
-        assert ParamRetDict.getParamDesc(xlateList[2]) == ParamRetDict.getParamDesc(genParamList[2])
-        assert ParamRetDict.getParamTypeMod(xlateList[2]) == 0
+        assert ParamRetDict.get_param_name(xlate_list[2]) == ParamRetDict.get_param_name(gen_param_list[2])
+        assert ParamRetDict.get_param_type(xlate_list[2]) == "string[]"
+        assert ParamRetDict.get_param_desc(xlate_list[2]) == ParamRetDict.get_param_desc(gen_param_list[2])
+        assert ParamRetDict.get_param_type_mod(xlate_list[2]) == 0
 
-    def test13XlateParamEmptyList(self):
+    def test13_xlate_param_empty_list(self):
         """!
-        @brief Test the _xlateParams method, empty list input
+        @brief Test the _xlate_params method, empty list input
         """
         helper = GenerateTypeScriptFileHelper()
-        genParamList = []
-        xlateList = helper._xlateParams(genParamList)
-        assert len(xlateList) == 0
+        gen_param_list = []
+        xlate_list = helper._xlate_params(gen_param_list)
+        assert len(xlate_list) == 0
 
-    def test14XlateRetDict(self):
+    def test14_xlate_ret_dict(self):
         """!
-        @brief Test the _xlateReturnDict method
+        @brief Test the _xlate_return_dict method
         """
         helper = GenerateTypeScriptFileHelper()
-        genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "myint", 0)
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "myint", 0)
 
-        xlatedRet = helper._xlateReturnDict(genRetDict)
-        assert ParamRetDict.getReturnType(xlatedRet) == "number"
-        assert ParamRetDict.getParamDesc(xlatedRet) == ParamRetDict.getParamDesc(genRetDict)
-        assert ParamRetDict.getParamTypeMod(genRetDict) == 0
+        xlated_ret = helper._xlate_return_dict(gen_ret_dict)
+        assert ParamRetDict.get_return_type(xlated_ret) == "number"
+        assert ParamRetDict.get_param_desc(xlated_ret) == ParamRetDict.get_param_desc(gen_ret_dict)
+        assert ParamRetDict.get_param_type_mod(gen_ret_dict) == 0
 
-    def test15XlateRetDictNone(self):
+    def test15_xlate_ret_dict_none(self):
         """!
-        @brief Test the _xlateReturnDict method, with no input
+        @brief Test the _xlate_return_dict method, with no input
         """
         helper = GenerateTypeScriptFileHelper()
-        xlatedRet = helper._xlateReturnDict(None)
-        assert xlatedRet is None
+        xlated_ret = helper._xlate_return_dict(None)
+        assert xlated_ret is None
 
-    def test16GenReturnType(self):
+    def test16_gen_return_type(self):
         """!
-        @brief Test the _genFunctionRetType method
-        """
-        helper = GenerateTypeScriptFileHelper()
-
-        genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "myint", 0)
-        returnText = helper._genFunctionRetType(genRetDict)
-        assert returnText == ":number"
-
-        genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "myint", ParamRetDict.typeModList)
-        returnText = helper._genFunctionRetType(genRetDict)
-        assert returnText == ":number[]"
-
-    def test17GenReturnType(self):
-        """!
-        @brief Test the _genFunctionRetType method, with none input
+        @brief Test the _gen_function_ret_type method
         """
         helper = GenerateTypeScriptFileHelper()
 
-        returnText = helper._genFunctionRetType(None)
-        assert returnText == ""
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "myint", 0)
+        return_text = helper._gen_function_ret_type(gen_ret_dict)
+        assert return_text == ":number"
 
-    def test18GenFunctionParams(self):
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "myint", ParamRetDict.type_mod_list)
+        return_text = helper._gen_function_ret_type(gen_ret_dict)
+        assert return_text == ":number[]"
+
+    def test17_gen_return_type(self):
         """!
-        @brief Test the _genFunctionParams method
+        @brief Test the _gen_function_ret_type method, with none input
         """
         helper = GenerateTypeScriptFileHelper()
-        genParamList = []
-        genParamList.append(ParamRetDict.buildParamDictWithMod("foo", "integer", "myint", 0))
-        genParamList.append(ParamRetDict.buildParamDictWithMod("moo", "size", "mysize", ParamRetDict.typeModPtr))
-        genParamList.append(ParamRetDict.buildParamDictWithMod("goo", "string", "mystr", ParamRetDict.typeModList))
 
-        returnText = helper._genFunctionParams(genParamList)
-        assert returnText == "(foo:number, moo:number, goo:string[])"
+        return_text = helper._gen_function_ret_type(None)
+        assert return_text == ""
 
-    def test19GenFunctionParamsEmpty(self):
+    def test18_gen_function_params(self):
         """!
-        @brief Test the _genFunctionParams method, empty list
+        @brief Test the _gen_function_params method
         """
         helper = GenerateTypeScriptFileHelper()
-        genParamList = []
-        returnText = helper._genFunctionParams(genParamList)
-        assert returnText == "()"
+        gen_param_list = []
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("goo", "string", "mystr", ParamRetDict.type_mod_list))
 
-    def test20DeclareFunction(self):
+        return_text = helper._gen_function_params(gen_param_list)
+        assert return_text == "(foo:number, moo:number, goo:string[])"
+
+    def test19_gen_function_params_empty(self):
         """!
-        @brief Test the _declareFunctionWithDecorations method, no decorations
+        @brief Test the _gen_function_params method, empty list
         """
         helper = GenerateTypeScriptFileHelper()
-        genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "return int", 0)
+        gen_param_list = []
+        return_text = helper._gen_function_params(gen_param_list)
+        assert return_text == "()"
 
-        genParamList = []
-        genParamList.append(ParamRetDict.buildParamDictWithMod("foo", "integer", "myint", 0))
-        genParamList.append(ParamRetDict.buildParamDictWithMod("moo", "size", "mysize", ParamRetDict.typeModPtr))
-
-        functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict)
-        assert len(functionText) == 11
-        assert functionText[0] == '/**\n'
-        assert functionText[1] == ' * @brief My test function\n'
-        assert functionText[2] == ' * \n'
-        assert functionText[3] == ' * @param foo {number} myint\n'
-        assert functionText[4] == ' * @param moo {number} mysize\n'
-        assert functionText[5] == ' * \n'
-        assert functionText[6] == ' * @return number - return int\n'
-        assert functionText[7] == ' */\n'
-        assert functionText[8] == 'public myTest(foo:number, moo:number):number\n'
-        assert functionText[9] == '{\n'
-
-    def test21DeclareFunctionWithPrefix(self):
+    def test20_declare_function(self):
         """!
-        @brief Test the _declareFunctionWithDecorations method, prefix decoration
+        @brief Test the _declare_function_with_decorations method, no decorations
         """
         helper = GenerateTypeScriptFileHelper()
-        genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "return int", 0)
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return int", 0)
 
-        genParamList = []
-        genParamList.append(ParamRetDict.buildParamDictWithMod("foo", "integer", "myint", 0))
-        genParamList.append(ParamRetDict.buildParamDictWithMod("moo", "size", "mysize", ParamRetDict.typeModPtr))
+        gen_param_list = []
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
 
-        functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict, 8, prefixDecaration='public')
-        assert len(functionText) == 11
-        assert functionText[0] == '        /**\n'
-        assert functionText[1] == '         * @brief My test function\n'
-        assert functionText[2] == '         * \n'
-        assert functionText[3] == '         * @param foo {number} myint\n'
-        assert functionText[4] == '         * @param moo {number} mysize\n'
-        assert functionText[5] == '         * \n'
-        assert functionText[6] == '         * @return number - return int\n'
-        assert functionText[7] == '         */\n'
-        assert functionText[8] == '        public myTest(foo:number, moo:number):number\n'
-        assert functionText[9] == '        {\n'
+        function_text = helper._declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict)
+        assert len(function_text) == 11
+        assert function_text[0] == '/**\n'
+        assert function_text[1] == ' * @brief My test function\n'
+        assert function_text[2] == ' * \n'
+        assert function_text[3] == ' * @param foo {number} myint\n'
+        assert function_text[4] == ' * @param moo {number} mysize\n'
+        assert function_text[5] == ' * \n'
+        assert function_text[6] == ' * @return number - return int\n'
+        assert function_text[7] == ' */\n'
+        assert function_text[8] == 'public my_test(foo:number, moo:number):number\n'
+        assert function_text[9] == '{\n'
 
-    def test22DeclareFunctionWithPostfix(self):
+    def test21_declare_function_with_prefix(self):
         """!
-        @brief Test the _declareFunctionWithDecorations method, postfix decoration
+        @brief Test the _declare_function_with_decorations method, prefix decoration
         """
         helper = GenerateTypeScriptFileHelper()
-        genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "return int", 0)
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return int", 0)
 
-        genParamList = []
-        genParamList.append(ParamRetDict.buildParamDictWithMod("foo", "integer", "myint", 0))
-        genParamList.append(ParamRetDict.buildParamDictWithMod("moo", "size", "mysize", ParamRetDict.typeModPtr))
+        gen_param_list = []
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
 
-        functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict, 8,
-                                                              postfixDecaration='@configurable(false)')
-        assert len(functionText) == 12
-        assert functionText[0] == '        /**\n'
-        assert functionText[1] == '         * @brief My test function\n'
-        assert functionText[2] == '         * \n'
-        assert functionText[3] == '         * @param foo {number} myint\n'
-        assert functionText[4] == '         * @param moo {number} mysize\n'
-        assert functionText[5] == '         * \n'
-        assert functionText[6] == '         * @return number - return int\n'
-        assert functionText[7] == '         */\n'
-        assert functionText[8] == '        @configurable(false)\n'
-        assert functionText[9] == '        public myTest(foo:number, moo:number):number\n'
-        assert functionText[10] == '        {\n'
-        assert functionText[11] == '        }\n'
+        function_text = helper._declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict, 8, prefix_decaration='public')
+        assert len(function_text) == 11
+        assert function_text[0] == '        /**\n'
+        assert function_text[1] == '         * @brief My test function\n'
+        assert function_text[2] == '         * \n'
+        assert function_text[3] == '         * @param foo {number} myint\n'
+        assert function_text[4] == '         * @param moo {number} mysize\n'
+        assert function_text[5] == '         * \n'
+        assert function_text[6] == '         * @return number - return int\n'
+        assert function_text[7] == '         */\n'
+        assert function_text[8] == '        public my_test(foo:number, moo:number):number\n'
+        assert function_text[9] == '        {\n'
 
-    def test23DeclareFunctionWithPreAndPostfix(self):
+    def test22_declare_function_with_postfix(self):
         """!
-        @brief Test the _declareFunctionWithDecorations method, prefix, postfix decoration
+        @brief Test the _declare_function_with_decorations method, postfix decoration
         """
         helper = GenerateTypeScriptFileHelper()
-        genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "return int", 0)
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return int", 0)
 
-        genParamList = []
-        genParamList.append(ParamRetDict.buildParamDictWithMod("foo", "integer", "myint", 0))
-        genParamList.append(ParamRetDict.buildParamDictWithMod("moo", "size", "mysize", ParamRetDict.typeModPtr))
+        gen_param_list = []
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
 
-        functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict,
-                                                              8, prefixDecaration="private", postfixDecaration='@configurable(false)')
-        assert len(functionText) == 12
-        assert functionText[0] == '        /**\n'
-        assert functionText[1] == '         * @brief My test function\n'
-        assert functionText[2] == '         * \n'
-        assert functionText[3] == '         * @param foo {number} myint\n'
-        assert functionText[4] == '         * @param moo {number} mysize\n'
-        assert functionText[5] == '         * \n'
-        assert functionText[6] == '         * @return number - return int\n'
-        assert functionText[7] == '         */\n'
-        assert functionText[8] == '        @configurable(false)\n'
-        assert functionText[9] == '        private myTest(foo:number, moo:number):number\n'
-        assert functionText[10] == '        {\n'
-        assert functionText[11] == '        }\n'
+        function_text = helper._declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict, 8,
+                                                              postfix_decaration='@configurable(false)')
+        assert len(function_text) == 12
+        assert function_text[0] == '        /**\n'
+        assert function_text[1] == '         * @brief My test function\n'
+        assert function_text[2] == '         * \n'
+        assert function_text[3] == '         * @param foo {number} myint\n'
+        assert function_text[4] == '         * @param moo {number} mysize\n'
+        assert function_text[5] == '         * \n'
+        assert function_text[6] == '         * @return number - return int\n'
+        assert function_text[7] == '         */\n'
+        assert function_text[8] == '        @configurable(false)\n'
+        assert function_text[9] == '        public my_test(foo:number, moo:number):number\n'
+        assert function_text[10] == '        {\n'
+        assert function_text[11] == '        }\n'
 
-    def test24DeclareFunctionWithPreAndPostfixNoComment(self):
+    def test23_declare_function_with_pre_and_postfix(self):
         """!
-        @brief Test the _declareFunctionWithDecorations method, prefix, postfix decoration, no comment
+        @brief Test the _declare_function_with_decorations method, prefix, postfix decoration
         """
         helper = GenerateTypeScriptFileHelper()
-        genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "return int", 0)
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return int", 0)
 
-        genParamList = []
-        genParamList.append(ParamRetDict.buildParamDictWithMod("foo", "integer", "myint", 0))
-        genParamList.append(ParamRetDict.buildParamDictWithMod("moo", "size", "mysize", ParamRetDict.typeModPtr))
+        gen_param_list = []
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
 
-        functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict,
+        function_text = helper._declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
+                                                              8, prefix_decaration="private", postfix_decaration='@configurable(false)')
+        assert len(function_text) == 12
+        assert function_text[0] == '        /**\n'
+        assert function_text[1] == '         * @brief My test function\n'
+        assert function_text[2] == '         * \n'
+        assert function_text[3] == '         * @param foo {number} myint\n'
+        assert function_text[4] == '         * @param moo {number} mysize\n'
+        assert function_text[5] == '         * \n'
+        assert function_text[6] == '         * @return number - return int\n'
+        assert function_text[7] == '         */\n'
+        assert function_text[8] == '        @configurable(false)\n'
+        assert function_text[9] == '        private my_test(foo:number, moo:number):number\n'
+        assert function_text[10] == '        {\n'
+        assert function_text[11] == '        }\n'
+
+    def test24_declare_function_with_pre_and_postfix_no_comment(self):
+        """!
+        @brief Test the _declare_function_with_decorations method, prefix, postfix decoration, no comment
+        """
+        helper = GenerateTypeScriptFileHelper()
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return int", 0)
+
+        gen_param_list = []
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+
+        function_text = helper._declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
                                                               8, True, "public", '@enumerable(false)')
-        assert len(functionText) == 4
-        assert functionText[0] == '        @enumerable(false)\n'
-        assert functionText[1] == '        public myTest(foo:number, moo:number):number\n'
-        assert functionText[2] == '        {\n'
-        assert functionText[3] == '        }\n'
+        assert len(function_text) == 4
+        assert function_text[0] == '        @enumerable(false)\n'
+        assert function_text[1] == '        public my_test(foo:number, moo:number):number\n'
+        assert function_text[2] == '        {\n'
+        assert function_text[3] == '        }\n'
 
-    def test25DeclareFunctionWithNoCommentInlineSingleLine(self):
+    def test25_declare_function_with_no_comment_inline_single_line(self):
         """!
-        @brief Test the _declareFunctionWithDecorations method, no comment inline code
+        @brief Test the _declare_function_with_decorations method, no comment inline code
         """
         helper = GenerateTypeScriptFileHelper()
-        genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "return int", 0)
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return int", 0)
 
-        genParamList = []
-        genParamList.append(ParamRetDict.buildParamDictWithMod("foo", "integer", "myint", 0))
-        genParamList.append(ParamRetDict.buildParamDictWithMod("moo", "size", "mysize", ParamRetDict.typeModPtr))
+        gen_param_list = []
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
 
-        functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict,
+        function_text = helper._declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
                                                               8, True, "public", '@enumerable(false)', ["return 15;"])
-        assert len(functionText) == 3
-        assert functionText[0] == '        @enumerable(false)\n'
-        assert functionText[1] == '        public myTest(foo:number, moo:number):number\n'
-        assert functionText[2] == '        {return 15;}\n'
+        assert len(function_text) == 3
+        assert function_text[0] == '        @enumerable(false)\n'
+        assert function_text[1] == '        public my_test(foo:number, moo:number):number\n'
+        assert function_text[2] == '        {return 15;}\n'
 
-    def test26DeclareFunctionWithNoCommentInlineMultiLine(self):
+    def test26_declare_function_with_no_comment_inline_multi_line(self):
         """!
-        @brief Test the _declareFunctionWithDecorations method, no comment inline code
+        @brief Test the _declare_function_with_decorations method, no comment inline code
         """
         helper = GenerateTypeScriptFileHelper()
-        genRetDict = ParamRetDict.buildReturnDictWithMod("integer", "return list", ParamRetDict.typeModList)
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return list", ParamRetDict.type_mod_list)
 
-        genParamList = []
-        genParamList.append(ParamRetDict.buildParamDictWithMod("foo", "integer", "myint", 0))
-        genParamList.append(ParamRetDict.buildParamDictWithMod("moo", "size", "mysize", ParamRetDict.typeModPtr))
+        gen_param_list = []
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
 
-        inlineCode =["number retvar[];",
+        inline_code =["number retvar[];",
                      "retvar.push_back(15);",
                      "retvar.push_back(25);",
                      "return retvar;"]
 
-        functionText = helper._declareFunctionWithDecorations("myTest", "My test function", genParamList, genRetDict,
-                                                              8, True, "public", '@enumerable(false)', inlineCode)
-        assert len(functionText) == 8
-        assert functionText[0] == '        @enumerable(false)\n'
-        assert functionText[1] == '        public myTest(foo:number, moo:number):number[]\n'
-        assert functionText[2] == '        {\n'
-        assert functionText[3] == '            '+inlineCode[0]+'\n'
-        assert functionText[4] == '            '+inlineCode[1]+'\n'
-        assert functionText[5] == '            '+inlineCode[2]+'\n'
-        assert functionText[6] == '            '+inlineCode[3]+'\n'
-        assert functionText[7] == '        }\n'
+        function_text = helper._declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
+                                                              8, True, "public", '@enumerable(false)', inline_code)
+        assert len(function_text) == 8
+        assert function_text[0] == '        @enumerable(false)\n'
+        assert function_text[1] == '        public my_test(foo:number, moo:number):number[]\n'
+        assert function_text[2] == '        {\n'
+        assert function_text[3] == '            '+inline_code[0]+'\n'
+        assert function_text[4] == '            '+inline_code[1]+'\n'
+        assert function_text[5] == '            '+inline_code[2]+'\n'
+        assert function_text[6] == '            '+inline_code[3]+'\n'
+        assert function_text[7] == '        }\n'
 
-    def test27EndFunction(self):
+    def test27_end_function(self):
         """!
-        @brief Test the _endFunction method
+        @brief Test the _end_function method
         """
         helper = GenerateTypeScriptFileHelper()
-        functionText = helper._endFunction("myTest")
-        assert functionText == '} // end of function myTest\n'
+        function_text = helper._end_function("my_test")
+        assert function_text == '} // end of function my_test\n'
 
-    def test28GenFileHeader(self):
+    def test28_gen_file_header(self):
         """!
-        @brief Test the _generateGenericFileHeader method
+        @brief Test the _generate_generic_file_header method
         """
         helper = GenerateTypeScriptFileHelper()
-        currentYear = datetime.now().year
-        headerText = helper._generateGenericFileHeader("unittest", currentYear, "Me")
-        copyrightMsg = "* Copyright (c) "+str(currentYear)+" Me"
-        assert len(headerText) == 27
-        assert headerText[0] == "/*------------------------------------------------------------------------------\n"
-        assert headerText[1] == copyrightMsg+"\n"
-        assert headerText[3] == "* MIT License\n"
-        assert headerText[24] == "* This file was autogenerated by unittest do not edit\n"
-        assert headerText[26] == "* ----------------------------------------------------------------------------*/\n"
+        current_year = datetime.now().year
+        header_text = helper._generate_generic_file_header("unittest", current_year, "Me")
+        copyright_msg = "* Copyright (c) "+str(current_year)+" Me"
+        assert len(header_text) == 27
+        assert header_text[0] == "/*------------------------------------------------------------------------------\n"
+        assert header_text[1] == copyright_msg+"\n"
+        assert header_text[3] == "* MIT License\n"
+        assert header_text[24] == "* This file was autogenerated by unittest do not edit\n"
+        assert header_text[26] == "* ----------------------------------------------------------------------------*/\n"
 
-    def test29GenImport(self):
+    def test29_gen_import(self):
         """!
-        @brief Test the _genImport method
-        """
-        helper = GenerateTypeScriptFileHelper()
-
-        includeText = helper._genImport("testclass", "testmodule")
-        assert includeText == "import {testclass} from testmodule;\n"
-
-        includeText = helper._genImport("testclass")
-        assert includeText == "import 'testclass';\n"
-
-    def test30GenImportBlock(self):
-        """!
-        @brief Test the _genImportBlock method
-        """
-        helper = GenerateTypeScriptFileHelper()
-        includeList = [("class1", "module1"), ("class2", "module2"), ("class3", "module3"), ("class4", None)]
-        includeText = helper._genImportBlock(includeList)
-        assert len(includeText) == len(includeList) + 1
-        assert includeText[0] == "// Imports\n"
-        assert includeText[1] == "import {class1} from module1;\n"
-        assert includeText[2] == "import {class2} from module2;\n"
-        assert includeText[3] == "import {class3} from module3;\n"
-        assert includeText[4] == "import 'class4';\n"
-
-    def test31GenOpenNamespace(self):
-        """!
-        @brief Test the _genNamespaceOpen method
+        @brief Test the _gen_import method
         """
         helper = GenerateTypeScriptFileHelper()
 
-        testText = helper._genNamespaceOpen("wonder")
-        assert len(testText) == 1
-        assert testText[0] == "namespace wonder {\n"
+        include_text = helper._gen_import("testclass", "testmodule")
+        assert include_text == "import {testclass} from testmodule;\n"
 
-        testText = helper._genNamespaceOpen("boy")
-        assert len(testText) == 1
-        assert testText[0] == "namespace boy {\n"
+        include_text = helper._gen_import("testclass")
+        assert include_text == "import 'testclass';\n"
 
-    def test32GenCloseNamespace(self):
+    def test30_gen_import_block(self):
         """!
-        @brief Test the _genNamespaceClose method
+        @brief Test the _gen_importBlock method
+        """
+        helper = GenerateTypeScriptFileHelper()
+        include_list = [("class1", "module1"), ("class2", "module2"), ("class3", "module3"), ("class4", None)]
+        include_text = helper._gen_importBlock(include_list)
+        assert len(include_text) == len(include_list) + 1
+        assert include_text[0] == "// Imports\n"
+        assert include_text[1] == "import {class1} from module1;\n"
+        assert include_text[2] == "import {class2} from module2;\n"
+        assert include_text[3] == "import {class3} from module3;\n"
+        assert include_text[4] == "import 'class4';\n"
+
+    def test31_gen_open_namespace(self):
+        """!
+        @brief Test the _gen_namespace_open method
         """
         helper = GenerateTypeScriptFileHelper()
 
-        testText = helper._genNamespaceClose("wonder")
-        assert len(testText) == 1
-        assert testText[0] == "} // end of namespace wonder\n"
+        test_text = helper._gen_namespace_open("wonder")
+        assert len(test_text) == 1
+        assert test_text[0] == "namespace wonder {\n"
 
-        testText = helper._genNamespaceClose("boy")
-        assert len(testText) == 1
-        assert testText[0] == "} // end of namespace boy\n"
+        test_text = helper._gen_namespace_open("boy")
+        assert len(test_text) == 1
+        assert test_text[0] == "namespace boy {\n"
 
-    def test34GenClassOpen(self):
+    def test32_gen_close_namespace(self):
         """!
-        @brief Test the _genClassOpen method, no decorations
+        @brief Test the _gen_namespace_close method
         """
         helper = GenerateTypeScriptFileHelper()
 
-        testText = helper._genClassOpen("MyTestClassName", "My class description")
-        assert len(testText) == 5
-        assert testText[0] == "/**\n"
-        assert testText[1] == " * @brief My class description\n"
-        assert testText[2] == " */\n"
-        assert testText[3] == "class MyTestClassName\n"
-        assert testText[4] == "{\n"
+        test_text = helper._gen_namespace_close("wonder")
+        assert len(test_text) == 1
+        assert test_text[0] == "} // end of namespace wonder\n"
 
-    def test35GenClassOpenWithInheritence(self):
+        test_text = helper._gen_namespace_close("boy")
+        assert len(test_text) == 1
+        assert test_text[0] == "} // end of namespace boy\n"
+
+    def test34_gen_class_open(self):
         """!
-        @brief Test the _genClassOpen method, with inheritence
+        @brief Test the _gen_class_open method, no decorations
         """
         helper = GenerateTypeScriptFileHelper()
 
-        testText = helper._genClassOpen("MyTestClassName", "My class description", "MyBaseClass")
-        assert len(testText) == 5
-        assert testText[0] == "/**\n"
-        assert testText[1] == " * @brief My class description\n"
-        assert testText[2] == " */\n"
-        assert testText[3] == "class MyTestClassName extends MyBaseClass\n"
-        assert testText[4] == "{\n"
+        test_text = helper._gen_class_open("MyTestClassName", "My class description")
+        assert len(test_text) == 5
+        assert test_text[0] == "/**\n"
+        assert test_text[1] == " * @brief My class description\n"
+        assert test_text[2] == " */\n"
+        assert test_text[3] == "class MyTestClassName\n"
+        assert test_text[4] == "{\n"
 
-    def test36GenClassOpenDecoration(self):
+    def test35_gen_class_open_with_inheritence(self):
         """!
-        @brief Test the _genClassOpen method, with inheritence
+        @brief Test the _gen_class_open method, with inheritence
         """
         helper = GenerateTypeScriptFileHelper()
 
-        testText = helper._genClassOpen("MyTestClassName", "My class description", "MyBaseClass", "export", 2)
-        assert len(testText) == 5
-        assert testText[0] == "  /**\n"
-        assert testText[1] == "   * @brief My class description\n"
-        assert testText[2] == "   */\n"
-        assert testText[3] == "  export class MyTestClassName extends MyBaseClass\n"
-        assert testText[4] == "  {\n"
+        test_text = helper._gen_class_open("MyTestClassName", "My class description", "MyBaseClass")
+        assert len(test_text) == 5
+        assert test_text[0] == "/**\n"
+        assert test_text[1] == " * @brief My class description\n"
+        assert test_text[2] == " */\n"
+        assert test_text[3] == "class MyTestClassName extends MyBaseClass\n"
+        assert test_text[4] == "{\n"
 
-    def test37GenClassClose(self):
+    def test36_gen_class_open_decoration(self):
         """!
-        @brief Test the _genClassClose method, with inheritence
+        @brief Test the _gen_class_open method, with inheritence
         """
         helper = GenerateTypeScriptFileHelper()
 
-        testText = helper._genClassClose("MyTestClassName")
-        assert len(testText) == 1
-        assert testText[0] == "} // end of MyTestClassName class\n"
+        test_text = helper._gen_class_open("MyTestClassName", "My class description", "MyBaseClass", "export", 2)
+        assert len(test_text) == 5
+        assert test_text[0] == "  /**\n"
+        assert test_text[1] == "   * @brief My class description\n"
+        assert test_text[2] == "   */\n"
+        assert test_text[3] == "  export class MyTestClassName extends MyBaseClass\n"
+        assert test_text[4] == "  {\n"
 
-        testText = helper._genClassClose("MyTestClassName", 2)
-        assert len(testText) == 1
-        assert testText[0] == "  } // end of MyTestClassName class\n"
-
-    def test38GenClassDefaultConstrutor(self):
+    def test37_gen_class_close(self):
         """!
-        @brief Test the _genClassDefaultConstructor method
+        @brief Test the _gen_class_close method, with inheritence
         """
         helper = GenerateTypeScriptFileHelper()
 
-        testText = helper._genClassDefaultConstructor("MyTestClassName")
-        assert len(testText) == 8
-        assert testText[0] == "        /**\n"
-        assert testText[1] == "         * @brief Construct a new MyTestClassName object\n"
-        assert testText[2] == "         * \n"
-        assert testText[3] == "         */\n"
-        assert testText[4] == "        public constructor()\n"
-        assert testText[5] == "        {\n"
-        assert testText[6] == "        }\n"
-        assert testText[7] == "\n"
+        test_text = helper._gen_class_close("MyTestClassName")
+        assert len(test_text) == 1
+        assert test_text[0] == "} // end of MyTestClassName class\n"
 
-    def test39GenClassDefaultContrutorNoDoxy(self):
+        test_text = helper._gen_class_close("MyTestClassName", 2)
+        assert len(test_text) == 1
+        assert test_text[0] == "  } // end of MyTestClassName class\n"
+
+    def test38_gen_class_default_construtor(self):
         """!
-        @brief Test the _genClassDefaultConstructor method, with no doxygen comments
+        @brief Test the _gen_class_default_constructor method
         """
         helper = GenerateTypeScriptFileHelper()
 
-        testText = helper._genClassDefaultConstructor("MyTestClassName", noDoxyCommentConstructor=True)
-        assert len(testText) == 4
-        assert testText[0] == "        public constructor()\n"
-        assert testText[1] == "        {\n"
-        assert testText[2] == "        }\n"
-        assert testText[3] == "\n"
+        test_text = helper._gen_class_default_constructor("MyTestClassName")
+        assert len(test_text) == 8
+        assert test_text[0] == "        /**\n"
+        assert test_text[1] == "         * @brief Construct a new MyTestClassName object\n"
+        assert test_text[2] == "         * \n"
+        assert test_text[3] == "         */\n"
+        assert test_text[4] == "        public constructor()\n"
+        assert test_text[5] == "        {\n"
+        assert test_text[6] == "        }\n"
+        assert test_text[7] == "\n"
 
-    def test40GenClassDefaultConstrutorWithInputParams(self):
+    def test39_gen_class_default_contrutor_no_doxy(self):
         """!
-        @brief Test the _genClassDefaultConstructor method, with doxygen comments, and parameter list
-        """
-        helper = GenerateTypeScriptFileHelper()
-        params = [ParamRetDict.buildParamDictWithMod("one", "string", "Parameter one", 0),
-                  ParamRetDict.buildParamDictWithMod("two", "integer", "Parameter two", 0)]
-        testText = helper._genClassDefaultConstructor("MyTestClassName", paramList=params)
-        assert len(testText) == 11
-        assert testText[0] == "        /**\n"
-        assert testText[1] == "         * @brief Construct a new MyTestClassName object\n"
-        assert testText[2] == "         * \n"
-        assert testText[3] == "         * @param one {string} Parameter one\n"
-        assert testText[4] == "         * @param two {number} Parameter two\n"
-        assert testText[5] == "         * \n"
-        assert testText[6] == "         */\n"
-        assert testText[7] == "        public constructor(one:string, two:number)\n"
-        assert testText[8] == "        {\n"
-        assert testText[9] == "        }\n"
-        assert testText[10] == "\n"
-
-    def test41GenClassDefaultConstrutorNoDoxyInputParams(self):
-        """!
-        @brief Test the _genClassDefaultConstructor method, with no doxygen comments, and parameter list
-        """
-        helper = GenerateTypeScriptFileHelper()
-        params = [ParamRetDict.buildParamDictWithMod("one", "string", "Parameter one", 0),
-                  ParamRetDict.buildParamDictWithMod("two", "integer", "Parameter two", 0)]
-        testText = helper._genClassDefaultConstructor("MyTestClassName", paramList=params, noDoxyCommentConstructor=True)
-        assert len(testText) == 4
-        assert testText[0] == "        public constructor(one:string, two:number)\n"
-        assert testText[1] == "        {\n"
-        assert testText[2] == "        }\n"
-        assert testText[3] == "\n"
-
-    def test42GenClassDefaultConstrutorNoDoxyWithInline(self):
-        """!
-        @brief Test the _genClassDefaultConstructor method, with virtual destructor, no doxycomment, no copy
+        @brief Test the _gen_class_default_constructor method, with no doxygen comments
         """
         helper = GenerateTypeScriptFileHelper()
 
-        helper = GenerateTypeScriptFileHelper()
-        params = [ParamRetDict.buildParamDictWithMod("one", "string", "Parameter one", 0),
-                  ParamRetDict.buildParamDictWithMod("two", "integer", "Parameter two", 0)]
-        inlineCode = ["this.one = one;", "this.two = two;"]
-        testText = helper._genClassDefaultConstructor("MyTestClassName", 4, params, inlineCode, True)
-        assert len(testText) == 6
-        assert testText[0] == "    public constructor(one:string, two:number)\n"
-        assert testText[1] == "    {\n"
-        assert testText[2] == "        this.one = one;\n"
-        assert testText[3] == "        this.two = two;\n"
-        assert testText[4] == "    }\n"
-        assert testText[5] == "\n"
+        test_text = helper._gen_class_default_constructor("MyTestClassName", no_doxy_comment_constructor=True)
+        assert len(test_text) == 4
+        assert test_text[0] == "        public constructor()\n"
+        assert test_text[1] == "        {\n"
+        assert test_text[2] == "        }\n"
+        assert test_text[3] == "\n"
 
-    def test43DeclareStructEmptyList(self):
+    def test40_gen_class_default_construtor_with_input_params(self):
         """!
-        @brief Test the _declareStructure method, No decorations, empty list
+        @brief Test the _gen_class_default_constructor method, with doxygen comments, and parameter list
+        """
+        helper = GenerateTypeScriptFileHelper()
+        params = [ParamRetDict.build_param_dict_with_mod("one", "string", "Parameter one", 0),
+                  ParamRetDict.build_param_dict_with_mod("two", "integer", "Parameter two", 0)]
+        test_text = helper._gen_class_default_constructor("MyTestClassName", param_list=params)
+        assert len(test_text) == 11
+        assert test_text[0] == "        /**\n"
+        assert test_text[1] == "         * @brief Construct a new MyTestClassName object\n"
+        assert test_text[2] == "         * \n"
+        assert test_text[3] == "         * @param one {string} Parameter one\n"
+        assert test_text[4] == "         * @param two {number} Parameter two\n"
+        assert test_text[5] == "         * \n"
+        assert test_text[6] == "         */\n"
+        assert test_text[7] == "        public constructor(one:string, two:number)\n"
+        assert test_text[8] == "        {\n"
+        assert test_text[9] == "        }\n"
+        assert test_text[10] == "\n"
+
+    def test41_gen_class_default_construtor_no_doxy_input_params(self):
+        """!
+        @brief Test the _gen_class_default_constructor method, with no doxygen comments, and parameter list
+        """
+        helper = GenerateTypeScriptFileHelper()
+        params = [ParamRetDict.build_param_dict_with_mod("one", "string", "Parameter one", 0),
+                  ParamRetDict.build_param_dict_with_mod("two", "integer", "Parameter two", 0)]
+        test_text = helper._gen_class_default_constructor("MyTestClassName", param_list=params, no_doxy_comment_constructor=True)
+        assert len(test_text) == 4
+        assert test_text[0] == "        public constructor(one:string, two:number)\n"
+        assert test_text[1] == "        {\n"
+        assert test_text[2] == "        }\n"
+        assert test_text[3] == "\n"
+
+    def test42_gen_class_default_construtor_no_doxy_with_inline(self):
+        """!
+        @brief Test the _gen_class_default_constructor method, with virtual destructor, no doxycomment, no copy
         """
         helper = GenerateTypeScriptFileHelper()
 
-        varList = []
-        testText = helper._declareStructure("MyTestStructName", varList, 0, "Test structure")
-        assert len(testText) == 5
-        assert testText[0] == "/**\n"
-        assert testText[1] == " * @brief Test structure\n"
-        assert testText[2] == " */\n"
-        assert testText[3] == "interface MyTestStructName {\n"
-        assert testText[4] == "}\n"
+        helper = GenerateTypeScriptFileHelper()
+        params = [ParamRetDict.build_param_dict_with_mod("one", "string", "Parameter one", 0),
+                  ParamRetDict.build_param_dict_with_mod("two", "integer", "Parameter two", 0)]
+        inline_code = ["this.one = one;", "this.two = two;"]
+        test_text = helper._gen_class_default_constructor("MyTestClassName", 4, params, inline_code, True)
+        assert len(test_text) == 6
+        assert test_text[0] == "    public constructor(one:string, two:number)\n"
+        assert test_text[1] == "    {\n"
+        assert test_text[2] == "        this.one = one;\n"
+        assert test_text[3] == "        this.two = two;\n"
+        assert test_text[4] == "    }\n"
+        assert test_text[5] == "\n"
 
-    def test44DeclareStruct(self):
+    def test43_declare_struct_empty_list(self):
         """!
-        @brief Test the _declareStructure method, No decorations
+        @brief Test the _declare_structure method, No decorations, empty list
         """
         helper = GenerateTypeScriptFileHelper()
 
-        member1 = ParamRetDict.buildParamDictWithMod("foo", "integer", "Test integer", 0)
-        member2 = ParamRetDict.buildParamDictWithMod("moo", "unsigned", "Test unsigned", 0)
-        varList = [member1, member2]
-        testText = helper._declareStructure("MyTestStructName", varList, 0, "Test structure")
-        assert len(testText) == 7
-        assert testText[0] == "/**\n"
-        assert testText[1] == " * @brief Test structure\n"
-        assert testText[2] == " */\n"
-        assert testText[3] == "interface MyTestStructName {\n"
-        assert testText[4] == "    foo:number;                                             //!< Test integer\n"
-        assert testText[5] == "    moo:number;                                             //!< Test unsigned\n"
-        assert testText[6] == "}\n"
+        var_list = []
+        test_text = helper._declare_structure("MyTestStructName", var_list, 0, "Test structure")
+        assert len(test_text) == 5
+        assert test_text[0] == "/**\n"
+        assert test_text[1] == " * @brief Test structure\n"
+        assert test_text[2] == " */\n"
+        assert test_text[3] == "interface MyTestStructName {\n"
+        assert test_text[4] == "}\n"
 
-    def test45DeclareStructWithDecorations(self):
+    def test44_declare_struct(self):
         """!
-        @brief Test the _declareStructure method, No decorations
+        @brief Test the _declare_structure method, No decorations
         """
         helper = GenerateTypeScriptFileHelper()
 
-        member1 = ParamRetDict.buildParamDictWithMod("foo", "integer", "Test integer", 0)
-        member2 = ParamRetDict.buildParamDictWithMod("moo", "unsigned", "Test unsigned", 0)
-        varList = [member1, member2]
-        testText = helper._declareStructure("MyTestStructName", varList, 0, "Test structure", "export", "const")
-        assert len(testText) == 7
-        assert testText[0] == "/**\n"
-        assert testText[1] == " * @brief Test structure\n"
-        assert testText[2] == " */\n"
-        assert testText[3] == "export interface MyTestStructName {\n"
-        assert testText[4] == "    foo:number;                                             //!< Test integer\n"
-        assert testText[5] == "    moo:number;                                             //!< Test unsigned\n"
-        assert testText[6] == "} const\n"
+        member1 = ParamRetDict.build_param_dict_with_mod("foo", "integer", "Test integer", 0)
+        member2 = ParamRetDict.build_param_dict_with_mod("moo", "unsigned", "Test unsigned", 0)
+        var_list = [member1, member2]
+        test_text = helper._declare_structure("MyTestStructName", var_list, 0, "Test structure")
+        assert len(test_text) == 7
+        assert test_text[0] == "/**\n"
+        assert test_text[1] == " * @brief Test structure\n"
+        assert test_text[2] == " */\n"
+        assert test_text[3] == "interface MyTestStructName {\n"
+        assert test_text[4] == "    foo:number;                                             //!< Test integer\n"
+        assert test_text[5] == "    moo:number;                                             //!< Test unsigned\n"
+        assert test_text[6] == "}\n"
 
-    def test46DeclareVariable(self):
+    def test45_declare_struct_with_decorations(self):
         """!
-        @brief Test the _declareVarStatment method
+        @brief Test the _declare_structure method, No decorations
         """
         helper = GenerateTypeScriptFileHelper()
-        member1 = ParamRetDict.buildParamDictWithMod("foo", "integer", "Test integer", 0)
-        member2 = ParamRetDict.buildParamDictWithMod("moo", "unsigned", "Test unsigned", 0)
-        member3 = ParamRetDict.buildParamDictWithMod("goo", "string", "Test string", 0)
 
-        testText = helper._declareVarStatment(member1, 30)
-        assert testText == "foo:number;                   //!< Test integer\n"
+        member1 = ParamRetDict.build_param_dict_with_mod("foo", "integer", "Test integer", 0)
+        member2 = ParamRetDict.build_param_dict_with_mod("moo", "unsigned", "Test unsigned", 0)
+        var_list = [member1, member2]
+        test_text = helper._declare_structure("MyTestStructName", var_list, 0, "Test structure", "export", "const")
+        assert len(test_text) == 7
+        assert test_text[0] == "/**\n"
+        assert test_text[1] == " * @brief Test structure\n"
+        assert test_text[2] == " */\n"
+        assert test_text[3] == "export interface MyTestStructName {\n"
+        assert test_text[4] == "    foo:number;                                             //!< Test integer\n"
+        assert test_text[5] == "    moo:number;                                             //!< Test unsigned\n"
+        assert test_text[6] == "} const\n"
 
-        testText = helper._declareVarStatment(member2, 32)
-        assert testText == "moo:number;                     //!< Test unsigned\n"
-
-        testText = helper._declareVarStatment(member3, 10)
-        assert testText == "goo:string; //!< Test string\n"
-
-    def test47AddListEntry(self):
+    def test46_declare_variable(self):
         """!
-        @brief Test the _genAddListStatment method
+        @brief Test the _declare_var_statment method
         """
         helper = GenerateTypeScriptFileHelper()
-        testText = helper._genAddListStatment("testList", "number", False)
-        assert testText == "testList.push(number);"
-        testText = helper._genAddListStatment("testList", "5", False)
-        assert testText == "testList.push(5);"
+        member1 = ParamRetDict.build_param_dict_with_mod("foo", "integer", "Test integer", 0)
+        member2 = ParamRetDict.build_param_dict_with_mod("moo", "unsigned", "Test unsigned", 0)
+        member3 = ParamRetDict.build_param_dict_with_mod("goo", "string", "Test string", 0)
 
-        testText = helper._genAddListStatment("testList", "text", True)
-        assert testText == "testList.push(\"text\");"
-        testText = helper._genAddListStatment("testList", "AU", True)
-        assert testText == "testList.push(\"AU\");"
+        test_text = helper._declare_var_statment(member1, 30)
+        assert test_text == "foo:number;                   //!< Test integer\n"
 
-    def test48GenerateReturn(self):
+        test_text = helper._declare_var_statment(member2, 32)
+        assert test_text == "moo:number;                     //!< Test unsigned\n"
+
+        test_text = helper._declare_var_statment(member3, 10)
+        assert test_text == "goo:string; //!< Test string\n"
+
+    def test47_add_list_entry(self):
         """!
-        @brief Test the _genReturnStatment method
+        @brief Test the _gen_add_list_statment method
         """
         helper = GenerateTypeScriptFileHelper()
-        testText = helper._genReturnStatment("number", False)
-        assert testText == "return number;"
-        testText = helper._genReturnStatment("5", False)
-        assert testText == "return 5;"
+        test_text = helper._gen_add_list_statment("testList", "number", False)
+        assert test_text == "testList.push(number);"
+        test_text = helper._gen_add_list_statment("testList", "5", False)
+        assert test_text == "testList.push(5);"
 
-        testText = helper._genReturnStatment("text", True)
-        assert testText == "return \"text\";"
-        testText = helper._genReturnStatment("AU", True)
-        assert testText == "return \"AU\";"
+        test_text = helper._gen_add_list_statment("testList", "text", True)
+        assert test_text == "testList.push(\"text\");"
+        test_text = helper._gen_add_list_statment("testList", "AU", True)
+        assert test_text == "testList.push(\"AU\");"
 
-    def test49DefineFunction(self):
+    def test48_generate_return(self):
         """!
-        @brief Test the _defineFunctionWithDecorations method, no decarations
+        @brief Test the _gen_return_statment method
         """
         helper = GenerateTypeScriptFileHelper()
-        retDict = ParamRetDict.buildReturnDictWithMod("integer", "return value", 0)
-        paramList = [ParamRetDict.buildParamDictWithMod("foo", "unsigned", "Foo input", 0)]
-        testText = helper._defineFunctionWithDecorations("MyDefineFunc", "Brief description", paramList, retDict)
-        assert len(testText) == 9
-        assert testText[0] == "/**\n"
-        assert testText[1] == " * @brief Brief description\n"
-        assert testText[2] == " * \n"
-        assert testText[3] == " * @param foo {number} Foo input\n"
-        assert testText[4] == " * \n"
-        assert testText[5] == " * @return number - return value\n"
-        assert testText[6] == " */\n"
-        assert testText[7] == "function MyDefineFunc(foo:number):number\n"
-        assert testText[8] == "{\n"
+        test_text = helper._gen_return_statment("number", False)
+        assert test_text == "return number;"
+        test_text = helper._gen_return_statment("5", False)
+        assert test_text == "return 5;"
 
+        test_text = helper._gen_return_statment("text", True)
+        assert test_text == "return \"text\";"
+        test_text = helper._gen_return_statment("AU", True)
+        assert test_text == "return \"AU\";"
 
-    def test50DefineFunctionWithPreDecoration(self):
+    def test49_define_function(self):
         """!
-        @brief Test the _defineFunctionWithDecorations method, with prefix
+        @brief Test the _define_function_with_decorations method, no decarations
         """
         helper = GenerateTypeScriptFileHelper()
-        retDict = ParamRetDict.buildReturnDictWithMod("integer", "return value", 0)
-        paramList = [ParamRetDict.buildParamDictWithMod("foo", "unsigned", "Foo input", 0)]
-        testText = helper._defineFunctionWithDecorations("MyDefineFunc", "Brief description", paramList, retDict, False, "export")
-        assert len(testText) == 9
-        assert testText[0] == "/**\n"
-        assert testText[1] == " * @brief Brief description\n"
-        assert testText[2] == " * \n"
-        assert testText[3] == " * @param foo {number} Foo input\n"
-        assert testText[4] == " * \n"
-        assert testText[5] == " * @return number - return value\n"
-        assert testText[6] == " */\n"
-        assert testText[7] == "export function MyDefineFunc(foo:number):number\n"
-        assert testText[8] == "{\n"
+        ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
+        param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
+        test_text = helper._define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict)
+        assert len(test_text) == 9
+        assert test_text[0] == "/**\n"
+        assert test_text[1] == " * @brief Brief description\n"
+        assert test_text[2] == " * \n"
+        assert test_text[3] == " * @param foo {number} Foo input\n"
+        assert test_text[4] == " * \n"
+        assert test_text[5] == " * @return number - return value\n"
+        assert test_text[6] == " */\n"
+        assert test_text[7] == "function MyDefineFunc(foo:number):number\n"
+        assert test_text[8] == "{\n"
 
-    def test51DefineFunctionWithPostDecoration(self):
+
+    def test50_define_function_with_pre_decoration(self):
         """!
-        @brief Test the _defineFunctionWithDecorations method, with postfix
+        @brief Test the _define_function_with_decorations method, with prefix
         """
         helper = GenerateTypeScriptFileHelper()
-        retDict = ParamRetDict.buildReturnDictWithMod("integer", "return value", 0)
-        paramList = [ParamRetDict.buildParamDictWithMod("foo", "unsigned", "Foo input", 0)]
-        testText = helper._defineFunctionWithDecorations("MyDefineFunc", "Brief description", paramList, retDict, postfixDecaration="const")
-        assert len(testText) == 9
-        assert testText[0] == "/**\n"
-        assert testText[1] == " * @brief Brief description\n"
-        assert testText[2] == " * \n"
-        assert testText[3] == " * @param foo {number} Foo input\n"
-        assert testText[4] == " * \n"
-        assert testText[5] == " * @return number - return value\n"
-        assert testText[6] == " */\n"
-        assert testText[7] == "function MyDefineFunc(foo:number):number\n"
-        assert testText[8] == "{\n"
+        ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
+        param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
+        test_text = helper._define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict, False, "export")
+        assert len(test_text) == 9
+        assert test_text[0] == "/**\n"
+        assert test_text[1] == " * @brief Brief description\n"
+        assert test_text[2] == " * \n"
+        assert test_text[3] == " * @param foo {number} Foo input\n"
+        assert test_text[4] == " * \n"
+        assert test_text[5] == " * @return number - return value\n"
+        assert test_text[6] == " */\n"
+        assert test_text[7] == "export function MyDefineFunc(foo:number):number\n"
+        assert test_text[8] == "{\n"
 
-    def test52DefineFunctionWithPrePostDecoration(self):
+    def test51_define_function_with_post_decoration(self):
         """!
-        @brief Test the _defineFunctionWithDecorations method, with prefix and postfix
+        @brief Test the _define_function_with_decorations method, with postfix
         """
         helper = GenerateTypeScriptFileHelper()
-        retDict = ParamRetDict.buildReturnDictWithMod("integer", "return value", 0)
-        paramList = [ParamRetDict.buildParamDictWithMod("foo", "unsigned", "Foo input", 0)]
-        testText = helper._defineFunctionWithDecorations("MyDefineFunc", "Brief description", paramList, retDict,
-                                                         prefixDecaration="export", postfixDecaration="const")
-        assert len(testText) == 9
-        assert testText[0] == "/**\n"
-        assert testText[1] == " * @brief Brief description\n"
-        assert testText[2] == " * \n"
-        assert testText[3] == " * @param foo {number} Foo input\n"
-        assert testText[4] == " * \n"
-        assert testText[5] == " * @return number - return value\n"
-        assert testText[6] == " */\n"
-        assert testText[7] == "export function MyDefineFunc(foo:number):number\n"
-        assert testText[8] == "{\n"
+        ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
+        param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
+        test_text = helper._define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict, postfix_decaration="const")
+        assert len(test_text) == 9
+        assert test_text[0] == "/**\n"
+        assert test_text[1] == " * @brief Brief description\n"
+        assert test_text[2] == " * \n"
+        assert test_text[3] == " * @param foo {number} Foo input\n"
+        assert test_text[4] == " * \n"
+        assert test_text[5] == " * @return number - return value\n"
+        assert test_text[6] == " */\n"
+        assert test_text[7] == "function MyDefineFunc(foo:number):number\n"
+        assert test_text[8] == "{\n"
 
-    def test53DefineFunctionNoComment(self):
+    def test52_define_function_with_pre_post_decoration(self):
         """!
-        @brief Test the _defineFunctionWithDecorations method, with no comment
+        @brief Test the _define_function_with_decorations method, with prefix and postfix
         """
         helper = GenerateTypeScriptFileHelper()
-        retDict = ParamRetDict.buildReturnDictWithMod("integer", "return value", 0)
-        paramList = [ParamRetDict.buildParamDictWithMod("foo", "unsigned", "Foo input", 0)]
-        testText = helper._defineFunctionWithDecorations("MyDefineFunc", "Brief description", paramList, retDict, True)
-        assert len(testText) == 2
-        assert testText[0] == "function MyDefineFunc(foo:number):number\n"
-        assert testText[1] == "{\n"
+        ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
+        param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
+        test_text = helper._define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict,
+                                                         prefix_decaration="export", postfix_decaration="const")
+        assert len(test_text) == 9
+        assert test_text[0] == "/**\n"
+        assert test_text[1] == " * @brief Brief description\n"
+        assert test_text[2] == " * \n"
+        assert test_text[3] == " * @param foo {number} Foo input\n"
+        assert test_text[4] == " * \n"
+        assert test_text[5] == " * @return number - return value\n"
+        assert test_text[6] == " */\n"
+        assert test_text[7] == "export function MyDefineFunc(foo:number):number\n"
+        assert test_text[8] == "{\n"
 
-    def test54DefineFunctionEmptyParamList(self):
+    def test53_define_function_no_comment(self):
         """!
-        @brief Test the _defineFunctionWithDecorations method, with empty param list
+        @brief Test the _define_function_with_decorations method, with no comment
         """
         helper = GenerateTypeScriptFileHelper()
-        retDict = ParamRetDict.buildReturnDictWithMod("integer", "return value", 0)
-        testText = helper._defineFunctionWithDecorations("MyDefineFunc", "Brief description", [], retDict, True)
-        assert len(testText) == 2
-        assert testText[0] == "function MyDefineFunc():number\n"
-        assert testText[1] == "{\n"
+        ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
+        param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
+        test_text = helper._define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict, True)
+        assert len(test_text) == 2
+        assert test_text[0] == "function MyDefineFunc(foo:number):number\n"
+        assert test_text[1] == "{\n"
+
+    def test54_define_function_empty_param_list(self):
+        """!
+        @brief Test the _define_function_with_decorations method, with empty param list
+        """
+        helper = GenerateTypeScriptFileHelper()
+        ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
+        test_text = helper._define_function_with_decorations("MyDefineFunc", "Brief description", [], ret_dict, True)
+        assert len(test_text) == 2
+        assert test_text[0] == "function MyDefineFunc():number\n"
+        assert test_text[1] == "{\n"

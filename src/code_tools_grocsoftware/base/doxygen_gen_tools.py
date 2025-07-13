@@ -39,308 +39,308 @@ class DoxyCommentGenerator():
     Generic Doxygen comment generator class. Use the constructor input to specify the appropriate comment
     markers for the specific programming language generation.
     """
-    def __init__(self, blockStart:str, blockEnd:str, blockLineStart:str, singleLineStart:str, addParamType:bool=False):
+    def __init__(self, block_start:str, block_end:str, block_line_start:str, single_line_start:str, add_param_type:bool=False):
         """!
         @brief DoxyCommentGenerator constructor
-        @param blockStart {string} Comment block start marker for the input file type.
-        @param blockEnd {string} Comment block end marker for the input file type.
-        @param blockLineStart {string} Comment block line start marker for the input file type.
-        @param singleLineStart {string} Single line comment block start marker for the input file type.
-        @param addParamType {boolean} True add the parameter type to the doxygen param comment text
+        @param block_start {string} Comment block start marker for the input file type.
+        @param block_end {string} Comment block end marker for the input file type.
+        @param block_line_start {string} Comment block line start marker for the input file type.
+        @param single_line_start {string} Single line comment block start marker for the input file type.
+        @param add_param_type {boolean} True add the parameter type to the doxygen param comment text
                                       False do not add parameter type to the doxygen param comment text
         """
         ## Multiline line block start comment marker or None
-        self.blockStart = blockStart
+        self.block_start = block_start
         ## Multiline line block end comment marker or None
-        self.blockEnd = blockEnd
+        self.block_end = block_end
         ## Multiline line block interior line comment marker or None
-        self.blockLineStart = blockLineStart
+        self.block_line_start = block_line_start
         ## Single line comment marker
-        self.singleLineStart = singleLineStart
+        self.single_line_start = single_line_start
 
         ## True if parameter comment should also include the parameter type in the description, else false
-        self.addParamType = addParamType
+        self.add_param_type = add_param_type
 
-        ## Maximum line length used to determine self.descFormatMax
-        self.formatMaxLength = 120
+        ## Maximum line length used to determine self.desc_format_max
+        self.format_max_length = 120
         ## Maximum line length of a description string
-        self.descFormatMax = self.formatMaxLength
+        self.desc_format_max = self.format_max_length
         ## Current open group definition count
-        self.groupCounter = 0
+        self.group_counter = 0
 
-        if self.blockStart is not None:
-            self.descFormatMax = self.formatMaxLength-len(self.blockStart)
-        elif self.singleLineStart is not None:
-            self.descFormatMax = self.formatMaxLength-len(self.singleLineStart)
+        if self.block_start is not None:
+            self.desc_format_max = self.format_max_length-len(self.block_start)
+        elif self.single_line_start is not None:
+            self.desc_format_max = self.format_max_length-len(self.single_line_start)
 
 
-    def _genCommentBlockPrefix(self)->str:
+    def _gen_comment_block_prefix(self)->str:
         """!
         @brief Generate doxygen block prefix string
         @return string - Formatted block prefix
         """
-        if self.blockLineStart is not None:
-            prefix = " "+self.blockLineStart+" "
-        elif self.singleLineStart is not None:
-            prefix = self.singleLineStart+" "
+        if self.block_line_start is not None:
+            prefix = " "+self.block_line_start+" "
+        elif self.single_line_start is not None:
+            prefix = self.single_line_start+" "
         else:
             raise Exception("ERROR: Can't have a doxygen comment if there are no comment markers.")
         return prefix
 
-    def _genBlockStart(self)->str:
+    def _gen_block_start(self)->str:
         """!
         @brief Generate doxygen block start string
         @return string - Formatted block prefix
         """
         # Set the start
-        if self.blockStart is not None:
-            blockStart = self.blockStart
-        elif self.singleLineStart is not None:
-            blockStart = self.singleLineStart
+        if self.block_start is not None:
+            block_start = self.block_start
+        elif self.single_line_start is not None:
+            block_start = self.single_line_start
         else:
             raise Exception("ERROR: Can't have a doxygen comment if there are no comment markers.")
-        return blockStart
+        return block_start
 
-    def _genBlockEnd(self)->str:
+    def _gen_block_end(self)->str:
         """!
         @brief Generate doxygen block start string
         @return string - Formatted block prefix
         """
         # Set the end
-        if self.blockEnd is not None:
-            if self.blockEnd == '"""':
-                blockEnd = self.blockEnd
+        if self.block_end is not None:
+            if self.block_end == '"""':
+                block_end = self.block_end
             else:
-                blockEnd = " "+self.blockEnd
+                block_end = " "+self.block_end
         else:
-            blockEnd = ""
-        return blockEnd
+            block_end = ""
+        return block_end
 
-    def _genBriefDesc(self, briefDesc:str, prefix:str)->list:
+    def _gen_brief_desc(self, brief_desc:str, prefix:str)->list:
         """!
         @brief Generate the doxygen comment block
 
-        @param briefDesc {string} @brief description for the comment block
+        @param brief_desc {string} @brief description for the comment block
         @param prefix {string} Current comment block indentation prefix
         @return list of strings - Long description comment as a list of formatted strings
         """
-        briefDescList = []
+        brief_desc_list = []
 
         # Generate the brief description text
-        briefStart = "@brief "
-        formattedBriefTxt = MultiLineFormat(briefDesc, self.descFormatMax-len(briefStart))
+        brief_start = "@brief "
+        formatted_brief_txt = MultiLineFormat(brief_desc, self.desc_format_max-len(brief_start))
         firstdesc = True
-        for briefLine in formattedBriefTxt:
-            briefDescList.append(prefix+briefStart+briefLine+"\n")
+        for brief_line in formatted_brief_txt:
+            brief_desc_list.append(prefix+brief_start+brief_line+"\n")
 
             if firstdesc:
                 firstdesc = False
-                briefStart = "       "
+                brief_start = "       "
 
-        return briefDescList
+        return brief_desc_list
 
-    def _genLongDesc(self, prefix:str, longDesc:str|None = None)->list:
+    def _gen_long_desc(self, prefix:str, long_desc:str|None = None)->list:
         """!
         @brief Generate the doxygen comment block
 
         @param prefix {string} Current comment block prefix string
-        @param longDesc {string} Detailed description for the comment block or None if no detailed description
+        @param long_desc {string} Detailed description for the comment block or None if no detailed description
 
         @return list of strings - Long description comment as a list of formatted strings
         """
-        longDescList = []
+        long_descList = []
 
         # Generate the long description text
-        if longDesc is not None:
-            formattedLongTxt = MultiLineFormat(longDesc, self.descFormatMax)
-            for longDescLine in formattedLongTxt:
-                longDescList.append(prefix+longDescLine+"\n")
-        return longDescList
+        if long_desc is not None:
+            formatted_long_txt = MultiLineFormat(long_desc, self.desc_format_max)
+            for long_descLine in formatted_long_txt:
+                long_descList.append(prefix+long_descLine+"\n")
+        return long_descList
 
-    def _genCommentReturnText(self, retDict:dict, prefix:str)->list:
+    def _gen_comment_return_text(self, ret_dict:dict, prefix:str)->list:
         """!
         @brief Generate @return doxygen text
 
-        @param retDict {dictionary} - Return parameter data
+        @param ret_dict {dictionary} - Return parameter data
         @param prefix {string} Current comment block prefix string
 
         @return list of strings - Formatted string list for the comment block
         """
         # Construct first return line
-        returnType, returnDesc, typeMod = ParamRetDict.getReturnData(retDict)
-        l1 = "@return "+returnType+" - "
+        return_type, return_desc, type_mod = ParamRetDict.get_return_data(ret_dict)
+        l1 = "@return "+return_type+" - "
 
         # Format the description into sized string(s)
-        descList = MultiLineFormat(returnDesc, self.descFormatMax-len(l1))
+        desc_list = MultiLineFormat(return_desc, self.desc_format_max-len(l1))
 
         # Construct the final block return text
-        retList = []
+        ret_list = []
         firstdesc = True
-        descPrefix = prefix+l1
-        for descStr in descList:
-            retList.append(descPrefix+descStr+"\n")
+        desc_prefix = prefix+l1
+        for desc_str in desc_list:
+            ret_list.append(desc_prefix+desc_str+"\n")
             if firstdesc:
                 firstdesc = False
-                descPrefix = prefix+"".rjust(len(l1), ' ')
+                desc_prefix = prefix+"".rjust(len(l1), ' ')
 
         # return the final formated data string list
-        return retList
+        return ret_list
 
-    def _genCommentParamText(self, paramDict:dict, prefix:str)->list:
+    def _gen_comment_param_text(self, param_dict:dict, prefix:str)->list:
         """!
         @brief Generate parameter doxygen text
 
-        @param paramDict {dictionary} - Return parameter data
+        @param param_dict {dictionary} - Return parameter data
         @param prefix {string} Current comment block prefix string
 
         @return list of strings - Formatted string list for the comment block
         """
         # Construct first param line
-        paramName, paramType, paramDesc, typeMod = ParamRetDict.getParamData(paramDict)
-        l1 = "@param "+paramName
-        if self.addParamType:
-            l1 += " {"+paramType+"}"
+        param_name, param_type, param_desc, type_mod = ParamRetDict.get_param_data(param_dict)
+        l1 = "@param "+param_name
+        if self.add_param_type:
+            l1 += " {"+param_type+"}"
         l1 += " "
 
         # Format the description into sized string(s)
-        descList = MultiLineFormat(paramDesc, self.descFormatMax-len(l1))
+        desc_list = MultiLineFormat(param_desc, self.desc_format_max-len(l1))
 
         # Add the description string(s)
         firstdesc = True
-        retList = []
-        paramPrefix = prefix+l1
-        for descStr in descList:
-            retList.append(paramPrefix+descStr+"\n")
+        ret_list = []
+        param_prefix = prefix+l1
+        for desc_str in desc_list:
+            ret_list.append(param_prefix+desc_str+"\n")
             if firstdesc:
                 firstdesc = False
-                paramPrefix = prefix+"".rjust(len(l1), ' ')
+                param_prefix = prefix+"".rjust(len(l1), ' ')
 
         # return the final formated data string list
-        return retList
+        return ret_list
 
-    def genDoxyMethodComment(self, briefDesc:str, paramDictList:list, retDict:dict|None = None,
-                             longDesc:str|None = None, blockIndent:int = 0)->list:
+    def gen_doxy_method_comment(self, brief_desc:str, param_dict_list:list, ret_dict:dict|None = None,
+                             long_desc:str|None = None, block_indent:int = 0)->list:
         """!
         @brief Generate the doxygen comment block
 
-        @param briefDesc {string} @brief description for the comment block
-        @param paramDictList {list of dictionaries} - Return parameter data
-        @param retDict {dictionary} - Return parameter data
-        @param longDesc {string} Detailed description for the comment block or None if no detailed description
-        @param blockIndent Current comment block indentation
+        @param brief_desc {string} @brief description for the comment block
+        @param param_dict_list {list of dictionaries} - Return parameter data
+        @param ret_dict {dictionary} - Return parameter data
+        @param long_desc {string} Detailed description for the comment block or None if no detailed description
+        @param block_indent Current comment block indentation
 
         @return list of strings - Comment block as a list of formatted strings
         """
         # Generate the block start
-        padPrefix = "".rjust(blockIndent, ' ')
-        blockStrList = [padPrefix+self._genBlockStart()+"\n"]
+        pad_prefix = "".rjust(block_indent, ' ')
+        block_str_list = [pad_prefix+self._gen_block_start()+"\n"]
 
         # Generate the block prefix text fot the rest
-        prefix = padPrefix+self._genCommentBlockPrefix()
+        prefix = pad_prefix+self._gen_comment_block_prefix()
 
         # Add the brief text
-        blockStrList.extend(self._genBriefDesc(briefDesc, prefix))
-        blockStrList.append(prefix+"\n") # add empty line for readability
+        block_str_list.extend(self._gen_brief_desc(brief_desc, prefix))
+        block_str_list.append(prefix+"\n") # add empty line for readability
 
         # Add the long description
-        if longDesc is not None:
-            blockStrList.extend(self._genLongDesc(prefix, longDesc))
-            blockStrList.append(prefix+"\n") # add empty line for readability
+        if long_desc is not None:
+            block_str_list.extend(self._gen_long_desc(prefix, long_desc))
+            block_str_list.append(prefix+"\n") # add empty line for readability
 
         # Add Param data
-        if (len(paramDictList) > 0):
-            for paramDict in paramDictList:
-                blockStrList.extend(self._genCommentParamText(paramDict, prefix))
-            blockStrList.append(prefix+"\n") # add empty line for readability
+        if (len(param_dict_list) > 0):
+            for param_dict in param_dict_list:
+                block_str_list.extend(self._gen_comment_param_text(param_dict, prefix))
+            block_str_list.append(prefix+"\n") # add empty line for readability
 
         # Add return data
-        if retDict is not None:
-            blockStrList.extend(self._genCommentReturnText(retDict, prefix))
+        if ret_dict is not None:
+            block_str_list.extend(self._gen_comment_return_text(ret_dict, prefix))
 
         # Complete the block
-        blockStrList.append(padPrefix+self._genBlockEnd()+"\n")
-        return blockStrList
+        block_str_list.append(pad_prefix+self._gen_block_end()+"\n")
+        return block_str_list
 
-    def genDoxyClassComment(self, briefDesc:str|None, longDesc:str|None = None, blockIndent:int = 0)->list:
+    def gen_doxy_class_comment(self, brief_desc:str|None, long_desc:str|None = None, block_indent:int = 0)->list:
         """!
-        @brief Generate a doxygen cgenDoxyClassCommentlass/structure documentation block
+        @brief Generate a doxygen cgen_doxy_class_commentlass/structure documentation block
 
-        @param briefDesc {string} @brief description for the comment block
-        @param longDesc {string} Detailed description for the comment block or None if no detailed description
-        @param blockIndent Current cmment block indentation
+        @param brief_desc {string} @brief description for the comment block
+        @param long_desc {string} Detailed description for the comment block or None if no detailed description
+        @param block_indent Current cmment block indentation
 
         @return list of strings - Comment block as a list of formatted strings
         """
         # Generate the block start
-        padPrefix = "".rjust(blockIndent, ' ')
-        blockStrList = [padPrefix+self._genBlockStart()+"\n"]
+        pad_prefix = "".rjust(block_indent, ' ')
+        block_str_list = [pad_prefix+self._gen_block_start()+"\n"]
 
         # Generate the block prefix text fot the rest
-        prefix = padPrefix+self._genCommentBlockPrefix()
+        prefix = pad_prefix+self._gen_comment_block_prefix()
 
         # Add the brief text
-        if briefDesc is not None:
-            blockStrList.extend(self._genBriefDesc(briefDesc, prefix))
+        if brief_desc is not None:
+            block_str_list.extend(self._gen_brief_desc(brief_desc, prefix))
 
         # Add the long description
-        if longDesc is not None:
-            if briefDesc is not None:
-                blockStrList.append(prefix+"\n") # add empty line for readability
-            blockStrList.extend(self._genLongDesc(prefix, longDesc))
+        if long_desc is not None:
+            if brief_desc is not None:
+                block_str_list.append(prefix+"\n") # add empty line for readability
+            block_str_list.extend(self._gen_long_desc(prefix, long_desc))
 
         # Complete the block
-        blockStrList.append(padPrefix+self._genBlockEnd()+"\n")
-        return blockStrList
+        block_str_list.append(pad_prefix+self._gen_block_end()+"\n")
+        return block_str_list
 
-    def genDoxyDefgroup(self, fileName:str, group:str|None = None, groupdef:str|None = None)->list:
+    def gen_doxy_defgroup(self, file_name:str, group:str|None = None, groupdef:str|None = None)->list:
         """!
         @brief Doxygen defgroup comment block
-        @param fileName {string} File name and extention
+        @param file_name {string} File name and extention
         @param group {string} Name of the group to define
         @param groupdef {string} Description of the new group
         @return list of strings - Code to output
         """
-        doxyGroupBlk = [self._genBlockStart()+"\n"]
+        doxy_group_blk = [self._gen_block_start()+"\n"]
 
         # Generate the block prefix text fot the rest
-        prefix = self._genCommentBlockPrefix()
-        doxyGroupBlk.append(prefix+"@file "+fileName+"\n")
+        prefix = self._gen_comment_block_prefix()
+        doxy_group_blk.append(prefix+"@file "+file_name+"\n")
         if group is not None:
             if groupdef is not None:
-                doxyGroupBlk.append(prefix+"@defgroup "+group+" "+groupdef+"\n")
-            doxyGroupBlk.append(prefix+"@ingroup "+group+"\n")
-            doxyGroupBlk.append(prefix+"@{\n")
-            self.groupCounter += 1
-        doxyGroupBlk.append(self._genBlockEnd()+"\n")
-        return doxyGroupBlk
+                doxy_group_blk.append(prefix+"@defgroup "+group+" "+groupdef+"\n")
+            doxy_group_blk.append(prefix+"@ingroup "+group+"\n")
+            doxy_group_blk.append(prefix+"@{\n")
+            self.group_counter += 1
+        doxy_group_blk.append(self._gen_block_end()+"\n")
+        return doxy_group_blk
 
-    def genDoxyGroupEnd(self)->str|None:
+    def gen_doxy_group_end(self)->str|None:
         """!
         @brief Doxygen group comment block end marker
         @return string or None - Code to output
         """
-        if self.groupCounter > 0:
-            doxyEnd = self._genBlockStart()+"@}"+self._genBlockEnd()+"\n"
-            self.groupCounter -= 1
-            return doxyEnd
+        if self.group_counter > 0:
+            doxy_end = self._gen_block_start()+"@}"+self._gen_block_end()+"\n"
+            self.group_counter -= 1
+            return doxy_end
         else:
             return None
 
-    def genSingleLineStart(self)->str:
+    def gen_single_line_start(self)->str:
         """!
         @brief Generate doxygen single line comment start string
         @return string - Formatted block prefix
         """
         # Set the start
-        return self.singleLineStart
+        return self.single_line_start
 
-    def genDoxyVarDocStr(self, desc:str)->str:
+    def gen_doxy_var_doc_str(self, desc:str)->str:
         """!
         @brief Generate Doxygen variable comment
         @param desc {string} Variable description
         @return string Documentation string
         """
-        return self.singleLineStart+"< "+desc
+        return self.single_line_start+"< "+desc
 
 class CDoxyCommentGenerator(DoxyCommentGenerator):
     """!
@@ -362,13 +362,13 @@ class PyDoxyCommentGenerator(DoxyCommentGenerator):
         """
         super().__init__('"""!', '"""', '', '##', True)
 
-    def genDoxyVarDocStr(self, desc:str)->str:
+    def gen_doxy_var_doc_str(self, desc:str)->str:
         """!
         @brief Generate Doxygen variable comment
         @param desc {string} Variable description
         @return string Documentation string
         """
-        return self.singleLineStart+" "+desc
+        return self.single_line_start+" "+desc
 
 class TsDoxyCommentGenerator(DoxyCommentGenerator):
     """!

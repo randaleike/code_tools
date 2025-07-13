@@ -34,322 +34,322 @@ class Test01TranslationTextParser:
     """!
     @brief Unit test for the TranslationTextParser class
     """
-    def test01MakeTextEntry(self):
+    def test01_make_text_entry(self):
         """!
-        @brief Test makeTextEntry()
+        @brief Test make_text_entry()
         """
-        transType, transStr = TranslationTextParser.makeTextEntry("test text")
-        assert transType == TranslationTextParser.parsedTypeText
-        assert transStr == "test text"
+        trans_type, trans_str = TranslationTextParser.make_text_entry("test text")
+        assert trans_type == TranslationTextParser.parsed_type_text
+        assert trans_str == "test text"
 
-    def test02MakeSpecialCharEntry(self):
+    def test02_make_special_char_entry(self):
         """!
-        @brief Test makeSpecialCharEntry()
+        @brief Test make_special_char_entry()
         """
-        transType, transStr = TranslationTextParser.makeSpecialCharEntry("'test'")
-        assert transType == TranslationTextParser.parsedTypeSpecial
-        assert transStr == "'"
+        trans_type, trans_str = TranslationTextParser.make_special_char_entry("'test'")
+        assert trans_type == TranslationTextParser.parsed_type_special
+        assert trans_str == "'"
 
-    def test03MakeParamEntry(self):
+    def test03_make_param_entry(self):
         """!
-        @brief Test makeParamEntry()
+        @brief Test make_param_entry()
         """
-        transType, transStr = TranslationTextParser.makeParamEntry("param1")
-        assert transType == TranslationTextParser.parsedTypeParam
-        assert transStr == "param1"
+        trans_type, trans_str = TranslationTextParser.make_param_entry("param1")
+        assert trans_type == TranslationTextParser.parsed_type_param
+        assert trans_str == "param1"
 
-    def test04ParseTextBlock(self):
+    def test04_parse_text_block(self):
         """!
-        @brief Test parseTextBlock()
+        @brief Test parse_text_block()
         """
-        outList = TranslationTextParser.parseTextBlock("This is a \"test\" string")
-        assert len(outList) == 5
-        assert outList[0][0] == TranslationTextParser.parsedTypeText
-        assert outList[0][1] == "This is a "
-        assert outList[1][0] == TranslationTextParser.parsedTypeSpecial
-        assert outList[1][1] == '"'
-        assert outList[2][0] == TranslationTextParser.parsedTypeText
-        assert outList[2][1] == "test"
-        assert outList[3][0] == TranslationTextParser.parsedTypeSpecial
-        assert outList[3][1] == '"'
-        assert outList[4][0] == TranslationTextParser.parsedTypeText
-        assert outList[4][1] == " string"
+        out_list = TranslationTextParser.parse_text_block("This is a \"test\" string")
+        assert len(out_list) == 5
+        assert out_list[0][0] == TranslationTextParser.parsed_type_text
+        assert out_list[0][1] == "This is a "
+        assert out_list[1][0] == TranslationTextParser.parsed_type_special
+        assert out_list[1][1] == '"'
+        assert out_list[2][0] == TranslationTextParser.parsed_type_text
+        assert out_list[2][1] == "test"
+        assert out_list[3][0] == TranslationTextParser.parsed_type_special
+        assert out_list[3][1] == '"'
+        assert out_list[4][0] == TranslationTextParser.parsed_type_text
+        assert out_list[4][1] == " string"
 
-    def test05ParseTextBlockSpecialEnd(self):
+    def test05_parse_text_block_special_end(self):
         """!
-        @brief Test parseTextBlock(), end on special character
+        @brief Test parse_text_block(), end on special character
         """
-        outList = TranslationTextParser.parseTextBlock("This is a \"test\"")
-        assert len(outList) == 4
-        assert outList[0][0] == TranslationTextParser.parsedTypeText
-        assert outList[0][1] == "This is a "
-        assert outList[1][0] == TranslationTextParser.parsedTypeSpecial
-        assert outList[1][1] == '"'
-        assert outList[2][0] == TranslationTextParser.parsedTypeText
-        assert outList[2][1] == "test"
-        assert outList[3][0] == TranslationTextParser.parsedTypeSpecial
-        assert outList[3][1] == '"'
+        out_list = TranslationTextParser.parse_text_block("This is a \"test\"")
+        assert len(out_list) == 4
+        assert out_list[0][0] == TranslationTextParser.parsed_type_text
+        assert out_list[0][1] == "This is a "
+        assert out_list[1][0] == TranslationTextParser.parsed_type_special
+        assert out_list[1][1] == '"'
+        assert out_list[2][0] == TranslationTextParser.parsed_type_text
+        assert out_list[2][1] == "test"
+        assert out_list[3][0] == TranslationTextParser.parsed_type_special
+        assert out_list[3][1] == '"'
 
-    def test06ParseTextBlockSpecialStart(self):
+    def test06_parse_text_block_special_start(self):
         """!
-        @brief Test parseTextBlock(), start on special character
+        @brief Test parse_text_block(), start on special character
         """
-        outList = TranslationTextParser.parseTextBlock("\"test\" string.")
-        assert len(outList) == 4
-        assert outList[0][0] == TranslationTextParser.parsedTypeSpecial
-        assert outList[0][1] == '"'
-        assert outList[1][0] == TranslationTextParser.parsedTypeText
-        assert outList[1][1] == "test"
-        assert outList[2][0] == TranslationTextParser.parsedTypeSpecial
-        assert outList[2][1] == '"'
-        assert outList[3][0] == TranslationTextParser.parsedTypeText
-        assert outList[3][1] == " string."
+        out_list = TranslationTextParser.parse_text_block("\"test\" string.")
+        assert len(out_list) == 4
+        assert out_list[0][0] == TranslationTextParser.parsed_type_special
+        assert out_list[0][1] == '"'
+        assert out_list[1][0] == TranslationTextParser.parsed_type_text
+        assert out_list[1][1] == "test"
+        assert out_list[2][0] == TranslationTextParser.parsed_type_special
+        assert out_list[2][1] == '"'
+        assert out_list[3][0] == TranslationTextParser.parsed_type_text
+        assert out_list[3][1] == " string."
 
-    def test07ParseTextBlockSpecialBlock(self):
+    def test07_parse_text_block_special_block(self):
         """!
-        @brief Test parseTextBlock(), start and end on special character
+        @brief Test parse_text_block(), start and end on special character
         """
-        outList = TranslationTextParser.parseTextBlock("\"test string\"")
-        assert len(outList) == 3
-        assert outList[0][0] == TranslationTextParser.parsedTypeSpecial
-        assert outList[0][1] == '"'
-        assert outList[1][0] == TranslationTextParser.parsedTypeText
-        assert outList[1][1] == "test string"
-        assert outList[2][0] == TranslationTextParser.parsedTypeSpecial
-        assert outList[2][1] == '"'
+        out_list = TranslationTextParser.parse_text_block("\"test string\"")
+        assert len(out_list) == 3
+        assert out_list[0][0] == TranslationTextParser.parsed_type_special
+        assert out_list[0][1] == '"'
+        assert out_list[1][0] == TranslationTextParser.parsed_type_text
+        assert out_list[1][1] == "test string"
+        assert out_list[2][0] == TranslationTextParser.parsed_type_special
+        assert out_list[2][1] == '"'
 
-    def test08ParseTranslateStringSimple(self):
+    def test08_parse_translate_string_simple(self):
         """!
-        @brief Test parseTranslateString(), single parameter, no quote
+        @brief Test parse_translate_string(), single parameter, no quote
         """
-        outList = TranslationTextParser.parseTranslateString("Simple with one @paramName@ in it")
-        assert len(outList) == 3
-        assert outList[0][0] == TranslationTextParser.parsedTypeText
-        assert outList[0][1] == 'Simple with one '
-        assert outList[1][0] == TranslationTextParser.parsedTypeParam
-        assert outList[1][1] == "paramName"
-        assert outList[2][0] == TranslationTextParser.parsedTypeText
-        assert outList[2][1] == ' in it'
+        out_list = TranslationTextParser.parse_translate_string("Simple with one @paramName@ in it")
+        assert len(out_list) == 3
+        assert out_list[0][0] == TranslationTextParser.parsed_type_text
+        assert out_list[0][1] == 'Simple with one '
+        assert out_list[1][0] == TranslationTextParser.parsed_type_param
+        assert out_list[1][1] == "paramName"
+        assert out_list[2][0] == TranslationTextParser.parsed_type_text
+        assert out_list[2][1] == ' in it'
 
-    def test09ParseTranslateStringQuotedParam(self):
+    def test09_parse_translate_string_quoted_param(self):
         """!
-        @brief Test parseTranslateString(), single quoted param
+        @brief Test parse_translate_string(), single quoted param
         """
-        outList = TranslationTextParser.parseTranslateString("Quoted param single \"@paramName@\" in it")
-        assert len(outList) == 5
-        assert outList[0][0] == TranslationTextParser.parsedTypeText
-        assert outList[0][1] == 'Quoted param single '
-        assert outList[1][0] == TranslationTextParser.parsedTypeSpecial
-        assert outList[1][1] == '"'
-        assert outList[2][0] == TranslationTextParser.parsedTypeParam
-        assert outList[2][1] == "paramName"
-        assert outList[3][0] == TranslationTextParser.parsedTypeSpecial
-        assert outList[3][1] == '"'
-        assert outList[4][0] == TranslationTextParser.parsedTypeText
-        assert outList[4][1] == ' in it'
+        out_list = TranslationTextParser.parse_translate_string("Quoted param single \"@paramName@\" in it")
+        assert len(out_list) == 5
+        assert out_list[0][0] == TranslationTextParser.parsed_type_text
+        assert out_list[0][1] == 'Quoted param single '
+        assert out_list[1][0] == TranslationTextParser.parsed_type_special
+        assert out_list[1][1] == '"'
+        assert out_list[2][0] == TranslationTextParser.parsed_type_param
+        assert out_list[2][1] == "paramName"
+        assert out_list[3][0] == TranslationTextParser.parsed_type_special
+        assert out_list[3][1] == '"'
+        assert out_list[4][0] == TranslationTextParser.parsed_type_text
+        assert out_list[4][1] == ' in it'
 
-    def test10ParseTranslateStringDoubleParam(self):
+    def test10_parse_translate_string_double_param(self):
         """!
-        @brief Test parseTranslateString(), double parameter, no quote
+        @brief Test parse_translate_string(), double parameter, no quote
         """
-        outList = TranslationTextParser.parseTranslateString("Simple with @paramName1@ and @paramName2@ in it")
-        assert len(outList) == 5
-        assert outList[0][0] == TranslationTextParser.parsedTypeText
-        assert outList[0][1] == 'Simple with '
-        assert outList[1][0] == TranslationTextParser.parsedTypeParam
-        assert outList[1][1] == "paramName1"
-        assert outList[2][0] == TranslationTextParser.parsedTypeText
-        assert outList[2][1] == ' and '
-        assert outList[3][0] == TranslationTextParser.parsedTypeParam
-        assert outList[3][1] == "paramName2"
-        assert outList[4][0] == TranslationTextParser.parsedTypeText
-        assert outList[4][1] == ' in it'
+        out_list = TranslationTextParser.parse_translate_string("Simple with @param_name1@ and @param_name2@ in it")
+        assert len(out_list) == 5
+        assert out_list[0][0] == TranslationTextParser.parsed_type_text
+        assert out_list[0][1] == 'Simple with '
+        assert out_list[1][0] == TranslationTextParser.parsed_type_param
+        assert out_list[1][1] == "param_name1"
+        assert out_list[2][0] == TranslationTextParser.parsed_type_text
+        assert out_list[2][1] == ' and '
+        assert out_list[3][0] == TranslationTextParser.parsed_type_param
+        assert out_list[3][1] == "param_name2"
+        assert out_list[4][0] == TranslationTextParser.parsed_type_text
+        assert out_list[4][1] == ' in it'
 
-    def test11ParseTranslateStringDoubleParamOneQuoted(self):
+    def test11_parse_translate_string_double_param_one_quoted(self):
         """!
-        @brief Test parseTranslateString(), double parameter, one quoted
+        @brief Test parse_translate_string(), double parameter, one quoted
         """
-        outList = TranslationTextParser.parseTranslateString("Quoted with @paramName1@ and \"@paramName2@\" in it")
-        assert len(outList) == 7
-        assert outList[0][0] == TranslationTextParser.parsedTypeText
-        assert outList[0][1] == 'Quoted with '
-        assert outList[1][0] == TranslationTextParser.parsedTypeParam
-        assert outList[1][1] == "paramName1"
-        assert outList[2][0] == TranslationTextParser.parsedTypeText
-        assert outList[2][1] == ' and '
-        assert outList[3][0] == TranslationTextParser.parsedTypeSpecial
-        assert outList[3][1] == '"'
-        assert outList[4][0] == TranslationTextParser.parsedTypeParam
-        assert outList[4][1] == "paramName2"
-        assert outList[5][0] == TranslationTextParser.parsedTypeSpecial
-        assert outList[5][1] == '"'
-        assert outList[6][0] == TranslationTextParser.parsedTypeText
-        assert outList[6][1] == ' in it'
+        out_list = TranslationTextParser.parse_translate_string("Quoted with @param_name1@ and \"@param_name2@\" in it")
+        assert len(out_list) == 7
+        assert out_list[0][0] == TranslationTextParser.parsed_type_text
+        assert out_list[0][1] == 'Quoted with '
+        assert out_list[1][0] == TranslationTextParser.parsed_type_param
+        assert out_list[1][1] == "param_name1"
+        assert out_list[2][0] == TranslationTextParser.parsed_type_text
+        assert out_list[2][1] == ' and '
+        assert out_list[3][0] == TranslationTextParser.parsed_type_special
+        assert out_list[3][1] == '"'
+        assert out_list[4][0] == TranslationTextParser.parsed_type_param
+        assert out_list[4][1] == "param_name2"
+        assert out_list[5][0] == TranslationTextParser.parsed_type_special
+        assert out_list[5][1] == '"'
+        assert out_list[6][0] == TranslationTextParser.parsed_type_text
+        assert out_list[6][1] == ' in it'
 
-    def test12AssembleParsedStrData(self):
+    def test12_assemble_parsed_str_data(self):
         """!
-        @brief Test assembleParsedStrData(), simple, one param, no quotes
+        @brief Test assemble_parsed_str_data(), simple, one param, no quotes
         """
-        paramList = [(TranslationTextParser.parsedTypeText, "Simple text with "),
-                     (TranslationTextParser.parsedTypeParam, "paramName")]
-        outStr = TranslationTextParser.assembleParsedStrData(paramList)
-        assert outStr == "Simple text with @paramName@"
+        param_list = [(TranslationTextParser.parsed_type_text, "Simple text with "),
+                     (TranslationTextParser.parsed_type_param, "paramName")]
+        out_str = TranslationTextParser.assemble_parsed_str_data(param_list)
+        assert out_str == "Simple text with @paramName@"
 
-    def test13AssembleParsedStrDataQuotes(self):
+    def test13_assemble_parsed_str_data_quotes(self):
         """!
-        @brief Test assembleParsedStrData(), simple, one param, quotes
+        @brief Test assemble_parsed_str_data(), simple, one param, quotes
         """
-        paramList = [(TranslationTextParser.parsedTypeText, "Simple text with "),
-                     (TranslationTextParser.parsedTypeSpecial, "'"),
-                     (TranslationTextParser.parsedTypeParam, "paramName"),
-                     (TranslationTextParser.parsedTypeSpecial, "'")]
-        outStr = TranslationTextParser.assembleParsedStrData(paramList)
-        assert outStr == "Simple text with '@paramName@'"
+        param_list = [(TranslationTextParser.parsed_type_text, "Simple text with "),
+                     (TranslationTextParser.parsed_type_special, "'"),
+                     (TranslationTextParser.parsed_type_param, "paramName"),
+                     (TranslationTextParser.parsed_type_special, "'")]
+        out_str = TranslationTextParser.assemble_parsed_str_data(param_list)
+        assert out_str == "Simple text with '@paramName@'"
 
-    def test14AssembleParsedStrDataQuotesMultiple(self):
+    def test14_assemble_parsed_str_data_quotes_multiple(self):
         """!
-        @brief Test assembleParsedStrData(), Multiple, one param, quotes
+        @brief Test assemble_parsed_str_data(), Multiple, one param, quotes
         """
-        paramList = [(TranslationTextParser.parsedTypeText, "Multiple text with "),
-                     (TranslationTextParser.parsedTypeSpecial, "'"),
-                     (TranslationTextParser.parsedTypeParam, "paramName1"),
-                     (TranslationTextParser.parsedTypeSpecial, "'"),
-                     (TranslationTextParser.parsedTypeText, " and "),
-                     (TranslationTextParser.parsedTypeParam, "paramName2")]
-        outStr = TranslationTextParser.assembleParsedStrData(paramList)
-        assert outStr == "Multiple text with '@paramName1@' and @paramName2@"
+        param_list = [(TranslationTextParser.parsed_type_text, "Multiple text with "),
+                     (TranslationTextParser.parsed_type_special, "'"),
+                     (TranslationTextParser.parsed_type_param, "paramName1"),
+                     (TranslationTextParser.parsed_type_special, "'"),
+                     (TranslationTextParser.parsed_type_text, " and "),
+                     (TranslationTextParser.parsed_type_param, "paramName2")]
+        out_str = TranslationTextParser.assemble_parsed_str_data(param_list)
+        assert out_str == "Multiple text with '@paramName1@' and @paramName2@"
 
-    def test15AssembleParsedStrDataFailure(self):
+    def test15_assemble_parsed_str_data_failure(self):
         """!
-        @brief Test assembleParsedStrData(), Multiple, one param, quotes
+        @brief Test assemble_parsed_str_data(), Multiple, one param, quotes
         """
-        paramList = [(TranslationTextParser.parsedTypeText, "Simple text with "),
-                     (TranslationTextParser.parsedTypeParam, "paramName"),
+        param_list = [(TranslationTextParser.parsed_type_text, "Simple text with "),
+                     (TranslationTextParser.parsed_type_param, "paramName"),
                      ('Unknown', "paramName")]
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
             with pytest.raises(TypeError):
-                outStr = TranslationTextParser.assembleParsedStrData(paramList)
+                out_str = TranslationTextParser.assemble_parsed_str_data(param_list)
                 assert output == "Unknown string description tuple type: Unknown"
 
-    def test16AssembleStream(self):
+    def test16_assemble_stream(self):
         """!
-        @brief Test assembleParsedStrData(), simple, one param, no quotes
+        @brief Test assemble_parsed_str_data(), simple, one param, no quotes
         """
-        paramList = [(TranslationTextParser.parsedTypeText, "Simple text with "),
-                     (TranslationTextParser.parsedTypeParam, "paramName")]
-        outStr = TranslationTextParser.assembleStream(paramList)
-        assert outStr == ' << "Simple text with " << paramName'
+        param_list = [(TranslationTextParser.parsed_type_text, "Simple text with "),
+                     (TranslationTextParser.parsed_type_param, "paramName")]
+        out_str = TranslationTextParser.assemble_stream(param_list)
+        assert out_str == ' << "Simple text with " << paramName'
 
-    def test17AssembleStreamQuotes(self):
+    def test17_assemble_stream_quotes(self):
         """!
-        @brief Test assembleParsedStrData(), simple, one param, quotes
+        @brief Test assemble_parsed_str_data(), simple, one param, quotes
         """
-        paramList = [(TranslationTextParser.parsedTypeText, "Simple text with "),
-                     (TranslationTextParser.parsedTypeSpecial, "'"),
-                     (TranslationTextParser.parsedTypeParam, "paramName"),
-                     (TranslationTextParser.parsedTypeSpecial, "'")]
-        outStr = TranslationTextParser.assembleStream(paramList)
-        assert outStr == ' << "Simple text with \\\'" << paramName << "\\\'"'
+        param_list = [(TranslationTextParser.parsed_type_text, "Simple text with "),
+                     (TranslationTextParser.parsed_type_special, "'"),
+                     (TranslationTextParser.parsed_type_param, "paramName"),
+                     (TranslationTextParser.parsed_type_special, "'")]
+        out_str = TranslationTextParser.assemble_stream(param_list)
+        assert out_str == ' << "Simple text with \\\'" << paramName << "\\\'"'
 
-    def test18AssembleStreamQuotesMultiple(self):
+    def test18_assemble_stream_quotes_multiple(self):
         """!
-        @brief Test assembleParsedStrData(), simple, one param, quotes
+        @brief Test assemble_parsed_str_data(), simple, one param, quotes
         """
-        paramList = [(TranslationTextParser.parsedTypeText, "Multiple text with "),
-                     (TranslationTextParser.parsedTypeSpecial, "'"),
-                     (TranslationTextParser.parsedTypeParam, "paramName1"),
-                     (TranslationTextParser.parsedTypeSpecial, "'"),
-                     (TranslationTextParser.parsedTypeText, " and "),
-                     (TranslationTextParser.parsedTypeParam, "paramName2")]
-        outStr = TranslationTextParser.assembleStream(paramList)
-        assert outStr == ' << "Multiple text with \\\'" << paramName1 << "\\\' and " << paramName2'
+        param_list = [(TranslationTextParser.parsed_type_text, "Multiple text with "),
+                     (TranslationTextParser.parsed_type_special, "'"),
+                     (TranslationTextParser.parsed_type_param, "param_name1"),
+                     (TranslationTextParser.parsed_type_special, "'"),
+                     (TranslationTextParser.parsed_type_text, " and "),
+                     (TranslationTextParser.parsed_type_param, "param_name2")]
+        out_str = TranslationTextParser.assemble_stream(param_list)
+        assert out_str == ' << "Multiple text with \\\'" << param_name1 << "\\\' and " << param_name2'
 
-    def test19AssembleStreamQuotesMultipleStreamSpec(self):
+    def test19_assemble_stream_quotes_multiple_stream_spec(self):
         """!
-        @brief Test assembleParsedStrData(), simple, one param, quotes, non-default stream operator
+        @brief Test assemble_parsed_str_data(), simple, one param, quotes, non-default stream operator
         """
-        paramList = [(TranslationTextParser.parsedTypeText, "Multiple text with "),
-                     (TranslationTextParser.parsedTypeSpecial, "'"),
-                     (TranslationTextParser.parsedTypeParam, "paramName1"),
-                     (TranslationTextParser.parsedTypeSpecial, "'"),
-                     (TranslationTextParser.parsedTypeText, " and "),
-                     (TranslationTextParser.parsedTypeParam, "paramName2")]
-        outStr = TranslationTextParser.assembleStream(paramList, "+")
-        assert outStr == ' + "Multiple text with \\\'" + paramName1 + "\\\' and " + paramName2'
+        param_list = [(TranslationTextParser.parsed_type_text, "Multiple text with "),
+                     (TranslationTextParser.parsed_type_special, "'"),
+                     (TranslationTextParser.parsed_type_param, "param_name1"),
+                     (TranslationTextParser.parsed_type_special, "'"),
+                     (TranslationTextParser.parsed_type_text, " and "),
+                     (TranslationTextParser.parsed_type_param, "param_name2")]
+        out_str = TranslationTextParser.assemble_stream(param_list, "+")
+        assert out_str == ' + "Multiple text with \\\'" + param_name1 + "\\\' and " + param_name2'
 
-    def test20AssembleStreamFail(self):
+    def test20_assemble_stream_fail(self):
         """!
-        @brief Test assembleParsedStrData(), simple, one param, no quotes
+        @brief Test assemble_parsed_str_data(), simple, one param, no quotes
         """
-        paramList = [(TranslationTextParser.parsedTypeText, "Simple text with "),
-                     (TranslationTextParser.parsedTypeParam, "paramName"),
+        param_list = [(TranslationTextParser.parsed_type_text, "Simple text with "),
+                     (TranslationTextParser.parsed_type_param, "paramName"),
                      ('Unknown', "paramName")]
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
             with pytest.raises(TypeError):
-                outStr = TranslationTextParser.assembleStream(paramList)
+                out_str = TranslationTextParser.assemble_stream(param_list)
                 assert output == "Unknown string description tuple type: Unknown"
 
-    def test21IsParsedTextType(self):
+    def test21_is_parsed_text_type(self):
         """!
-        @brief Test isParsedTextType()
+        @brief Test is_parsed_text_type()
         """
-        assert TranslationTextParser.isParsedTextType((TranslationTextParser.parsedTypeText, "text"))
-        assert not TranslationTextParser.isParsedTextType((TranslationTextParser.parsedTypeParam, "paramName"))
-        assert not TranslationTextParser.isParsedTextType((TranslationTextParser.parsedTypeSpecial, "'"))
-        assert not TranslationTextParser.isParsedTextType(('notOne', ""))
+        assert TranslationTextParser.is_parsed_text_type((TranslationTextParser.parsed_type_text, "text"))
+        assert not TranslationTextParser.is_parsed_text_type((TranslationTextParser.parsed_type_param, "paramName"))
+        assert not TranslationTextParser.is_parsed_text_type((TranslationTextParser.parsed_type_special, "'"))
+        assert not TranslationTextParser.is_parsed_text_type(('notOne', ""))
 
-    def test22IsParsedParamType(self):
+    def test22_is_parsed_param_type(self):
         """!
-        @brief Test isParsedParamType()
+        @brief Test is_parsed_param_type()
         """
-        assert not TranslationTextParser.isParsedParamType((TranslationTextParser.parsedTypeText, "text"))
-        assert TranslationTextParser.isParsedParamType((TranslationTextParser.parsedTypeParam, "paramName"))
-        assert not TranslationTextParser.isParsedParamType((TranslationTextParser.parsedTypeSpecial, "'"))
-        assert not TranslationTextParser.isParsedTextType(('notOne', ""))
+        assert not TranslationTextParser.is_parsed_param_type((TranslationTextParser.parsed_type_text, "text"))
+        assert TranslationTextParser.is_parsed_param_type((TranslationTextParser.parsed_type_param, "paramName"))
+        assert not TranslationTextParser.is_parsed_param_type((TranslationTextParser.parsed_type_special, "'"))
+        assert not TranslationTextParser.is_parsed_text_type(('notOne', ""))
 
-    def test23IsParsedSpecialType(self):
+    def test23_is_parsed_special_type(self):
         """!
-        @brief Test isParsedSpecialType()
+        @brief Test is_parsed_special_type()
         """
-        assert not TranslationTextParser.isParsedSpecialType((TranslationTextParser.parsedTypeText, "text"))
-        assert not TranslationTextParser.isParsedSpecialType((TranslationTextParser.parsedTypeParam, "paramName"))
-        assert TranslationTextParser.isParsedSpecialType((TranslationTextParser.parsedTypeSpecial, "'"))
-        assert not TranslationTextParser.isParsedTextType(('notOne', ""))
+        assert not TranslationTextParser.is_parsed_special_type((TranslationTextParser.parsed_type_text, "text"))
+        assert not TranslationTextParser.is_parsed_special_type((TranslationTextParser.parsed_type_param, "paramName"))
+        assert TranslationTextParser.is_parsed_special_type((TranslationTextParser.parsed_type_special, "'"))
+        assert not TranslationTextParser.is_parsed_text_type(('notOne', ""))
 
-    def test24GetParsedStrData(self):
+    def test24_get_parsed_str_data(self):
         """!
-        @brief Test getParsedStrData()
+        @brief Test get_parsed_str_data()
         """
-        assert TranslationTextParser.getParsedStrData((TranslationTextParser.parsedTypeText, "text")) == "text"
-        assert TranslationTextParser.getParsedStrData((TranslationTextParser.parsedTypeParam, "paramName")) == "paramName"
-        assert TranslationTextParser.getParsedStrData((TranslationTextParser.parsedTypeSpecial, "'")) == "'"
-        assert TranslationTextParser.getParsedStrData(('notOne', "55")) == "55"
+        assert TranslationTextParser.get_parsed_str_data((TranslationTextParser.parsed_type_text, "text")) == "text"
+        assert TranslationTextParser.get_parsed_str_data((TranslationTextParser.parsed_type_param, "paramName")) == "paramName"
+        assert TranslationTextParser.get_parsed_str_data((TranslationTextParser.parsed_type_special, "'")) == "'"
+        assert TranslationTextParser.get_parsed_str_data(('notOne', "55")) == "55"
 
-    def test25AssembleTestReturnString(self):
+    def test25_assemble_test_return_string(self):
         """!
-        @brief Test assembleTestReturnString()
+        @brief Test assemble_test_return_string()
         """
-        testTuple = [(TranslationTextParser.parsedTypeText, "Starting text "),
-                     (TranslationTextParser.parsedTypeSpecial, '"'),
-                     (TranslationTextParser.parsedTypeParam, 'paramName'),
-                     (TranslationTextParser.parsedTypeSpecial, '"')]
-        valueXlateDict = {'paramName': ("xlateName", False)}
-        assert TranslationTextParser.assembleTestReturnString(testTuple, valueXlateDict) == "Starting text \\\"xlateName\\\""
+        test_tuple = [(TranslationTextParser.parsed_type_text, "Starting text "),
+                     (TranslationTextParser.parsed_type_special, '"'),
+                     (TranslationTextParser.parsed_type_param, 'paramName'),
+                     (TranslationTextParser.parsed_type_special, '"')]
+        value_xlate_dict = {'paramName': ("xlateName", False)}
+        assert TranslationTextParser.assemble_test_return_string(test_tuple, value_xlate_dict) == "Starting text \\\"xlateName\\\""
 
-    def test26AssembleTestReturnStringError(self):
+    def test26_assemble_test_return_string_error(self):
         """!
-        @brief Test assembleTestReturnString() error
+        @brief Test assemble_test_return_string() error
         """
-        testTuple = [(TranslationTextParser.parsedTypeText, "Starting text "),
+        test_tuple = [(TranslationTextParser.parsed_type_text, "Starting text "),
                      ('unknown', ''),
-                     (TranslationTextParser.parsedTypeSpecial, '"'),
-                     (TranslationTextParser.parsedTypeParam, 'paramName'),
-                     (TranslationTextParser.parsedTypeSpecial, '"')
+                     (TranslationTextParser.parsed_type_special, '"'),
+                     (TranslationTextParser.parsed_type_param, 'paramName'),
+                     (TranslationTextParser.parsed_type_special, '"')
                      ]
-        valueXlateDict = {'paramName': ("xlateName", False)}
+        value_xlate_dict = {'paramName': ("xlateName", False)}
         with pytest.raises(TypeError):
-            assert TranslationTextParser.assembleTestReturnString(testTuple, valueXlateDict) == "Starting text "
+            assert TranslationTextParser.assemble_test_return_string(test_tuple, value_xlate_dict) == "Starting text "

@@ -34,31 +34,31 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
     """!
     Methods for Windows language select function generation
     """
-    def __init__(self, jsonLangData:LanguageDescriptionList, owner:str|None = None, eulaName:str|None = None, baseClassName:str = "BaseClass",
-                 dynamicCompileSwitch:str = "DYNAMIC_INTERNATIONALIZATION"):
+    def __init__(self, json_lang_data:LanguageDescriptionList, owner:str|None = None, eula_name:str|None = None, base_class_name:str = "BaseClass",
+                 dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
         """!
         @brief WindowsLangSelectFunctionGenerator constructor
-        @param jsonLangData {string} JSON language description list file name
+        @param json_lang_data {string} JSON language description list file name
         @param owner {string|None} Owner name to use in the copyright header message or None to use tool name
-        @param eulaName {string|None} Name of the EULA to pass down to the BaseCppStringClassGenerator parent
-        @param baseClassName {string} Name of the base class for name generation
-        @param dynnamicCompileSwitch {string} Dynamic compile switch for #if generation
+        @param eula_name {string|None} Name of the EULA to pass down to the BaseCppStringClassGenerator parent
+        @param base_class_name {string} Name of the base class for name generation
+        @param dynnamic_compile_switch {string} Dynamic compile switch for #if generation
         """
-        super().__init__(owner, eulaName, baseClassName, dynamicCompileSwitch)
-        self.selectFunctionName = "get"+baseClassName+"_Windows"
+        super().__init__(owner, eula_name, base_class_name, dynamic_compile_switch)
+        self.select_function_name = "get"+base_class_name+"_Windows"
 
-        self.paramDictList = [ParamRetDict.buildParamDict("langId", "LANGID", "Return value from GetUserDefaultUILanguage() call")]
-        self.defOsString = "(defined(_WIN64) || defined(_WIN32))"
-        self.langJsonData = jsonLangData
-        self.doxyCommentGen = CDoxyCommentGenerator()
+        self.param_dict_list = [ParamRetDict.build_param_dict("lang_id", "LANGID", "Return value from GetUserDefaultUILanguage() call")]
+        self.def_osString = "(defined(_WIN64) || defined(_WIN32))"
+        self.lang_json_data = json_lang_data
+        self.doxy_comment_gen = CDoxyCommentGenerator()
 
-    def getFunctionName(self)->str:
-        return self.selectFunctionName
+    def get_function_name(self)->str:
+        return self.select_function_name
 
-    def getOsDefine(self)->str:
-        return self.defOsString
+    def get_os_define(self)->str:
+        return self.def_osString
 
-    def genFunctionDefine(self)->list:
+    def gen_function_define(self)->list:
         """!
         @brief Get the function declaration string for the given name
 
@@ -66,232 +66,232 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
 
         @return string list - Function comment block and declaration start
         """
-        codeList = self._defineFunctionWithDecorations(self.selectFunctionName,
+        code_list = self._define_function_with_decorations(self.select_function_name,
                                                        "Determine the correct local language class from the input LANGID value",
-                                                       self.paramDictList,
-                                                       self.baseIntfRetPtrDict)
-        codeList.append("{\n")
-        return codeList
+                                                       self.param_dict_list,
+                                                       self.base_intf_ret_ptr_dict)
+        code_list.append("{\n")
+        return code_list
 
-    def genFunctionEnd(self)->str:
+    def gen_function_end(self)->str:
         """!
         @brief Get the function declaration string for the given name
         @return string - Function close with comment
         """
-        return self._endFunction(self.selectFunctionName)
+        return self._end_function(self.select_function_name)
 
-    def genFunction(self)->list:
+    def gen_function(self)->list:
         """!
         @brief Generate the function body text
         @return list - Function body string list
         """
         # Generate the #if and includes
-        paramName = ParamRetDict.getParamName(self.paramDictList[0])
-        functionBody = []
-        functionBody.append("#if "+self.defOsString+"\n")
-        functionBody.append(self._genInclude("<windows.h>"))
-        functionBody.append("\n")  # whitespace for readability
+        param_name = ParamRetDict.get_param_name(self.param_dict_list[0])
+        function_body = []
+        function_body.append("#if "+self.def_osString+"\n")
+        function_body.append(self._gen_include("<windows.h>"))
+        function_body.append("\n")  # whitespace for readability
 
         # Generate function doxygen comment and start
-        functionBody.extend(self.genFunctionDefine())
+        function_body.extend(self.gen_function_define())
 
         # Start function body generation
-        bodyIndent = "    "
-        functionBody.append(bodyIndent+"switch("+paramName+" & 0x0FF)\n")
-        functionBody.append(bodyIndent+"{\n")
+        body_indent = "    "
+        function_body.append(body_indent+"switch("+param_name+" & 0x0FF)\n")
+        function_body.append(body_indent+"{\n")
 
         # Generate case if chain for each language in the dictionary
-        caseIndent = bodyIndent+"".rjust(4, " ")
-        caseBodyIndent = caseIndent+"".rjust(4, " ")
-        for langName in self.langJsonData.getLanguageList():
-            langCodes, langRegionList = self.langJsonData.getLanguageLANGIDData(langName)
-            for id in langCodes:
-                caseline =  caseIndent+"case "
+        case_indent = body_indent+"".rjust(4, " ")
+        case_body_indent = case_indent+"".rjust(4, " ")
+        for lang_name in self.lang_json_data.get_language_list():
+            lang_codes, lang_region_list = self.lang_json_data.get_language_langid_data(lang_name)
+            for id in lang_codes:
+                caseline =  case_indent+"case "
                 caseline += hex(id)
                 caseline += ":\n"
-                functionBody.append(caseline)
-            caseAssign = caseBodyIndent+self._genMakePtrReturnStatement(langName)
-            functionBody.append(caseAssign)
-            functionBody.append(caseBodyIndent+"break;\n")
+                function_body.append(caseline)
+            case_assign = case_body_indent+self._gen_make_ptr_return_statement(lang_name)
+            function_body.append(case_assign)
+            function_body.append(case_body_indent+"break;\n")
 
         # Add the final default case
-        defaultLang, defaultIsoCode = self.langJsonData.getDefaultData()
-        functionBody.append(caseIndent+"default:\n")
-        functionBody.append(caseBodyIndent+self._genMakePtrReturnStatement(defaultLang))
-        functionBody.append(bodyIndent+"}\n")
+        default_lang, default_iso_code = self.lang_json_data.get_default_data()
+        function_body.append(case_indent+"default:\n")
+        function_body.append(case_body_indent+self._gen_make_ptr_return_statement(default_lang))
+        function_body.append(body_indent+"}\n")
 
         # Complete the function
-        functionBody.append(self.genFunctionEnd())
-        functionBody.append("#endif // "+self.defOsString+"\n")
-        return functionBody
+        function_body.append(self.gen_function_end())
+        function_body.append("#endif // "+self.def_osString+"\n")
+        return function_body
 
-    def genReturnFunctionCall(self, indent:int = 4)->list:
+    def gen_return_function_call(self, indent:int = 4)->list:
         """!
         @brief Generate the call code for the linux dynamic lang selection function
         @param indent {number} Code indentation spaces
         @return list of strings Formatted code lines
         """
-        indentText = "".rjust(indent, " ")
-        localVarName = "langId"
+        indent_text = "".rjust(indent, " ")
+        local_var_name = "lang_id"
 
-        getParam = indentText
-        getParam += ParamRetDict.getParamType(self.paramDictList[0])
-        getParam += " "
-        getParam += localVarName
-        getParam += " = GetUserDefaultUILanguage();\n"
+        get_param = indent_text
+        get_param += ParamRetDict.get_param_type(self.param_dict_list[0])
+        get_param += " "
+        get_param += local_var_name
+        get_param += " = GetUserDefaultUILanguage();\n"
 
-        doCall = indentText
-        doCall += "return "
-        doCall += self.selectFunctionName
-        doCall += "("
-        doCall += localVarName
-        doCall += ");\n"
+        do_call = indent_text
+        do_call += "return "
+        do_call += self.select_function_name
+        do_call += "("
+        do_call += local_var_name
+        do_call += ");\n"
 
-        return [getParam, doCall]
+        return [get_param, do_call]
 
-    def _genUnitTestTest(self, testName:str, langid:int, expectedIso:str, getIsoMethod:str)->list:
+    def _gen_unittest_test(self, test_name:str, langid:int, expected_iso:str, get_iso_method:str)->list:
         """!
         @brief Generate single selection function unit test instance
 
-        @param testName {string} Name of the test
+        @param test_name {string} Name of the test
         @param langid {number} LANGID value to test
-        @param expectedIso {string} Expected ISO return code for the test variable
-        @param getIsoMethod {string} Name of the ParserStringListInterface return ISO code method
+        @param expected_iso {string} Expected ISO return code for the test variable
+        @param get_iso_method {string} Name of the ParserStringListInterface return ISO code method
 
         @return list of strings - Output C code
         """
-        testBlockName = "WindowsSelectFunction"
-        bodyIndent = "".rjust(4, " ")
-        breifDesc = "Test "+self.selectFunctionName+" "+str(langid)+" selection case"
-        testBody = self.doxyCommentGen.genDoxyMethodComment(breifDesc, [])
+        test_block_name = "WindowsSelectFunction"
+        body_indent = "".rjust(4, " ")
+        breif_desc = "Test "+self.select_function_name+" "+str(langid)+" selection case"
+        test_body = self.doxy_comment_gen.gen_doxy_method_comment(breif_desc, [])
 
-        testVar = "testVar"
-        testVarDecl = self.baseIntfRetPtrType+" "+testVar
-        testVarTest = testVar+"->"+getIsoMethod+"().c_str()"
-        testBody.append("TEST("+testBlockName+", "+testName+")\n")
-        testBody.append("{\n")
-        testBody.append(bodyIndent+"// Generate the test language string object\n")
-        testBody.append(bodyIndent+testVarDecl+" = "+self.selectFunctionName+"("+str(langid)+");\n")
-        testBody.append(bodyIndent+"EXPECT_STREQ(\""+expectedIso+"\", "+testVarTest+");\n")
-        testBody.append("}\n")
-        return testBody
+        test_var = "test_var"
+        test_varDecl = self.base_intf_ret_ptr_type+" "+test_var
+        test_varTest = test_var+"->"+get_iso_method+"().c_str()"
+        test_body.append("TEST("+test_block_name+", "+test_name+")\n")
+        test_body.append("{\n")
+        test_body.append(body_indent+"// Generate the test language string object\n")
+        test_body.append(body_indent+test_varDecl+" = "+self.select_function_name+"("+str(langid)+");\n")
+        test_body.append(body_indent+"EXPECT_STREQ(\""+expected_iso+"\", "+test_varTest+");\n")
+        test_body.append("}\n")
+        return test_body
 
-    def genExternDefinition(self)->str:
+    def gen_extern_definition(self)->str:
         """!
         @brief Return the external function definition
         @return string - External function definition line
         """
-        externDef = "extern "
-        externDef += self.baseIntfRetPtrType
-        externDef += " "
-        externDef += self.selectFunctionName
-        externDef += "("
-        externDef += ParamRetDict.getParamType(self.paramDictList[0])
-        externDef += " "
-        externDef += ParamRetDict.getParamName(self.paramDictList[0])
-        externDef += ");\n"
-        return externDef
+        extern_def = "extern "
+        extern_def += self.base_intf_ret_ptr_type
+        extern_def += " "
+        extern_def += self.select_function_name
+        extern_def += "("
+        extern_def += ParamRetDict.get_param_type(self.param_dict_list[0])
+        extern_def += " "
+        extern_def += ParamRetDict.get_param_name(self.param_dict_list[0])
+        extern_def += ");\n"
+        return extern_def
 
-    def genUnitTest(self, getIsoMethod:str)->list:
+    def gen_unit_test(self, get_iso_method:str)->list:
         """!
         @brief Generate all unit tests for the selection function
-        @param getIsoMethod {string} Name of the ParserStringListInterface return ISO code method
+        @param get_iso_method {string} Name of the ParserStringListInterface return ISO code method
         @return list - Unittest text list
         """
         # Generate block start code
-        unittestText = []
-        unittestText.append("#if "+self.defOsString+"\n")
-        unittestText.append("\n") # white space for readability
-        unittestText.append(self._genInclude("<windows.h>"))
-        unittestText.append(self.genExternDefinition())
-        unittestText.append("\n") # white space for readability
+        unittest_text = []
+        unittest_text.append("#if "+self.def_osString+"\n")
+        unittest_text.append("\n") # white space for readability
+        unittest_text.append(self._gen_include("<windows.h>"))
+        unittest_text.append(self.gen_extern_definition())
+        unittest_text.append("\n") # white space for readability
 
         # Generate the tests
-        for langName in self.langJsonData.getLanguageList():
-            langCodes, regionList = self.langJsonData.getLanguageLANGIDData(langName)
-            for langId in regionList:
+        for lang_name in self.lang_json_data.get_language_list():
+            lang_codes, region_list = self.lang_json_data.get_language_langid_data(lang_name)
+            for lang_id in region_list:
                 # Generate test for each region of known language
-                testName = langName.capitalize()+"_"+str(langId)+"_Selection"
-                testBody = self._genUnitTestTest(testName,
-                                                 langId,
-                                                 self.langJsonData.getLanguageIsoCodeData(langName),
-                                                 getIsoMethod)
-                testBody.append("\n") # whitespace for readability
-                unittestText.extend(testBody)
+                test_name = lang_name.capitalize()+"_"+str(lang_id)+"_Selection"
+                test_body = self._gen_unittest_test(test_name,
+                                                 lang_id,
+                                                 self.lang_json_data.get_language_iso_code_data(lang_name),
+                                                 get_iso_method)
+                test_body.append("\n") # whitespace for readability
+                unittest_text.extend(test_body)
 
             # Generate test for unknown region of known language(s)
-            for langCode in langCodes:
-                unknownRegionTestName = langName.capitalize()+"_unknownRegion_00"+str(langCode)+"_Selection"
-                unknownRegionBody = self._genUnitTestTest(unknownRegionTestName,
-                                                          langCode,
-                                                          self.langJsonData.getLanguageIsoCodeData(langName),
-                                                          getIsoMethod)
-                unknownRegionBody.append("\n") # whitespace for readability
-                unittestText.extend(unknownRegionBody)
+            for lang_code in lang_codes:
+                unknown_regionTestName = lang_name.capitalize()+"_unknown_region_00"+str(lang_code)+"_Selection"
+                unknown_regionBody = self._gen_unittest_test(unknown_regionTestName,
+                                                          lang_code,
+                                                          self.lang_json_data.get_language_iso_code_data(lang_name),
+                                                          get_iso_method)
+                unknown_regionBody.append("\n") # whitespace for readability
+                unittest_text.extend(unknown_regionBody)
 
             # Generate test for unknown region of known language(s)
-            for langCode in langCodes:
-                unknownRegionTestName = langName.capitalize()+"_unknownRegion_FF"+str(langCode)+"_Selection"
-                unknownRegionBody = self._genUnitTestTest(unknownRegionTestName,
-                                                          0xFF00+langCode,
-                                                          self.langJsonData.getLanguageIsoCodeData(langName),
-                                                          getIsoMethod)
-                unknownRegionBody.append("\n") # whitespace for readability
-                unittestText.extend(unknownRegionBody)
+            for lang_code in lang_codes:
+                unknown_regionTestName = lang_name.capitalize()+"_unknown_region_FF"+str(lang_code)+"_Selection"
+                unknown_regionBody = self._gen_unittest_test(unknown_regionTestName,
+                                                          0xFF00+lang_code,
+                                                          self.lang_json_data.get_language_iso_code_data(lang_name),
+                                                          get_iso_method)
+                unknown_regionBody.append("\n") # whitespace for readability
+                unittest_text.extend(unknown_regionBody)
 
         # Generate test for unknown region of unknown language and expect default
-        defaultLang, defaultIsoCode = self.langJsonData.getDefaultData()
-        unknownLangBody = self._genUnitTestTest("UnknownLanguageDefaultSelection",
+        default_lang, default_iso_code = self.lang_json_data.get_default_data()
+        unknown_lang_body = self._gen_unittest_test("UnknownLanguageDefaultSelection",
                                                 0,
-                                                defaultIsoCode,
-                                                getIsoMethod)
-        unittestText.extend(unknownLangBody)
+                                                default_iso_code,
+                                                get_iso_method)
+        unittest_text.extend(unknown_lang_body)
 
         # Generate block end code
-        unittestText.append("#endif // "+self.defOsString+"\n")
-        return unittestText
+        unittest_text.append("#endif // "+self.def_osString+"\n")
+        return unittest_text
 
-    def genUnitTestFunctionCall(self, checkVarName:str, indent:int = 4)->list:
+    def gen_unittest_function_call(self, check_var_name:str, indent:int = 4)->list:
         """!
         @brief Generate the call code for the linux dynamic lang selection unit test
-        @param checkVarName {string} Unit test expected variable name
+        @param check_var_name {string} Unit test expected variable name
         @param indent {number} Code indentation spaces
         @return list of strings Formatted code lines
         """
-        indentText = "".rjust(indent, " ")
-        localVarName = "langId"
+        indent_text = "".rjust(indent, " ")
+        local_var_name = "lang_id"
 
-        getParam = indentText
-        getParam += ParamRetDict.getParamType(self.paramDictList[0])
-        getParam += " "
-        getParam += localVarName
-        getParam += " = GetUserDefaultUILanguage();\n"
+        get_param = indent_text
+        get_param += ParamRetDict.get_param_type(self.param_dict_list[0])
+        get_param += " "
+        get_param += local_var_name
+        get_param += " = GetUserDefaultUILanguage();\n"
 
-        doCall = indentText
-        doCall += self.baseIntfRetPtrType
-        doCall += " "
-        doCall += checkVarName
-        doCall += " = "
-        doCall += self.selectFunctionName
-        doCall += "("
-        doCall += localVarName
-        doCall += ");\n"
+        do_call = indent_text
+        do_call += self.base_intf_ret_ptr_type
+        do_call += " "
+        do_call += check_var_name
+        do_call += " = "
+        do_call += self.select_function_name
+        do_call += "("
+        do_call += local_var_name
+        do_call += ");\n"
 
-        return [getParam, doCall]
+        return [get_param, do_call]
 
-    def getUnittestExternInclude(self)->list:
+    def get_unittest_extern_include(self)->list:
         """!
         @brief Return windows specific include and external function definition strings
         @return list of strings - windows specific #if, #include, external function and #endif code
         """
-        incBlock = []
-        incBlock.append("#if "+self.defOsString+"\n")
-        incBlock.append(self._genInclude("<windows.h>"))
-        incBlock.append(self.genExternDefinition())
-        incBlock.append("#endif // "+self.defOsString+"\n")
-        return incBlock
+        inc_block = []
+        inc_block.append("#if "+self.def_osString+"\n")
+        inc_block.append(self._gen_include("<windows.h>"))
+        inc_block.append(self.gen_extern_definition())
+        inc_block.append("#endif // "+self.def_osString+"\n")
+        return inc_block
 
-    def getUnittestFileName(self)->tuple:
+    def get_unittest_file_name(self)->tuple:
         """!
         @return tuple(str,str) - Unit test cpp file name, Test name
         """

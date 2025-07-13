@@ -35,647 +35,647 @@ from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionL
 
 class ExpectedStrHelper(object):
     @staticmethod
-    def getExpectedReturn(expectedType:str, expectedDesc:str, expectedTypeMod:int)->str:
+    def get_expected_return(expected_type:str, expected_desc:str, expected_type_mod:int)->str:
         """!
         @brief Return the expected print string for the input return values
-        @param expectedType {string} Expected type string
-        @param expectedDesc {string} Expected return description string
-        @param expectedTypeMod {integer} Expected type modification value
+        @param expected_type {string} Expected type string
+        @param expected_desc {string} Expected return description string
+        @param expected_type_mod {integer} Expected type modification value
         @return string - Expected print string
         """
-        expectedStr = "'return': {'type': '"+expectedType+"', "
-        expectedStr += "'desc': '"+expectedDesc+"', "
-        expectedStr += "'typeMod': "+str(expectedTypeMod)+"}"
-        return expectedStr
+        expected_str = "'return': {'type': '"+expected_type+"', "
+        expected_str += "'desc': '"+expected_desc+"', "
+        expected_str += "'typeMod': "+str(expected_type_mod)+"}"
+        return expected_str
 
     @staticmethod
-    def getExpectedParam(expectedName:str, expectedType:str, expectedDesc:str, expectedTypeMod:int)->str:
+    def get_expected_param(expected_name:str, expected_type:str, expected_desc:str, expected_type_mod:int)->str:
         """!
         @brief Return the expected print string for the input return values
-        @param expectedName {string} Expected parameter name string
-        @param expectedType {string} Expected type string
-        @param expectedDesc {string} Expected parameter description string
-        @param expectedTypeMod {integer} Expected type modification value
+        @param expected_name {string} Expected parameter name string
+        @param expected_type {string} Expected type string
+        @param expected_desc {string} Expected parameter description string
+        @param expected_type_mod {integer} Expected type modification value
         @return string - Expected print string
         """
-        expectedStr = "{'name': '"+expectedName+"', "
-        expectedStr += "'type': '"+expectedType+"', "
-        expectedStr += "'desc': '"+expectedDesc+"', "
-        expectedStr += "'typeMod': "+str(expectedTypeMod)+"}"
-        return expectedStr
+        expected_str = "{'name': '"+expected_name+"', "
+        expected_str += "'type': '"+expected_type+"', "
+        expected_str += "'desc': '"+expected_desc+"', "
+        expected_str += "'typeMod': "+str(expected_type_mod)+"}"
+        return expected_str
 
     @staticmethod
-    def getExpectedParamList(paramList:list)->str:
+    def get_expected_param_list(param_list:list)->str:
         """!
         @brief Return the expected print string for the input return values
-        @param paramList {list} Expected parameter dictionary list
+        @param param_list {list} Expected parameter dictionary list
         @return string - Expected print string
         """
-        expectedStr = "'params': ["
-        if paramList is not None:
-            paramPrefix = ""
-            for param in paramList:
-                expectedName, expectedType, expectedDesc, expectedTypeMod = ParamRetDict.getParamData(param)
-                expectedStr += paramPrefix
-                expectedStr += ExpectedStrHelper.getExpectedParam(expectedName, expectedType, expectedDesc, expectedTypeMod)
-                paramPrefix = ", "
-        expectedStr += "]"
-        return expectedStr
+        expected_str = "'params': ["
+        if param_list is not None:
+            param_prefix = ""
+            for param in param_list:
+                expected_name, expected_type, expected_desc, expected_type_mod = ParamRetDict.get_param_data(param)
+                expected_str += param_prefix
+                expected_str += ExpectedStrHelper.get_expected_param(expected_name, expected_type, expected_desc, expected_type_mod)
+                param_prefix = ", "
+        expected_str += "]"
+        return expected_str
 
     @staticmethod
-    def getExpectedTranslationDescList(textText:str, langList:list = None)->str:
+    def get_expected_translation_desc_list(text_text:str, lang_list:list = None)->str:
         """!
         @brief Generate the expected translation description text
-        @param textText {string} Test translation text string
-        @param langList {list} List of languages or None for default 'en'
+        @param text_text {string} Test translation text string
+        @param lang_list {list} List of languages or None for default 'en'
         @return string - Expected print string
         """
-        expectedStr = "'translateDesc': {"
-        if langList is None:
-            langList = ["en"]
+        expected_str = "'translateDesc': {"
+        if lang_list is None:
+            lang_list = ["en"]
 
         # Generate the translateDesc dictionary
-        langListPrefix = ""
-        for lang in langList:
-            expectedStr += langListPrefix
-            expectedStr += "'"+lang+"': ["
+        lang_listPrefix = ""
+        for lang in lang_list:
+            expected_str += lang_listPrefix
+            expected_str += "'"+lang+"': ["
 
             # Generate the parsed text list data
-            expectedTextList = TranslationTextParser.parseTranslateString(textText)
-            elementPrefix = ""
-            for element in expectedTextList:
-                expectedStr += elementPrefix
-                expectedStr += "('"+element[0]+"', '"+element[1]+"')"
-                elementPrefix = ", "
+            expected_text_list = TranslationTextParser.parse_translate_string(text_text)
+            element_prefix = ""
+            for element in expected_text_list:
+                expected_str += element_prefix
+                expected_str += "('"+element[0]+"', '"+element[1]+"')"
+                element_prefix = ", "
 
             # Close the language parsed text list
-            expectedStr += "]"
-            langListPrefix = ", "
+            expected_str += "]"
+            lang_listPrefix = ", "
 
         # Close the translateDesc dictionary
-        expectedStr += "}"
-        return expectedStr
+        expected_str += "}"
+        return expected_str
 
     @staticmethod
-    def getExpectedNewTranslationEntry(briefDesc:str, returnData:dict, paramList:list = [], transText:str="", langList:list = None):
+    def get_expected_new_translation_entry(brief_desc:str, return_data:dict, param_list:list = [], trans_text:str="", lang_list:list = None):
         """!
         @brief Get the expected new translation method entry print text
 
-        @param briefDesc {str} Expected brief description string
-        @param returnData {dict} Expected return dictionary data
-        @param paramList {list} Expected parameter dictionary list
-        @param transText {string} Test translation text string
-        @param langList {list} List of languages or None for default 'en'
+        @param brief_desc {str} Expected brief description string
+        @param return_data {dict} Expected return dictionary data
+        @param param_list {list} Expected parameter dictionary list
+        @param trans_text {string} Test translation text string
+        @param lang_list {list} List of languages or None for default 'en'
 
         @return string - Expected print string
         """
-        expectedStr = "New Entry:\n"
-        expectedStr += "{'briefDesc': '"+briefDesc+"', "
-        expectedStr += ExpectedStrHelper.getExpectedParamList(paramList)
-        expectedStr += ", "
-        expectedStr += ExpectedStrHelper.getExpectedReturn(ParamRetDict.getReturnType(returnData),
-                                              ParamRetDict.getReturnDesc(returnData),
-                                              ParamRetDict.getReturnTypeMod(returnData))
-        expectedStr += ", "
-        expectedStr += ExpectedStrHelper.getExpectedTranslationDescList(transText, langList)
-        expectedStr += "}\n"
-        return expectedStr
+        expected_str = "New Entry:\n"
+        expected_str += "{'briefDesc': '"+brief_desc+"', "
+        expected_str += ExpectedStrHelper.get_expected_param_list(param_list)
+        expected_str += ", "
+        expected_str += ExpectedStrHelper.get_expected_return(ParamRetDict.get_return_type(return_data),
+                                              ParamRetDict.get_return_desc(return_data),
+                                              ParamRetDict.get_return_type_mod(return_data))
+        expected_str += ", "
+        expected_str += ExpectedStrHelper.get_expected_translation_desc_list(trans_text, lang_list)
+        expected_str += "}\n"
+        return expected_str
 
     @staticmethod
-    def getExpectedTransDescHelp()->str:
+    def get_expected_trans_desc_help()->str:
         """!
         Get the expected translation description help message
         """
-        expectedStr = "Enter translation template string. Use @paramName@ in the string to indicate where the \n"
-        expectedStr += "function parameters should be inserted.\n"
-        expectedStr += "Example with single input parameter name \"keyString\": Found argument key @keyString@\n"
-        return expectedStr
+        expected_str = "Enter translation template string. Use @paramName@ in the string to indicate where the \n"
+        expected_str += "function parameters should be inserted.\n"
+        expected_str += "Example with single input parameter name \"keyString\": Found argument key @keyString@\n"
+        return expected_str
 
     @staticmethod
-    def getExpectedNewPropertyStr(methodName:str, propertyId:str, returnData:dict):
+    def get_expected_new_property_str(method_name:str, property_id:str, return_data:dict):
         """!
         @brief Get the expected new translation method entry print text
 
-        @param methodName {str} Expected method name string
-        @param propertyId {str} Expected property id string
-        @param returnData {dict} Expected return dictionary data
+        @param method_name {str} Expected method name string
+        @param property_id {str} Expected property id string
+        @param return_data {dict} Expected return dictionary data
         @return string - Expected print string
         """
-        expectedMethodDesc = "Get the "+ParamRetDict.getReturnDesc(returnData)+" for this object"
+        expected_method_desc = "Get the "+ParamRetDict.get_return_desc(return_data)+" for this object"
 
-        expectedStr = methodName+":\n"
-        expectedStr += "{'name': '"+propertyId+"', "
-        expectedStr += "'briefDesc': '"+expectedMethodDesc+"', "
-        expectedStr += "'params': [], "
-        expectedStr += ExpectedStrHelper.getExpectedReturn(ParamRetDict.getReturnType(returnData),
-                                              ParamRetDict.getReturnDesc(returnData),
-                                              ParamRetDict.getReturnTypeMod(returnData))
-        expectedStr += "}\n"
-        return expectedStr
+        expected_str = method_name+":\n"
+        expected_str += "{'name': '"+property_id+"', "
+        expected_str += "'briefDesc': '"+expected_method_desc+"', "
+        expected_str += "'params': [], "
+        expected_str += ExpectedStrHelper.get_expected_return(ParamRetDict.get_return_type(return_data),
+                                              ParamRetDict.get_return_desc(return_data),
+                                              ParamRetDict.get_return_type_mod(return_data))
+        expected_str += "}\n"
+        return expected_str
 
     @staticmethod
-    def getExpectedOptionList()->tuple:
+    def get_expected_option_list()->tuple:
         """!
         @brief Get the expected property data list string for the unittest
         @return string - Expected property list string
         @return int - Maximum index for the list
         """
-        propertyOptions = LanguageDescriptionList.getLanguagePropertyList()
+        property_options = LanguageDescriptionList.get_language_property_list()
 
-        expectedStr = "Select language property, from options:\n"
-        optionText = ""
-        optionPrefix = "    "
-        maxIndex = 0
-        for index, propertyId in enumerate(propertyOptions):
-            optionText += optionPrefix
-            optionText += str(index)+": "
-            optionText += propertyId
-            optionPrefix = ", "
-            maxIndex += 1
+        expected_str = "Select language property, from options:\n"
+        option_text = ""
+        option_prefix = "    "
+        max_index = 0
+        for index, property_id in enumerate(property_options):
+            option_text += option_prefix
+            option_text += str(index)+": "
+            option_text += property_id
+            option_prefix = ", "
+            max_index += 1
 
-        expectedStr += optionText+"\n"
-        return expectedStr, maxIndex
+        expected_str += option_text+"\n"
+        return expected_str, max_index
 
 class Test03StringClassDescriptionMacroMethods:
     """!
     @brief Unit test for the StringClassDescription class
     """
-    def test01NewTranslateMethodEntry(self):
+    def test01_new_translate_method_entry(self):
         """!
-        @brief Test newTranslateMethodEntry method, improper message
+        @brief Test new_translate_method_entry method, improper message
         """
-        testParamlist = [ParamRetDict.buildParamDictWithMod("foo", "string", "Foo description", 0),
-                         ParamRetDict.buildParamDictWithMod("moo", "integer", "Moo description", 0)]
-        testReturn = ParamRetDict.buildReturnDictWithMod("string", "Return description", 0)
-        testTransString = "Test string with input @foo@ and @moo@"
-        inputStr = (text for text in ["getTestString",
+        test_paramlist = [ParamRetDict.build_param_dict_with_mod("foo", "string", "Foo description", 0),
+                         ParamRetDict.build_param_dict_with_mod("moo", "integer", "Moo description", 0)]
+        test_return = ParamRetDict.build_return_dict_with_mod("string", "Return description", 0)
+        test_trans_string = "Test string with input @foo@ and @moo@"
+        input_str = (text for text in ["getTestString",
                                       "Brief method description",
-                                      str(len(testParamlist)),
-                                      ParamRetDict.getParamName(testParamlist[0]),
-                                      ParamRetDict.getParamType(testParamlist[0]),
-                                      ParamRetDict.getParamDesc(testParamlist[0]),
-                                      ParamRetDict.getParamName(testParamlist[1]),
-                                      ParamRetDict.getParamType(testParamlist[1]),
-                                      ParamRetDict.getParamDesc(testParamlist[1]),
-                                      ParamRetDict.getReturnType(testReturn),
-                                      ParamRetDict.getReturnDesc(testReturn),
+                                      str(len(test_paramlist)),
+                                      ParamRetDict.get_param_name(test_paramlist[0]),
+                                      ParamRetDict.get_param_type(test_paramlist[0]),
+                                      ParamRetDict.get_param_desc(test_paramlist[0]),
+                                      ParamRetDict.get_param_name(test_paramlist[1]),
+                                      ParamRetDict.get_param_type(test_paramlist[1]),
+                                      ParamRetDict.get_param_desc(test_paramlist[1]),
+                                      ParamRetDict.get_return_type(test_return),
+                                      ParamRetDict.get_return_desc(test_return),
                                       "en",
-                                      testTransString,
+                                      test_trans_string,
                                       "y",
                                       "y"])
-        def testMockIn(prompt):
+        def test_mock_in(prompt):
             if ((prompt == "Is full type a list [y/n]:") or
                 (prompt == "Is full type a pointer [y/n]:") or
                 (prompt == "Is full type a reference [y/n]:") or
                 (prompt == "Can value be undefined [y/n]:") or
                 (prompt == "Is full type an array [y/n]:")):
                 return 'n'
-            return next(inputStr)
+            return next(input_str)
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
-            assert testobj.newTranslateMethodEntry()
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestString'], dict)
-            assert testobj.stringJasonData['translateMethods']['getTestString']['briefDesc'] == "Brief method description"
+            assert testobj.new_translate_method_entry()
+            assert isinstance(testobj.string_jason_data['translateMethods']['getTestString'], dict)
+            assert testobj.string_jason_data['translateMethods']['getTestString']['briefDesc'] == "Brief method description"
 
-            assert len(testobj.stringJasonData['translateMethods']['getTestString']['params']) == 2
-            assert testobj.stringJasonData['translateMethods']['getTestString']['params'][0] == testParamlist[0]
-            assert testobj.stringJasonData['translateMethods']['getTestString']['params'][1] == testParamlist[1]
-            assert testobj.stringJasonData['translateMethods']['getTestString']['return'] == testReturn
+            assert len(testobj.string_jason_data['translateMethods']['getTestString']['params']) == 2
+            assert testobj.string_jason_data['translateMethods']['getTestString']['params'][0] == test_paramlist[0]
+            assert testobj.string_jason_data['translateMethods']['getTestString']['params'][1] == test_paramlist[1]
+            assert testobj.string_jason_data['translateMethods']['getTestString']['return'] == test_return
 
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc'], dict)
-            assert len(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc']) == 1
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc']['en'], list)
+            assert isinstance(testobj.string_jason_data['translateMethods']['getTestString']['translateDesc'], dict)
+            assert len(testobj.string_jason_data['translateMethods']['getTestString']['translateDesc']) == 1
+            assert isinstance(testobj.string_jason_data['translateMethods']['getTestString']['translateDesc']['en'], list)
 
-            testParsedList = TranslationTextParser.parseTranslateString(testTransString)
-            assert len(testobj.stringJasonData['translateMethods']['getTestString']['translateDesc']['en']) == len(testParsedList)
+            test_parsed_list = TranslationTextParser.parse_translate_string(test_trans_string)
+            assert len(testobj.string_jason_data['translateMethods']['getTestString']['translateDesc']['en']) == len(test_parsed_list)
 
-            for index, entry in enumerate(testParsedList):
-                assert testobj.stringJasonData['translateMethods']['getTestString']['translateDesc']["en"][index] == entry
+            for index, entry in enumerate(test_parsed_list):
+                assert testobj.string_jason_data['translateMethods']['getTestString']['translateDesc']["en"][index] == entry
 
-            expectedStr = ExpectedStrHelper.getExpectedTransDescHelp()
-            expectedStr += ExpectedStrHelper.getExpectedNewTranslationEntry('Brief method description', testReturn, testParamlist, testTransString, ['en'])
-            assert output.getvalue() == expectedStr
+            expected_str = ExpectedStrHelper.get_expected_trans_desc_help()
+            expected_str += ExpectedStrHelper.get_expected_new_translation_entry('Brief method description', test_return, test_paramlist, test_trans_string, ['en'])
+            assert output.getvalue() == expected_str
 
-    def test02NewTranslateMethodEntryNoConfirm(self):
+    def test02_new_translate_method_entry_no_confirm(self):
         """!
-        @brief Test newTranslateMethodEntry method, improper message
+        @brief Test new_translate_method_entry method, improper message
         """
-        testParamlist = [ParamRetDict.buildParamDictWithMod("foo", "string", "Foo description", 0),
-                         ParamRetDict.buildParamDictWithMod("moo", "integer", "Moo description", 0)]
-        testReturn = ParamRetDict.buildReturnDictWithMod("string", "Return description", 0)
-        testTransString = "Test string with input @foo@ and @moo@"
+        test_paramlist = [ParamRetDict.build_param_dict_with_mod("foo", "string", "Foo description", 0),
+                         ParamRetDict.build_param_dict_with_mod("moo", "integer", "Moo description", 0)]
+        test_return = ParamRetDict.build_return_dict_with_mod("string", "Return description", 0)
+        test_trans_string = "Test string with input @foo@ and @moo@"
 
-        testParamlist2 = [ParamRetDict.buildParamDictWithMod("foo2", "integer", "Foo description2", 0),
-                         ParamRetDict.buildParamDictWithMod("moo2", "integer", "Moo description2", 0)]
-        testReturn2 = ParamRetDict.buildReturnDictWithMod("integer", "Return description2", 0)
-        testTransString2 = "Test string with input @foo2@ and @moo2@"
-        inputStr = (text for text in ["getTestString",
+        test_paramlist2 = [ParamRetDict.build_param_dict_with_mod("foo2", "integer", "Foo description2", 0),
+                         ParamRetDict.build_param_dict_with_mod("moo2", "integer", "Moo description2", 0)]
+        test_return2 = ParamRetDict.build_return_dict_with_mod("integer", "Return description2", 0)
+        test_trans_string2 = "Test string with input @foo2@ and @moo2@"
+        input_str = (text for text in ["getTestString",
                                       "Brief method description",
-                                      str(len(testParamlist)),
-                                      ParamRetDict.getParamName(testParamlist[0]),
-                                      ParamRetDict.getParamType(testParamlist[0]),
-                                      ParamRetDict.getParamDesc(testParamlist[0]),
-                                      ParamRetDict.getParamName(testParamlist[1]),
-                                      ParamRetDict.getParamType(testParamlist[1]),
-                                      ParamRetDict.getParamDesc(testParamlist[1]),
-                                      ParamRetDict.getReturnType(testReturn),
-                                      ParamRetDict.getReturnDesc(testReturn),
+                                      str(len(test_paramlist)),
+                                      ParamRetDict.get_param_name(test_paramlist[0]),
+                                      ParamRetDict.get_param_type(test_paramlist[0]),
+                                      ParamRetDict.get_param_desc(test_paramlist[0]),
+                                      ParamRetDict.get_param_name(test_paramlist[1]),
+                                      ParamRetDict.get_param_type(test_paramlist[1]),
+                                      ParamRetDict.get_param_desc(test_paramlist[1]),
+                                      ParamRetDict.get_return_type(test_return),
+                                      ParamRetDict.get_return_desc(test_return),
                                       "en",
-                                      testTransString,
+                                      test_trans_string,
                                       "n",
-                                      "getTestInt",
+                                      "get_test_int",
                                       "Brief method description2",
-                                      str(len(testParamlist2)),
-                                      ParamRetDict.getParamName(testParamlist2[0]),
-                                      ParamRetDict.getParamType(testParamlist2[0]),
-                                      ParamRetDict.getParamDesc(testParamlist2[0]),
-                                      ParamRetDict.getParamName(testParamlist2[1]),
-                                      ParamRetDict.getParamType(testParamlist2[1]),
-                                      ParamRetDict.getParamDesc(testParamlist2[1]),
-                                      ParamRetDict.getReturnType(testReturn2),
-                                      ParamRetDict.getReturnDesc(testReturn2),
+                                      str(len(test_paramlist2)),
+                                      ParamRetDict.get_param_name(test_paramlist2[0]),
+                                      ParamRetDict.get_param_type(test_paramlist2[0]),
+                                      ParamRetDict.get_param_desc(test_paramlist2[0]),
+                                      ParamRetDict.get_param_name(test_paramlist2[1]),
+                                      ParamRetDict.get_param_type(test_paramlist2[1]),
+                                      ParamRetDict.get_param_desc(test_paramlist2[1]),
+                                      ParamRetDict.get_return_type(test_return2),
+                                      ParamRetDict.get_return_desc(test_return2),
                                       "en",
-                                      testTransString2,
+                                      test_trans_string2,
                                       "y", "n"])
-        def testMockIn(prompt):
+        def test_mock_in(prompt):
             if ((prompt == "Is full type a list [y/n]:") or
                 (prompt == "Is full type a pointer [y/n]:") or
                 (prompt == "Is full type a reference [y/n]:") or
                 (prompt == "Can value be undefined [y/n]:") or
                 (prompt == "Is full type an array [y/n]:")):
                 return 'n'
-            return next(inputStr)
+            return next(input_str)
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
-            assert not testobj.newTranslateMethodEntry()
-            assert 'getTestString' not in testobj.stringJasonData['translateMethods']
-            assert 'getTestInt' not in testobj.stringJasonData['translateMethods']
+            assert not testobj.new_translate_method_entry()
+            assert 'getTestString' not in testobj.string_jason_data['translateMethods']
+            assert 'get_test_int' not in testobj.string_jason_data['translateMethods']
 
-            expectedStr = ExpectedStrHelper.getExpectedTransDescHelp()
-            expectedStr += ExpectedStrHelper.getExpectedNewTranslationEntry('Brief method description', testReturn, testParamlist, testTransString, ['en'])
-            expectedStr += ExpectedStrHelper.getExpectedTransDescHelp()
-            expectedStr += ExpectedStrHelper.getExpectedNewTranslationEntry('Brief method description2', testReturn2, testParamlist2, testTransString2, ['en'])
-            assert output.getvalue() == expectedStr
+            expected_str = ExpectedStrHelper.get_expected_trans_desc_help()
+            expected_str += ExpectedStrHelper.get_expected_new_translation_entry('Brief method description', test_return, test_paramlist, test_trans_string, ['en'])
+            expected_str += ExpectedStrHelper.get_expected_trans_desc_help()
+            expected_str += ExpectedStrHelper.get_expected_new_translation_entry('Brief method description2', test_return2, test_paramlist2, test_trans_string2, ['en'])
+            assert output.getvalue() == expected_str
 
-    def test03AddTranslateMethodEntry(self):
+    def test03_add_translate_method_entry(self):
         """!
-        @brief Test addTranslateMethodEntry()
+        @brief Test add_translate_method_entry()
         """
         testobj = StringClassDescription()
-        paramList = [ParamRetDict.buildParamDictWithMod("goo", "integer", "goo description", 0)]
-        returnDict = ParamRetDict.buildReturnDictWithMod("string", "return description", 0)
+        param_list = [ParamRetDict.build_param_dict_with_mod("goo", "integer", "goo description", 0)]
+        return_dict = ParamRetDict.build_return_dict_with_mod("string", "return description", 0)
 
-        assert testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt description',
-                                                        paramList, returnDict, "en", "Test @goo@")
+        assert testobj.add_translate_method_entry('get_test_int', 'Brief get_test_int description',
+                                                        param_list, return_dict, "en", "Test @goo@")
 
-        assert 'getTestInt' in testobj.getTranlateMethodList()
-        assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
-        assert testobj.stringJasonData['translateMethods']['getTestInt']['briefDesc'] == "Brief getTestInt description"
-        assert len(testobj.stringJasonData['translateMethods']['getTestInt']['params']) == len(paramList)
+        assert 'get_test_int' in testobj.get_tranlate_method_list()
+        assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int'], dict)
+        assert testobj.string_jason_data['translateMethods']['get_test_int']['briefDesc'] == "Brief get_test_int description"
+        assert len(testobj.string_jason_data['translateMethods']['get_test_int']['params']) == len(param_list)
 
-        for index in range(0, len(paramList)):
-            assert testobj.stringJasonData['translateMethods']['getTestInt']['params'][index] == paramList[index]
+        for index in range(0, len(param_list)):
+            assert testobj.string_jason_data['translateMethods']['get_test_int']['params'][index] == param_list[index]
 
-        assert testobj.stringJasonData['translateMethods']['getTestInt']['return'] == returnDict
+        assert testobj.string_jason_data['translateMethods']['get_test_int']['return'] == return_dict
 
-        transDescList = TranslationTextParser.parseTranslateString("Test @goo@")
-        assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']) == 1
-        assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en'], list)
-        assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en']) == len(transDescList)
+        trans_desc_list = TranslationTextParser.parse_translate_string("Test @goo@")
+        assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']) == 1
+        assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en'], list)
+        assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en']) == len(trans_desc_list)
 
-        for index in range(0, len(transDescList)):
-            assert testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']["en"][index] == transDescList[index]
+        for index in range(0, len(trans_desc_list)):
+            assert testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']["en"][index] == trans_desc_list[index]
 
-    def test04AddTranslateMethodEntryOverride(self):
+    def test04_add_translate_method_entry_override(self):
         """!
-        @brief Test addTranslateMethodEntry()
+        @brief Test add_translate_method_entry()
         """
-        def testMockIn(prompt):
+        def test_mock_in(prompt):
             return 'y'
 
         testobj = StringClassDescription()
-        paramList = [ParamRetDict.buildParamDictWithMod("goo", "integer", "goo description", 0)]
-        returnDict = ParamRetDict.buildReturnDictWithMod("string", "return description", 0)
-        assert testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt description', paramList, returnDict, "en", "Test @goo@")
+        param_list = [ParamRetDict.build_param_dict_with_mod("goo", "integer", "goo description", 0)]
+        return_dict = ParamRetDict.build_return_dict_with_mod("string", "return description", 0)
+        assert testobj.add_translate_method_entry('get_test_int', 'Brief get_test_int description', param_list, return_dict, "en", "Test @goo@")
 
-        assert 'getTestInt' in testobj.getTranlateMethodList()
-        assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
+        assert 'get_test_int' in testobj.get_tranlate_method_list()
+        assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int'], dict)
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            paramList = [ParamRetDict.buildParamDictWithMod("goo2", "unsigned", "goo2 description", 0)]
-            returnDict = ParamRetDict.buildReturnDictWithMod("integer", "return int description", 0)
-            assert testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt override description',
-                                                            paramList, returnDict, "en", "Test override @goo2@")
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+            param_list = [ParamRetDict.build_param_dict_with_mod("goo2", "unsigned", "goo2 description", 0)]
+            return_dict = ParamRetDict.build_return_dict_with_mod("integer", "return int description", 0)
+            assert testobj.add_translate_method_entry('get_test_int', 'Brief get_test_int override description',
+                                                            param_list, return_dict, "en", "Test override @goo2@")
 
-            assert 'getTestInt' in testobj.getTranlateMethodList()
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
-            assert testobj.stringJasonData['translateMethods']['getTestInt']['briefDesc'] == "Brief getTestInt override description"
+            assert 'get_test_int' in testobj.get_tranlate_method_list()
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int'], dict)
+            assert testobj.string_jason_data['translateMethods']['get_test_int']['briefDesc'] == "Brief get_test_int override description"
 
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['params'], list)
-            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['params']) == len(paramList)
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['params'], list)
+            assert len(testobj.string_jason_data['translateMethods']['get_test_int']['params']) == len(param_list)
 
-            for index in range(0, len(paramList)):
-                assert testobj.stringJasonData['translateMethods']['getTestInt']['params'][index] == paramList[index]
+            for index in range(0, len(param_list)):
+                assert testobj.string_jason_data['translateMethods']['get_test_int']['params'][index] == param_list[index]
 
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['return'], dict)
-            assert testobj.stringJasonData['translateMethods']['getTestInt']['return'] == returnDict
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['return'], dict)
+            assert testobj.string_jason_data['translateMethods']['get_test_int']['return'] == return_dict
 
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc'], dict)
-            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']) == 1
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc'], dict)
+            assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']) == 1
 
-            transDescList = TranslationTextParser.parseTranslateString("Test override @goo2@")
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en'], list)
-            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en']) == len(transDescList)
-            for index in range(0, len(transDescList)):
-                assert testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']["en"][index] == transDescList[index]
+            trans_desc_list = TranslationTextParser.parse_translate_string("Test override @goo2@")
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en'], list)
+            assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en']) == len(trans_desc_list)
+            for index in range(0, len(trans_desc_list)):
+                assert testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']["en"][index] == trans_desc_list[index]
 
-    def test05AddTranslateMethodEntryNoOverride(self):
+    def test05_add_translate_method_entry_no_override(self):
         """!
-        @brief Test addTranslateMethodEntry(), no overwrite
+        @brief Test add_translate_method_entry(), no overwrite
         """
-        def testMockIn(prompt):
+        def test_mock_in(prompt):
             return 'n'
 
         testobj = StringClassDescription()
-        paramList = [ParamRetDict.buildParamDictWithMod("goo", "integer", "goo description", 0)]
-        returnDict = ParamRetDict.buildReturnDictWithMod("string", "return description", 0)
-        assert testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt description', paramList, returnDict, "en", "Test @goo@")
+        param_list = [ParamRetDict.build_param_dict_with_mod("goo", "integer", "goo description", 0)]
+        return_dict = ParamRetDict.build_return_dict_with_mod("string", "return description", 0)
+        assert testobj.add_translate_method_entry('get_test_int', 'Brief get_test_int description', param_list, return_dict, "en", "Test @goo@")
 
-        assert 'getTestInt' in testobj.getTranlateMethodList()
-        assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
+        assert 'get_test_int' in testobj.get_tranlate_method_list()
+        assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int'], dict)
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            paramList2 = [ParamRetDict.buildParamDictWithMod("goo2", "unsigned", "goo2 description", 0)]
-            returnDict2 = ParamRetDict.buildReturnDictWithMod("integer", "return int description", 0)
-            assert not testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt override description',
-                                                             paramList2, returnDict2, "en", "Test override @goo2@")
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+            param_list2 = [ParamRetDict.build_param_dict_with_mod("goo2", "unsigned", "goo2 description", 0)]
+            return_dict2 = ParamRetDict.build_return_dict_with_mod("integer", "return int description", 0)
+            assert not testobj.add_translate_method_entry('get_test_int', 'Brief get_test_int override description',
+                                                             param_list2, return_dict2, "en", "Test override @goo2@")
 
-            assert 'getTestInt' in testobj.getTranlateMethodList()
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
-            assert testobj.stringJasonData['translateMethods']['getTestInt']['briefDesc'] == "Brief getTestInt description"
+            assert 'get_test_int' in testobj.get_tranlate_method_list()
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int'], dict)
+            assert testobj.string_jason_data['translateMethods']['get_test_int']['briefDesc'] == "Brief get_test_int description"
 
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['params'], list)
-            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['params']) == len(paramList)
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['params'], list)
+            assert len(testobj.string_jason_data['translateMethods']['get_test_int']['params']) == len(param_list)
 
-            for index in range(0, len(paramList)):
-                assert testobj.stringJasonData['translateMethods']['getTestInt']['params'][index] == paramList[index]
+            for index in range(0, len(param_list)):
+                assert testobj.string_jason_data['translateMethods']['get_test_int']['params'][index] == param_list[index]
 
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['return'], dict)
-            assert testobj.stringJasonData['translateMethods']['getTestInt']['return'] == returnDict
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['return'], dict)
+            assert testobj.string_jason_data['translateMethods']['get_test_int']['return'] == return_dict
 
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc'], dict)
-            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']) == 1
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc'], dict)
+            assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']) == 1
 
-            transDescList = TranslationTextParser.parseTranslateString("Test @goo@")
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en'], list)
-            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en']) == len(transDescList)
-            for index in range(0, len(transDescList)):
-                assert testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']["en"][index] == transDescList[index]
+            trans_desc_list = TranslationTextParser.parse_translate_string("Test @goo@")
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en'], list)
+            assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en']) == len(trans_desc_list)
+            for index in range(0, len(trans_desc_list)):
+                assert testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']["en"][index] == trans_desc_list[index]
 
-    def test06AddTranslateMethodEntryForceOverride(self):
+    def test06_add_translate_method_entry_force_override(self):
         """!
-        @brief Test addTranslateMethodEntry()
+        @brief Test add_translate_method_entry()
         """
-        def testMockIn(prompt):
+        def test_mock_in(prompt):
             return 'n'
 
         testobj = StringClassDescription()
-        paramList = [ParamRetDict.buildParamDictWithMod("goo", "integer", "goo description", 0)]
-        returnDict = ParamRetDict.buildReturnDictWithMod("string", "return description", 0)
-        assert testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt description', paramList, returnDict, "en", "Test @goo@")
+        param_list = [ParamRetDict.build_param_dict_with_mod("goo", "integer", "goo description", 0)]
+        return_dict = ParamRetDict.build_return_dict_with_mod("string", "return description", 0)
+        assert testobj.add_translate_method_entry('get_test_int', 'Brief get_test_int description', param_list, return_dict, "en", "Test @goo@")
 
-        assert 'getTestInt' in testobj.getTranlateMethodList()
-        assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
+        assert 'get_test_int' in testobj.get_tranlate_method_list()
+        assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int'], dict)
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            paramList = [ParamRetDict.buildParamDictWithMod("goo2", "unsigned", "goo2 description", 0)]
-            returnDict = ParamRetDict.buildReturnDictWithMod("integer", "return int description", 0)
-            assert testobj.addTranslateMethodEntry('getTestInt', 'Brief getTestInt override description',
-                                                            paramList, returnDict, "en", "Test override @goo2@", True)
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+            param_list = [ParamRetDict.build_param_dict_with_mod("goo2", "unsigned", "goo2 description", 0)]
+            return_dict = ParamRetDict.build_return_dict_with_mod("integer", "return int description", 0)
+            assert testobj.add_translate_method_entry('get_test_int', 'Brief get_test_int override description',
+                                                            param_list, return_dict, "en", "Test override @goo2@", True)
 
-            assert 'getTestInt' in testobj.getTranlateMethodList()
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt'], dict)
-            assert testobj.stringJasonData['translateMethods']['getTestInt']['briefDesc'] == "Brief getTestInt override description"
+            assert 'get_test_int' in testobj.get_tranlate_method_list()
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int'], dict)
+            assert testobj.string_jason_data['translateMethods']['get_test_int']['briefDesc'] == "Brief get_test_int override description"
 
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['params'], list)
-            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['params']) == len(paramList)
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['params'], list)
+            assert len(testobj.string_jason_data['translateMethods']['get_test_int']['params']) == len(param_list)
 
-            for index in range(0, len(paramList)):
-                assert testobj.stringJasonData['translateMethods']['getTestInt']['params'][index] == paramList[index]
+            for index in range(0, len(param_list)):
+                assert testobj.string_jason_data['translateMethods']['get_test_int']['params'][index] == param_list[index]
 
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['return'], dict)
-            assert testobj.stringJasonData['translateMethods']['getTestInt']['return'] == returnDict
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['return'], dict)
+            assert testobj.string_jason_data['translateMethods']['get_test_int']['return'] == return_dict
 
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc'], dict)
-            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']) == 1
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc'], dict)
+            assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']) == 1
 
-            transDescList = TranslationTextParser.parseTranslateString("Test override @goo2@")
-            assert isinstance(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en'], list)
-            assert len(testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']['en']) == len(transDescList)
-            for index in range(0, len(transDescList)):
-                assert testobj.stringJasonData['translateMethods']['getTestInt']['translateDesc']["en"][index] == transDescList[index]
+            trans_desc_list = TranslationTextParser.parse_translate_string("Test override @goo2@")
+            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en'], list)
+            assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en']) == len(trans_desc_list)
+            for index in range(0, len(trans_desc_list)):
+                assert testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']["en"][index] == trans_desc_list[index]
 
-    def test07GetPropertyReturnData(self):
+    def test07_get_property_return_data(self):
         """!
-        @brief Test _getPropertyReturnData()
+        @brief Test _get_property_return_data()
         """
-        inputStr = (text for text in ["0", "1", "2", "3", "4", "5"])
-        def testMockIn(prompt):
-            return next(inputStr)
+        input_str = (text for text in ["0", "1", "2", "3", "4", "5"])
+        def test_mock_in(prompt):
+            return next(input_str)
 
         testobj = StringClassDescription()
-        propertyOptions = LanguageDescriptionList.getLanguagePropertyList()
+        property_options = LanguageDescriptionList.get_language_property_list()
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
             for index in range(0,6):
-                propertyId, methodName, returnType, returnDesc, isList = testobj._getPropertyReturnData()
+                property_id, method_name, return_type, return_desc, is_list = testobj._get_property_return_data()
 
-                expectedReturnType, expectedReturnDesc, expectedIsList = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[index])
-                expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[index])
+                expected_return_type, expected_return_desc, expected_is_list = LanguageDescriptionList.get_language_property_return_data(property_options[index])
+                expected_method_name = LanguageDescriptionList.get_language_property_method_name(property_options[index])
 
-                assert propertyId == propertyOptions[index]
-                assert methodName == expectedMethodName
-                assert returnType == expectedReturnType
-                assert returnDesc == expectedReturnDesc
-                assert isList == expectedIsList
+                assert property_id == property_options[index]
+                assert method_name == expected_method_name
+                assert return_type == expected_return_type
+                assert return_desc == expected_return_desc
+                assert is_list == expected_is_list
 
-    def test08GetPropertyReturnDataBadInput(self):
+    def test08_get_property_return_data_bad_input(self):
         """!
-        @brief Test _getPropertyReturnData()
+        @brief Test _get_property_return_data()
         """
-        inputStr = (text for text in ["8", "0"])
-        def testMockIn(prompt):
-            return next(inputStr)
+        input_str = (text for text in ["8", "0"])
+        def test_mock_in(prompt):
+            return next(input_str)
 
         testobj = StringClassDescription()
-        propertyOptions = LanguageDescriptionList.getLanguagePropertyList()
+        property_options = LanguageDescriptionList.get_language_property_list()
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            propertyId, methodName, returnType, returnDesc, isList = testobj._getPropertyReturnData()
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+            property_id, method_name, return_type, return_desc, is_list = testobj._get_property_return_data()
 
-            expectedReturnType, expectedReturnDesc, expectedIsList = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[0])
-            expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[0])
+            expected_return_type, expected_return_desc, expected_is_list = LanguageDescriptionList.get_language_property_return_data(property_options[0])
+            expected_method_name = LanguageDescriptionList.get_language_property_method_name(property_options[0])
 
-            assert propertyId == propertyOptions[0]
-            assert methodName == expectedMethodName
-            assert returnType == expectedReturnType
-            assert returnDesc == expectedReturnDesc
-            assert isList == expectedIsList
+            assert property_id == property_options[0]
+            assert method_name == expected_method_name
+            assert return_type == expected_return_type
+            assert return_desc == expected_return_desc
+            assert is_list == expected_is_list
 
-            expectedStr, maxIndex = ExpectedStrHelper.getExpectedOptionList()
-            expectedStr += "Valid input values are 0 to "+str(maxIndex-1)+", try again\n"
-            assert output.getvalue() == expectedStr
+            expected_str, max_index = ExpectedStrHelper.get_expected_option_list()
+            expected_str += "Valid input values are 0 to "+str(max_index-1)+", try again\n"
+            assert output.getvalue() == expected_str
 
-    def test09NewPropertyMethodEntry(self):
+    def test09_new_property_method_entry(self):
         """!
-        @brief Test newPropertyMethodEntry()
+        @brief Test new_property_method_entry()
         """
-        inputStr = (text for text in ["0", "y", "y"])
-        def testMockIn(prompt):
-            return next(inputStr)
+        input_str = (text for text in ["0", "y", "y"])
+        def test_mock_in(prompt):
+            return next(input_str)
 
         testobj = StringClassDescription()
-        propertyOptions = LanguageDescriptionList.getLanguagePropertyList()
+        property_options = LanguageDescriptionList.get_language_property_list()
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            assert testobj.newPropertyMethodEntry()
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+            assert testobj.new_property_method_entry()
 
-            returnType, returnDesc, isList = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[0])
-            expectedReturn = ParamRetDict.buildReturnDict(returnType, returnDesc, isList)
-            expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[0])
+            return_type, return_desc, is_list = LanguageDescriptionList.get_language_property_return_data(property_options[0])
+            expected_return = ParamRetDict.build_return_dict(return_type, return_desc, is_list)
+            expected_method_name = LanguageDescriptionList.get_language_property_method_name(property_options[0])
 
-            expectedStr, maxIndex = ExpectedStrHelper.getExpectedOptionList()
-            expectedStr += ExpectedStrHelper.getExpectedNewPropertyStr(expectedMethodName, propertyOptions[0], expectedReturn)
-            assert output.getvalue() == expectedStr
+            expected_str, max_index = ExpectedStrHelper.get_expected_option_list()
+            expected_str += ExpectedStrHelper.get_expected_new_property_str(expected_method_name, property_options[0], expected_return)
+            assert output.getvalue() == expected_str
 
-    def test10NewPropertyMethodEntryNo(self):
+    def test10_new_property_method_entry_no(self):
         """!
-        @brief Test newPropertyMethodEntry()
+        @brief Test new_property_method_entry()
         """
-        inputStr = (text for text in ["0", "n", "1", "y", "y"])
-        def testMockIn(prompt):
-            return next(inputStr)
+        input_str = (text for text in ["0", "n", "1", "y", "y"])
+        def test_mock_in(prompt):
+            return next(input_str)
 
         testobj = StringClassDescription()
-        propertyOptions = LanguageDescriptionList.getLanguagePropertyList()
-        optionString, _ = ExpectedStrHelper.getExpectedOptionList()
+        property_options = LanguageDescriptionList.get_language_property_list()
+        option_string, _ = ExpectedStrHelper.get_expected_option_list()
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            assert testobj.newPropertyMethodEntry()
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+            assert testobj.new_property_method_entry()
 
-            returnType, returnDesc, isList = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[0])
-            expectedReturn = ParamRetDict.buildReturnDict(returnType, returnDesc, isList)
-            expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[0])
+            return_type, return_desc, is_list = LanguageDescriptionList.get_language_property_return_data(property_options[0])
+            expected_return = ParamRetDict.build_return_dict(return_type, return_desc, is_list)
+            expected_method_name = LanguageDescriptionList.get_language_property_method_name(property_options[0])
 
-            returnType1, returnDesc1, isList1 = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[1])
-            expectedReturn1 = ParamRetDict.buildReturnDict(returnType1, returnDesc1, isList1)
-            expectedMethodName1 = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[1])
+            return_type1, return_desc1, is_list1 = LanguageDescriptionList.get_language_property_return_data(property_options[1])
+            expected_return1 = ParamRetDict.build_return_dict(return_type1, return_desc1, is_list1)
+            expected_method_name1 = LanguageDescriptionList.get_language_property_method_name(property_options[1])
 
-            expectedStr = optionString
-            expectedStr += ExpectedStrHelper.getExpectedNewPropertyStr(expectedMethodName, propertyOptions[0], expectedReturn)
-            expectedStr += optionString
-            expectedStr += ExpectedStrHelper.getExpectedNewPropertyStr(expectedMethodName1, propertyOptions[1], expectedReturn1)
-            assert output.getvalue() == expectedStr
+            expected_str = option_string
+            expected_str += ExpectedStrHelper.get_expected_new_property_str(expected_method_name, property_options[0], expected_return)
+            expected_str += option_string
+            expected_str += ExpectedStrHelper.get_expected_new_property_str(expected_method_name1, property_options[1], expected_return1)
+            assert output.getvalue() == expected_str
 
-    def test11NewPropertyMethodEntryNoCommit(self):
+    def test11_new_property_method_entry_no_commit(self):
         """!
-        @brief Test newPropertyMethodEntry()
+        @brief Test new_property_method_entry()
         """
-        inputStr = (text for text in ["0", "y", "n"])
-        def testMockIn(prompt):
-            return next(inputStr)
+        input_str = (text for text in ["0", "y", "n"])
+        def test_mock_in(prompt):
+            return next(input_str)
 
         testobj = StringClassDescription()
-        propertyOptions = LanguageDescriptionList.getLanguagePropertyList()
-        optionString, _ = ExpectedStrHelper.getExpectedOptionList()
+        property_options = LanguageDescriptionList.get_language_property_list()
+        option_string, _ = ExpectedStrHelper.get_expected_option_list()
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            assert not testobj.newPropertyMethodEntry()
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+            assert not testobj.new_property_method_entry()
 
-            returnType, returnDesc, isList = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[0])
-            expectedReturn = ParamRetDict.buildReturnDict(returnType, returnDesc, isList)
-            expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[0])
+            return_type, return_desc, is_list = LanguageDescriptionList.get_language_property_return_data(property_options[0])
+            expected_return = ParamRetDict.build_return_dict(return_type, return_desc, is_list)
+            expected_method_name = LanguageDescriptionList.get_language_property_method_name(property_options[0])
 
-            expectedStr = optionString
-            expectedStr += ExpectedStrHelper.getExpectedNewPropertyStr(expectedMethodName, propertyOptions[0], expectedReturn)
-            assert output.getvalue() == expectedStr
+            expected_str = option_string
+            expected_str += ExpectedStrHelper.get_expected_new_property_str(expected_method_name, property_options[0], expected_return)
+            assert output.getvalue() == expected_str
 
-    def test12AddPropertyMethodEntry(self):
+    def test12_add_property_method_entry(self):
         """!
-        @brief Test addPropertyMethodEntry()
+        @brief Test add_property_method_entry()
         """
-        inputStr = (text for text in ["y"])
-        def testMockIn(prompt):
-            return next(inputStr)
+        input_str = (text for text in ["y"])
+        def test_mock_in(prompt):
+            return next(input_str)
 
         testobj = StringClassDescription()
-        propertyOptions = LanguageDescriptionList.getLanguagePropertyList()
+        property_options = LanguageDescriptionList.get_language_property_list()
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            assert testobj.addPropertyMethodEntry(propertyOptions[3])
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+            assert testobj.add_property_method_entry(property_options[3])
 
-            returnType, returnDesc, isList = LanguageDescriptionList.getLanguagePropertyReturnData(propertyOptions[3])
-            expectedReturn = ParamRetDict.buildReturnDict(returnType, returnDesc, isList)
-            expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[3])
+            return_type, return_desc, is_list = LanguageDescriptionList.get_language_property_return_data(property_options[3])
+            expected_return = ParamRetDict.build_return_dict(return_type, return_desc, is_list)
+            expected_method_name = LanguageDescriptionList.get_language_property_method_name(property_options[3])
 
-            assert expectedMethodName in testobj.getPropertyMethodList()
-            assert isinstance(testobj.stringJasonData['propertyMethods'][expectedMethodName], dict)
-            assert testobj.stringJasonData['propertyMethods'][expectedMethodName]['name'] == propertyOptions[3]
-            assert testobj.stringJasonData['propertyMethods'][expectedMethodName]['briefDesc'] == "Get the "+returnDesc+" for this object"
+            assert expected_method_name in testobj.get_property_method_list()
+            assert isinstance(testobj.string_jason_data['propertyMethods'][expected_method_name], dict)
+            assert testobj.string_jason_data['propertyMethods'][expected_method_name]['name'] == property_options[3]
+            assert testobj.string_jason_data['propertyMethods'][expected_method_name]['briefDesc'] == "Get the "+return_desc+" for this object"
 
-            assert isinstance(testobj.stringJasonData['propertyMethods'][expectedMethodName]['params'], list)
-            assert len(testobj.stringJasonData['propertyMethods'][expectedMethodName]['params']) == 0
+            assert isinstance(testobj.string_jason_data['propertyMethods'][expected_method_name]['params'], list)
+            assert len(testobj.string_jason_data['propertyMethods'][expected_method_name]['params']) == 0
 
-            assert isinstance(testobj.stringJasonData['propertyMethods'][expectedMethodName]['return'], dict)
-            assert testobj.stringJasonData['propertyMethods'][expectedMethodName]['return'] == expectedReturn
+            assert isinstance(testobj.string_jason_data['propertyMethods'][expected_method_name]['return'], dict)
+            assert testobj.string_jason_data['propertyMethods'][expected_method_name]['return'] == expected_return
 
-    def test13AddPropertyMethodEntryNoConfirm(self):
+    def test13_add_property_method_entry_no_confirm(self):
         """!
-        @brief Test addPropertyMethodEntry(), confirm=no
+        @brief Test add_property_method_entry(), confirm=no
         """
-        inputStr = (text for text in ["n"])
-        def testMockIn(prompt):
-            return next(inputStr)
+        input_str = (text for text in ["n"])
+        def test_mock_in(prompt):
+            return next(input_str)
 
         testobj = StringClassDescription()
-        propertyOptions = LanguageDescriptionList.getLanguagePropertyList()
+        property_options = LanguageDescriptionList.get_language_property_list()
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            assert not testobj.addPropertyMethodEntry(propertyOptions[3])
-            expectedMethodName = LanguageDescriptionList.getLanguagePropertyMethodName(propertyOptions[3])
-            assert expectedMethodName not in testobj.getPropertyMethodList()
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+            assert not testobj.add_property_method_entry(property_options[3])
+            expected_method_name = LanguageDescriptionList.get_language_property_method_name(property_options[3])
+            assert expected_method_name not in testobj.get_property_method_list()
 
-    def test14AddTranslateMethodEntryBadtranslateString(self):
+    def test14_add_translate_method_entry_badtranslate_string(self):
         """!
-        @brief Test addTranslateMethodEntry(), bad translate string
+        @brief Test add_translate_method_entry(), bad translate string
         """
-        def testMockIn(prompt):
+        def test_mock_in(prompt):
             return 'n'
 
         testobj = StringClassDescription()
-        paramList = [ParamRetDict.buildParamDictWithMod("goo", "integer", "goo description", 0)]
-        returnDict = ParamRetDict.buildReturnDictWithMod("string", "return description", 0)
+        param_list = [ParamRetDict.build_param_dict_with_mod("goo", "integer", "goo description", 0)]
+        return_dict = ParamRetDict.build_return_dict_with_mod("string", "return description", 0)
 
         output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', testMockIn):
-            assert not testobj.addTranslateMethodEntry('getTestInt',
-                                                             'Brief getTestInt description',
-                                                             paramList, returnDict,
+        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+            assert not testobj.add_translate_method_entry('get_test_int',
+                                                             'Brief get_test_int description',
+                                                             param_list, return_dict,
                                                              "en", "Test @goo@ @foo@")
 
-            assert 'getTestInt' not in testobj.getTranlateMethodList()
-            assert output.getvalue() == "Error: Invalid translation string: Test @goo@ @foo@. paramCount= 2 matchCount= 1\n"
+            assert 'get_test_int' not in testobj.get_tranlate_method_list()
+            assert output.getvalue() == "Error: Invalid translation string: Test @goo@ @foo@. param_count= 2 match_count= 1\n"

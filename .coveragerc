@@ -1,5 +1,5 @@
 [run]
-source=src/copyright_maintenance_grocsoftware
+source=src/code_tools_grocsoftware
 
 [report]
-fail_under=95
+fail_under=98

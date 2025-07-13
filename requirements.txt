@@ -1,0 +1,5 @@
+pytest==8.4.1
+pytest-cov
+pylint>=3.3.7
+coverage==7.9.2
+google-cloud-translate==3.21.1

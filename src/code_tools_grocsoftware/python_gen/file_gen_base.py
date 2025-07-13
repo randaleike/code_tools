@@ -46,28 +46,28 @@ class GeneratePythonFileHelper(object):
     This class implements boiler plate data and helper functions used by
     the parent file specific generation class to generate the file
     """
-    def __init__(self, eulaName:str|None = None):
+    def __init__(self, eula_name:str|None = None):
         """!
         @brief GenerateFileHelper constructor
 
-        @param eulaName {string} Name of the EULA from EulaText class to use.
+        @param eula_name {string} Name of the EULA from EulaText class to use.
         """
         super().__init__()
 
         ## Copyright string generator for the file header generation
-        self.copyrightGenerator = CopyrightGenerator()
+        self.copyright_generator = CopyrightGenerator()
         ## End User Licence Agreement (EULA) for the file header generation
         self.eula = None
         ## Standard indentation for code blocks
-        self.levelTabSize = 4
+        self.level_tab_size = 4
 
         ## C/CPP Doxygen comment generator for generating doxygen comment blocks
-        self.doxyCommentGen = PyDoxyCommentGenerator()
+        self.doxy_comment_gen = PyDoxyCommentGenerator()
         ## C/CPP comment generator for single line and block comments
-        self.headerCommentGen = PyCommentGenerator(80, useSingleLine=True)
+        self.header_comment_gen = PyCommentGenerator(80, use_single_line=True)
 
         ## Translation dictionary from generic data types to CPP specific data types
-        self.typeXlationDict = {'string':"str",
+        self.type_xlation_dict = {'string':"str",
                                 'text':"str",
                                 'size':"int",
                                 'integer':"int",
@@ -75,196 +75,196 @@ class GeneratePythonFileHelper(object):
                                 'structure':"dict",
                                 'tuple':"tuple"}
 
-        if eulaName is None:
+        if eula_name is None:
             self.eula = EulaText("MIT_open")
         else:
-            self.eula = EulaText(eulaName)
+            self.eula = EulaText(eula_name)
 
-    def _declareType(self, baseType:str, typeMod:int=0)->str:
+    def _declare_type(self, base_type:str, type_mod:int=0)->str:
         """!
         @brief Generate the type text based on the input type name and type modification data
-        @param baseType (str) Delclaration type
-        @param typeMod (int) ParamRetDict type modification code
+        @param base_type (str) Delclaration type
+        @param type_mod (int) ParamRetDict type modification code
         @return string - : Type(s)
         """
-        arraySize = ParamRetDict.getArraySize(typeMod)
-        if ParamRetDict.isModList(typeMod) or (arraySize > 0):
-            if ParamRetDict.isOrUndefType(typeMod):
-                returnText = "list|None"
+        array_size = ParamRetDict.get_array_size(type_mod)
+        if ParamRetDict.is_mod_list(type_mod) or (array_size > 0):
+            if ParamRetDict.is_or_undef_type(type_mod):
+                return_text = "list|None"
             else:
-                returnText = "list"
+                return_text = "list"
         else:
-            langType = baseType
-            if baseType in list(self.typeXlationDict.keys()):
-                langType = self.typeXlationDict[baseType]
+            lang_type = base_type
+            if base_type in list(self.type_xlation_dict.keys()):
+                lang_type = self.type_xlation_dict[base_type]
 
-            if ParamRetDict.isOrUndefType(typeMod):
-                returnText = langType+"|None"
+            if ParamRetDict.is_or_undef_type(type_mod):
+                return_text = lang_type+"|None"
             else:
-                returnText = langType
-        return returnText
+                return_text = lang_type
+        return return_text
 
-    def _xlateParams(self, paramDictList:list)->list:
+    def _xlate_params(self, param_dict_list:list)->list:
         """!
         @brief Translate the generic parameter list type strings to the python specific parameter type strings
-        @param paramDictList {list} List of ParamRetDict parameter dictionaries to translate
+        @param param_dict_list {list} List of ParamRetDict parameter dictionaries to translate
         @return list - List of ParamRetDict parameter dictionaries with the translated type
         """
-        xlatedParams = []
-        for param in paramDictList:
-            xlatedType = self._declareType(ParamRetDict.getParamType(param), ParamRetDict.getParamTypeMod(param))
-            xlatedParam = ParamRetDict.buildParamDictWithMod(ParamRetDict.getParamName(param),
-                                                             xlatedType,
-                                                             ParamRetDict.getParamDesc(param),
+        xlated_params = []
+        for param in param_dict_list:
+            xlated_type = self._declare_type(ParamRetDict.get_param_type(param), ParamRetDict.get_param_type_mod(param))
+            xlated_param = ParamRetDict.build_param_dict_with_mod(ParamRetDict.get_param_name(param),
+                                                             xlated_type,
+                                                             ParamRetDict.get_param_desc(param),
                                                              0)
-            xlatedParams.append(xlatedParam)
-        return xlatedParams
+            xlated_params.append(xlated_param)
+        return xlated_params
 
-    def _xlateReturnDict(self, retDict:dict|None)->dict|None:
+    def _xlate_return_dict(self, ret_dict:dict|None)->dict|None:
         """!
         @brief Translate the generic return dictionary to the python specific return dictionary
-        @param retDict {dictionary} ParamRetDict return dictionary to translate
+        @param ret_dict {dictionary} ParamRetDict return dictionary to translate
         @return dictionary|None - ParamRetDict return dictionary with the translated type or None if input is None
         """
-        if retDict is not None:
-            xlatedType = self._declareType(ParamRetDict.getReturnType(retDict), ParamRetDict.getReturnTypeMod(retDict))
-            return ParamRetDict.buildReturnDictWithMod(xlatedType, ParamRetDict.getReturnDesc(retDict), 0)
+        if ret_dict is not None:
+            xlated_type = self._declare_type(ParamRetDict.get_return_type(ret_dict), ParamRetDict.get_return_type_mod(ret_dict))
+            return ParamRetDict.build_return_dict_with_mod(xlated_type, ParamRetDict.get_return_desc(ret_dict), 0)
         else:
             return None
 
-    def _genFunctionRetType(self, returnDict:dict|None)->str:
+    def _gen_function_ret_type(self, return_dict:dict|None)->str:
         """!
         @brief Generate the function return+name string
-        @param returnDict (dict|None) Return ParamRetDict dictionary
-        @return string - returnSpec name
+        @param return_dict (dict|None) Return ParamRetDict dictionary
+        @return string - return_spec name
         """
-        returnText = ""
-        if returnDict is not None:
-            typeName = ParamRetDict.getReturnType(returnDict)
-            typeMod = ParamRetDict.getReturnTypeMod(returnDict)
-            returnText += " -> "
-            returnText += self._declareType(typeName, typeMod)
+        return_text = ""
+        if return_dict is not None:
+            type_name = ParamRetDict.get_return_type(return_dict)
+            type_mod = ParamRetDict.get_return_type_mod(return_dict)
+            return_text += " -> "
+            return_text += self._declare_type(type_name, type_mod)
 
-        returnText += ":"
-        return returnText
+        return_text += ":"
+        return return_text
 
-    def _genFunctionParams(self, paramDictList:list)->str:
+    def _gen_function_params(self, param_dict_list:list)->str:
         """!
         @brief Generate the parameter method string
-        @param paramDictList (list) List of parameter dictionaries
+        @param param_dict_list (list) List of parameter dictionaries
         @return string - (typespec name, ...)
         """
-        paramPrefix = ""
-        paramText = "("
-        for paramDict in paramDictList:
-            typeName = ParamRetDict.getParamType(paramDict)
-            typeMod = ParamRetDict.getParamTypeMod(paramDict)
+        param_prefix = ""
+        param_text = "("
+        for param_dict in param_dict_list:
+            type_name = ParamRetDict.get_param_type(param_dict)
+            type_mod = ParamRetDict.get_param_type_mod(param_dict)
 
-            paramText += paramPrefix
-            paramText += ParamRetDict.getParamName(paramDict)
-            paramText += ":"
-            paramText += self._declareType(typeName, typeMod)
-            paramPrefix = ", "
-        paramText += ")"
-        return paramText
+            param_text += param_prefix
+            param_text += ParamRetDict.get_param_name(param_dict)
+            param_text += ":"
+            param_text += self._declare_type(type_name, type_mod)
+            param_prefix = ", "
+        param_text += ")"
+        return param_text
 
-    def _declareFunctionWithDecorations(self, name:str, briefdesc:str, paramDictList:list, retDict:dict|None = None,
-                                       indent:int = 4, noDoxygen:bool = False, prefixDecaration:str|None = None,
-                                       postfixDecaration:str|None = None, inlinecode:list|None = None,
-                                       longDesc:str|None = None)->list:
+    def _declare_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict|None = None,
+                                       indent:int = 4, no_doxygen:bool = False, prefix_decaration:str|None = None,
+                                       postfix_decaration:str|None = None, inlinecode:list|None = None,
+                                       long_desc:str|None = None)->list:
         """!
         @brief Generate a function declatation text block with doxygen comment
 
         @param name {string} Function name
         @param briefdesc {string} Function description
-        @param paramDictList {list of dictionaries} - Return parameter data
-        @param retDict {dictionary or None} - Return parameter data or None
+        @param param_dict_list {list of dictionaries} - Return parameter data
+        @param ret_dict {dictionary or None} - Return parameter data or None
         @param indent {integer} Comment and function declaration indentation
-        @param noDoxygen {boolean} True skip doxygen comment generation, False generate doxygen comment block
-        @param prefixDecaration {string} Valid C/C++ declaration prefix decoration, i.e "virtual"
-        @param postfixDecaration {string} Valid C/C++ declaration postfix decoration, i.e "const" | "override" ...
+        @param no_doxygen {boolean} True skip doxygen comment generation, False generate doxygen comment block
+        @param prefix_decaration {string} Valid C/C++ declaration prefix decoration, i.e "virtual"
+        @param postfix_decaration {string} Valid C/C++ declaration postfix decoration, i.e "const" | "override" ...
         @param inlinecode {sting list or None} Inline code for the declaration or None id there is no inline definition
-        @param longDesc {string or None} Long description of the function
+        @param long_desc {string or None} Long description of the function
 
         @return string list - Function doxygen comment block and declaration
         """
-        funcDeclareText = []
-        declIndent = "".rjust(indent, ' ')
+        func_declare_text = []
+        decl_indent = "".rjust(indent, ' ')
 
-        # Add fungenDoxyMethodCommentction prefix definitions if defined
-        if prefixDecaration is not None:
-            funcDeclareText.append(declIndent+prefixDecaration+"\n")
+        # Add fungen_doxy_method_commentction prefix definitions if defined
+        if prefix_decaration is not None:
+            func_declare_text.append(decl_indent+prefix_decaration+"\n")
 
         # Create function declaration line
-        funcLine = declIndent
-        funcLine += "def "
-        funcLine += name
+        func_line = decl_indent
+        func_line += "def "
+        func_line += name
 
         # Add the function parameters
-        funcLine += self._genFunctionParams(paramDictList)
-        funcLine += self._genFunctionRetType(retDict)
-        funcLine += "\n"
-        funcDeclareText.append(funcLine)
+        func_line += self._gen_function_params(param_dict_list)
+        func_line += self._gen_function_ret_type(ret_dict)
+        func_line += "\n"
+        func_declare_text.append(func_line)
 
         # Add doxygen comment block
-        if not noDoxygen:
-            xlatedParamList = self._xlateParams(paramDictList)
-            xlatedRet = self._xlateReturnDict(retDict)
-            funcDeclareText.extend(self.doxyCommentGen.genDoxyMethodComment(briefdesc, xlatedParamList, xlatedRet,
-                                                                            longDesc, indent+self.levelTabSize))
+        if not no_doxygen:
+            xlated_paramList = self._xlate_params(param_dict_list)
+            xlated_ret = self._xlate_return_dict(ret_dict)
+            func_declare_text.extend(self.doxy_comment_gen.gen_doxy_method_comment(briefdesc, xlated_paramList, xlated_ret,
+                                                                            long_desc, indent+self.level_tab_size))
 
         # Add inline code if defined
-        inlineIndent = "".rjust(indent+self.levelTabSize, ' ')
+        inline_indent = "".rjust(indent+self.level_tab_size, ' ')
         if inlinecode is None:
-            funcDeclareText.append(inlineIndent+self.doxyCommentGen.genSingleLineStart()+" @todo Implement code\n")
+            func_declare_text.append(inline_indent+self.doxy_comment_gen.gen_single_line_start()+" @todo Implement code\n")
         else:
-            for codeLine in inlinecode:
-                funcDeclareText.append(inlineIndent+codeLine+"\n")
+            for code_line in inlinecode:
+                func_declare_text.append(inline_indent+code_line+"\n")
 
-        return funcDeclareText
+        return func_declare_text
 
-    def _defineFunctionWithDecorations(self, name:str, briefdesc:str, paramDictList:list, retDict:dict,
-                                      noDoxygen:bool = False, prefixDecaration:str|None = None,
-                                      postfixDecaration:str|None = None, longDesc:list|None = None)->list:
+    def _define_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict,
+                                      no_doxygen:bool = False, prefix_decaration:str|None = None,
+                                      postfix_decaration:str|None = None, long_desc:list|None = None)->list:
         """!
         @brief Generate a function definition start with doxygen comment
 
         @param name {string} Function name
         @param briefdesc {string} Function description
-        @param paramDictList {list of dictionaries} - Return parameter data
-        @param retDict {dictionary} - Return parameter data
-        @param noDoxygen {boolean} True skip doxygen comment generation, False generate doxygen comment block
-        @param prefixDecaration {string or None} Valid C/C++ decldefineFunctionWithDecorationsaration prefix decoration, i.e "virtual"
-        @param postfixDecaration {string or None} Valid C/C++ declaration postfix decoration, i.e "const" | "override" ...
-        @param longDesc {string or None} Long description of the function
+        @param param_dict_list {list of dictionaries} - Return parameter data
+        @param ret_dict {dictionary} - Return parameter data
+        @param no_doxygen {boolean} True skip doxygen comment generation, False generate doxygen comment block
+        @param prefix_decaration {string or None} Valid C/C++ decldefine_function_with_decorationsaration prefix decoration, i.e "virtual"
+        @param postfix_decaration {string or None} Valid C/C++ declaration postfix decoration, i.e "const" | "override" ...
+        @param long_desc {string or None} Long description of the function
 
         @return string list - Function doxygen comment block and declaration start
         """
-        funcDefineText = []
+        func_define_text = []
 
         # Add function prefix definitions if defined
-        if prefixDecaration is not None:
-            funcDefineText.append(prefixDecaration+"\n")
+        if prefix_decaration is not None:
+            func_define_text.append(prefix_decaration+"\n")
 
         # Create function declaration line
-        funcLine = "def "
-        funcLine += name
+        func_line = "def "
+        func_line += name
 
         # Add the function parameters
-        funcLine += self._genFunctionParams(paramDictList)
-        funcLine += self._genFunctionRetType(retDict)
-        funcLine += "\n"
-        funcDefineText.append(funcLine)
+        func_line += self._gen_function_params(param_dict_list)
+        func_line += self._gen_function_ret_type(ret_dict)
+        func_line += "\n"
+        func_define_text.append(func_line)
 
         # Add doxygen comment block
-        if not noDoxygen:
-            xlatedParamList = self._xlateParams(paramDictList)
-            xlatedRet = self._xlateReturnDict(retDict)
-            funcDefineText.extend(self.doxyCommentGen.genDoxyMethodComment(briefdesc, xlatedParamList, xlatedRet,
-                                                                           longDesc, self.levelTabSize))
-        return funcDefineText
+        if not no_doxygen:
+            xlated_paramList = self._xlate_params(param_dict_list)
+            xlated_ret = self._xlate_return_dict(ret_dict)
+            func_define_text.extend(self.doxy_comment_gen.gen_doxy_method_comment(briefdesc, xlated_paramList, xlated_ret,
+                                                                           long_desc, self.level_tab_size))
+        return func_define_text
 
-    def _endFunction(self, name:str)->str:
+    def _end_function(self, name:str)->str:
         """!
         @brief Get the function declaration string for the given name
         @param name (string) - Function name
@@ -272,227 +272,227 @@ class GeneratePythonFileHelper(object):
         """
         return "# end of function "+name+"\n"
 
-    def _generateGenericFileHeader(self, autotoolname:str, startYear:int=2025, owner:str|None = None)->list:
+    def _generate_generic_file_header(self, autotoolname:str, start_year:int=2025, owner:str|None = None)->list:
         """!
         @brief Generate the boiler plate file header with copyright and eula
 
         @param autotoolname {string} Auto generation tool name for comments
-        @param startYear {number} First copyright year
+        @param start_year {number} First copyright year
         @param owner {string or None} File owner for copyright message or None
         @return list of strings - Code to output
         """
-        commentText = []
-        copyrightEulaText = []
+        comment_text = []
+        copyright_eula_text = []
         if owner is not None:
             # Generate copyright and EULA text
-            currentYear = datetime.now().year
-            copyrightEulaText.append(self.copyrightGenerator.create_new_copyright(owner, startYear, currentYear))
-            copyrightEulaText.append("") # white space for readability
-            copyrightEulaText.append(self.eula.formatEulaName())
-            copyrightEulaText.append("") # white space for readability
-            copyrightEulaText.extend(self.eula.formatEulaText())
-            copyrightEulaText.append("") # white space for readability
+            current_year = datetime.now().year
+            copyright_eula_text.append(self.copyright_generator.create_new_copyright(owner, start_year, current_year))
+            copyright_eula_text.append("") # white space for readability
+            copyright_eula_text.append(self.eula.format_eula_name())
+            copyright_eula_text.append("") # white space for readability
+            copyright_eula_text.extend(self.eula.format_eula_text())
+            copyright_eula_text.append("") # white space for readability
 
-        copyrightEulaText.append("This file was autogenerated by "+autotoolname+" do not edit")
-        copyrightEulaText.append("") # white space for readability
+        copyright_eula_text.append("This file was autogenerated by "+autotoolname+" do not edit")
+        copyright_eula_text.append("") # white space for readability
 
         # Generate comment header
-        for line in self.headerCommentGen.buildCommentBlockHeader():
-            commentText.append(line+"\n")
+        for line in self.header_comment_gen.build_comment_block_header():
+            comment_text.append(line+"\n")
 
-        # Wrap and output commentText lines
-        for line in copyrightEulaText:
-            commentText.append(self.headerCommentGen.wrapCommentLine(line)+"\n")
+        # Wrap and output comment_text lines
+        for line in copyright_eula_text:
+            comment_text.append(self.header_comment_gen.wrap_comment_line(line)+"\n")
 
         # Generate comment footer
-        for line in self.headerCommentGen.buildCommentBlockFooter():
-            commentText.append(line+"\n")
-        return commentText
+        for line in self.header_comment_gen.build_comment_block_footer():
+            comment_text.append(line+"\n")
+        return comment_text
 
-    def _genImport(self, className:str, moduleName:str = None)->str:
+    def _gen_import(self, class_name:str, module_name:str = None)->str:
         """!
         @brief Add Include line to the output file
-        @param className {string} Name of the class to import
-        @param moduleName {string} Name of the module to import from
+        @param class_name {string} Name of the class to import
+        @param module_name {string} Name of the module to import from
         @return string - Import statement
         """
-        if moduleName is not None:
-            return "from "+moduleName+" import "+className+"\n"
+        if module_name is not None:
+            return "from "+module_name+" import "+class_name+"\n"
         else:
-            return "import "+className+"\n"
+            return "import "+class_name+"\n"
 
-    def _genImportBlock(self, includeNames:list)->list:
+    def _gen_importBlock(self, include_names:list)->list:
         """!
         @brief Generate a series if include line(s) for each name in the list
-        @param includeNames {list of tuples} Name(s) of class(es), Module name(s) of the class to import
+        @param include_names {list of tuples} Name(s) of class(es), Module name(s) of the class to import
         @return list of strings - Import code block to output
         """
-        includeBlock = ["// Imports\n"]
-        for className, moduleName in includeNames:
-            includeBlock.append(self._genImport(className, moduleName))
-        return includeBlock
+        include_block = ["// Imports\n"]
+        for class_name, module_name in include_names:
+            include_block.append(self._gen_import(class_name, module_name))
+        return include_block
 
-    def _genNamespaceOpen(self, namespaceName:str)->list:
+    def _gen_namespace_open(self, namespace_name:str)->list:
         """!
         @brief Generate namespace start code for include file
-        @param namespaceName {string} Name of the namespace
+        @param namespace_name {string} Name of the namespace
         @return list of strings - Code to output
         """
         return []
 
-    def _genNamespaceClose(self, namespaceName:str)->list:
+    def _gen_namespace_close(self, namespace_name:str)->list:
         """!
         @brief Generate namespace start code for include file
-        @param namespaceName {string} Name of the namespace
+        @param namespace_name {string} Name of the namespace
         @return list of strings - Code to output
         """
         return []
 
-    def _genUsingNamespace(self, namespaceName:str)->list:
+    def _gen_using_namespace(self, namespace_name:str)->list:
         """!
         @brief Generate namespace start code for include file
-        @param namespaceName {string} Name of the namespace
+        @param namespace_name {string} Name of the namespace
         @return list of strings - Code to output
         """
         return []
 
-    def _genClassOpen(self, className:str, classDesc:str|None=None, inheritence:str|None = None,
-                      classDecoration:str|None = None, indent:int=0)->list:
+    def _gen_class_open(self, class_name:str, class_desc:str|None=None, inheritence:str|None = None,
+                      class_decoration:str|None = None, indent:int=0)->list:
         """!
         @brief Generate the class open code
 
-        @param className {string} Name of the class
-        @param classDesc {string} Description of the class object
+        @param class_name {string} Name of the class
+        @param class_desc {string} Description of the class object
         @param inheritence {sting} Parent class and visability or None
-        @param classDecoration {sting} Class decoration or None, ignored in python
+        @param class_decoration {sting} Class decoration or None, ignored in python
         @param indent {integer} Space indentation for the declaration and comments
 
         @return list of strings - Code to output
         """
-        codeText = []
-        declIndent = "".rjust(indent, ' ')
+        code_text = []
+        decl_indent = "".rjust(indent, ' ')
 
         # Generate class start
         if inheritence is None:
             inheritence = "object"
-        codeText.append(declIndent+"class "+className+"("+inheritence+"):\n")
+        code_text.append(decl_indent+"class "+class_name+"("+inheritence+"):\n")
 
         # Generate Doxygen class description
-        if classDesc is not None:
-            codeText.extend(self.doxyCommentGen.genDoxyClassComment(classDesc, None, self.levelTabSize+indent))
+        if class_desc is not None:
+            code_text.extend(self.doxy_comment_gen.gen_doxy_class_comment(class_desc, None, self.level_tab_size+indent))
 
-        return codeText
+        return code_text
 
-    def _genClassClose(self, className:str, indent:int=0)->list:
+    def _gen_class_close(self, class_name:str, indent:int=0)->list:
         """!
         @brief Generate the class close code
 
-        @param className {string} Name of the class
+        @param class_name {string} Name of the class
         @param indent {integer} Space indentation for the declaration and comments
 
         @return list of strings - Code to output
         """
-        return ["".rjust(indent, ' ')+"# end of "+className+" class\n"]
+        return ["".rjust(indent, ' ')+"# end of "+class_name+" class\n"]
 
-    def _genClassDefaultConstructor(self, className:str, indent:int = 4, paramList:list=[],
-                                   constructorCode:list= [], noDoxyCommentConstructor:bool = False)->list:
+    def _gen_class_default_constructor(self, class_name:str, indent:int = 4, param_list:list=[],
+                                   constructor_code:list= [], no_doxy_comment_constructor:bool = False)->list:
         """!
         @brief Generate default constructor(s)/destructor declarations for a class
 
-        @param className {string} Name of the class
+        @param class_name {string} Name of the class
         @param indent {number} Indentation space count for the declarations (default = 8)
-        @param paramList {list} List of parameter dictionaries
-        @param constructorCode {list} Constructor code
-        @param noDoxyCommentConstructor {boolean} Doxygen comment disable. False = generate doxygen comments,
+        @param param_list {list} List of parameter dictionaries
+        @param constructor_code {list} Constructor code
+        @param no_doxy_comment_constructor {boolean} Doxygen comment disable. False = generate doxygen comments,
                                                   True = ommit comments
         @return list of strings - Code to output
         """
         # Declare default default constructor
-        codeText = self._declareFunctionWithDecorations("__init__",
-                                                       "Construct a new "+className+" object",
-                                                       paramList,
+        code_text = self._declare_function_with_decorations("__init__",
+                                                       "Construct a new "+class_name+" object",
+                                                       param_list,
                                                        None,
                                                        indent,
-                                                       noDoxyCommentConstructor,
+                                                       no_doxy_comment_constructor,
                                                        None,
                                                        None,
-                                                       constructorCode)
-        codeText.append("".rjust(indent, ' ')+"\n")      #whitespace for readability
-        return codeText
+                                                       constructor_code)
+        code_text.append("".rjust(indent, ' ')+"\n")      #whitespace for readability
+        return code_text
 
-    def _declareStructure(self, name:str, varDistList:list, indent:int=0,
-                          structDesc:str|None = None)->list:
+    def _declare_structure(self, name:str, var_dist_list:list, indent:int=0,
+                          struct_desc:str|None = None)->list:
         """!
         @brief Generate a structure declaration
 
         @param name {string} Name of the structure
-        @param varDistList {list} List of ParamRetDict parameter dictionaries for the data elements
+        @param var_dist_list {list} List of ParamRetDict parameter dictionaries for the data elements
         @param indent {integer} Number of spaces to indent the code declarations, default = 0
-        @param structDesc {string|None} Doxygen structure description
+        @param struct_desc {string|None} Doxygen structure description
 
         @return list of strings - Code to output
         """
         # Generate the declaration
-        codeText = self._genClassOpen(name, structDesc, "object", indent=indent)
+        code_text = self._gen_class_open(name, struct_desc, "object", indent=indent)
 
         # Generate the body code
-        for varDict in varDistList:
-            codeText.append(self._declareVarStatment(varDict, indent+self.levelTabSize))
+        for var_dict in var_dist_list:
+            code_text.append(self._declare_var_statment(var_dict, indent+self.level_tab_size))
 
         # Close the struture
-        codeText.extend(self._genClassClose(name, indent))
-        return codeText
+        code_text.extend(self._gen_class_close(name, indent))
+        return code_text
 
-    def _declareVarStatment(self, varDict:dict, doxyCommentIndent:int = -1)->str:
+    def _declare_var_statment(self, var_dict:dict, doxy_comment_indent:int = -1)->str:
         """!
         @brief Declare a class/interface variable
-        @param varDict {dict} ParamRetDict parameter dictionary describing the variable
-        @param doxyCommentIndent {int} Column to begin the doxygen comment
+        @param var_dict {dict} ParamRetDict parameter dictionary describing the variable
+        @param doxy_comment_indent {int} Column to begin the doxygen comment
         @return string Variable declatation code
         """
-        if doxyCommentIndent != -1:
-            indent = "".ljust(doxyCommentIndent, ' ')
+        if doxy_comment_indent != -1:
+            indent = "".ljust(doxy_comment_indent, ' ')
         else:
             indent = ""
 
         # Declare the variable
-        typeName = ParamRetDict.getParamType(varDict)
-        typeMod = ParamRetDict.getParamTypeMod(varDict)
+        type_name = ParamRetDict.get_param_type(var_dict)
+        type_mod = ParamRetDict.get_param_type_mod(var_dict)
 
-        varTypeDecl = self._declareType(typeName, typeMod)
-        varDecl = indent+ParamRetDict.getParamName(varDict)+":"+varTypeDecl
+        var_type_decl = self._declare_type(type_name, type_mod)
+        var_decl = indent+ParamRetDict.get_param_name(var_dict)+":"+var_type_decl
 
         # Generate documentation string
-        docDecl = indent+self.doxyCommentGen.genDoxyVarDocStr(ParamRetDict.getParamDesc(varDict))
+        doc_decl = indent+self.doxy_comment_gen.gen_doxy_var_doc_str(ParamRetDict.get_param_desc(var_dict))
 
         # Return the final data
-        return docDecl+"\n"+varDecl+"\n"
+        return doc_decl+"\n"+var_decl+"\n"
 
-    def _genAddListStatment(self, listName:str, valueName:str, isText:bool=False)->str:
+    def _gen_add_list_statment(self, list_name:str, value_name:str, is_text:bool=False)->str:
         """!
         @brief Generate a list add code statement
-        @param listName {string} Name of the list variable to add the valueName to
-        @param valueName {string} Name of the value to add to the list object
-        @param isText {boolean} False if valueName is a variable name or numeric value,
-                                True if valueName is a text string
+        @param list_name {string} Name of the list variable to add the value_name to
+        @param value_name {string} Name of the value to add to the list object
+        @param is_text {boolean} False if value_name is a variable name or numeric value,
+                                True if value_name is a text string
                                 default = False
         @return string - Python code text
         """
-        if isText:
-            return listName+".append(\""+valueName+"\")"
+        if is_text:
+            return list_name+".append(\""+value_name+"\")"
         else:
-            return listName+".append("+valueName+")"
+            return list_name+".append("+value_name+")"
 
-    def _genReturnStatment(self, retValue:str, isText:bool=False)->str:
+    def _gen_return_statment(self, ret_value:str, is_text:bool=False)->str:
         """!
         @brief Generate a list add code statement
-        @param retValue {string} Name of the return variable
-        @param isText {boolean} False if retValue is a variable name or numeric value,
-                                True if retValue is a text string
+        @param ret_value {string} Name of the return variable
+        @param is_text {boolean} False if ret_value is a variable name or numeric value,
+                                True if ret_value is a text string
                                 default = False
         @return string - Python code text
         """
-        if isText:
-            return "return \""+retValue+"\""
+        if is_text:
+            return "return \""+ret_value+"\""
         else:
-            return "return "+retValue
+            return "return "+ret_value

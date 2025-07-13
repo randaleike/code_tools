@@ -34,288 +34,288 @@ from code_tools_grocsoftware.cpp_gen.string_class_tools import BaseCppStringClas
 from code_tools_grocsoftware.cpp_gen.windows_lang_select import WindowsLangSelectFunctionGenerator
 
 from tests.dir_init import TESTFILEPATH
-testJsonList = os.path.join(TESTFILEPATH,"teststringlanglist.json")
+test_json_list = os.path.join(TESTFILEPATH,"teststringlanglist.json")
 
-def getExpectedExtern(paramDictList:list, intfRetPtrType:str, selectFunctionName:str)->str:
-    paramPrefix = ""
-    paramStr = ""
-    for paramDict in paramDictList:
-        paramType = ParamRetDict.getParamType(paramDict)
-        paramName = ParamRetDict.getParamName(paramDict)
-        paramStr += paramPrefix
-        paramStr += paramType
-        paramStr += " "
-        paramStr += paramName
-        paramPrefix = ", "
+def get_expected_extern(param_dict_list:list, intf_ret_ptr_type:str, select_function_name:str)->str:
+    param_prefix = ""
+    param_str = ""
+    for param_dict in param_dict_list:
+        param_type = ParamRetDict.get_param_type(param_dict)
+        param_name = ParamRetDict.get_param_name(param_dict)
+        param_str += param_prefix
+        param_str += param_type
+        param_str += " "
+        param_str += param_name
+        param_prefix = ", "
 
-    expectedStr = "extern "+intfRetPtrType+" "+selectFunctionName+"("+paramStr+");\n"
-    return expectedStr
+    expected_str = "extern "+intf_ret_ptr_type+" "+select_function_name+"("+param_str+");\n"
+    return expected_str
 
 class TestClass01WindowsLangSelect:
     """!
     @brief Unit test for the BaseCppStringClassGenerator class
     """
-    def test001ConstructorDefault(self):
+    def test001_constructor_default(self):
         """!
         @brief Test constructor, default input
         """
-        testObj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
+        test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
 
-        assert testObj.baseClassName == "BaseClass"
-        assert testObj.dynamicCompileSwitch == "DYNAMIC_INTERNATIONALIZATION"
-        assert testObj.selectFunctionName == "getBaseClass_Windows"
-        assert len(testObj.paramDictList) == 1
-        assert testObj.paramDictList[0] == ParamRetDict.buildParamDict("langId",
+        assert test_obj.base_class_name == "BaseClass"
+        assert test_obj.dynamic_compile_switch == "DYNAMIC_INTERNATIONALIZATION"
+        assert test_obj.select_function_name == "getBaseClass_Windows"
+        assert len(test_obj.param_dict_list) == 1
+        assert test_obj.param_dict_list[0] == ParamRetDict.build_param_dict("lang_id",
                                                                        "LANGID",
                                                                        "Return value from GetUserDefaultUILanguage() call")
-        assert testObj.defOsString == "(defined(_WIN64) || defined(_WIN32))"
-        assert isinstance(testObj.langJsonData, LanguageDescriptionList)
-        assert isinstance(testObj.doxyCommentGen, CDoxyCommentGenerator)
+        assert test_obj.def_osString == "(defined(_WIN64) || defined(_WIN32))"
+        assert isinstance(test_obj.lang_json_data, LanguageDescriptionList)
+        assert isinstance(test_obj.doxy_comment_gen, CDoxyCommentGenerator)
 
-    def test002ConstructorNonDefault(self):
+    def test002_constructor_non_default(self):
         """!
         @brief Test constructor, with input
         """
-        testObj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList(), "George", "MIT_open", "TestBaseClass", "TEST_DYNAM_SWITCH")
+        test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList(), "George", "MIT_open", "TestBaseClass", "TEST_DYNAM_SWITCH")
 
-        assert testObj.baseClassName == "TestBaseClass"
-        assert testObj.dynamicCompileSwitch == "TEST_DYNAM_SWITCH"
-        assert testObj.selectFunctionName == "getTestBaseClass_Windows"
-        assert len(testObj.paramDictList) == 1
-        assert testObj.paramDictList[0] == ParamRetDict.buildParamDict("langId",
+        assert test_obj.base_class_name == "TestBaseClass"
+        assert test_obj.dynamic_compile_switch == "TEST_DYNAM_SWITCH"
+        assert test_obj.select_function_name == "getTestBaseClass_Windows"
+        assert len(test_obj.param_dict_list) == 1
+        assert test_obj.param_dict_list[0] == ParamRetDict.build_param_dict("lang_id",
                                                                        "LANGID",
                                                                        "Return value from GetUserDefaultUILanguage() call")
-        assert testObj.defOsString == "(defined(_WIN64) || defined(_WIN32))"
-        assert isinstance(testObj.langJsonData, LanguageDescriptionList)
-        assert isinstance(testObj.doxyCommentGen, CDoxyCommentGenerator)
+        assert test_obj.def_osString == "(defined(_WIN64) || defined(_WIN32))"
+        assert isinstance(test_obj.lang_json_data, LanguageDescriptionList)
+        assert isinstance(test_obj.doxy_comment_gen, CDoxyCommentGenerator)
 
-    def test003GetFunctionName(self):
+    def test003_get_function_name(self):
         """!
-        @brief Test getFunctionName
+        @brief Test get_function_name
         """
-        testObj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
-        assert testObj.getFunctionName() == "getBaseClass_Windows"
+        test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
+        assert test_obj.get_function_name() == "getBaseClass_Windows"
 
-    def test004GetOsDefine(self):
+    def test004_get_os_define(self):
         """!
-        @brief Test getOsDefine
+        @brief Test get_os_define
         """
-        testObj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
-        assert testObj.getOsDefine() == "(defined(_WIN64) || defined(_WIN32))"
+        test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
+        assert test_obj.get_os_define() == "(defined(_WIN64) || defined(_WIN32))"
 
-    def test005GenFunctionDefine(self):
+    def test005_gen_function_define(self):
         """!
-        @brief Test genFunctionDefine
+        @brief Test gen_function_define
         """
-        cppGen = BaseCppStringClassGenerator()
-        testObj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
-        expectedList = cppGen._defineFunctionWithDecorations(testObj.selectFunctionName,
+        cpp_gen = BaseCppStringClassGenerator()
+        test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
+        expected_list = cpp_gen._define_function_with_decorations(test_obj.select_function_name,
                                                              "Determine the correct local language class from the input LANGID value",
-                                                             testObj.paramDictList,
-                                                             testObj.baseIntfRetPtrDict)
-        expectedList.append("{\n")
+                                                             test_obj.param_dict_list,
+                                                             test_obj.base_intf_ret_ptr_dict)
+        expected_list.append("{\n")
 
-        testList = testObj.genFunctionDefine()
-        assert len(testList) == len(expectedList)
-        for index, expectedText in enumerate(expectedList):
-            assert testList[index] == expectedText
+        test_list = test_obj.gen_function_define()
+        assert len(test_list) == len(expected_list)
+        for index, expected_text in enumerate(expected_list):
+            assert test_list[index] == expected_text
 
-    def test006GenFunctionEnd(self):
+    def test006_gen_function_end(self):
         """!
-        @brief Test genFunctionEnd
+        @brief Test gen_function_end
         """
-        testObj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
-        assert testObj.genFunctionEnd() == "} // end of "+testObj.selectFunctionName+"()\n"
+        test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
+        assert test_obj.gen_function_end() == "} // end of "+test_obj.select_function_name+"()\n"
 
-    def test007GenFunction(self):
+    def test007_gen_function(self):
         """!
-        @brief Test genFunction
+        @brief Test gen_function
         """
-        cppGen = BaseCppStringClassGenerator()
-        langList = LanguageDescriptionList(testJsonList)
-        testObj = WindowsLangSelectFunctionGenerator(langList)
+        cpp_gen = BaseCppStringClassGenerator()
+        lang_list = LanguageDescriptionList(test_json_list)
+        test_obj = WindowsLangSelectFunctionGenerator(lang_list)
 
-        captureList = testObj.genFunction()
+        capture_list = test_obj.gen_function()
 
-        assert len(captureList) == 25
+        assert len(capture_list) == 25
 
-        assert captureList[0] == "#if "+testObj.defOsString+"\n"
-        assert captureList[1] == cppGen._genInclude("<windows.h>")
-        assert captureList[2] == "\n"
+        assert capture_list[0] == "#if "+test_obj.def_osString+"\n"
+        assert capture_list[1] == cpp_gen._gen_include("<windows.h>")
+        assert capture_list[2] == "\n"
 
-        expectedList = cppGen._defineFunctionWithDecorations(testObj.selectFunctionName,
+        expected_list = cpp_gen._define_function_with_decorations(test_obj.select_function_name,
                                                              "Determine the correct local language class from the input LANGID value",
-                                                             testObj.paramDictList,
-                                                             testObj.baseIntfRetPtrDict)
-        expectedList.append("{\n")
-        for index, expectedText in enumerate(expectedList):
-            assert captureList[index+3] == expectedText
+                                                             test_obj.param_dict_list,
+                                                             test_obj.base_intf_ret_ptr_dict)
+        expected_list.append("{\n")
+        for index, expected_text in enumerate(expected_list):
+            assert capture_list[index+3] == expected_text
 
-        captureIndex = 3 + len(expectedList)
-        paramName = ParamRetDict.getParamName(testObj.paramDictList[0])
-        assert captureList[captureIndex] == "    switch("+paramName+" & 0x0FF)\n"
-        assert captureList[captureIndex+1] == "    {\n"
+        capture_index = 3 + len(expected_list)
+        param_name = ParamRetDict.get_param_name(test_obj.param_dict_list[0])
+        assert capture_list[capture_index] == "    switch("+param_name+" & 0x0FF)\n"
+        assert capture_list[capture_index+1] == "    {\n"
 
-        captureIndex += 2
-        for langName in langList.getLanguageList():
-            langCodes, langRegionList = langList.getLanguageLANGIDData(langName)
-            for id in langCodes:
-                assert captureList[captureIndex] == "        case "+hex(id)+":\n"
-                captureIndex += 1
+        capture_index += 2
+        for lang_name in lang_list.get_language_list():
+            lang_codes, lang_region_list = lang_list.get_language_langid_data(lang_name)
+            for id in lang_codes:
+                assert capture_list[capture_index] == "        case "+hex(id)+":\n"
+                capture_index += 1
 
-            assert captureList[captureIndex] == "            "+cppGen._genMakePtrReturnStatement(langName)
-            assert captureList[captureIndex+1] == "            break;\n"
-            captureIndex += 2
+            assert capture_list[capture_index] == "            "+cpp_gen._gen_make_ptr_return_statement(lang_name)
+            assert capture_list[capture_index+1] == "            break;\n"
+            capture_index += 2
 
 
-        assert captureList[captureIndex] == "        default:\n"
-        defaultLang, defaultIsoCode = langList.getDefaultData()
-        assert captureList[captureIndex+1] == "            "+cppGen._genMakePtrReturnStatement(defaultLang)
-        assert captureList[captureIndex+2] == "    }\n"
-        assert captureList[captureIndex+3] == "} // end of "+testObj.selectFunctionName+"()\n"
-        assert captureList[captureIndex+4] == "#endif // "+testObj.defOsString+"\n"
+        assert capture_list[capture_index] == "        default:\n"
+        default_lang, default_iso_code = lang_list.get_default_data()
+        assert capture_list[capture_index+1] == "            "+cpp_gen._gen_make_ptr_return_statement(default_lang)
+        assert capture_list[capture_index+2] == "    }\n"
+        assert capture_list[capture_index+3] == "} // end of "+test_obj.select_function_name+"()\n"
+        assert capture_list[capture_index+4] == "#endif // "+test_obj.def_osString+"\n"
 
-    def test008GenReturnFunctionCall(self):
+    def test008_gen_return_function_call(self):
         """!
-        @brief Test genReturnFunctionCall
+        @brief Test gen_return_function_call
         """
-        testObj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
-        paramType = ParamRetDict.getParamType(testObj.paramDictList[0])
+        test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
+        param_type = ParamRetDict.get_param_type(test_obj.param_dict_list[0])
 
-        strList = testObj.genReturnFunctionCall()
-        assert len(strList) == 2
-        assert strList[0] == "    "+paramType+" langId = GetUserDefaultUILanguage();\n"
-        assert strList[1] == "    return "+testObj.selectFunctionName+"(langId);\n"
+        str_list = test_obj.gen_return_function_call()
+        assert len(str_list) == 2
+        assert str_list[0] == "    "+param_type+" lang_id = GetUserDefaultUILanguage();\n"
+        assert str_list[1] == "    return "+test_obj.select_function_name+"(lang_id);\n"
 
-    def test009GenUnitTestTest(self):
+    def test009_gen_unit_test_test(self):
         """!
-        @brief Test _genUnitTestTest
+        @brief Test _gen_unittest_test
         """
-        testObj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
+        test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
 
-        doxyGen = CDoxyCommentGenerator()
-        doxyDesc = "Test "+testObj.selectFunctionName+" 11 selection case"
-        doxyBody = doxyGen.genDoxyMethodComment(doxyDesc, [])
+        doxy_gen = CDoxyCommentGenerator()
+        doxy_desc = "Test "+test_obj.select_function_name+" 11 selection case"
+        doxy_body = doxy_gen.gen_doxy_method_comment(doxy_desc, [])
 
-        strList = testObj._genUnitTestTest("Foo", 11, "en", "getIsoCode")
-        assert len(strList) == 10
-        assert strList[0] == doxyBody[0]
-        assert strList[1] == doxyBody[1]
-        assert strList[2] == doxyBody[2]
-        assert strList[3] == doxyBody[3]
+        str_list = test_obj._gen_unittest_test("Foo", 11, "en", "get_iso_code")
+        assert len(str_list) == 10
+        assert str_list[0] == doxy_body[0]
+        assert str_list[1] == doxy_body[1]
+        assert str_list[2] == doxy_body[2]
+        assert str_list[3] == doxy_body[3]
 
-        assert strList[4] == "TEST(WindowsSelectFunction, Foo)\n"
-        assert strList[5] == "{\n"
-        assert strList[6] == "    // Generate the test language string object\n"
-        assert strList[7] == "    "+testObj.baseIntfRetPtrType+" testVar = "+testObj.selectFunctionName+"(11);\n"
-        assert strList[8] == "    EXPECT_STREQ(\"en\", testVar->getIsoCode().c_str());\n"
-        assert strList[9] == "}\n"
+        assert str_list[4] == "TEST(WindowsSelectFunction, Foo)\n"
+        assert str_list[5] == "{\n"
+        assert str_list[6] == "    // Generate the test language string object\n"
+        assert str_list[7] == "    "+test_obj.base_intf_ret_ptr_type+" test_var = "+test_obj.select_function_name+"(11);\n"
+        assert str_list[8] == "    EXPECT_STREQ(\"en\", test_var->get_iso_code().c_str());\n"
+        assert str_list[9] == "}\n"
 
-    def test010GenExternDefinition(self):
+    def test010_gen_extern_definition(self):
         """!
-        @brief Test genExternDefinition
+        @brief Test gen_extern_definition
         """
-        testObj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
-        assert testObj.genExternDefinition() == getExpectedExtern(testObj.paramDictList, testObj.baseIntfRetPtrType, testObj.selectFunctionName)
+        test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
+        assert test_obj.gen_extern_definition() == get_expected_extern(test_obj.param_dict_list, test_obj.base_intf_ret_ptr_type, test_obj.select_function_name)
 
-    def test011GenUnitTest(self):
+    def test011_gen_unit_test(self):
         """!
-        @brief Test genUnitTest
+        @brief Test gen_unit_test
         """
-        langList = LanguageDescriptionList(testJsonList)
-        testObj = WindowsLangSelectFunctionGenerator(langList)
-        textList = testObj.genUnitTest("getIsoCode")
+        lang_list = LanguageDescriptionList(test_json_list)
+        test_obj = WindowsLangSelectFunctionGenerator(lang_list)
+        text_list = test_obj.gen_unit_test("get_iso_code")
 
         # Test starting block
-        assert len(textList) == 423
-        assert textList[0] == "#if "+testObj.defOsString+"\n"
-        assert textList[1] == "\n"
-        assert textList[2] == "#include <windows.h>\n"
-        assert textList[3] == testObj.genExternDefinition()
-        assert textList[4] == "\n"
+        assert len(text_list) == 423
+        assert text_list[0] == "#if "+test_obj.def_osString+"\n"
+        assert text_list[1] == "\n"
+        assert text_list[2] == "#include <windows.h>\n"
+        assert text_list[3] == test_obj.gen_extern_definition()
+        assert text_list[4] == "\n"
 
         # Match each test function
-        textIndex = 5
-        for langName in langList.getLanguageList():
-            langCodes, regionList = langList.getLanguageLANGIDData(langName)
-            isoCode = langList.getLanguageIsoCodeData(langName)
-            for region in regionList:
-                testName = langName.capitalize()+"_"+str(region)+"_Selection"
-                expectedTestText = testObj._genUnitTestTest(testName, region, isoCode, "getIsoCode")
+        text_index = 5
+        for lang_name in lang_list.get_language_list():
+            lang_codes, region_list = lang_list.get_language_langid_data(lang_name)
+            iso_code = lang_list.get_language_iso_code_data(lang_name)
+            for region in region_list:
+                test_name = lang_name.capitalize()+"_"+str(region)+"_Selection"
+                expected_test_text = test_obj._gen_unittest_test(test_name, region, iso_code, "get_iso_code")
 
-                for index, expectedLine in enumerate(expectedTestText):
-                    assert textList[textIndex+index] == expectedLine
+                for index, expected_line in enumerate(expected_test_text):
+                    assert text_list[text_index+index] == expected_line
 
-                textIndex += len(expectedTestText)
-                assert textList[textIndex] == "\n"
-                textIndex += 1
+                text_index += len(expected_test_text)
+                assert text_list[text_index] == "\n"
+                text_index += 1
 
             # Match unknown regions 00 test
-            for langCode in langCodes:
-                unknownRegionTestName = langName.capitalize()+"_unknownRegion_00"+str(langCode)+"_Selection"
-                expectedTestText = testObj._genUnitTestTest(unknownRegionTestName, langCode, isoCode, "getIsoCode")
-                for index, expectedLine in enumerate(expectedTestText):
-                    assert textList[textIndex+index] == expectedLine
+            for lang_code in lang_codes:
+                unknown_regionTestName = lang_name.capitalize()+"_unknown_region_00"+str(lang_code)+"_Selection"
+                expected_test_text = test_obj._gen_unittest_test(unknown_regionTestName, lang_code, iso_code, "get_iso_code")
+                for index, expected_line in enumerate(expected_test_text):
+                    assert text_list[text_index+index] == expected_line
 
-                textIndex += len(expectedTestText)
-                assert textList[textIndex] == "\n"
-                textIndex += 1
+                text_index += len(expected_test_text)
+                assert text_list[text_index] == "\n"
+                text_index += 1
 
             # Match unknown regions FFxx test
-            for langCode in langCodes:
-                unknownRegionTestName = langName.capitalize()+"_unknownRegion_FF"+str(langCode)+"_Selection"
-                expectedTestText = testObj._genUnitTestTest(unknownRegionTestName, 0xFF00+langCode, isoCode, "getIsoCode")
+            for lang_code in lang_codes:
+                unknown_regionTestName = lang_name.capitalize()+"_unknown_region_FF"+str(lang_code)+"_Selection"
+                expected_test_text = test_obj._gen_unittest_test(unknown_regionTestName, 0xFF00+lang_code, iso_code, "get_iso_code")
 
-                for index, expectedLine in enumerate(expectedTestText):
-                    assert textList[textIndex+index] == expectedLine
+                for index, expected_line in enumerate(expected_test_text):
+                    assert text_list[text_index+index] == expected_line
 
-                textIndex += len(expectedTestText)
-                assert textList[textIndex] == "\n"
-                textIndex += 1
+                text_index += len(expected_test_text)
+                assert text_list[text_index] == "\n"
+                text_index += 1
 
         # Match default test
-        defaultLang, defaultIsoCode = langList.getDefaultData()
-        unknownLangBody = testObj._genUnitTestTest("UnknownLanguageDefaultSelection", 0, defaultIsoCode, "getIsoCode")
-        for index, expectedLine in enumerate(unknownLangBody):
-            assert textList[textIndex+index] == expectedLine
+        default_lang, default_iso_code = lang_list.get_default_data()
+        unknown_lang_body = test_obj._gen_unittest_test("UnknownLanguageDefaultSelection", 0, default_iso_code, "get_iso_code")
+        for index, expected_line in enumerate(unknown_lang_body):
+            assert text_list[text_index+index] == expected_line
 
-        textIndex += len(expectedTestText)
+        text_index += len(expected_test_text)
 
         # Match end
-        assert textList[422] == "#endif // "+testObj.defOsString+"\n"
-        assert textIndex == 422
+        assert text_list[422] == "#endif // "+test_obj.def_osString+"\n"
+        assert text_index == 422
 
-    def test012GenUnitTestFunctionCall(self):
+    def test012_gen_unit_test_function_call(self):
         """!
-        @brief Test genUnitTestFunctionCall
+        @brief Test gen_unittest_function_call
         """
-        testObj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
-        textList = testObj.genUnitTestFunctionCall("checkVar")
+        test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
+        text_list = test_obj.gen_unittest_function_call("check_var")
 
-        paramType = ParamRetDict.getParamType(testObj.paramDictList[0])
+        param_type = ParamRetDict.get_param_type(test_obj.param_dict_list[0])
 
-        assert len(textList) == 2
-        assert textList[0] == "    "+paramType+" langId = GetUserDefaultUILanguage();\n"
-        assert textList[1] == "    "+testObj.baseIntfRetPtrType+" checkVar = "+testObj.selectFunctionName+"(langId);\n"
+        assert len(text_list) == 2
+        assert text_list[0] == "    "+param_type+" lang_id = GetUserDefaultUILanguage();\n"
+        assert text_list[1] == "    "+test_obj.base_intf_ret_ptr_type+" check_var = "+test_obj.select_function_name+"(lang_id);\n"
 
-    def test013GetUnittestExternInclude(self):
+    def test013_get_unittest_extern_include(self):
         """!
-        @brief Test getUnittestExternInclude
+        @brief Test get_unittest_extern_include
         """
-        testObj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
-        textList = testObj.getUnittestExternInclude()
+        test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
+        text_list = test_obj.get_unittest_extern_include()
 
-        assert len(textList) == 4
-        assert textList[0] == "#if "+testObj.defOsString+"\n"
-        assert textList[1] == "#include <windows.h>\n"
-        assert textList[2] == getExpectedExtern(testObj.paramDictList, testObj.baseIntfRetPtrType, testObj.selectFunctionName)
-        assert textList[3] == "#endif // "+testObj.defOsString+"\n"
+        assert len(text_list) == 4
+        assert text_list[0] == "#if "+test_obj.def_osString+"\n"
+        assert text_list[1] == "#include <windows.h>\n"
+        assert text_list[2] == get_expected_extern(test_obj.param_dict_list, test_obj.base_intf_ret_ptr_type, test_obj.select_function_name)
+        assert text_list[3] == "#endif // "+test_obj.def_osString+"\n"
 
-    def test014GetUnittestFileName(self):
+    def test014_get_unittest_file_name(self):
         """!
-        @brief Test getUnittestFileName
+        @brief Test get_unittest_file_name
         """
-        testObj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
-        cppName, testName = testObj.getUnittestFileName()
-        assert cppName == "LocalLanguageSelect_Windows_test.cpp"
-        assert testName == "LocalLanguageSelect_Windows_test"
+        test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
+        cpp_name, test_name = test_obj.get_unittest_file_name()
+        assert cpp_name == "LocalLanguageSelect_Windows_test.cpp"
+        assert test_name == "LocalLanguageSelect_Windows_test"

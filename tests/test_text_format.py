@@ -31,47 +31,47 @@ class Test01MultiLineFormat:
     """!
     @brief Unit test for the MultiLineFormat function
     """
-    def test01SingleLine(self):
+    def test01_single_line(self):
         """!
         @brief Test simple case of a short line
         """
-        strList = MultiLineFormat("Test return description")
-        assert 1 == len(strList)
-        assert "Test return description" == strList[0]
+        str_list = MultiLineFormat("Test return description")
+        assert 1 == len(str_list)
+        assert "Test return description" == str_list[0]
 
-    def test02DoubleLine(self):
+    def test02_double_line(self):
         """!
         @brief Test simple case of a short line
         """
-        strList = MultiLineFormat("Test return description, longer line to induce wrap", 27)
-        assert 2 == len(strList)
-        assert "Test return description," == strList[0]
-        assert "longer line to induce wrap" == strList[1]
+        str_list = MultiLineFormat("Test return description, longer line to induce wrap", 27)
+        assert 2 == len(str_list)
+        assert "Test return description," == str_list[0]
+        assert "longer line to induce wrap" == str_list[1]
 
-    def test03DoubleLineWithPad(self):
+    def test03_double_line_with_pad(self):
         """!
         @brief Test simple case of a short line
         """
-        strList = MultiLineFormat("Test return description, longer line to induce wrap", 27, '-')
-        assert 2 == len(strList)
-        assert "Test return description,---" == strList[0]
-        assert "longer line to induce wrap-" == strList[1]
+        str_list = MultiLineFormat("Test return description, longer line to induce wrap", 27, '-')
+        assert 2 == len(str_list)
+        assert "Test return description,---" == str_list[0]
+        assert "longer line to induce wrap-" == str_list[1]
 
-    def test04DoubleLineWithNoGoodBreak(self):
+    def test04_double_line_with_no_good_break(self):
         """!
         @brief Test simple case of a short line
         """
-        strList = MultiLineFormat("Testreturndescriptionlongerlinetoinducewrap", 27)
-        assert 2 == len(strList)
-        assert "Testreturndescriptionlonger" == strList[0]
-        assert "linetoinducewrap" == strList[1]
+        str_list = MultiLineFormat("Testreturndescriptionlongerlinetoinducewrap", 27)
+        assert 2 == len(str_list)
+        assert "Testreturndescriptionlonger" == str_list[0]
+        assert "linetoinducewrap" == str_list[1]
 
-    def test05TripleLine(self):
+    def test05_triple_line(self):
         """!
         @brief Test simple case of a short line
         """
-        strList = MultiLineFormat("Test return description, longer line to induce wrap. More text to create another line", 32)
-        assert 3 == len(strList)
-        assert "Test return description, longer" == strList[0]
-        assert "line to induce wrap. More text" == strList[1]
-        assert "to create another line" == strList[2]
+        str_list = MultiLineFormat("Test return description, longer line to induce wrap. More text to create another line", 32)
+        assert 3 == len(str_list)
+        assert "Test return description, longer" == str_list[0]
+        assert "line to induce wrap. More text" == str_list[1]
+        assert "to create another line" == str_list[2]

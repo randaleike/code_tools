@@ -30,257 +30,257 @@ class ParamRetDict(object):
     Parameter/Return value dictionary utility functions
     """
 
-    ## List return/parameter bit flag value, typeMod value & typeModList = 0 return/parameter is not a list, = 1 return/parameter is not a list
-    typeModList:int  = 1<<0
-    ## Pointer return/parameter bit flag value, typeMod value & typeModList = 0 return/parameter is not a pointer, = 1 return/parameter is not a pointer
-    typeModPtr:int   = 1<<1
-    ## Reterence return/parameter bit flag value, typeMod value & typeModList = 0 return/parameter is not a reference, = 1 return/parameter is not a reference
-    typeModRef:int   = 1<<2
-    ## Undefined return/parameter bit flag value, typeMod value & typeModList = 0 return/parameter cannot be unknown, = 1 return/parameter can be unknown
-    typeModUndef:int = 1<<3
+    ## List return/parameter bit flag value, type_mod value & type_mod_list = 0 return/parameter is not a list, = 1 return/parameter is not a list
+    type_mod_list:int  = 1<<0
+    ## Pointer return/parameter bit flag value, type_mod value & type_mod_list = 0 return/parameter is not a pointer, = 1 return/parameter is not a pointer
+    type_mod_ptr:int   = 1<<1
+    ## Reterence return/parameter bit flag value, type_mod value & type_mod_list = 0 return/parameter is not a reference, = 1 return/parameter is not a reference
+    type_mod_ref:int   = 1<<2
+    ## Undefined return/parameter bit flag value, type_mod value & type_mod_list = 0 return/parameter cannot be unknown, = 1 return/parameter can be unknown
+    type_mod_undef:int = 1<<3
 
-    ## Return/parameter typeMod array size value bit shift
-    typeModArrayShift:int = 16
-    ## Return/parameter typeMod array post shift size mask
-    typeModArrayMask:int  = 0xFFFF
+    ## Return/parameter type_mod array size value bit shift
+    type_mod_array_shift:int = 16
+    ## Return/parameter type_mod array post shift size mask
+    type_mod_array_mask:int  = 0xFFFF
 
     @staticmethod
-    def buildDictModValue(isList:bool = False, isReference:bool = False, isPtr:bool = False, orUndef:bool = False) -> int:
+    def build_dict_mod_value(is_list:bool = False, is_reference:bool = False, is_ptr:bool = False, or_undef:bool = False) -> int:
         """!
         @brief Build a return data dictionary
-        @param isList {boolean} True if return is list, false if not
-        @param isReference {boolean} True if item needs a pointer decoration, false if not
-        @param isPtr {boolean} True if item needs a reference decoration, false if not
-        @param orUndef {boolean} True if item can also be language undefined type, false if not
+        @param is_list {boolean} True if return is list, false if not
+        @param is_reference {boolean} True if item needs a pointer decoration, false if not
+        @param is_ptr {boolean} True if item needs a reference decoration, false if not
+        @param or_undef {boolean} True if item can also be language undefined type, false if not
         @return {int} Mod value
         """
-        entryTypeMod = 0
-        if isList:
-           entryTypeMod |= ParamRetDict.typeModList
-        if isReference:
-           entryTypeMod |= ParamRetDict.typeModRef
-        if isPtr:
-           entryTypeMod |= ParamRetDict.typeModPtr
-        if orUndef:
-           entryTypeMod |= ParamRetDict.typeModUndef
-        return entryTypeMod
+        entry_type_mod = 0
+        if is_list:
+           entry_type_mod |= ParamRetDict.type_mod_list
+        if is_reference:
+           entry_type_mod |= ParamRetDict.type_mod_ref
+        if is_ptr:
+           entry_type_mod |= ParamRetDict.type_mod_ptr
+        if or_undef:
+           entry_type_mod |= ParamRetDict.type_mod_undef
+        return entry_type_mod
 
     @staticmethod
-    def buildReturnDictWithMod(retType:str, retDesc:str = "", entryTypeMod:int = 0) -> dict:
+    def build_return_dict_with_mod(ret_type:str, ret_desc:str = "", entry_type_mod:int = 0) -> dict:
         """!
         @brief Build a return data dictionary
-        @param retType {string} Code type definition
-        @param retDesc {string} Brief description of the return value for @return doxygen generation
-        @param entryTypeMod {integer} Type modification flags
+        @param ret_type {string} Code type definition
+        @param ret_desc {string} Brief description of the return value for @return doxygen generation
+        @param entry_type_mod {integer} Type modification flags
         @return {dictionary} Return dictionary
         """
-        return {'type':retType, 'desc':retDesc, 'typeMod': entryTypeMod}
+        return {'type':ret_type, 'desc':ret_desc, 'typeMod': entry_type_mod}
 
     @staticmethod
-    def buildReturnDict(retType:str, retDesc:str = "", isList:bool = False,
-                        isReference:bool = False, isPtr:bool = False, orUndef:bool = False) -> dict:
+    def build_return_dict(ret_type:str, ret_desc:str = "", is_list:bool = False,
+                        is_reference:bool = False, is_ptr:bool = False, or_undef:bool = False) -> dict:
         """!
         @brief Build a return data dictionary
-        @param retType {string} Code type definition
-        @param retDesc {string} Brief description of the return value for @return doxygen generation
-        @param isList {boolean} True if return is list, false if not
-        @param isReference {boolean} True if parameter needs a pointer decoration, false if not
-        @param isPtr {boolean} True if parameter needs a reference decoration, false if not
-        @param orUndef {boolean} True if item can also be language undefined type, false if not
+        @param ret_type {string} Code type definition
+        @param ret_desc {string} Brief description of the return value for @return doxygen generation
+        @param is_list {boolean} True if return is list, false if not
+        @param is_reference {boolean} True if parameter needs a pointer decoration, false if not
+        @param is_ptr {boolean} True if parameter needs a reference decoration, false if not
+        @param or_undef {boolean} True if item can also be language undefined type, false if not
         @return {dictionary} Return dictionary
         """
-        entryTypeMod = ParamRetDict.buildDictModValue(isList, isReference, isPtr, orUndef)
-        return ParamRetDict.buildReturnDictWithMod(retType, retDesc, entryTypeMod)
+        entry_type_mod = ParamRetDict.build_dict_mod_value(is_list, is_reference, is_ptr, or_undef)
+        return ParamRetDict.build_return_dict_with_mod(ret_type, ret_desc, entry_type_mod)
 
     @staticmethod
-    def getReturnData(returnDict:dict) -> tuple:
+    def get_return_data(return_dict:dict) -> tuple:
         """!
         @brief Build a return data dictionary
-        @param returnDict {dictionary} Return dictionary entry
+        @param return_dict {dictionary} Return dictionary entry
         @return tuple - Return type string
                         Return description string,
                         Return type modifier bit flags
         """
-        return returnDict['type'], returnDict['desc'], returnDict['typeMod']
+        return return_dict['type'], return_dict['desc'], return_dict['typeMod']
 
     @staticmethod
-    def getReturnType(returnDict:dict) -> str:
+    def get_return_type(return_dict:dict) -> str:
         """!
         @brief Build a return data dictionary
-        @param returnDict {dictionary} Return dictionary entry
+        @param return_dict {dictionary} Return dictionary entry
         @return string - Return type string
         """
-        return returnDict['type']
+        return return_dict['type']
 
     @staticmethod
-    def getReturnDesc(returnDict:dict) -> str:
+    def get_return_desc(return_dict:dict) -> str:
         """!
         @brief Build a return data dictionary
-        @param returnDict {dictionary} Return dictionary entry
+        @param return_dict {dictionary} Return dictionary entry
         @return string - Return type brief description
         """
-        return returnDict['desc']
+        return return_dict['desc']
 
     @staticmethod
-    def getReturnTypeMod(returnDict:dict) -> int:
+    def get_return_type_mod(return_dict:dict) -> int:
         """!
         @brief Build a return data dictionary
-        @param returnDict {dictionary} Return dictionary entry
+        @param return_dict {dictionary} Return dictionary entry
         @return int - Return type modification flags
         """
-        return returnDict['typeMod']
+        return return_dict['typeMod']
 
     @staticmethod
-    def buildParamDictWithMod(paramName:str, paramType:str, paramDesc:str = "", entryTypeMod:int = 0) -> dict:
+    def build_param_dict_with_mod(param_name:str, param_type:str, param_desc:str = "", entry_type_mod:int = 0) -> dict:
         """!
         @brief Build a return data dictionary
-        @param paramName {string} Code param name
-        @param paramType {string} Code param type
-        @param paramDesc {string} Brief description of the param value for param doxygen generation
-        @param entryTypeMod {int} Type modification flags
+        @param param_name {string} Code param name
+        @param param_type {string} Code param type
+        @param param_desc {string} Brief description of the param value for param doxygen generation
+        @param entry_type_mod {int} Type modification flags
         @return {dictionary} Parameter dictionary
         """
-        return {'name':paramName, 'type':paramType, 'desc':paramDesc, 'typeMod':entryTypeMod}
+        return {'name':param_name, 'type':param_type, 'desc':param_desc, 'typeMod':entry_type_mod}
 
     @staticmethod
-    def buildParamDict(paramName:str, paramType:str, paramDesc:str = "", isList:bool = False,
-                       isReference:bool = False, isPtr:bool = False, orUndef:bool = False) -> dict:
+    def build_param_dict(param_name:str, param_type:str, param_desc:str = "", is_list:bool = False,
+                       is_reference:bool = False, is_ptr:bool = False, or_undef:bool = False) -> dict:
         """!
         @brief Build a return data dictionary
-        @param paramName {string} Code param name
-        @param paramType {string} Code param type
-        @param paramDesc {string} Brief description of the param value for param doxygen generation
-        @param isList {boolean} True if parameter is list, false if not
-        @param isReference {boolean} True if parameter needs a pointer decoration, false if not
-        @param isPtr {boolean} True if parameter needs a reference decoration, false if not
-        @param orUndef {boolean} True if item can also be language undefined type, false if not
+        @param param_name {string} Code param name
+        @param param_type {string} Code param type
+        @param param_desc {string} Brief description of the param value for param doxygen generation
+        @param is_list {boolean} True if parameter is list, false if not
+        @param is_reference {boolean} True if parameter needs a pointer decoration, false if not
+        @param is_ptr {boolean} True if parameter needs a reference decoration, false if not
+        @param or_undef {boolean} True if item can also be language undefined type, false if not
         @return {dictionary} Parameter dictionary
         """
-        entryTypeMod = ParamRetDict.buildDictModValue(isList, isReference, isPtr, orUndef)
-        return ParamRetDict.buildParamDictWithMod(paramName, paramType, paramDesc, entryTypeMod)
+        entry_type_mod = ParamRetDict.build_dict_mod_value(is_list, is_reference, is_ptr, or_undef)
+        return ParamRetDict.build_param_dict_with_mod(param_name, param_type, param_desc, entry_type_mod)
 
     @staticmethod
-    def getParamData(paramDict:dict) -> tuple:
+    def get_param_data(param_dict:dict) -> tuple:
         """!
         @brief Build a return data dictionary
-        @param paramDict {dictionary} Parameter dictionary entry
+        @param param_dict {dictionary} Parameter dictionary entry
         @return tuple - Parameter name string,
                         Parameter type string (text|number),
                         Parameter description string
                         Parameter type modifier bit flags
         """
-        return paramDict['name'], paramDict['type'], paramDict['desc'], paramDict['typeMod']
+        return param_dict['name'], param_dict['type'], param_dict['desc'], param_dict['typeMod']
 
     @staticmethod
-    def getParamType(paramDict:dict) -> str:
+    def get_param_type(param_dict:dict) -> str:
         """!
         @brief Build a return data dictionary
-        @param paramDict {dictionary} Parameter dictionary entry
+        @param param_dict {dictionary} Parameter dictionary entry
         @return string - Parameter type string
         """
-        return paramDict['type']
+        return param_dict['type']
 
     @staticmethod
-    def getParamName(paramDict:dict) -> str:
+    def get_param_name(param_dict:dict) -> str:
         """!
         @brief Build a return data dictionary
-        @param paramDict {dictionary} Parameter dictionary entry
+        @param param_dict {dictionary} Parameter dictionary entry
         @return string - Parameter name string
         """
-        return paramDict['name']
+        return param_dict['name']
 
     @staticmethod
-    def getParamDesc(paramDict:dict) -> str:
+    def get_param_desc(param_dict:dict) -> str:
         """!
         @brief Build a return data dictionary
-        @param paramDict {dictionary} Parameter dictionary entry
+        @param param_dict {dictionary} Parameter dictionary entry
         @return string - Parameter description string
         """
-        return paramDict['desc']
+        return param_dict['desc']
 
     @staticmethod
-    def getParamTypeMod(paramDict:dict) -> int:
+    def get_param_type_mod(param_dict:dict) -> int:
         """!
         @brief Build a return data dictionary
-        @param paramDict {dictionary} Parameter dictionary entry
+        @param param_dict {dictionary} Parameter dictionary entry
         @return int - Parameter type modification flags
         """
-        return paramDict['typeMod']
+        return param_dict['typeMod']
 
     @staticmethod
-    def isModList(typeMod:int) -> bool:
+    def is_mod_list(type_mod:int) -> bool:
         """!
-        @brief Check if the input typeMode has the list modifier set
-        @param typeMod {integer} Dictionary TypeMod entry
+        @brief Check if the input type_mode has the list modifier set
+        @param type_mod {integer} Dictionary TypeMod entry
         @return bool - True if object needs to be a list type, else false
         """
-        if (typeMod & ParamRetDict.typeModList) == 0:
+        if (type_mod & ParamRetDict.type_mod_list) == 0:
             return False
         else:
             return True
 
     @staticmethod
-    def isModPointer(typeMod:int) -> bool:
+    def is_mod_pointer(type_mod:int) -> bool:
         """!
-        @brief Check if the input typeMode has the pointer modifier set
-        @param typeMod {integer} Dictionary TypeMod entry
+        @brief Check if the input type_mode has the pointer modifier set
+        @param type_mod {integer} Dictionary TypeMod entry
         @return bool - True if object needs a pointer decoration, else false
         """
-        if (typeMod & ParamRetDict.typeModPtr) == 0:
+        if (type_mod & ParamRetDict.type_mod_ptr) == 0:
             return False
         else:
             return True
 
     @staticmethod
-    def isModReference(typeMod:int) -> bool:
+    def is_mod_reference(type_mod:int) -> bool:
         """!
-        @brief Check if the input typeMode has the reference modifier set
-        @param typeMod {integer} Dictionary TypeMod entry
+        @brief Check if the input type_mode has the reference modifier set
+        @param type_mod {integer} Dictionary TypeMod entry
         @return bool - True if object needs a reference decoration, else false
         """
-        if (typeMod & ParamRetDict.typeModRef) == 0:
+        if (type_mod & ParamRetDict.type_mod_ref) == 0:
             return False
         else:
             return True
 
     @staticmethod
-    def isOrUndefType(typeMod:int) -> bool:
+    def is_or_undef_type(type_mod:int) -> bool:
         """!
-        @brief Check if the input typeMode has the Or undefined modifier set
-        @param typeMod {integer} Dictionary TypeMod entry
+        @brief Check if the input type_mode has the Or undefined modifier set
+        @param type_mod {integer} Dictionary TypeMod entry
         @return bool - True if object can be undefined, else false
         """
-        if (typeMod & ParamRetDict.typeModUndef) == 0:
+        if (type_mod & ParamRetDict.type_mod_undef) == 0:
             return False
         else:
             return True
 
     @staticmethod
-    def getArraySize(typeMod:int) -> int:
+    def get_array_size(type_mod:int) -> int:
         """!
         @brief Get the array size in the type modifier value
-        @param typeMod {integer} Dictionary TypeMod entry
+        @param type_mod {integer} Dictionary TypeMod entry
         @return int - Array size
         """
-        return ((typeMod >> ParamRetDict.typeModArrayShift) & ParamRetDict.typeModArrayMask)
+        return ((type_mod >> ParamRetDict.type_mod_array_shift) & ParamRetDict.type_mod_array_mask)
 
     @staticmethod
-    def setTypeModArraySize(typeModIn:int, arraySize:int)->int:
+    def set_type_mod_array_size(type_modIn:int, array_size:int)->int:
         """!
         @brief Get the array size in the type modifier value
-        @param typeModIn {int} Current typeMod value
-        @param arraySize {integer} Size of the array
-        @return typeMod value with array set
+        @param type_modIn {int} Current type_mod value
+        @param array_size {integer} Size of the array
+        @return type_mod value with array set
         """
-        typeMod = typeModIn | ((arraySize & ParamRetDict.typeModArrayMask) << ParamRetDict.typeModArrayShift)
-        typeMod &= (~ParamRetDict.typeModList)  # Cannot be array and list
-        return typeMod
+        type_mod = type_modIn | ((array_size & ParamRetDict.type_mod_array_mask) << ParamRetDict.type_mod_array_shift)
+        type_mod &= (~ParamRetDict.type_mod_list)  # Cannot be array and list
+        return type_mod
 
     @staticmethod
-    def setArraySize(varDict:dict, arraySize:int):
+    def set_array_size(var_dict:dict, array_size:int):
         """!
         @brief Get the array size in the type modifier value
-        @param varDict {dict} Dictionary object to modify
-        @param arraySize {integer} Size of the array
+        @param var_dict {dict} Dictionary object to modify
+        @param array_size {integer} Size of the array
         """
-        varDict['typeMod'] = ParamRetDict.setTypeModArraySize(varDict['typeMod'], arraySize)
+        var_dict['typeMod'] = ParamRetDict.set_type_mod_array_size(var_dict['typeMod'], array_size)

@@ -168,175 +168,175 @@ class EulaText(object):
     """!
     EULA text helper class
     """
-    def __init__(self, eulaType:str|None = None, customEula:list|None = None):
+    def __init__(self, eula_type:str|None = None, custom_eula:list|None = None):
         """!
         @brief Constuctor
 
-        @param eulaType (string): MIT_open, MIT_no_atrtrib, MIT_X11,
+        @param eula_type (string): MIT_open, MIT_no_atrtrib, MIT_X11,
                                     GNU_V11, apache_v2_0, BSD_3clause
                                     or BSD_2clause
-        @param customEula (list of strings): custom EULA string list
+        @param custom_eula (list of strings): custom EULA string list
         """
         ## List of End User Licence Agreement (EULA) text strings
-        self.rawEulaText = []
+        self.raw_eula_text = []
         ## End User Licence Agreement (EULA) name
-        self.eulaName = ""
+        self.eula_name = ""
 
-        if eulaType is None:
-            if customEula is None:
+        if eula_type is None:
+            if custom_eula is None:
                 raise Exception("ERROR: Standard or custom EULA is required.")
             else:
-                self.rawEulaText = customEula
-                self.eulaName = ""
+                self.raw_eula_text = custom_eula
+                self.eula_name = ""
         else:
-            self.rawEulaText = self.getEulaText(eulaType)
-            self.eulaName = self.getEulaName(eulaType)
+            self.raw_eula_text = self.get_eula_text(eula_type)
+            self.eula_name = self.get_eula_name(eula_type)
 
     @staticmethod
-    def getEulaText(eulaType:str)->list|None:
+    def get_eula_text(eula_type:str)->list|None:
         """!
         @brief Get the eula string list for the input EULA type.
 
-        @param eulaType (string): MIT_open, MIT_no_atrtrib, MIT_X11,
+        @param eula_type (string): MIT_open, MIT_no_atrtrib, MIT_X11,
                                     GNU_V11, apache_v2_0, BSD_3clause
                                     or BSD_2clause
         @return list or None: list of strings for the requested EULA or
-                                None if the input eulaType is unknown.
+                                None if the input eula_type is unknown.
         """
         # pylint: disable=locally-disabled, disable=C0201
-        if eulaType in eula.keys():
-            return eula[eulaType]['text']
+        if eula_type in eula.keys():
+            return eula[eula_type]['text']
         else:
             return None
 
     @staticmethod
-    def getEulaName(eulaType:str)->str|None:
+    def get_eula_name(eula_type:str)->str|None:
         """!
         @brief Get the eula string list for the input EULA type.
 
-        @param eulaType (string): MIT_open, MIT_no_atrtrib, MIT_X11,
+        @param eula_type (string): MIT_open, MIT_no_atrtrib, MIT_X11,
                                     GNU_V11, apache_v2_0, BSD_3clause
                                     or BSD_2clause
 
         @return string or None: Name strings for the requested EULA or
-                                None if the input eulaType is unknown.
+                                None if the input eula_type is unknown.
         """
         # pylint: disable=locally-disabled, disable=C0201
-        if eulaType in eula.keys():
-            return eula[eulaType]['name']
+        if eula_type in eula.keys():
+            return eula[eula_type]['name']
         else:
             return None
 
 
     @staticmethod
-    def _outputLine(lineText:str, maxLength:int = 80, pad:bool = False)->str:
+    def _output_line(line_text:str, max_length:int = 80, pad:bool = False)->str:
         """!
         @brief Format the raw EULA text to the appropriate line length
 
-        @param lineText (string) - EULA line text
-        @param maxLength (integer) - Maximum line length for the EULA text, default = 80
-        @param pad (boolean) - False: no padding to maxLength,
-                            True: pad line with spaces out to maxLength
+        @param line_text (string) - EULA line text
+        @param max_length (integer) - Maximum line length for the EULA text, default = 80
+        @param pad (boolean) - False: no padding to max_length,
+                            True: pad line with spaces out to max_length
 
         @return Formated line of text
         """
         if pad:
-            return lineText.ljust(maxLength, ' ')
+            return line_text.ljust(max_length, ' ')
         else:
-            return lineText
+            return line_text
 
     @staticmethod
-    def _outputMultiLine(rawText:str, maxLength:int = 80, pad:bool = False)->list:
+    def _output_multi_line(raw_text:str, max_length:int = 80, pad:bool = False)->list:
         """!
         @brief Break the long EULA text string into a list of strings that do not
-               exceed the maxLength input parameter
+               exceed the max_length input parameter
 
-        @param rawText (string) - Long EULA line text
-        @param maxLength (integer) - Maximum line length for the EULA text, default = 80
-        @param pad (boolean) - False: no padding to maxLength,
-                               True: pad line with spaces out to maxLength
+        @param raw_text (string) - Long EULA line text
+        @param max_length (integer) - Maximum line length for the EULA text, default = 80
+        @param pad (boolean) - False: no padding to max_length,
+                               True: pad line with spaces out to max_length
 
         @return list of strings, List of strings broken at the appropriate length
         """
-        formattedText = []
+        formatted_text = []
 
-        while len(rawText) > maxLength:
+        while len(raw_text) > max_length:
             # Find a good breaking point
-            currentIndex = maxLength-1
-            while (re.match(r'[\s,\.-]',rawText[currentIndex]) is None) and (currentIndex > 0):
-                currentIndex -= 1
+            current_index = max_length-1
+            while (re.match(r'[\s,\.-]',raw_text[current_index]) is None) and (current_index > 0):
+                current_index -= 1
 
-            if currentIndex == 0:
+            if current_index == 0:
                 # No good break found, just truncate and max length
-                formattedText.append(rawText[:maxLength])
-                rawText = rawText[maxLength:]
+                formatted_text.append(raw_text[:max_length])
+                raw_text = raw_text[max_length:]
             else:
                 # Good break found, truncate to the good location
                 # Get the partial text and strip the trailing space if present
-                newLine = rawText[:currentIndex]
-                newLine.strip()
+                new_line = raw_text[:current_index]
+                new_line.strip()
 
                 # Add the new line to the list
                 if pad:
-                    formattedText.append(newLine.ljust(maxLength, ' '))
+                    formatted_text.append(new_line.ljust(max_length, ' '))
                 else:
-                    formattedText.append(newLine)
+                    formatted_text.append(new_line)
 
                 # Strip the preceeding space if present
-                while rawText[currentIndex] == ' ':
-                    currentIndex += 1
+                while raw_text[current_index] == ' ':
+                    current_index += 1
 
                 # Get the remaining string
-                rawText = rawText[currentIndex:]
+                raw_text = raw_text[current_index:]
 
         # Strip leading and trailing spaces for the last line
-        newLine = rawText.strip()
-        if newLine != '':
+        new_line = raw_text.strip()
+        if new_line != '':
             # Add the last line to the list
             if pad:
-                formattedText.append(newLine.ljust(maxLength, ' '))
+                formatted_text.append(new_line.ljust(max_length, ' '))
             else:
-                formattedText.append(newLine)
+                formatted_text.append(new_line)
 
-        return formattedText
+        return formatted_text
 
-    def formatEulaName(self, maxLength:int = 80, pad:bool = False)->str:
+    def format_eula_name(self, max_length:int = 80, pad:bool = False)->str:
         """!
         @brief Format the raw EULA name to the appropriate line length
 
-        @param maxLength (integer) - Maximum line length for the EULA text, default = 80
-        @param pad (boolean) - False: no padding to maxLength,
-                            True: pad line with spaces out to maxLength
+        @param max_length (integer) - Maximum line length for the EULA text, default = 80
+        @param pad (boolean) - False: no padding to max_length,
+                            True: pad line with spaces out to max_length
 
         @return string - formatted name text
         """
         if pad:
-            return self.eulaName.ljust(maxLength, ' ')
+            return self.eula_name.ljust(max_length, ' ')
         else:
-            return self.eulaName
+            return self.eula_name
 
 
-    def formatEulaText(self, maxLength:int = 80, pad:bool = False)->list:
+    def format_eula_text(self, max_length:int = 80, pad:bool = False)->list:
         """!
         @brief Format the raw EULA text to the appropriate line length
 
-        @param maxLength (integer) - Maximum line length for the EULA text, default = 80
-        @param pad (boolean) - False: no padding to maxLength,
-                            True: pad line with spaces out to maxLength
+        @param max_length (integer) - Maximum line length for the EULA text, default = 80
+        @param pad (boolean) - False: no padding to max_length,
+                            True: pad line with spaces out to max_length
 
         @return list of formated eula strings or None if there was a failure
         """
         # Read each line and format it
-        formatedEulaText = []
-        for rawText in self.rawEulaText:
-            if len(rawText) <= maxLength:
+        formated_eula_text = []
+        for raw_text in self.raw_eula_text:
+            if len(raw_text) <= max_length:
                 # Single line processing
-                formatedEulaText.append(self._outputLine(rawText, maxLength, pad))
+                formated_eula_text.append(self._output_line(raw_text, max_length, pad))
             else:
                 # Multi line processing
-                formatedEulaText.extend(self._outputMultiLine(rawText, maxLength, pad))
+                formated_eula_text.extend(self._output_multi_line(raw_text, max_length, pad))
 
             # Append empty line between the EULA text blocks
-            formatedEulaText.append(self._outputLine("", maxLength, pad))
+            formated_eula_text.append(self._output_line("", max_length, pad))
 
-        return formatedEulaText
+        return formated_eula_text
