@@ -223,10 +223,7 @@ class TransTxtParser():
         @return boolean - True if tuple[0] == TransTxtParser.parsed_type_text
                           else False
         """
-        if parsed_tuple[0] == TransTxtParser.parsed_type_text:
-            return True
-        else:
-            return False
+        return bool(parsed_tuple[0] == TransTxtParser.parsed_type_text)
 
     @staticmethod
     def is_parsed_param_type(parsed_tuple:tuple)->bool:
@@ -235,10 +232,7 @@ class TransTxtParser():
         @return boolean - True if tuple[0] == TransTxtParser.parsed_type_param
                           else False
         """
-        if parsed_tuple[0] == TransTxtParser.parsed_type_param:
-            return True
-        else:
-            return False
+        return bool(parsed_tuple[0] == TransTxtParser.parsed_type_param)
 
     @staticmethod
     def is_parsed_special_type(parsed_tuple:tuple)->bool:
@@ -247,10 +241,7 @@ class TransTxtParser():
         @return boolean - True if tuple[0] == TransTxtParser.parsed_type_param
                           else False
         """
-        if parsed_tuple[0] == TransTxtParser.parsed_type_special:
-            return True
-        else:
-            return False
+        return bool(parsed_tuple[0] == TransTxtParser.parsed_type_special)
 
     @staticmethod
     def get_parsed_str_data(parsed_tuple:tuple)->bool:

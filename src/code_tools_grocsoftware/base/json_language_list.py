@@ -27,6 +27,9 @@ Utility to create a json language description list
 import re
 import json
 
+from code_tools_grocsoftware.base.commit_check import get_commit_flag
+from code_tools_grocsoftware.base.commit_check import new_entry_correct
+
 class LanguageDescriptionList():
     """!
     Language description list data
@@ -66,43 +69,6 @@ class LanguageDescriptionList():
         @param error_str {string} Error text message
         """
         print ("Error: "+error_str)
-
-    def _get_commit_over_write_flag(self, entry_name:str, override:bool = False)->bool:
-        """!
-        @brief Determine if the user is ready to commit the new entry over the existing one
-        @param entry_name {string} Name of the method that will be added
-        @param override {boolean} True = force commit, False = ask user
-        """
-        commit_flag = False
-        if override:
-            commit_flag = True
-        else:
-            # Determine if we should overwrite existing
-            commit = input("Overwrite existing "+entry_name+" entry? [Y/N]").upper()
-            if commit in ['Y', "YES"]:
-                commit_flag = True
-        return commit_flag
-
-    def _get_commit_new_flag(self, entry_name:str)->bool:
-        """!
-        @brief Determine if the user is ready to commit the new entry
-        @param entry_name {string} Name of the method that will be added
-        """
-        commit = input("Add new "+entry_name+" entry? [Y/N]").upper()
-        return bool(commit in ['Y', "YES"])
-
-    def _get_commit_flag(self, entry_name:str, entry_keys:list, override:bool = False)->bool:
-        """!
-        @brief Determine if the user is ready to commit the new entry
-        @param entry_name {string} Name of the method that will be added
-        @param entry_keys {list of keys} List of the existing entry keys
-        @param override {boolean} True = force commit, False = ask user
-        """
-        if entry_name in entry_keys:
-            flag = self._get_commit_over_write_flag(entry_name, override)
-        else:
-            flag = self._get_commit_new_flag(entry_name)
-        return flag
 
     def update(self):
         """!
@@ -452,15 +418,10 @@ class LanguageDescriptionList():
                                                     compile_switch)
 
             # Print entry for user to inspect
-            print("New Entry:")
-            print(new_entry)
-            commit = input("Is this correct? [Y/N]").upper()
-            if commit in ['Y', "YES"]:
-                entry_correct = True
-
+            entry_correct = new_entry_correct(new_entry)
 
         # Determine if it's an overwrite or addition
-        commit_flag = self._get_commit_flag(name, self.lang_json_data['languages'].keys(), override)
+        commit_flag = get_commit_flag(name, self.lang_json_data['languages'].keys(), override)
         if commit_flag:
             self.lang_json_data['languages'][name] = new_entry
 

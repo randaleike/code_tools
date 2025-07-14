@@ -29,7 +29,7 @@ from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.cpp_gen.file_gen_base import GenerateCppFileHelper
 
 class BaseCppStringClassGenerator(GenerateCppFileHelper):
-    def __init__(self, owner:str|None = None, eula_name:str|None = None,
+    def __init__(self, owner:str = None, eula_name:str = None,
                  base_class_name:str = "BaseClass", dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
         """!
         @brief BaseCppStringClassGenerator constructor
@@ -108,7 +108,7 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         """
         return self.type_xlation_dict['strstream']
 
-    def _gen_make_ptr_return_statement(self, class_mod:str|None = None)->str:
+    def _gen_make_ptr_return_statement(self, class_mod:str = None)->str:
         """!
         @brief Generate a language select return statement
         @param class_mod {string} Language name of the final parser string object
@@ -138,7 +138,7 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         """
         return super()._generate_generic_file_header(self.auto_tool_name, 2025, self.owner)
 
-    def _generateHFileName(self, lang_name:str|None = None)->str:
+    def _generateHFileName(self, lang_name:str = None)->str:
         """!
         @brief Generate the include file name based on the class and language names
         @return string - include file name
@@ -148,7 +148,7 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         else:
             return self.base_class_name+".h"
 
-    def _generate_cpp_file_name(self, lang_name:str|None = None)->str:
+    def _generate_cpp_file_name(self, lang_name:str = None)->str:
         """!
         @brief Generate the source file name based on the class and language names
         @return string - source file name
@@ -158,7 +158,7 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         else:
             return self.base_class_name+".cpp"
 
-    def _generate_unittest_file_name(self, lang_name:str|None = None)->str:
+    def _generate_unittest_file_name(self, lang_name:str = None)->str:
         """!
         @brief Generate the unittest source file name based on the class and language names
         @return string - unittest source file name
@@ -168,7 +168,7 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         else:
             return self.base_class_name+"_test.cpp"
 
-    def _generate_unittest_target_name(self, lang_name:str|None = None)->str:
+    def _generate_unittest_target_name(self, lang_name:str = None)->str:
         """!
         @brief Generate the unittest target class name based on the class and language names
         @return string - unittest target class name
@@ -178,7 +178,7 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         else:
             return self.base_class_name+"_test"
 
-    def _generate_mockHFileName(self, lang_name:str|None = None)->str:
+    def _generate_mockHFileName(self, lang_name:str = None)->str:
         """!
         @brief Generate the mock include file name based on the class and language names
         @return string - mock include file name
@@ -188,7 +188,7 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         else:
             return "mock_"+self.base_class_name+".h"
 
-    def _generate_mockCppFileName(self, lang_name:str|None = None)->str:
+    def _generate_mockCppFileName(self, lang_name:str = None)->str:
         """!
         @brief Generate the mock source file name based on the class and language names
         @return string - mock source file name
@@ -199,8 +199,8 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
             return "mock_"+self.base_class_name+".cpp"
 
     def _write_method(self, method_name:str, method_desc:str,
-                     method_params:list, return_dict:dict, prefix:str|None, postfix:str|None,
-                     skip_doxygen_comment:bool = True, inline_code:list|None = None)->list:
+                     method_params:list, return_dict:dict, prefix:str, postfix:str,
+                     skip_doxygen_comment:bool = True, inline_code:list = None)->list:
         """!
         @brief Write the property method definitions
 
@@ -236,7 +236,7 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
 
         return decl_text
 
-    def _write_mock_method(self, method_name:str, method_params:list, return_dict:dict, postfix:str|None)->list:
+    def _write_mock_method(self, method_name:str, method_params:list, return_dict:dict, postfix:str)->list:
         """!
         @brief Write the property method definitions
 

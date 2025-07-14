@@ -33,13 +33,13 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
     """!
     Methods for compile switch determined language select function generation
     """
-    def __init__(self, json_lang_data:LanguageDescriptionList, owner:str|None = None, eula_name:str|None = None, base_class_name:str = "BaseClass",
+    def __init__(self, json_lang_data:LanguageDescriptionList, owner:str = None, eula_name:str = None, base_class_name:str = "BaseClass",
                  dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
         """!
         @brief StaticLangSelectFunctionGenerator constructor
         @param json_lang_data {string} JSON language description list file name
-        @param owner {string|None} Owner name to use in the copyright header message or None to use tool name
-        @param eula_name {string|None} Name of the EULA to pass down to the BaseCppStringClassGenerator parent
+        @param owner {string} Owner name to use in the copyright header message or None to use tool name
+        @param eula_name {string} Name of the EULA to pass down to the BaseCppStringClassGenerator parent
         @param base_class_name {string} Name of the base class for name generation
         @param dynnamic_compile_switch {string} Dynamic compile switch for #if generation
         """

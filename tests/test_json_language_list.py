@@ -28,12 +28,13 @@ import os
 import io
 import contextlib
 
+from unittest.mock import patch
 import pytest
-from unittest.mock import patch, MagicMock, mock_open
 
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
-
 from tests.dir_init import TESTFILEPATH
+
+# pylint: disable=protected-access
 
 class Test01JsonLanguageList:
     """!
@@ -137,144 +138,6 @@ class Test01JsonLanguageList:
         with contextlib.redirect_stdout(output):
             testobj._print_error("test error")
             assert output.getvalue() == "Error: test error\n"
-
-    def test05_get_commit_overwrite_flag_no(self):
-        """!
-        @brief Test _get_commit_over_write_flag method, no answer
-        """
-        testobj = LanguageDescriptionList()
-        with patch('builtins.input', side_effect='n') as in_mock:
-            assert not testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='N') as in_mock:
-            assert not testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='no') as in_mock:
-            assert not testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='NO') as in_mock:
-            assert not testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='No') as in_mock:
-            assert not testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-    def test06_get_commit_overwrite_flag_yes(self):
-        """!
-        @brief Test _get_commit_over_write_flag method, Yes answer
-        """
-        testobj = LanguageDescriptionList()
-        with patch('builtins.input', side_effect='y') as in_mock:
-            assert testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='Y') as in_mock:
-            assert testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='yes') as in_mock:
-            assert testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='YES') as in_mock:
-            assert testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='Yes') as in_mock:
-            assert testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-    def test07_get_commit_overwrite_flag_override(self):
-        """!
-        @brief Test _get_commit_over_write_flag method, override=True
-        """
-        testobj = LanguageDescriptionList()
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output):
-            assert testobj._get_commit_over_write_flag("test_entry", True)
-            assert output.getvalue() == ""
-
-    def test08_get_commit_new_flag_no(self):
-        """!
-        @brief Test _get_commit_new_flag method, no answer
-        """
-        testobj = LanguageDescriptionList()
-        with patch('builtins.input', side_effect='n') as in_mock:
-            assert not testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='N') as in_mock:
-            assert not testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='no') as in_mock:
-            assert not testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='NO') as in_mock:
-            assert not testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='No') as in_mock:
-            assert not testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-    def test09_get_commit_new_flag_yes(self):
-        """!
-        @brief Test _get_commit_new_flag method, Yes answer
-        """
-        testobj = LanguageDescriptionList()
-        with patch('builtins.input', side_effect='y') as in_mock:
-            assert testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='Y') as in_mock:
-            assert testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='yes') as in_mock:
-            assert testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='YES') as in_mock:
-            assert testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='Yes') as in_mock:
-            assert testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-    def test10_get_commit_flag(self):
-        """!
-        @brief Test _get_commit_flag method
-        """
-        testobj = LanguageDescriptionList()
-        with patch('builtins.input', side_effect='y') as in_mock:
-            assert testobj._get_commit_flag("test_entry",['test_entry'])
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-        with patch('builtins.input', side_effect='n') as in_mock:
-            assert not testobj._get_commit_flag("test_entry",['test_entry'])
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='y') as in_mock:
-            assert testobj._get_commit_flag("test33",['test_entry'])
-            in_mock.assert_called_once_with("Add new test33 entry? [Y/N]")
-        with patch('builtins.input', side_effect='n') as in_mock:
-            assert not testobj._get_commit_flag("test33",['test_entry'])
-            in_mock.assert_called_once_with("Add new test33 entry? [Y/N]")
-
-        assert testobj._get_commit_flag("test_entry",['test_entry'], True)
-
-        with patch('builtins.input', side_effect='y') as in_mock:
-            assert testobj._get_commit_flag("test33",['test_entry'], True)
-            in_mock.assert_called_once_with("Add new test33 entry? [Y/N]")
-        with patch('builtins.input', side_effect='n') as in_mock:
-            assert not testobj._get_commit_flag("test33",['test_entry'], True)
-            in_mock.assert_called_once_with("Add new test33 entry? [Y/N]")
 
     def test11_update(self):
         """!
@@ -1360,3 +1223,5 @@ class Test02JsonLanguageListInput:
 
             expected = "Enter Windows LANGID values. A value of 0 will exit.\n"
             assert output.getvalue() == expected
+
+# pylint: enable=protected-access

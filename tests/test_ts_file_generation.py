@@ -544,11 +544,11 @@ class Test01CppFilehelper:
 
     def test30_gen_import_block(self):
         """!
-        @brief Test the _gen_importBlock method
+        @brief Test the _gen_import_block method
         """
         helper = GenerateTypeScriptFileHelper()
         include_list = [("class1", "module1"), ("class2", "module2"), ("class3", "module3"), ("class4", None)]
-        include_text = helper._gen_importBlock(include_list)
+        include_text = helper._gen_import_block(include_list)
         assert len(include_text) == len(include_list) + 1
         assert include_text[0] == "// Imports\n"
         assert include_text[1] == "import {class1} from module1;\n"

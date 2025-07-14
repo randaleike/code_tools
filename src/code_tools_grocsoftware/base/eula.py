@@ -24,7 +24,7 @@ Utilities to create formatted End User License Agreement Text blocks
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-import re
+from code_tools_grocsoftware.base.text_format import mult_line_format
 
 # pylint: disable=line-too-long
 eula = {
@@ -170,7 +170,7 @@ class EulaText():
     """!
     EULA text helper class
     """
-    def __init__(self, eula_type:str|None = None, custom_eula:list|None = None):
+    def __init__(self, eula_type:str = None, custom_eula:list = None):
         """!
         @brief Constuctor
 
@@ -195,7 +195,7 @@ class EulaText():
             self.eula_name = self.get_eula_name(eula_type)
 
     @staticmethod
-    def get_eula_text(eula_type:str)->list|None:
+    def get_eula_text(eula_type:str)->list:
         """!
         @brief Get the eula string list for the input EULA type.
 
@@ -211,7 +211,7 @@ class EulaText():
         return ret_text
 
     @staticmethod
-    def get_eula_name(eula_type:str)->str|None:
+    def get_eula_name(eula_type:str)->str:
         """!
         @brief Get the eula string list for the input EULA type.
 
@@ -258,47 +258,11 @@ class EulaText():
 
         @return list of strings, List of strings broken at the appropriate length
         """
-        formatted_text = []
-
-        while len(raw_text) > max_length:
-            # Find a good breaking point
-            current_index = max_length-1
-            while (re.match(r'[\s,\.-]',raw_text[current_index]) is None) and (current_index > 0):
-                current_index -= 1
-
-            if current_index == 0:
-                # No good break found, just truncate and max length
-                formatted_text.append(raw_text[:max_length])
-                raw_text = raw_text[max_length:]
-            else:
-                # Good break found, truncate to the good location
-                # Get the partial text and strip the trailing space if present
-                new_line = raw_text[:current_index]
-                new_line.strip()
-
-                # Add the new line to the list
-                if pad:
-                    formatted_text.append(new_line.ljust(max_length, ' '))
-                else:
-                    formatted_text.append(new_line)
-
-                # Strip the preceeding space if present
-                while raw_text[current_index] == ' ':
-                    current_index += 1
-
-                # Get the remaining string
-                raw_text = raw_text[current_index:]
-
-        # Strip leading and trailing spaces for the last line
-        new_line = raw_text.strip()
-        if new_line != '':
-            # Add the last line to the list
-            if pad:
-                formatted_text.append(new_line.ljust(max_length, ' '))
-            else:
-                formatted_text.append(new_line)
-
-        return formatted_text
+        if pad:
+            pad_char = ' '
+        else:
+            pad_char = None
+        return mult_line_format(raw_text, max_length, pad_char)
 
     def format_eula_name(self, max_length:int = 80, pad:bool = False)->str:
         """!

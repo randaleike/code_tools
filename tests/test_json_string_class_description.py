@@ -25,8 +25,6 @@ Unittest for programmer base tools utility
 #==========================================================================
 
 import os
-import io
-import contextlib
 
 from unittest.mock import patch, MagicMock
 import pytest
@@ -46,12 +44,18 @@ class Test02StringClassDescription:
     """
     @classmethod
     def setup_class(cls):
+        """!
+        @brief Setup the test class
+        """
         cls.test_json = os.path.join(TESTFILEPATH, "teststrdesc.json")
         cls.testlanglist = os.path.join(TESTFILEPATH, "teststringlanglist.json")
 
 
     @classmethod
     def teardown_class(cls):
+        """!
+        @brief Tear down the test class
+        """
         if os.path.exists("jsonStringClassDescription.json"):
             os.remove("jsonStringClassDescription.json")   # Delete in case it was accidently created
         if os.path.exists("temp.json"):
@@ -85,137 +89,7 @@ class Test02StringClassDescription:
         assert len(testobj.string_jason_data['translateMethods']) == 1
         assert list(testobj.string_jason_data['translateMethods'])[0] == 'getNotListTypeMessage'
 
-    def test03_get_commit_overwrite_flag_no(self):
-        """!
-        @brief Test _get_commit_over_write_flag method, no answer
-        """
-        testobj = StringClassDescription()
-        with patch('builtins.input', side_effect='n') as in_mock:
-            assert not testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='N') as in_mock:
-            assert not testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='No') as in_mock:
-            assert not testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-    def test04_get_commit_overwrite_flag_yes(self):
-        """!
-        @brief Test _get_commit_over_write_flag method, Yes answer
-        """
-        testobj = StringClassDescription()
-        with patch('builtins.input', side_effect='y') as in_mock:
-            assert testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='Y') as in_mock:
-            assert testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='yes') as in_mock:
-            assert testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='YES') as in_mock:
-            assert testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='Yes') as in_mock:
-            assert testobj._get_commit_over_write_flag("test_entry")
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-    def test05_get_commit_overwrite_flag_override(self):
-        """!
-        @brief Test _get_commit_over_write_flag method, override=True
-        """
-        testobj = StringClassDescription()
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output):
-            assert testobj._get_commit_over_write_flag("test_entry", True)
-            assert output.getvalue() == ""
-
-    def test06_get_commit_new_flag_no(self):
-        """!
-        @brief Test _get_commit_new_flag method, no answer
-        """
-        testobj = StringClassDescription()
-        with patch('builtins.input', side_effect='n') as in_mock:
-            assert not testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='N') as in_mock:
-            assert not testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='no') as in_mock:
-            assert not testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='NO') as in_mock:
-            assert not testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='No') as in_mock:
-            assert not testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-    def test07_get_commit_new_flag_yes(self):
-        """!
-        @brief Test _get_commit_new_flag method, Yes answer
-        """
-        testobj = StringClassDescription()
-        with patch('builtins.input', side_effect='y') as in_mock:
-            assert testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='Y') as in_mock:
-            assert testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='yes') as in_mock:
-            assert testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='YES') as in_mock:
-            assert testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='Yes') as in_mock:
-            assert testobj._get_commit_new_flag("test_entry")
-            in_mock.assert_called_once_with("Add new test_entry entry? [Y/N]")
-
-    def test08_get_commit_flag(self):
-        """!
-        @brief Test _get_commit_flag method
-        """
-        testobj = StringClassDescription()
-        with patch('builtins.input', side_effect='y') as in_mock:
-            assert testobj._get_commit_flag("test_entry",['test_entry'])
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-        with patch('builtins.input', side_effect='n') as in_mock:
-            assert not testobj._get_commit_flag("test_entry",['test_entry'])
-            in_mock.assert_called_once_with("Overwrite existing test_entry entry? [Y/N]")
-
-        with patch('builtins.input', side_effect='y') as in_mock:
-            assert testobj._get_commit_flag("test33",['test_entry'])
-            in_mock.assert_called_once_with("Add new test33 entry? [Y/N]")
-        with patch('builtins.input', side_effect='n') as in_mock:
-            assert not testobj._get_commit_flag("test33",['test_entry'])
-            in_mock.assert_called_once_with("Add new test33 entry? [Y/N]")
-
-        assert testobj._get_commit_flag("test_entry",['test_entry'], True)
-
-        with patch('builtins.input', side_effect='y') as in_mock:
-            assert testobj._get_commit_flag("test33",['test_entry'], True)
-            in_mock.assert_called_once_with("Add new test33 entry? [Y/N]")
-        with patch('builtins.input', side_effect='n') as in_mock:
-            assert not testobj._get_commit_flag("test33",['test_entry'], True)
-            in_mock.assert_called_once_with("Add new test33 entry? [Y/N]")
-
-    def test09_set_base_class_name(self):
+    def test03_set_base_class_name(self):
         """!
         @brief Test set_base_class_name method
         """
@@ -224,14 +98,14 @@ class Test02StringClassDescription:
         testobj.set_base_class_name("NewClassName")
         assert testobj.string_jason_data['baseClassName'] == "NewClassName"
 
-    def test10_get_base_class_name(self):
+    def test04_get_base_class_name(self):
         """!
         @brief Test get_base_class_name method
         """
         testobj = StringClassDescription()
         assert testobj.string_jason_data['baseClassName'] == testobj.get_base_class_name()
 
-    def test11_get_base_class_name_with_namespace(self):
+    def test05_get_base_class_name_with_namespace(self):
         """!
         @brief Test get_base_class_nameWithNamespace method
         """

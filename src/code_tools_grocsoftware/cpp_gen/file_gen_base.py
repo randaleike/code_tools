@@ -46,7 +46,7 @@ class GenerateCppFileHelper():
     This class implements boiler plate data and helper functions used by
     the parent file specific generation class to generate the file
     """
-    def __init__(self, eula_name:str|None = None):
+    def __init__(self, eula_name:str = None):
         """!
         @brief GenerateFileHelper constructor
 
@@ -129,7 +129,7 @@ class GenerateCppFileHelper():
             xlated_params.append(xlated_param)
         return xlated_params
 
-    def _xlate_return_dict(self, ret_dict:dict|None)->dict|None:
+    def _xlate_return_dict(self, ret_dict:dict)->dict:
         """!
         @brief Translate the generic return dictionary to the cpp specific return dictionary
         @param ret_dict {dictionary} ParamRetDict return dictionary to translate
@@ -141,10 +141,10 @@ class GenerateCppFileHelper():
         else:
             return None
 
-    def _gen_function_ret_type(self, return_dict:dict|None)->str:
+    def _gen_function_ret_type(self, return_dict:dict)->str:
         """!
         @brief Generate the function return+name string
-        @param return_dict (dict|None) Return ParamRetDict dictionary
+        @param return_dict (dict) Return ParamRetDict dictionary
         @return string - return_spec name
         """
         if return_dict is not None:
@@ -176,10 +176,10 @@ class GenerateCppFileHelper():
         param_text += ")"
         return param_text
 
-    def _declare_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict|None = None,
-                                        indent:int = 0, no_doxygen:bool = False, prefix_decaration:str|None = None,
-                                        postfix_decaration:str|None = None, inlinecode:list|None = None,
-                                        long_desc:str|None = None)->list:
+    def _declare_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict = None,
+                                        indent:int = 0, no_doxygen:bool = False, prefix_decaration:str = None,
+                                        postfix_decaration:str = None, inlinecode:list = None,
+                                        long_desc:str = None)->list:
         """!
         @brief Generate a function declatation text block with doxygen comment
 
@@ -247,8 +247,8 @@ class GenerateCppFileHelper():
 
 
     def _define_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict,
-                                       no_doxygen:bool = False, prefix_decaration:str|None = None,
-                                       postfix_decaration:str|None = None, long_desc:list|None = None)->list:
+                                       no_doxygen:bool = False, prefix_decaration:str = None,
+                                       postfix_decaration:str = None, long_desc:list = None)->list:
         """!
         @brief Generate a function definition start with doxygen comment
 
@@ -298,7 +298,7 @@ class GenerateCppFileHelper():
         """
         return "} // end of "+name+"()\n"
 
-    def _generate_generic_file_header(self, autotoolname:str, start_year:int=2025, owner:str|None = None)->list:
+    def _generate_generic_file_header(self, autotoolname:str, start_year:int=2025, owner:str = None)->list:
         """!
         @brief Generate the boiler plate file header with copyright and eula
 
@@ -381,8 +381,8 @@ class GenerateCppFileHelper():
         """
         return ["using namespace "+namespace_name+";\n"]
 
-    def _gen_class_open(self, class_name:str, class_desc:str|None = None, inheritence:str|None = None,
-                      class_decoration:str|None = None, indent:int=0)->list:
+    def _gen_class_open(self, class_name:str, class_desc:str = None, inheritence:str = None,
+                      class_decoration:str = None, indent:int=0)->list:
         """!
         @brief Generate the class open code
 
@@ -535,16 +535,16 @@ class GenerateCppFileHelper():
         return code_text
 
     def _declare_structure(self, name:str, var_dist_list:list, indent:int=0,
-                          struct_desc:str|None = None,
-                          prefix_decoration:str|None = None,
-                          postfix_decoration:str|None = None)->list:
+                          struct_desc:str = None,
+                          prefix_decoration:str = None,
+                          postfix_decoration:str = None)->list:
         """!
         @brief Generate a structure declaration
 
         @param name {string} Name of the structure
         @param var_dist_list {list} List of ParamRetDict parameter dictionaries for the data elements
         @param indent {integer} Number of spaces to indent the code declarations, default = 0
-        @param struct_desc {string|None} Doxygen structure description
+        @param struct_desc {string} Doxygen structure description
         @param prefix_decoration {str} Structure definition prefix decorations
         @param postfix_decoration {str} Structure definition end decorations
 

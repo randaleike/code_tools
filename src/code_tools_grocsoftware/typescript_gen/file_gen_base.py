@@ -46,7 +46,7 @@ class GenerateTypeScriptFileHelper():
     This class implements boiler plate data and helper functions used by
     the parent file specific generation class to generate the file
     """
-    def __init__(self, eula_name:str|None = None):
+    def __init__(self, eula_name:str = None):
         """!
         @brief GenerateFileHelper constructor
 
@@ -113,11 +113,11 @@ class GenerateTypeScriptFileHelper():
             xlated_params.append(xlated_param)
         return xlated_params
 
-    def _xlate_return_dict(self, ret_dict:dict|None)->dict|None:
+    def _xlate_return_dict(self, ret_dict:dict)->dict:
         """!
         @brief Translate the generic return dictionary to the typescript specific return dictionary
         @param ret_dict {dictionary} ParamRetDict return dictionary to translate
-        @return dictionary|None - ParamRetDict return dictionary with the translated type or None if input is None
+        @return dictionary - ParamRetDict return dictionary with the translated type or None if input is None
         """
         if ret_dict is not None:
             xlated_type = self._declare_type(ParamRetDict.get_return_type(ret_dict), ParamRetDict.get_return_type_mod(ret_dict))
@@ -125,10 +125,10 @@ class GenerateTypeScriptFileHelper():
         else:
             return None
 
-    def _gen_function_ret_type(self, ret_dict:dict|None = None)->str:
+    def _gen_function_ret_type(self, ret_dict:dict = None)->str:
         """!
         @brief Generate the type text based on the variable input ParamRetDict dictionary
-        @param ret_dict (dict|None) Variable ParamRetDict description dictionary
+        @param ret_dict (dict) Variable ParamRetDict description dictionary
         @return string - : Type(s)
         """
         if ret_dict is not None:
@@ -160,10 +160,10 @@ class GenerateTypeScriptFileHelper():
         param_text += ")"
         return param_text
 
-    def _declare_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict|None = None,
+    def _declare_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict = None,
                                         indent:int = 0, no_doxygen:bool = False, prefix_decaration:str = "public",
-                                        postfix_decaration:str|None = None, inlinecode:list = [],
-                                        long_desc:str|None = None)->list:
+                                        postfix_decaration:str = None, inlinecode:list = [],
+                                        long_desc:str = None)->list:
         """!
         @brief Generate a function declatation text block with doxygen comment
 
@@ -223,8 +223,8 @@ class GenerateTypeScriptFileHelper():
         return func_declare_text
 
     def _define_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict,
-                                       no_doxygen:bool = False, prefix_decaration:str|None = None,
-                                       postfix_decaration:str|None = None, long_desc:list|None = None)->list:
+                                       no_doxygen:bool = False, prefix_decaration:str = None,
+                                       postfix_decaration:str = None, long_desc:list = None)->list:
         """!
         @brief Generate a function definition start with doxygen comment
 
@@ -278,7 +278,7 @@ class GenerateTypeScriptFileHelper():
         """
         return "} // end of function "+name+"\n"
 
-    def _generate_generic_file_header(self, autotoolname:str, start_year:int=2025, owner:str|None = None)->list:
+    def _generate_generic_file_header(self, autotoolname:str, start_year:int=2025, owner:str = None)->list:
         """!
         @brief Generate the boiler plate file header with copyright and eula
 
@@ -327,7 +327,7 @@ class GenerateTypeScriptFileHelper():
         else:
             return "import '"+class_name+"';\n"
 
-    def _gen_importBlock(self, include_names:list)->list:
+    def _gen_import_block(self, include_names:list)->list:
         """!
         @brief Generate a series if include line(s) for each name in the list
         @param include_names {list of tuples} Name(s) of class(es), Module name(s) of the class to import
@@ -354,8 +354,8 @@ class GenerateTypeScriptFileHelper():
         """
         return ["} // end of namespace "+namespace_name+"\n"]
 
-    def _gen_class_open(self, class_name:str, class_desc:str|None = None, inheritence:str|None = None,
-                      class_decoration:str|None = None, indent:int=0)->list:
+    def _gen_class_open(self, class_name:str, class_desc:str = None, inheritence:str = None,
+                      class_decoration:str = None, indent:int=0)->list:
         """!
         @brief Generate the class open code
 
@@ -427,16 +427,16 @@ class GenerateTypeScriptFileHelper():
         return code_text
 
     def _declare_structure(self, name:str, var_dist_list:list, indent:int=0,
-                          struct_desc:str|None = None,
-                          prefix_decoration:str|None = None,
-                          postfix_decoration:str|None = None)->list:
+                          struct_desc:str = None,
+                          prefix_decoration:str = None,
+                          postfix_decoration:str = None)->list:
         """!
         @brief Generate a structure declaration
 
         @param name {string} Name of the structure
         @param var_dist_list {list} List of ParamRetDict parameter dictionaries for the data elements
         @param indent {integer} Number of spaces to indent the code declarations, default = 0
-        @param struct_desc {string|None} Doxygen structure description
+        @param struct_desc {string} Doxygen structure description
         @param prefix_decoration {str} Structure definition prefix decorations unused in python
         @param postfix_decoration {str} Structure definition end decorations unused in python
 

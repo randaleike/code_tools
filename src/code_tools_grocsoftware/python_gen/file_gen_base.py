@@ -46,7 +46,7 @@ class GeneratePythonFileHelper():
     This class implements boiler plate data and helper functions used by
     the parent file specific generation class to generate the file
     """
-    def __init__(self, eula_name:str|None = None):
+    def __init__(self, eula_name:str = None):
         """!
         @brief GenerateFileHelper constructor
 
@@ -90,7 +90,7 @@ class GeneratePythonFileHelper():
         array_size = ParamRetDict.get_array_size(type_mod)
         if ParamRetDict.is_mod_list(type_mod) or (array_size > 0):
             if ParamRetDict.is_or_undef_type(type_mod):
-                return_text = "list|None"
+                return_text = "list"
             else:
                 return_text = "list"
         else:
@@ -99,7 +99,7 @@ class GeneratePythonFileHelper():
                 lang_type = self.type_xlation_dict[base_type]
 
             if ParamRetDict.is_or_undef_type(type_mod):
-                return_text = lang_type+"|None"
+                return_text = lang_type+""
             else:
                 return_text = lang_type
         return return_text
@@ -120,11 +120,11 @@ class GeneratePythonFileHelper():
             xlated_params.append(xlated_param)
         return xlated_params
 
-    def _xlate_return_dict(self, ret_dict:dict|None)->dict|None:
+    def _xlate_return_dict(self, ret_dict:dict)->dict:
         """!
         @brief Translate the generic return dictionary to the python specific return dictionary
         @param ret_dict {dictionary} ParamRetDict return dictionary to translate
-        @return dictionary|None - ParamRetDict return dictionary with the translated type or None if input is None
+        @return dictionary - ParamRetDict return dictionary with the translated type or None if input is None
         """
         if ret_dict is not None:
             xlated_type = self._declare_type(ParamRetDict.get_return_type(ret_dict), ParamRetDict.get_return_type_mod(ret_dict))
@@ -132,10 +132,10 @@ class GeneratePythonFileHelper():
         else:
             return None
 
-    def _gen_function_ret_type(self, return_dict:dict|None)->str:
+    def _gen_function_ret_type(self, return_dict:dict)->str:
         """!
         @brief Generate the function return+name string
-        @param return_dict (dict|None) Return ParamRetDict dictionary
+        @param return_dict (dict) Return ParamRetDict dictionary
         @return string - return_spec name
         """
         return_text = ""
@@ -168,10 +168,10 @@ class GeneratePythonFileHelper():
         param_text += ")"
         return param_text
 
-    def _declare_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict|None = None,
-                                       indent:int = 4, no_doxygen:bool = False, prefix_decaration:str|None = None,
-                                       postfix_decaration:str|None = None, inlinecode:list|None = None,
-                                       long_desc:str|None = None)->list:
+    def _declare_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict = None,
+                                       indent:int = 4, no_doxygen:bool = False, prefix_decaration:str = None,
+                                       postfix_decaration:str = None, inlinecode:list = None,
+                                       long_desc:str = None)->list:
         """!
         @brief Generate a function declatation text block with doxygen comment
 
@@ -224,8 +224,8 @@ class GeneratePythonFileHelper():
         return func_declare_text
 
     def _define_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict,
-                                      no_doxygen:bool = False, prefix_decaration:str|None = None,
-                                      postfix_decaration:str|None = None, long_desc:list|None = None)->list:
+                                      no_doxygen:bool = False, prefix_decaration:str = None,
+                                      postfix_decaration:str = None, long_desc:list = None)->list:
         """!
         @brief Generate a function definition start with doxygen comment
 
@@ -272,7 +272,7 @@ class GeneratePythonFileHelper():
         """
         return "# end of function "+name+"\n"
 
-    def _generate_generic_file_header(self, autotoolname:str, start_year:int=2025, owner:str|None = None)->list:
+    def _generate_generic_file_header(self, autotoolname:str, start_year:int=2025, owner:str = None)->list:
         """!
         @brief Generate the boiler plate file header with copyright and eula
 
@@ -321,10 +321,11 @@ class GeneratePythonFileHelper():
         else:
             return "import "+class_name+"\n"
 
-    def _gen_importBlock(self, include_names:list)->list:
+    def _gen_import_block(self, include_names:list)->list:
         """!
         @brief Generate a series if include line(s) for each name in the list
-        @param include_names {list of tuples} Name(s) of class(es), Module name(s) of the class to import
+        @param include_names {list of tuples} Name(s) of class(es), Module name(s)
+                                              of the class to import
         @return list of strings - Import code block to output
         """
         include_block = ["// Imports\n"]
@@ -332,7 +333,7 @@ class GeneratePythonFileHelper():
             include_block.append(self._gen_import(class_name, module_name))
         return include_block
 
-    def _gen_namespace_open(self, namespace_name:str)->list:
+    def _gen_namespace_open(self, _:str)->list:
         """!
         @brief Generate namespace start code for include file
         @param namespace_name {string} Name of the namespace
@@ -340,7 +341,7 @@ class GeneratePythonFileHelper():
         """
         return []
 
-    def _gen_namespace_close(self, namespace_name:str)->list:
+    def _gen_namespace_close(self, _:str)->list:
         """!
         @brief Generate namespace start code for include file
         @param namespace_name {string} Name of the namespace
@@ -348,7 +349,7 @@ class GeneratePythonFileHelper():
         """
         return []
 
-    def _gen_using_namespace(self, namespace_name:str)->list:
+    def _gen_using_namespace(self, _:str)->list:
         """!
         @brief Generate namespace start code for include file
         @param namespace_name {string} Name of the namespace
@@ -356,8 +357,8 @@ class GeneratePythonFileHelper():
         """
         return []
 
-    def _gen_class_open(self, class_name:str, class_desc:str|None=None, inheritence:str|None = None,
-                      class_decoration:str|None = None, indent:int=0)->list:
+    def _gen_class_open(self, class_name:str, class_desc:str=None, inheritence:str = None,
+                        class_decoration:str = None, indent:int=0)->list:
         """!
         @brief Generate the class open code
 
@@ -372,10 +373,14 @@ class GeneratePythonFileHelper():
         code_text = []
         decl_indent = "".rjust(indent, ' ')
 
+        if class_decoration is not None:
+            code_text.append(decl_indent+"@"+class_decoration+"\n")
+
         # Generate class start
         if inheritence is None:
-            inheritence = "object"
-        code_text.append(decl_indent+"class "+class_name+"("+inheritence+"):\n")
+            code_text.append(decl_indent+"class "+class_name+":\n")
+        else:
+            code_text.append(decl_indent+"class "+class_name+"("+inheritence+"):\n")
 
         # Generate Doxygen class description
         if class_desc is not None:
@@ -421,19 +426,19 @@ class GeneratePythonFileHelper():
         return code_text
 
     def _declare_structure(self, name:str, var_dist_list:list, indent:int=0,
-                          struct_desc:str|None = None)->list:
+                           struct_desc:str = None)->list:
         """!
         @brief Generate a structure declaration
 
         @param name {string} Name of the structure
         @param var_dist_list {list} List of ParamRetDict parameter dictionaries for the data elements
         @param indent {integer} Number of spaces to indent the code declarations, default = 0
-        @param struct_desc {string|None} Doxygen structure description
+        @param struct_desc {string} Doxygen structure description
 
         @return list of strings - Code to output
         """
         # Generate the declaration
-        code_text = self._gen_class_open(name, struct_desc, "object", indent=indent)
+        code_text = self._gen_class_open(name, struct_desc, indent=indent)
 
         # Generate the body code
         for var_dict in var_dist_list:

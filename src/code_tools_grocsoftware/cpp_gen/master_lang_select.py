@@ -32,13 +32,13 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
     """!
     Methods for master language select function generation
     """
-    def __init__(self, owner:str|None = None, eula_name:str|None = None, base_class_name:str = "BaseClass",
+    def __init__(self, owner:str = None, eula_name:str = None, base_class_name:str = "BaseClass",
                  method_name:str = "getLocalParserStringListInterface",
                  dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
         """!
         @brief MasterSelectFunctionGenerator constructor
-        @param owner {string|None} Owner name to use in the copyright header message or None to use tool name
-        @param eula_name {string|None} Name of the EULA to pass down to the BaseCppStringClassGenerator parent
+        @param owner {string} Owner name to use in the copyright header message or None to use tool name
+        @param eula_name {string} Name of the EULA to pass down to the BaseCppStringClassGenerator parent
         @param base_class_name {string} Name of the base class for name generation
         @param method_name {string} Function name to be used for generation
         @param dynnamic_compile_switch {string} Dynamic compile switch for #if generation

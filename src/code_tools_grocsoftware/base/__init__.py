@@ -26,9 +26,13 @@ Utilities to get the creation and last modification years of a file
 
 __version__ = '0.8.3'
 
-__all__ = ["copyright_generator", "eula", "comment_gen_tools", "doxygen_gen_tools",
-           "param_return_tools", "json_language_list", "json_string_class_description",
+__all__ = ["commit_check", "text_format", "copyright_generator", "eula",
+           "comment_gen_tools", "doxygen_gen_tools", "param_return_tools",
+           "json_language_list", "json_string_class_description",
            "insert_new_copyright_block"]
+
+from . import commit_check
+from . import text_format
 
 from . import copyright_generator
 from . import eula

@@ -25,17 +25,17 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-from code_tools_grocsoftware.base.text_format import MultiLineFormat
+from code_tools_grocsoftware.base.text_format import mult_line_format
 
 class Test01MultiLineFormat:
     """!
-    @brief Unit test for the MultiLineFormat function
+    @brief Unit test for the mult_line_format function
     """
     def test01_single_line(self):
         """!
         @brief Test simple case of a short line
         """
-        str_list = MultiLineFormat("Test return description")
+        str_list = mult_line_format("Test return description")
         assert 1 == len(str_list)
         assert "Test return description" == str_list[0]
 
@@ -43,7 +43,7 @@ class Test01MultiLineFormat:
         """!
         @brief Test simple case of a short line
         """
-        str_list = MultiLineFormat("Test return description, longer line to induce wrap", 27)
+        str_list = mult_line_format("Test return description, longer line to induce wrap", 27)
         assert 2 == len(str_list)
         assert "Test return description," == str_list[0]
         assert "longer line to induce wrap" == str_list[1]
@@ -52,7 +52,7 @@ class Test01MultiLineFormat:
         """!
         @brief Test simple case of a short line
         """
-        str_list = MultiLineFormat("Test return description, longer line to induce wrap", 27, '-')
+        str_list = mult_line_format("Test return description, longer line to induce wrap", 27, '-')
         assert 2 == len(str_list)
         assert "Test return description,---" == str_list[0]
         assert "longer line to induce wrap-" == str_list[1]
@@ -61,7 +61,7 @@ class Test01MultiLineFormat:
         """!
         @brief Test simple case of a short line
         """
-        str_list = MultiLineFormat("Testreturndescriptionlongerlinetoinducewrap", 27)
+        str_list = mult_line_format("Testreturndescriptionlongerlinetoinducewrap", 27)
         assert 2 == len(str_list)
         assert "Testreturndescriptionlonger" == str_list[0]
         assert "linetoinducewrap" == str_list[1]
@@ -70,7 +70,7 @@ class Test01MultiLineFormat:
         """!
         @brief Test simple case of a short line
         """
-        str_list = MultiLineFormat("Test return description, longer line to induce wrap. More text to create another line", 32)
+        str_list = mult_line_format("Test return description, longer line to induce wrap. More text to create another line", 32)
         assert 3 == len(str_list)
         assert "Test return description, longer" == str_list[0]
         assert "line to induce wrap. More text" == str_list[1]

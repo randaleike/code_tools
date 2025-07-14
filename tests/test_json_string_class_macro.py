@@ -146,9 +146,10 @@ class ExpectedStrHelper():
         """!
         Get the expected translation description help message
         """
-        expected_str = "Enter translation template string. Use @paramName@ in the string to indicate where the \n"
-        expected_str += "function parameters should be inserted.\n"
-        expected_str += "Example with single input parameter name \"keyString\": Found argument key @keyString@\n"
+        expected_str = "Enter translation template string. Use @paramName@ in the string to indicate\n"
+        expected_str += "where the function parameters should be inserted.\n"
+        expected_str += "Example with single input parameter name \"keyString\":\n"
+        expected_str += "  Found argument key @keyString@\n"
         return expected_str
 
     @staticmethod
@@ -255,7 +256,11 @@ class Test03StringClassDescriptionMacroMethods:
                 assert testobj.string_jason_data['translateMethods']['getTestString']['translateDesc']["en"][index] == entry
 
             expected_str = ExpectedStrHelper.get_expected_trans_desc_help()
-            expected_str += ExpectedStrHelper.get_expected_new_translation_entry('Brief method description', test_return, test_paramlist, test_trans_string, ['en'])
+            expected_str += ExpectedStrHelper.get_expected_new_translation_entry('Brief method description',
+                                                                                 test_return,
+                                                                                 test_paramlist,
+                                                                                 test_trans_string,
+                                                                                 ['en'])
             assert output.getvalue() == expected_str
 
     def test02_new_translate_method_entry_no_confirm(self):
@@ -467,27 +472,31 @@ class Test03StringClassDescriptionMacroMethods:
             assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['params'], list)
             assert len(testobj.string_jason_data['translateMethods']['get_test_int']['params']) == len(param_list)
 
-            for index in range(0, len(param_list)):
-                assert testobj.string_jason_data['translateMethods']['get_test_int']['params'][index] == param_list[index]
+            for i, _ in enumerate(param_list):
+                tvar = testobj.string_jason_data['translateMethods']['get_test_int']['params'][i]
+                assert tvar == param_list[i]
 
-            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['return'], dict)
-            assert testobj.string_jason_data['translateMethods']['get_test_int']['return'] == return_dict
+            rtst = testobj.string_jason_data['translateMethods']['get_test_int']['return']
+            assert isinstance(rtst, dict)
+            assert rtst == return_dict
 
-            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc'], dict)
-            assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']) == 1
+            tdesc = testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']
+            assert isinstance(tdesc, dict)
+            assert len(tdesc) == 1
 
             trans_desc_list = TransTxtParser.parse_translate_string("Test override @goo2@")
-            assert isinstance(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en'], list)
-            assert len(testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en']) == len(trans_desc_list)
-            for index in range(0, len(trans_desc_list)):
-                assert testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']["en"][index] == trans_desc_list[index]
+            ten = testobj.string_jason_data['translateMethods']['get_test_int']['translateDesc']['en']
+            assert isinstance(ten, list)
+            assert len(ten) == len(trans_desc_list)
+            for index, _ in enumerate(trans_desc_list):
+                assert ten[index] == trans_desc_list[index]
 
     def test07_get_property_return_data(self):
         """!
         @brief Test _get_property_return_data()
         """
         input_str = (text for text in ["0", "1", "2", "3", "4", "5"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         testobj = StringClassDescription()
@@ -512,7 +521,7 @@ class Test03StringClassDescriptionMacroMethods:
         @brief Test _get_property_return_data()
         """
         input_str = (text for text in ["8", "0"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         testobj = StringClassDescription()
@@ -540,7 +549,7 @@ class Test03StringClassDescriptionMacroMethods:
         @brief Test new_property_method_entry()
         """
         input_str = (text for text in ["0", "y", "y"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         testobj = StringClassDescription()
@@ -563,7 +572,7 @@ class Test03StringClassDescriptionMacroMethods:
         @brief Test new_property_method_entry()
         """
         input_str = (text for text in ["0", "n", "1", "y", "y"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         testobj = StringClassDescription()
@@ -593,7 +602,7 @@ class Test03StringClassDescriptionMacroMethods:
         @brief Test new_property_method_entry()
         """
         input_str = (text for text in ["0", "y", "n"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         testobj = StringClassDescription()
@@ -617,7 +626,7 @@ class Test03StringClassDescriptionMacroMethods:
         @brief Test add_property_method_entry()
         """
         input_str = (text for text in ["y"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         testobj = StringClassDescription()
@@ -647,7 +656,7 @@ class Test03StringClassDescriptionMacroMethods:
         @brief Test add_property_method_entry(), confirm=no
         """
         input_str = (text for text in ["n"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         testobj = StringClassDescription()
@@ -663,7 +672,7 @@ class Test03StringClassDescriptionMacroMethods:
         """!
         @brief Test add_translate_method_entry(), bad translate string
         """
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return 'n'
 
         testobj = StringClassDescription()
@@ -673,9 +682,10 @@ class Test03StringClassDescriptionMacroMethods:
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
             assert not testobj.add_translate_method_entry('get_test_int',
-                                                             'Brief get_test_int description',
-                                                             param_list, return_dict,
-                                                             "en", "Test @goo@ @foo@")
+                                                          'Brief get_test_int description',
+                                                          param_list, return_dict,
+                                                          "en", "Test @goo@ @foo@")
 
             assert 'get_test_int' not in testobj.get_tranlate_method_list()
-            assert output.getvalue() == "Error: Invalid translation string: Test @goo@ @foo@. param_count= 2 match_count= 1\n"
+            assert output.getvalue() == "Error: Invalid translation string: Test " \
+                                        "@goo@ @foo@. param_count = 2 match_count = 1\n"

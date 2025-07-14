@@ -223,10 +223,7 @@ class ParamRetDict():
         @param type_mod {integer} Dictionary TypeMod entry
         @return bool - True if object needs to be a list type, else false
         """
-        if (type_mod & ParamRetDict.type_mod_list) == 0:
-            return False
-        else:
-            return True
+        return bool((type_mod & ParamRetDict.type_mod_list) != 0)
 
     @staticmethod
     def is_mod_pointer(type_mod:int) -> bool:
@@ -235,10 +232,7 @@ class ParamRetDict():
         @param type_mod {integer} Dictionary TypeMod entry
         @return bool - True if object needs a pointer decoration, else false
         """
-        if (type_mod & ParamRetDict.type_mod_ptr) == 0:
-            return False
-        else:
-            return True
+        return bool((type_mod & ParamRetDict.type_mod_ptr) != 0)
 
     @staticmethod
     def is_mod_reference(type_mod:int) -> bool:
@@ -247,10 +241,7 @@ class ParamRetDict():
         @param type_mod {integer} Dictionary TypeMod entry
         @return bool - True if object needs a reference decoration, else false
         """
-        if (type_mod & ParamRetDict.type_mod_ref) == 0:
-            return False
-        else:
-            return True
+        return bool((type_mod & ParamRetDict.type_mod_ref) != 0)
 
     @staticmethod
     def is_or_undef_type(type_mod:int) -> bool:
@@ -259,10 +250,7 @@ class ParamRetDict():
         @param type_mod {integer} Dictionary TypeMod entry
         @return bool - True if object can be undefined, else false
         """
-        if (type_mod & ParamRetDict.type_mod_undef) == 0:
-            return False
-        else:
-            return True
+        return bool((type_mod & ParamRetDict.type_mod_undef) != 0)
 
     @staticmethod
     def get_array_size(type_mod:int) -> int:

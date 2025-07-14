@@ -34,7 +34,7 @@ class CopyrightGenerator():
     """
 
     @staticmethod
-    def is_multi_year(create_year:int, last_modify_year:int|None)->bool:
+    def is_multi_year(create_year:int, last_modify_year:int)->bool:
         """!
         Determine if this is a multi or single year message
 
@@ -51,7 +51,7 @@ class CopyrightGenerator():
 
 
     def create_new_copyright(self, owner:str, create_year:int,
-                             last_modify_year:int|None = None)->str:
+                             last_modify_year:int = None)->str:
         """!
         @brief Create a new copyright message from scratch
 

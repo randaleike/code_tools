@@ -26,7 +26,7 @@ for a language string generation library
 #==========================================================================
 
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
-from code_tools_grocsoftware.base.text_format import MultiLineFormat
+from code_tools_grocsoftware.base.text_format import mult_line_format
 
 #============================================================================
 #============================================================================
@@ -134,7 +134,7 @@ class DoxyCommentGenerator():
 
         # Generate the brief description text
         brief_start = "@brief "
-        formatted_brief_txt = MultiLineFormat(brief_desc, self.desc_format_max-len(brief_start))
+        formatted_brief_txt = mult_line_format(brief_desc, self.desc_format_max-len(brief_start))
         firstdesc = True
         for brief_line in formatted_brief_txt:
             brief_desc_list.append(prefix+brief_start+brief_line+"\n")
@@ -145,7 +145,7 @@ class DoxyCommentGenerator():
 
         return brief_desc_list
 
-    def _gen_long_desc(self, prefix:str, long_desc:str|None = None)->list:
+    def _gen_long_desc(self, prefix:str, long_desc:str = None)->list:
         """!
         @brief Generate the doxygen comment block
 
@@ -159,7 +159,7 @@ class DoxyCommentGenerator():
 
         # Generate the long description text
         if long_desc is not None:
-            formatted_long_txt = MultiLineFormat(long_desc, self.desc_format_max)
+            formatted_long_txt = mult_line_format(long_desc, self.desc_format_max)
             for long_desc_line in formatted_long_txt:
                 long_desc_list.append(prefix+long_desc_line+"\n")
         return long_desc_list
@@ -178,7 +178,7 @@ class DoxyCommentGenerator():
         l1 = "@return "+return_type+" - "
 
         # Format the description into sized string(s)
-        desc_list = MultiLineFormat(return_desc, self.desc_format_max-len(l1))
+        desc_list = mult_line_format(return_desc, self.desc_format_max-len(l1))
 
         # Construct the final block return text
         ret_list = []
@@ -210,7 +210,7 @@ class DoxyCommentGenerator():
         l1 += " "
 
         # Format the description into sized string(s)
-        desc_list = MultiLineFormat(param_desc, self.desc_format_max-len(l1))
+        desc_list = mult_line_format(param_desc, self.desc_format_max-len(l1))
 
         # Add the description string(s)
         firstdesc = True

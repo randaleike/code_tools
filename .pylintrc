@@ -3,5 +3,7 @@ init-hook="import sys; sys.path.append('./src')"
 
 [DESIGN]
 max-attributes=12
-max-args=8
-max-positional-arguments=8
+max-args=10
+max-positional-arguments=10
+max-locals=20
+max-public-methods=22

@@ -32,6 +32,10 @@ from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 from code_tools_grocsoftware.base.translate_text_parser import TransTxtParser
 
+from code_tools_grocsoftware.base.commit_check import get_commit_over_write_flag
+from code_tools_grocsoftware.base.commit_check import get_commit_flag
+from code_tools_grocsoftware.base.commit_check import new_entry_correct
+
 class StringClassDescription():
     """!
     String object class definitions
@@ -88,43 +92,6 @@ class StringClassDescription():
         @return {list} Translated string data list
         """
         return list(self.string_jason_data['translateMethods'][methodname]['translateDesc'])
-
-    def _get_commit_over_write_flag(self, entry_name:str, override:bool = False)->bool:
-        """!
-        @brief Determine if the user is ready to commit the new entry over the existing one
-        @param entry_name {string} Name of the method that will be added
-        @param override {boolean} True = force commit, False = ask user
-        """
-        commit_flag = False
-        if override:
-            commit_flag = True
-        else:
-            # Determine if we should overwrite existing
-            commit = input("Overwrite existing "+entry_name+" entry? [Y/N]").upper()
-            if commit in ['Y', "YES"]:
-                commit_flag = True
-        return commit_flag
-
-    def _get_commit_new_flag(self, entry_name:str)->bool:
-        """!
-        @brief Determine if the user is ready to commit the new entry
-        @param entry_name {string} Name of the method that will be added
-        """
-        commit = input("Add new "+entry_name+" entry? [Y/N]").upper()
-        return bool(commit in ['Y', "YES"])
-
-    def _get_commit_flag(self, entry_name:str, entry_keys:list, override:bool = False)->bool:
-        """!
-        @brief Determine if the user is ready to commit the new entry
-        @param entry_name {string} Name of the method that will be added
-        @param entry_keys {list of keys} List of the existing entry keys
-        @param override {boolean} True = force commit, False = ask user
-        """
-        if entry_name in entry_keys:
-            flag = self._get_commit_over_write_flag(entry_name, override)
-        else:
-            flag = self._get_commit_new_flag(entry_name)
-        return flag
 
     def set_base_class_name(self, class_name:str):
         """!
@@ -450,9 +417,10 @@ class StringClassDescription():
                 int_array_size = int(array_size)
                 if 0 < int_array_size < 65536:
                     final_mod = ParamRetDict.set_type_mod_array_size(current_mod, int_array_size)
+                    retry = False
                 else:
                     print ("Error: must be a valid number between 1 and 65535")
-            except TypeError:
+            except:   # pylint: disable=bare-except
                 print ("Error: must be an integer value")
 
         return final_mod
@@ -499,12 +467,14 @@ class StringClassDescription():
         """
         var_type = ""
         while var_type == "":
-            if return_type:
-                prompt_str = "Enter return base type"
-            else:
-                prompt_str = "Enter parameter base type"
             ## @todo add float
-            prompt_str += " [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: "
+            type_choice = " [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: "
+
+            if return_type:
+                prompt_str = "Enter return base type"+type_choice
+            else:
+                prompt_str = "Enter parameter base type"+type_choice
+
             input_type = input(prompt_str).lower()
 
             # Check validity
@@ -622,7 +592,7 @@ class StringClassDescription():
 
         print("Enter translation template string. Use @paramName@ in the string to indicate")
         print("where the function parameters should be inserted.")
-        print("Example with single input parameter name \"keyString\": ")
+        print("Example with single input parameter name \"keyString\":")
         print("  Found argument key @keyString@")
 
         while not strvalid:
@@ -633,9 +603,7 @@ class StringClassDescription():
             if not strvalid:
                 if (len(param_list) > mcount) and (len(param_list) > pcount):
                     errstr = "Error: Template parameter missing, found "
-                    errstr += str(mcount)
-                    errstr += " of "
-                    errstr += str(len(param_list))
+                    errstr += str(mcount)+" of "+str(len(param_list))
                     errstr += " expected template parameters."
                     print (errstr)
                 elif (len(param_list) > mcount) and (len(param_list) == pcount):
@@ -644,29 +612,22 @@ class StringClassDescription():
                     print (errstr)
                 elif (len(param_list) == mcount) and (len(param_list) < pcount):
                     errstr = "Error: Too many template parameters in input string, expected "
-                    errstr += str(mcount)
-                    errstr += " found "
-                    errstr += str(pcount)
+                    errstr += str(mcount)+" found "+str(pcount)
                     print (errstr)
                 else:
                     print ("Error: Translation template parameter list does not match expected.")
                     fnd_str = "   Found "
-                    fnd_str += str(pcount)
-                    fnd_str += " parameters of expected "
-                    fnd_str += str(len(param_list))
-                    fnd_str += " parameters in string."
+                    fnd_str += str(pcount)+" parameters of expected "
+                    fnd_str += str(len(param_list))+" parameters in string."
                     print (fnd_str)
-                    matchstr = "   Matched "
-                    matchstr += str(mcount)
+                    matchstr = "   Matched "+str(mcount)
                     matchstr += " parameters of expected "
                     matchstr += str(len(param_list))
                     matchstr += " parameters in string."
                     print (matchstr)
 
-                print("User input template:")
-                print("    "+translate_string)
-                print("Expected parameter list:")
-                print("    "+expected_param_help)
+                print("User input template:\n    "+translate_string)
+                print("Expected parameter list:\n    "+expected_param_help)
 
         return parsestr
 
@@ -704,16 +665,13 @@ class StringClassDescription():
                                                               translate_string)
 
             # Print entry for user to inspect
-            print("New Entry:")
-            print(new_entry)
-            commit = input("Is this correct? [Y/N]").upper()
-            if commit in ['Y', "YES"]:
-                entry_correct = True
+            entry_correct = new_entry_correct(new_entry)
+
 
         # Test existing for match
-        commit_flag = self._get_commit_flag(method_name,
-                                            self.string_jason_data['translateMethods'].keys(),
-                                            override)
+        commit_flag = get_commit_flag(method_name,
+                                      self.string_jason_data['translateMethods'].keys(),
+                                      override)
         if commit_flag:
             self.string_jason_data['translateMethods'][method_name] = new_entry
             self._translate_method_text(method_name, language_list)
@@ -745,9 +703,9 @@ class StringClassDescription():
         if not status:
             err_str = "Error: Invalid translation string: "
             err_str += translate_string
-            err_str += ". pcount= "
+            err_str += ". param_count = "
             err_str += str(pcount)
-            err_str += " mcount= "+str(mcount)
+            err_str += " match_count = "+str(mcount)
             print (err_str)
             return False
 
@@ -760,7 +718,7 @@ class StringClassDescription():
         commit_flag = True
         if method_name in self.string_jason_data['translateMethods'].keys():
             # Determine if we should overwrite existing
-            commit_flag = self._get_commit_over_write_flag(method_name, override)
+            commit_flag = get_commit_over_write_flag(method_name, override)
 
         if commit_flag:
             self.string_jason_data['translateMethods'][method_name] = new_entry
@@ -831,9 +789,9 @@ class StringClassDescription():
                 entry_correct = True
 
         # Check for existing for match
-        commit_flag = self._get_commit_flag(method_name,
-                                            self.string_jason_data['propertyMethods'].keys(),
-                                            override)
+        commit_flag = get_commit_flag(method_name,
+                                      self.string_jason_data['propertyMethods'].keys(),
+                                      override)
         if commit_flag:
             self.string_jason_data['propertyMethods'][method_name] = new_entry
 
@@ -861,9 +819,9 @@ class StringClassDescription():
             new_entry = self._define_property_function_entry(property_name, method_desc,
                                                              return_type, return_desc, is_list)
 
-            commit_flag = self._get_commit_flag(method_name,
-                                                self.string_jason_data['propertyMethods'].keys(),
-                                                override)
+            commit_flag = get_commit_flag(method_name,
+                                          self.string_jason_data['propertyMethods'].keys(),
+                                          override)
             if commit_flag:
                 # Add the entry
                 self.string_jason_data['propertyMethods'][method_name] = new_entry

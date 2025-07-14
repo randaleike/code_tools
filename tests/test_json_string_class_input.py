@@ -27,13 +27,15 @@ Unittest for programmer base tools utility
 import os
 import io
 import contextlib
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from code_tools_grocsoftware.base.json_string_class_description import TransTxtParser
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 
 from tests.dir_init import TESTFILEPATH
+
+# pylint: disable=protected-access
 
 class Test02StringClassDescription:
     """!
@@ -83,7 +85,7 @@ class Test02StringClassDescription:
         @brief Test _input_iso_translate_code(), invalid input
         """
         input_str = (text for text in ["", "de1", "d", "german", "de"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         output = io.StringIO()
@@ -101,7 +103,7 @@ class Test02StringClassDescription:
         @brief Test _input_var_method_name(), method_name=true, good input
         """
         input_str = (text for text in ["validMethodName", "validMethodName2", "valid_method_name", "valid_method3_name"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         output = io.StringIO()
@@ -118,7 +120,7 @@ class Test02StringClassDescription:
         @brief Test _input_var_method_name(), method_name=true, invalid input
         """
         input_str = (text for text in ["", "2invalid_method_name", "invalid-method-name", "invalid;Name", "validMethodName"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         output = io.StringIO()
@@ -136,7 +138,7 @@ class Test02StringClassDescription:
         @brief Test _input_var_method_name(), method_name=false, good input
         """
         input_str = (text for text in ["validParamName", "validParamName2", "valid_param_name", "valid_param3_name"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         output = io.StringIO()
@@ -153,7 +155,7 @@ class Test02StringClassDescription:
         @brief Test _input_var_method_name(), method_name=false, invalid input
         """
         input_str = (text for text in ["", "2invalid_param_name", "invalid-param-name", "invalid#ParamName",  "validParamName"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         output = io.StringIO()
@@ -199,7 +201,7 @@ class Test02StringClassDescription:
         """
         input_list = ["0", "65636", "100000", "-1", "ten", "one", "10"]
         input_str = (text for text in input_list)
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         testobj = StringClassDescription()
@@ -220,7 +222,7 @@ class Test02StringClassDescription:
         """!
         @brief Test _input_type_modifier(), Simple case, all no
         """
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return 'n'
 
         output = io.StringIO()
@@ -237,7 +239,7 @@ class Test02StringClassDescription:
                      'refAns': "n",
                      'undefAns': "n",
                      'arrayAns': "n"}
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             if prompt == "Is full type a list [y/n]:":
                 return input_dict['listAns']
             elif prompt == "Is full type a pointer [y/n]:":
@@ -283,7 +285,7 @@ class Test02StringClassDescription:
                      'refAns': "n",
                      'undefAns': "n",
                      'arrayAns': "n"}
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             if prompt == "Is full type a list [y/n]:":
                 return input_dict['listAns']
             elif prompt == "Is full type a pointer [y/n]:":
@@ -352,7 +354,7 @@ class Test02StringClassDescription:
         """!
         @brief Test _input_type_modifier(), all yes, except array
         """
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             if prompt == "Is full type an array [y/n]:":
                 return 'n'
             elif prompt == "Size of the array in entries: ":
@@ -370,7 +372,7 @@ class Test02StringClassDescription:
         """!
         @brief Test _input_type_modifier(), all yes
         """
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             if prompt == "Size of the array in entries: ":
                 return "7"
             else:
@@ -394,7 +396,7 @@ class Test02StringClassDescription:
             input_list.append(element)
 
         input_str = (text for text in input_list)
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
 
         output = io.StringIO()
@@ -422,7 +424,7 @@ class Test02StringClassDescription:
             input_list.append(element)
 
         input_str = (text for text in input_list)
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
 
         output = io.StringIO()
@@ -450,7 +452,7 @@ class Test02StringClassDescription:
             input_list.append(element)
 
         input_str = (text for text in input_list)
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
 
         output = io.StringIO()
@@ -478,7 +480,7 @@ class Test02StringClassDescription:
             input_list.append(element)
 
         input_str = (text for text in input_list)
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
 
         output = io.StringIO()
@@ -506,7 +508,7 @@ class Test02StringClassDescription:
             input_list.append(element)
 
         input_str = (text for text in input_list)
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
 
         output = io.StringIO()
@@ -529,7 +531,7 @@ class Test02StringClassDescription:
         """
         custom_type_list = ["test", "test1", "test_underscore", "namespace::test", "test2__underscore"]
         custom_type_names = (text for text in custom_type_list)
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             if prompt == 'Enter custom type: ':
                 return next(custom_type_names)
             elif prompt == 'Enter return base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ':
@@ -556,7 +558,7 @@ class Test02StringClassDescription:
         """
         custom_type_list = ["test", "test1", "test_underscore", "namespace::test", "test2__underscore"]
         custom_type_names = (text for text in custom_type_list)
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             if prompt == 'Enter custom type: ':
                 return next(custom_type_names)
             elif prompt == 'Enter return base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ':
@@ -583,7 +585,7 @@ class Test02StringClassDescription:
         """
         custom_type_list = ["1test", "test-dash", "test@", "namespace??test", "goodName"]
         custom_type_names = (text for text in custom_type_list)
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             if prompt == 'Enter custom type: ':
                 return next(custom_type_names)
             elif prompt == 'Enter return base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ':
@@ -613,7 +615,7 @@ class Test02StringClassDescription:
         """
         custom_type_list = ["1test", "test-dash", "test@", "namespace??test", "goodName"]
         custom_type_names = (text for text in custom_type_list)
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             if prompt == 'Enter custom type: ':
                 return next(custom_type_names)
             elif prompt == 'Enter return base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ':
@@ -642,7 +644,7 @@ class Test02StringClassDescription:
         @brief Test _input_param_return_type(), invalid type selection
         """
         input_str = (text for text in ["x", "a", "dict", "i", "x", "z", "list", "i"])
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
 
         output = io.StringIO()
@@ -668,7 +670,7 @@ class Test02StringClassDescription:
         """!
         @brief Test _input_parameter_data(), simple as all the sub functions have already been tested
         """
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             if ((prompt == "Is full type a list [y/n]:") or
                 (prompt == "Is full type a pointer [y/n]:") or
                 (prompt == "Is full type a reference [y/n]:") or
@@ -699,7 +701,7 @@ class Test02StringClassDescription:
         """!
         @brief Test _input_return_data(), simple as all the sub functions have already been tested
         """
-        def test_mock_in(prompt):
+        def test_mock_in(prompt:str)->str:
             if ((prompt == "Is full type a list [y/n]:") or
                 (prompt == "Is full type a pointer [y/n]:") or
                 (prompt == "Is full type a reference [y/n]:") or
@@ -817,9 +819,11 @@ class Test02StringClassDescription:
             assert parsed_str_data[1][0] == TransTxtParser.parsed_type_param
             assert parsed_str_data[1][1] == "foo"
 
-            expected_str = "Enter translation template string. Use @paramName@ in the string to indicate where the \n"
-            expected_str += "function parameters should be inserted.\n"
-            expected_str += "Example with single input parameter name \"keyString\": Found argument key @keyString@\n"
+            expected_str = "Enter translation template string. Use @paramName@ in the string " \
+                           "to indicate\n"
+            expected_str += "where the function parameters should be inserted.\n"
+            expected_str += "Example with single input parameter name \"keyString\":\n"
+            expected_str += "  Found argument key @keyString@\n"
             assert output.getvalue() == expected_str
 
     def test31_input_translate_string_with_too_many_error(self):
@@ -827,7 +831,7 @@ class Test02StringClassDescription:
         @brief Test _input_translate_string method, improper message, too many params
         """
         input_str = (text for text in ["Test string with input @foo@ and @moo@", "Test string with input @foo@"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         output = io.StringIO()
@@ -838,22 +842,27 @@ class Test02StringClassDescription:
             assert isinstance(parsed_str_data, list)
             assert len(parsed_str_data) == 2
 
-            expected_str = "Enter translation template string. Use @paramName@ in the string to indicate where the \n"
-            expected_str += "function parameters should be inserted.\n"
-            expected_str += "Example with single input parameter name \"keyString\": Found argument key @keyString@\n"
-            expected_str += "Error: Too many template parameters in input string, expected 1 found 2\n"
+            expected_str = "Enter translation template string. Use @paramName@ in the string" \
+                           " to indicate\n"
+            expected_str += "where the function parameters should be inserted.\n"
+            expected_str += "Example with single input parameter name \"keyString\":\n"
+            expected_str += "  Found argument key @keyString@\n"
+
+            expected_str += "Error: Too many template parameters in input string, expected 1 " \
+                            "found 2\n"
             expected_str += "User input template:\n"
             expected_str += "    Test string with input @foo@ and @moo@\n"
             expected_str += "Expected parameter list:\n"
             expected_str += "    @foo@\n"
             assert output.getvalue() == expected_str
 
+
     def test32_input_translate_string_with_too_few_error(self):
         """!
         @brief Test _input_translate_string method, improper message
         """
         input_str = (text for text in ["Test string with input @foo@", "Test string with input @foo@ and @moo@"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         output = io.StringIO()
@@ -865,10 +874,14 @@ class Test02StringClassDescription:
             assert isinstance(parsed_str_data, list)
             assert len(parsed_str_data) == 4
 
-            expected_str = "Enter translation template string. Use @paramName@ in the string to indicate where the \n"
-            expected_str += "function parameters should be inserted.\n"
-            expected_str += "Example with single input parameter name \"keyString\": Found argument key @keyString@\n"
-            expected_str += "Error: Template parameter missing, found 1 of 2 expected template parameters.\n"
+            expected_str = "Enter translation template string. Use @paramName@ in the string" \
+                           " to indicate\n"
+            expected_str += "where the function parameters should be inserted.\n"
+            expected_str += "Example with single input parameter name \"keyString\":\n"
+            expected_str += "  Found argument key @keyString@\n"
+
+            expected_str += "Error: Template parameter missing, found 1 of 2 expected " \
+                            "template parameters.\n"
             expected_str += "User input template:\n"
             expected_str += "    Test string with input @foo@\n"
             expected_str += "Expected parameter list:\n"
@@ -883,7 +896,7 @@ class Test02StringClassDescription:
                                       "Test string with input @foo@ and @goo@",
                                       "Test string with input @doo@ and @goo@",
                                       "Test string with input @foo@ and @moo@"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         output = io.StringIO()
@@ -895,9 +908,12 @@ class Test02StringClassDescription:
             assert isinstance(parsed_str_data, list)
             assert len(parsed_str_data) == 4
 
-            expected_str = "Enter translation template string. Use @paramName@ in the string to indicate where the \n"
-            expected_str += "function parameters should be inserted.\n"
-            expected_str += "Example with single input parameter name \"keyString\": Found argument key @keyString@\n"
+            expected_str = "Enter translation template string. Use @paramName@ in the string" \
+                           " to indicate\n"
+            expected_str += "where the function parameters should be inserted.\n"
+            expected_str += "Example with single input parameter name \"keyString\":\n"
+            expected_str += "  Found argument key @keyString@\n"
+
             expected_str += "Error: Template parameter(s) misspelled, spelling error count 1\n"
             expected_str += "User input template:\n"
             expected_str += "    Test string with input @goo@ and @moo@\n"
@@ -921,7 +937,7 @@ class Test02StringClassDescription:
         """
         input_str = (text for text in ["Test string with input @foo@, @foo@ and @moo@",
                                       "Test string with input @foo@ and @moo@"])
-        def test_mock_in(prompt):
+        def test_mock_in(_:str)->str:
             return next(input_str)
 
         output = io.StringIO()
@@ -933,10 +949,14 @@ class Test02StringClassDescription:
             assert isinstance(parsed_str_data, list)
             assert len(parsed_str_data) == 4
 
-            expected_str = "Enter translation template string. Use @paramName@ in the string to indicate where the \n"
-            expected_str += "function parameters should be inserted.\n"
-            expected_str += "Example with single input parameter name \"keyString\": Found argument key @keyString@\n"
-            expected_str += "Error: Translation template parameter list does not match expected.\n"
+            expected_str = "Enter translation template string. Use @paramName@ in the string" \
+                           " to indicate\n"
+            expected_str += "where the function parameters should be inserted.\n"
+            expected_str += "Example with single input parameter name \"keyString\":\n"
+            expected_str += "  Found argument key @keyString@\n"
+
+            expected_str += "Error: Translation template parameter list does not match " \
+                            "expected.\n"
             expected_str += "   Found 3 parameters of expected 2 parameters in string.\n"
             expected_str += "   Matched 3 parameters of expected 2 parameters in string.\n"
             expected_str += "User input template:\n"
@@ -944,3 +964,5 @@ class Test02StringClassDescription:
             expected_str += "Expected parameter list:\n"
             expected_str += "    @foo@, @moo@\n"
             assert output.getvalue() == expected_str
+
+# pylint: enable=protected-access

@@ -27,7 +27,7 @@ for a language string generation library
 
 import re
 
-def MultiLineFormat(raw_text:str, max_length:int = 80, padchar:str|None = None)->list:
+def mult_line_format(raw_text:str, max_length:int = 80, padchar:str = None)->list:
     """!
     @brief Break the long text string into a list of strings that do not
            exceed the max_length input parameter

@@ -1,6 +1,5 @@
 """@package test_programmer_tools
 Unittest for programmer base tools utility
-
 """
 
 #==========================================================================
@@ -30,6 +29,8 @@ from datetime import datetime
 
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.python_gen.file_gen_base import GeneratePythonFileHelper
+
+# pylint: disable=protected-access
 
 class Test01CppFilehelper:
     """!
@@ -222,34 +223,34 @@ class Test01CppFilehelper:
         helper = GeneratePythonFileHelper()
 
         # Test the xlate path
-        assert helper._declare_type('string', ParamRetDict.type_mod_undef) == "str|None"
+        assert helper._declare_type('string', ParamRetDict.type_mod_undef) == "str"
 
         typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ptr
-        assert helper._declare_type('string', typemod) == "str|None"
+        assert helper._declare_type('string', typemod) == "str"
 
         typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ref
-        assert helper._declare_type('string', typemod) == "str|None"
+        assert helper._declare_type('string', typemod) == "str"
 
         typemod = (8 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_undef
-        assert helper._declare_type('string', typemod) == "list|None"
+        assert helper._declare_type('string', typemod) == "list"
 
         typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list
-        assert helper._declare_type('string', typemod) == "list|None"
+        assert helper._declare_type('string', typemod) == "list"
 
         typemod = (25 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ptr
-        assert helper._declare_type('string', typemod) == "list|None"
+        assert helper._declare_type('string', typemod) == "list"
 
         typemod = (7 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ref
-        assert helper._declare_type('string', typemod) == "list|None"
+        assert helper._declare_type('string', typemod) == "list"
 
         typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list
-        assert helper._declare_type('string', typemod) == "list|None"
+        assert helper._declare_type('string', typemod) == "list"
 
         typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list | ParamRetDict.type_mod_ptr
-        assert helper._declare_type('string', typemod) == "list|None"
+        assert helper._declare_type('string', typemod) == "list"
 
         typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list | ParamRetDict.type_mod_ref
-        assert helper._declare_type('string', typemod) == "list|None"
+        assert helper._declare_type('string', typemod) == "list"
 
     def test12_xlate_param_list(self):
         """!
@@ -557,11 +558,11 @@ class Test01CppFilehelper:
 
     def test30_gen_include_block(self):
         """!
-        @brief Test the _gen_importBlock method
+        @brief Test the _gen_import_block method
         """
         helper = GeneratePythonFileHelper()
         include_list = [("re", None), ("datetime", "datetime"), ("MyImportClass", "import_module_name")]
-        include_text = helper._gen_importBlock(include_list)
+        include_text = helper._gen_import_block(include_list)
         assert len(include_text) == len(include_list) + 1
         assert include_text[0] == "// Imports\n"
         assert include_text[1] == "import re\n"
@@ -612,7 +613,7 @@ class Test01CppFilehelper:
 
         test_text = helper._gen_class_open("MyTestClassName", "My class description")
         assert len(test_text) == 4
-        assert test_text[0] == "class MyTestClassName():\n"
+        assert test_text[0] == "class MyTestClassName:\n"
         assert test_text[1] == '    """!\n'
         assert test_text[2] == "      @brief My class description\n"
         assert test_text[3] == '    """\n'
@@ -637,11 +638,12 @@ class Test01CppFilehelper:
         helper = GeneratePythonFileHelper()
 
         test_text = helper._gen_class_open("MyTestClassName", "My class description", "MyBaseClass", "final", 2)
-        assert len(test_text) == 4
-        assert test_text[0] == "  class MyTestClassName(MyBaseClass):\n"
-        assert test_text[1] == '      """!\n'
-        assert test_text[2] == "        @brief My class description\n"
-        assert test_text[3] == '      """\n'
+        assert len(test_text) == 5
+        assert test_text[0] == "  @final\n"
+        assert test_text[1] == "  class MyTestClassName(MyBaseClass):\n"
+        assert test_text[2] == '      """!\n'
+        assert test_text[3] == "        @brief My class description\n"
+        assert test_text[4] == '      """\n'
 
     def test37_gen_class_close(self):
         """!
@@ -692,7 +694,7 @@ class Test01CppFilehelper:
         var_list = []
         test_text = helper._declare_structure("MyTestStructName", var_list, 0, "Test structure")
         assert len(test_text) == 5
-        assert test_text[0] == "class MyTestStructName():\n"
+        assert test_text[0] == "class MyTestStructName:\n"
         assert test_text[1] == '    """!\n'
         assert test_text[2] == "      @brief Test structure\n"
         assert test_text[3] == '    """\n'
@@ -709,7 +711,7 @@ class Test01CppFilehelper:
         var_list = [member1, member2]
         test_text = helper._declare_structure("MyTestStructName", var_list, 0, "Test structure")
         assert len(test_text) == 7
-        assert test_text[0] == "class MyTestStructName():\n"
+        assert test_text[0] == "class MyTestStructName:\n"
         assert test_text[1] == '    """!\n'
         assert test_text[2] == "      @brief Test structure\n"
         assert test_text[3] == '    """\n'
@@ -868,5 +870,8 @@ class Test01CppFilehelper:
         helper = GeneratePythonFileHelper()
 
         test_text = helper._gen_class_open("MyTestClassName", None, "MyBaseClass", "final", 2)
-        assert len(test_text) == 1
-        assert test_text[0] == "  class MyTestClassName(MyBaseClass):\n"
+        assert len(test_text) == 2
+        assert test_text[0] == "  @final\n"
+        assert test_text[1] == "  class MyTestClassName(MyBaseClass):\n"
+
+# pylint: enable=protected-access

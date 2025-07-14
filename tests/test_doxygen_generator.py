@@ -33,14 +33,14 @@ class UnittestDoxygenCommentBlock:
     """!
     Doxygen comment block test cases
     """
-    def set_up_params(self, block_start:str|None, block_end:str|None, block_line:str|None, single_line:str|None, add_param:bool):
+    def set_up_params(self, block_start:str, block_end:str, block_line:str, single_line:str, add_param:bool):
         """!
         @brief Common test set_up routine
 
-        @param block_start {string|None} Doxygen comment block start for the programming language
-        @param block_end {string|None} Doxygen comment block end for the programming language
-        @param block_line {string|None} Doxygen comment block line prefix for the programming language
-        @param single_line {string|None} Doxygen comment single line start for the programming language
+        @param block_start {string} Doxygen comment block start for the programming language
+        @param block_end {string} Doxygen comment block end for the programming language
+        @param block_line {string} Doxygen comment block line prefix for the programming language
+        @param single_line {string} Doxygen comment single line start for the programming language
         @param add_param {boolean} True, add parameter type to documentation comment, False, do not add type to comment
         """
         self.block_start = block_start
