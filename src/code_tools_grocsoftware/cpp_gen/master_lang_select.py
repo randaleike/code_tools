@@ -37,8 +37,10 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
                  dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
         """!
         @brief MasterSelectFunctionGenerator constructor
-        @param owner {string} Owner name to use in the copyright header message or None to use tool name
-        @param eula_name {string} Name of the EULA to pass down to the BaseCppStringClassGenerator parent
+        @param owner {string} Owner name to use in the copyright header message
+                              or None to use tool name
+        @param eula_name {string} Name of the EULA to pass down to the BaseCppStringClassGenerator
+                                  parent
         @param base_class_name {string} Name of the base class for name generation
         @param method_name {string} Function name to be used for generation
         @param dynnamic_compile_switch {string} Dynamic compile switch for #if generation
@@ -47,11 +49,16 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
         self.select_function_name = base_class_name+"::"+method_name
         self.select_base_function_name = method_name
 
-        self.brief_desc = "Determine the OS use OS specific functions to determine the correct local language" \
-                         "based on the OS specific local language setting and return the correct class object"
+        self.brief_desc = "Determine the OS use OS specific functions to determine the " \
+                          "correct local language based on the OS specific local language " \
+                          "setting and return the correct class object"
         self.doxy_comment_gen = CDoxyCommentGenerator()
 
     def get_function_name(self)->str:
+        """!
+        @brief Return the selection function name
+        @return string - Selection function name
+        """
         return self.select_function_name
 
     def get_function_desc(self)->tuple:
@@ -66,7 +73,10 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
         @brief Get the function declaration string for the given name
         @return string list - Function comment block and declaration start
         """
-        code_list = self._define_function_with_decorations(self.select_function_name, self.brief_desc, [], self.base_intf_ret_ptr_dict)
+        code_list = self.define_function_with_decorations(self.select_function_name,
+                                                          self.brief_desc,
+                                                          [],
+                                                          self.base_intf_ret_ptr_dict)
         code_list.append("{\n")
         return code_list
 
@@ -75,7 +85,7 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
         @brief Get the function declaration string for the given name
         @return string - Function close with comment
         """
-        return self._end_function(self.select_function_name)
+        return self.end_function(self.select_function_name)
 
     def gen_function(self, os_lang_selectors)->list:
         """!
@@ -101,7 +111,8 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
 
         # Add the #else case
         function_body.append("#else // not defined os\n")
-        function_body.append(body_prefix+"#error No language generation method defined for this OS\n")
+        errmsg = "#error No language generation method defined for this OS\n"
+        function_body.append(body_prefix+errmsg)
 
         # Complete the function
         function_body.append("#endif // defined os\n")
@@ -134,13 +145,13 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
 
         # Generate the test
         test_block_name = "SelectFunction"
-        body_indentIndex = 4
-        body_indent = "".rjust(body_indentIndex, " ")
+        body_indent_idx = 4
+        body_indent = "".rjust(body_indent_idx, " ")
         breif_desc = "Test "+self.select_function_name+" selection case"
         test_body.extend(self.doxy_comment_gen.gen_doxy_method_comment(breif_desc, []))
 
         test_var = "test_var"
-        test_varDecl = self.base_intf_ret_ptr_type+" "+test_var
+        test_var_decl = self.base_intf_ret_ptr_type+" "+test_var
         test_body.append("TEST("+test_block_name+", TestLocalSelectMethod)\n")
         test_body.append("{\n")
 
@@ -154,7 +165,8 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
             else:
                 test_body.append("#elif "+os_selector.get_os_define()+"\n")
             test_body.append(body_indent+"// Get the expected value\n")
-            test_body.extend(os_selector.gen_unittest_function_call(expected_parser, body_indentIndex))
+            test_body.extend(os_selector.gen_unittest_function_call(expected_parser,
+                                                                    body_indent_idx))
 
         # Add the #else case
         test_body.append("#else // not defined os\n")
@@ -163,11 +175,11 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
         # Complete the function
         test_body.append("#endif // defined os\n")
         get_expected_val = expected_parser+"->"+get_iso_method+"().c_str()"
-        test_varTest = test_var+"->"+get_iso_method+"().c_str()"
+        expected_val = test_var+"->"+get_iso_method+"().c_str()"
         test_body.append("\n") # whitespace for readability
 
         test_body.append(body_indent+"// Generate the test language string object\n")
-        test_body.append(body_indent+test_varDecl+" = "+self.select_function_name+"();\n")
-        test_body.append(body_indent+"EXPECT_STREQ("+get_expected_val+", "+test_varTest+");\n")
+        test_body.append(body_indent+test_var_decl+" = "+self.select_function_name+"();\n")
+        test_body.append(body_indent+"EXPECT_STREQ("+get_expected_val+", "+expected_val+");\n")
         test_body.append(self.gen_function_end())
         return test_body

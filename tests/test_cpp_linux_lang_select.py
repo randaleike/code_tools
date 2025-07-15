@@ -70,7 +70,7 @@ class TestClass01LinuxLangSelect:
         assert test_obj.param_dict_list[0] == ParamRetDict.build_param_dict("langId",
                                                                                    "const char*",
                                                                                    "Current LANG value from the program environment")
-        assert test_obj.def_osString == "(defined(__linux__) || defined(__unix__))"
+        assert test_obj.def_os_str == "(defined(__linux__) || defined(__unix__))"
         assert isinstance(test_obj.lang_json_data, LanguageDescriptionList)
         assert isinstance(test_obj.doxy_comment_gen, CDoxyCommentGenerator)
 
@@ -87,7 +87,7 @@ class TestClass01LinuxLangSelect:
         assert test_obj.param_dict_list[0] == ParamRetDict.build_param_dict("langId",
                                                                             "const char*",
                                                                             "Current LANG value from the program environment")
-        assert test_obj.def_osString == "(defined(__linux__) || defined(__unix__))"
+        assert test_obj.def_os_str == "(defined(__linux__) || defined(__unix__))"
         assert isinstance(test_obj.lang_json_data, LanguageDescriptionList)
         assert isinstance(test_obj.doxy_comment_gen, CDoxyCommentGenerator)
 
@@ -111,7 +111,7 @@ class TestClass01LinuxLangSelect:
         """
         cpp_gen = BaseCppStringClassGenerator()
         test_obj = LinuxLangSelectFunctionGenerator(LanguageDescriptionList())
-        expected_list = cpp_gen._define_function_with_decorations(test_obj.select_function_name,
+        expected_list = cpp_gen.define_function_with_decorations(test_obj.select_function_name,
                                                              "Determine the correct local language class from the input LANG environment setting",
                                                              test_obj.param_dict_list,
                                                              test_obj.base_intf_ret_ptr_dict)
@@ -142,11 +142,11 @@ class TestClass01LinuxLangSelect:
         assert len(capture_list) == 41
 
         assert capture_list[0] == "#if (defined(__linux__) || defined(__unix__))\n"
-        assert capture_list[1] == cpp_gen._gen_include("<cstdlib>")
-        assert capture_list[2] == cpp_gen._gen_include("<regex>")
+        assert capture_list[1] == cpp_gen.gen_include("<cstdlib>")
+        assert capture_list[2] == cpp_gen.gen_include("<regex>")
         assert capture_list[3] == "\n"
 
-        expected_list = cpp_gen._define_function_with_decorations(test_obj.select_function_name,
+        expected_list = cpp_gen.define_function_with_decorations(test_obj.select_function_name,
                                                              "Determine the correct local language class from the input LANG environment setting",
                                                              test_obj.param_dict_list,
                                                              test_obj.base_intf_ret_ptr_dict)
@@ -194,7 +194,7 @@ class TestClass01LinuxLangSelect:
         assert capture_list[37] == "        "+cpp_gen._gen_make_ptr_return_statement(default_lang)
         assert capture_list[38] == "    } // end of if(nullptr != "+param_name+")\n"
         assert capture_list[39] == "} // end of "+test_obj.select_function_name+"()\n"
-        assert capture_list[40] == "#endif // "+test_obj.def_osString+"\n"
+        assert capture_list[40] == "#endif // "+test_obj.def_os_str+"\n"
 
     def test008_gen_return_function_call(self):
         """!
@@ -250,7 +250,7 @@ class TestClass01LinuxLangSelect:
 
         # Test starting block
         assert len(text_list) == 425
-        assert text_list[0] == "#if "+test_obj.def_osString+"\n"
+        assert text_list[0] == "#if "+test_obj.def_os_str+"\n"
         assert text_list[1] == "\n"
         assert text_list[2] == "#include <cstdlib>\n"
         assert text_list[3] == test_obj.gen_extern_definition()
@@ -274,9 +274,9 @@ class TestClass01LinuxLangSelect:
                 text_index += 1
 
             # Match unknown region test
-            unknown_regionTestName =lang_name.capitalize()+"_unknown_region_Selection"
+            unkn_region_tstname =lang_name.capitalize()+"_unknown_region_Selection"
             unknown_regionEnv = lang_code+"_XX.UTF-8"
-            expected_test_text = test_obj._gen_unittest_test(unknown_regionTestName, unknown_regionEnv, iso_code, "get_iso_code")
+            expected_test_text = test_obj._gen_unittest_test(unkn_region_tstname, unknown_regionEnv, iso_code, "get_iso_code")
             for index, expected_line in enumerate(expected_test_text):
                 assert text_list[text_index+index] == expected_line
 
@@ -293,7 +293,7 @@ class TestClass01LinuxLangSelect:
         text_index += len(expected_test_text)
 
         # Match end
-        assert text_list[424] == "#endif // "+test_obj.def_osString+"\n"
+        assert text_list[424] == "#endif // "+test_obj.def_os_str+"\n"
         assert text_index == 424
 
     def test012_gen_unit_test_function_call(self):
@@ -317,10 +317,10 @@ class TestClass01LinuxLangSelect:
         text_list = test_obj.get_unittest_extern_include()
 
         assert len(text_list) == 4
-        assert text_list[0] == "#if "+test_obj.def_osString+"\n"
+        assert text_list[0] == "#if "+test_obj.def_os_str+"\n"
         assert text_list[1] == "#include <cstdlib>\n"
         assert text_list[2] == get_expected_extern(test_obj.param_dict_list, test_obj.base_intf_ret_ptr_type, test_obj.select_function_name)
-        assert text_list[3] == "#endif // "+test_obj.def_osString+"\n"
+        assert text_list[3] == "#endif // "+test_obj.def_os_str+"\n"
 
     def test014_get_unittest_file_name(self):
         """!

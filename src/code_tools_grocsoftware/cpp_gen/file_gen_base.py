@@ -79,7 +79,7 @@ class GenerateCppFileHelper():
         else:
             self.eula = EulaText(eula_name)
 
-    def _declare_type(self, base_type:str, type_mod:int=0)->str:
+    def declare_type(self, base_type:str, type_mod:int=0)->str:
         """!
         @brief Generate the type text based on the input type name and type modification data
         @param base_type (str) Delclaration type
@@ -87,61 +87,70 @@ class GenerateCppFileHelper():
         @return string C++ type specification
         """
         type_return = base_type
-        if base_type in list(self.type_xlation_dict.keys()):
+        if base_type in self.type_xlation_dict:
             type_return = self.type_xlation_dict[base_type]
 
         array_size = ParamRetDict.get_array_size(type_mod)
         if array_size > 0:
             if ParamRetDict.is_mod_pointer(type_mod):
-                return "std::array<"+type_return+"*, "+str(array_size)+">"
+                typestr = "std::array<"+type_return+"*, "+str(array_size)+">"
             elif ParamRetDict.is_mod_reference(type_mod):
-                return "std::array<"+type_return+"&, "+str(array_size)+">"
+                typestr = "std::array<"+type_return+"&, "+str(array_size)+">"
             else:
-                return "std::array<"+type_return+", "+str(array_size)+">"
+                typestr = "std::array<"+type_return+", "+str(array_size)+">"
         elif ParamRetDict.is_mod_list(type_mod):
             if ParamRetDict.is_mod_pointer(type_mod):
-                return "std::list<"+type_return+"*>"
+                typestr = "std::list<"+type_return+"*>"
             elif ParamRetDict.is_mod_reference(type_mod):
-                return "std::list<"+type_return+"&>"
+                typestr = "std::list<"+type_return+"&>"
             else:
-                return "std::list<"+type_return+">"
+                typestr = "std::list<"+type_return+">"
         else:
             if ParamRetDict.is_mod_pointer(type_mod):
-                return type_return+"*"
+                typestr = type_return+"*"
             elif ParamRetDict.is_mod_reference(type_mod):
-                return type_return+"&"
+                typestr = type_return+"&"
             else:
-                return type_return
+                typestr = type_return
+        return typestr
 
-    def _xlate_params(self, param_dict_list:list)->list:
+    def xlate_params(self, param_dict_list:list)->list:
         """!
-        @brief Translate the generic parameter list type strings to the cpp specific parameter type strings
+        @brief Translate the generic parameter list type strings to the cpp specific
+               parameter type strings
         @param param_dict_list {list} List of ParamRetDict parameter dictionaries to translate
         @return list - List of ParamRetDict parameter dictionaries with the translated type
         """
         xlated_params = []
         for param in param_dict_list:
-            xlated_type = self._declare_type(ParamRetDict.get_param_type(param), ParamRetDict.get_param_type_mod(param))
-            xlated_param = ParamRetDict.build_param_dict_with_mod(ParamRetDict.get_param_name(param),
-                                                             xlated_type,
-                                                             ParamRetDict.get_param_desc(param),
-                                                             0)
+            name, ptype, desc, typemod = ParamRetDict.get_param_data(param)
+            xlated_type = self.declare_type(ptype, typemod)
+            xlated_param = ParamRetDict.build_param_dict_with_mod(name,
+                                                                  xlated_type,
+                                                                  desc,
+                                                                  0)
             xlated_params.append(xlated_param)
         return xlated_params
 
-    def _xlate_return_dict(self, ret_dict:dict)->dict:
+    def xlate_return_dict(self, ret_dict:dict)->dict:
         """!
         @brief Translate the generic return dictionary to the cpp specific return dictionary
         @param ret_dict {dictionary} ParamRetDict return dictionary to translate
-        @return dictionary - ParamRetDict return dictionary with the translated type or None if input is None
+        @return dictionary - ParamRetDict return dictionary with the translated type
+                             or None if input is None
         """
+        retvalue = None
         if ret_dict is not None:
-            xlated_type = self._declare_type(ParamRetDict.get_return_type(ret_dict), ParamRetDict.get_return_type_mod(ret_dict))
-            return ParamRetDict.build_return_dict_with_mod(xlated_type, ParamRetDict.get_return_desc(ret_dict), 0)
-        else:
-            return None
+            xlated_type = self.declare_type(ParamRetDict.get_return_type(ret_dict),
+                                            ParamRetDict.get_return_type_mod(ret_dict))
+            desc = ParamRetDict.get_return_desc(ret_dict)
+            retvalue = ParamRetDict.build_return_dict_with_mod(xlated_type,
+                                                               desc,
+                                                               0)
 
-    def _gen_function_ret_type(self, return_dict:dict)->str:
+        return retvalue
+
+    def gen_function_ret_type(self, return_dict:dict)->str:
         """!
         @brief Generate the function return+name string
         @param return_dict (dict) Return ParamRetDict dictionary
@@ -150,13 +159,13 @@ class GenerateCppFileHelper():
         if return_dict is not None:
             type_name = ParamRetDict.get_return_type(return_dict)
             type_mod = ParamRetDict.get_return_type_mod(return_dict)
-            return_text = self._declare_type(type_name, type_mod)
+            return_text = self.declare_type(type_name, type_mod)
             return_text += " "
         else:
             return_text = ""
         return return_text
 
-    def _gen_function_params(self, param_dict_list:list)->str:
+    def gen_function_params(self, param_dict_list:list)->str:
         """!
         @brief Generate the parameter method string
         @param param_dict_list (list) List of parameter dictionaries
@@ -169,17 +178,20 @@ class GenerateCppFileHelper():
             type_mod = ParamRetDict.get_param_type_mod(param_dict)
 
             param_text += param_prefix
-            param_text += self._declare_type(type_name, type_mod)
+            param_text += self.declare_type(type_name, type_mod)
             param_text += " "
             param_text += ParamRetDict.get_param_name(param_dict)
             param_prefix = ", "
         param_text += ")"
         return param_text
 
-    def _declare_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict = None,
-                                        indent:int = 0, no_doxygen:bool = False, prefix_decaration:str = None,
-                                        postfix_decaration:str = None, inlinecode:list = None,
-                                        long_desc:str = None)->list:
+    def declare_function_with_decorations(self, name:str, briefdesc:str,
+                                          param_dict_list:list, ret_dict:dict = None,
+                                          indent:int = 0, no_doxygen:bool = False,
+                                          prefix_decaration:str = None,
+                                          postfix_decaration:str = None,
+                                          inlinecode:list = None,
+                                          long_desc:str = None)->list:
         """!
         @brief Generate a function declatation text block with doxygen comment
 
@@ -188,10 +200,13 @@ class GenerateCppFileHelper():
         @param param_dict_list {list of dictionaries} - Return parameter data
         @param ret_dict {dictionary or None} - Return parameter data or None
         @param indent {integer} Comment and function declaration indentation
-        @param no_doxygen {boolean} True skip doxygen comment generation, False generate doxygen comment block
+        @param no_doxygen {boolean} True skip doxygen comment generation, False generate
+                                    doxygen comment block
         @param prefix_decaration {string} Valid C/C++ declaration prefix decoration, i.e "virtual"
-        @param postfix_decaration {string} Valid C/C++ declaration postfix decoration, i.e "const" | "override" ...
-        @param inlinecode {sting list or None} Inline code for the declaration or None id there is no inline definition
+        @param postfix_decaration {string} Valid C/C++ declaration postfix decoration,
+                                           i.e "const" | "override" ...
+        @param inlinecode {sting list or None} Inline code for the declaration or None id
+                                               there is no inline definition
         @param long_desc {string or None} Long description of the function
 
         @return string list - Function doxygen comment block and declaration
@@ -200,9 +215,13 @@ class GenerateCppFileHelper():
 
         # Add doxygen comment block
         if not no_doxygen:
-            xlated_paramList = self._xlate_params(param_dict_list)
-            xlated_ret = self._xlate_return_dict(ret_dict)
-            func_declare_text.extend(self.doxy_comment_gen.gen_doxy_method_comment(briefdesc, xlated_paramList, xlated_ret, long_desc, indent))
+            xlated_params = self.xlate_params(param_dict_list)
+            xlated_ret = self.xlate_return_dict(ret_dict)
+            func_declare_text.extend(self.doxy_comment_gen.gen_doxy_method_comment(briefdesc,
+                                                                                   xlated_params,
+                                                                                   xlated_ret,
+                                                                                   long_desc,
+                                                                                   indent))
 
         # Create function declaration line
         func_line = "".rjust(indent, ' ')
@@ -213,11 +232,11 @@ class GenerateCppFileHelper():
             func_line += " "
 
         # Construct main function declaration
-        func_line += self._gen_function_ret_type(ret_dict)
+        func_line += self.gen_function_ret_type(ret_dict)
         func_line += name
 
         # Add the function parameters
-        func_line += self._gen_function_params(param_dict_list)
+        func_line += self.gen_function_params(param_dict_list)
 
         # Add function post fix decorations if defined
         if postfix_decaration is not None:
@@ -246,9 +265,12 @@ class GenerateCppFileHelper():
         return func_declare_text
 
 
-    def _define_function_with_decorations(self, name:str, briefdesc:str, param_dict_list:list, ret_dict:dict,
-                                       no_doxygen:bool = False, prefix_decaration:str = None,
-                                       postfix_decaration:str = None, long_desc:list = None)->list:
+    def define_function_with_decorations(self, name:str, briefdesc:str,
+                                         param_dict_list:list, ret_dict:dict,
+                                         no_doxygen:bool = False,
+                                         prefix_decaration:str = None,
+                                         postfix_decaration:str = None,
+                                         long_desc:list = None)->list:
         """!
         @brief Generate a function definition start with doxygen comment
 
@@ -256,9 +278,12 @@ class GenerateCppFileHelper():
         @param briefdesc {string} Function description
         @param param_dict_list {list of dictionaries} - Return parameter data
         @param ret_dict {dictionary} - Return parameter data
-        @param no_doxygen {boolean} True skip doxygen comment generation, False generate doxygen comment block
-        @param prefix_decaration {string or None} Valid C/C++ decldefine_function_with_decorationsaration prefix decoration, i.e "virtual"
-        @param postfix_decaration {string or None} Valid C/C++ declaration postfix decoration, i.e "const" | "override" ...
+        @param no_doxygen {boolean} True skip doxygen comment generation, False generate
+                                    doxygen comment block
+        @param prefix_decaration {string or None} Valid C/C++ method declaration prefix
+                                                  decoration, i.e "virtual"
+        @param postfix_decaration {string or None} Valid C/C++ declaration postfix decoration,
+                                                   i.e "const" | "override" ...
         @param long_desc {string or None} Long description of the function
 
         @return string list - Function doxygen comment block and declaration start
@@ -268,9 +293,12 @@ class GenerateCppFileHelper():
 
         # Add doxygen comment block
         if not no_doxygen:
-            xlated_paramList = self._xlate_params(param_dict_list)
-            xlated_ret = self._xlate_return_dict(ret_dict)
-            func_define_text.extend(self.doxy_comment_gen.gen_doxy_method_comment(briefdesc, xlated_paramList, xlated_ret, long_desc))
+            xlated_param_list = self.xlate_params(param_dict_list)
+            xlated_ret = self.xlate_return_dict(ret_dict)
+            func_define_text.extend(self.doxy_comment_gen.gen_doxy_method_comment(briefdesc,
+                                                                                  xlated_param_list,
+                                                                                  xlated_ret,
+                                                                                  long_desc))
 
         # Add function prefix definitions if defined
         if prefix_decaration is not None:
@@ -278,9 +306,9 @@ class GenerateCppFileHelper():
             func_line += " "
 
         # Create function definition line
-        func_line += self._gen_function_ret_type(ret_dict)
+        func_line += self.gen_function_ret_type(ret_dict)
         func_line += name
-        func_line += self._gen_function_params(param_dict_list)
+        func_line += self.gen_function_params(param_dict_list)
 
         # Add function post fix decorations if defined
         if postfix_decaration is not None:
@@ -290,7 +318,7 @@ class GenerateCppFileHelper():
 
         return func_define_text
 
-    def _end_function(self, name:str)->str:
+    def end_function(self, name:str)->str:
         """!
         @brief Get the function declaration string for the given name
         @param name (string) - Function name
@@ -298,7 +326,8 @@ class GenerateCppFileHelper():
         """
         return "} // end of "+name+"()\n"
 
-    def _generate_generic_file_header(self, autotoolname:str, start_year:int=2025, owner:str = None)->list:
+    def generate_generic_file_header(self, autotoolname:str,
+                                     start_year:int=2025, owner:str = None)->list:
         """!
         @brief Generate the boiler plate file header with copyright and eula
 
@@ -312,7 +341,9 @@ class GenerateCppFileHelper():
         if owner is not None:
             # Generate copyright and EULA text
             current_year = datetime.now().year
-            copyright_eula_text.append(self.copyright_generator.create_new_copyright(owner, start_year, current_year))
+            copyright_eula_text.append(self.copyright_generator.create_new_copyright(owner,
+                                                                                     start_year,
+                                                                                     current_year))
             copyright_eula_text.append("") # white space for readability
             copyright_eula_text.append(self.eula.format_eula_name())
             copyright_eula_text.append("") # white space for readability
@@ -335,18 +366,19 @@ class GenerateCppFileHelper():
             comment_text.append(line+"\n")
         return comment_text
 
-    def _gen_include(self, include_name:str)->str:
+    def gen_include(self, include_name:str)->str:
         """!
         @brief Add Include line to the output file
         @param include_name {string} Name of the include file to add
         @return string - Include statement
         """
         if -1 == include_name.find("<"):
-            return "#include \""+include_name+"\"\n"
+            retstr = "#include \""+include_name+"\"\n"
         else:
-            return "#include "+include_name+"\n"
+            retstr = "#include "+include_name+"\n"
+        return retstr
 
-    def _gen_include_block(self, include_names:list)->list:
+    def gen_include_block(self, include_names:list)->list:
         """!
         @brief Generate a series if include line(s) for each name in the list
         @param include_names {list of strings} Name(s) of the include file to add
@@ -354,10 +386,10 @@ class GenerateCppFileHelper():
         """
         include_block = ["// Includes\n"]
         for include_name in include_names:
-            include_block.append(self._gen_include(include_name))
+            include_block.append(self.gen_include(include_name))
         return include_block
 
-    def _gen_namespace_open(self, namespace_name:str)->list:
+    def gen_namespace_open(self, namespace_name:str)->list:
         """!
         @brief Generate namespace start code for include file
         @param namespace_name {string} Name of the namespace
@@ -365,7 +397,7 @@ class GenerateCppFileHelper():
         """
         return ["namespace "+namespace_name+" {\n"]
 
-    def _gen_namespace_close(self, namespace_name:str)->list:
+    def gen_namespace_close(self, namespace_name:str)->list:
         """!
         @brief Generate namespace start code for include file
         @param namespace_name {string} Name of the namespace
@@ -373,7 +405,7 @@ class GenerateCppFileHelper():
         """
         return ["}; // end of namespace "+namespace_name+"\n"]
 
-    def _gen_using_namespace(self, namespace_name:str)->list:
+    def gen_using_namespace(self, namespace_name:str)->list:
         """!
         @brief Generate namespace start code for include file
         @param namespace_name {string} Name of the namespace
@@ -381,7 +413,7 @@ class GenerateCppFileHelper():
         """
         return ["using namespace "+namespace_name+";\n"]
 
-    def _gen_class_open(self, class_name:str, class_desc:str = None, inheritence:str = None,
+    def gen_class_open(self, class_name:str, class_desc:str = None, inheritence:str = None,
                       class_decoration:str = None, indent:int=0)->list:
         """!
         @brief Generate the class open code
@@ -399,7 +431,8 @@ class GenerateCppFileHelper():
 
         # Generate Doxygen class description
         if class_desc is not None:
-            code_text.extend(self.doxy_comment_gen.gen_doxy_class_comment(class_desc, block_indent=indent))
+            code_text.extend(self.doxy_comment_gen.gen_doxy_class_comment(class_desc,
+                                                                          block_indent=indent))
 
         # Generate class start
         decl_line = decl_indent+"class "+class_name
@@ -418,7 +451,7 @@ class GenerateCppFileHelper():
 
         return code_text
 
-    def _gen_class_close(self, class_name:str, indent:int=0)->list:
+    def gen_class_close(self, class_name:str, indent:int=0)->list:
         """!
         @brief Generate the class close code
 
@@ -429,8 +462,10 @@ class GenerateCppFileHelper():
         """
         return ["".rjust(indent, ' ')+"}; // end of "+class_name+" class\n"]
 
-    def _gen_class_default_constructor_destructor(self, class_name:str, indent:int = 8, virtual_destructor:bool = False,
-                                              no_doxy_comment_constructor:bool = False, no_copy:bool = False)->list:
+    def gen_class_default_constructor_destructor(self, class_name:str, indent:int = 8,
+                                                 virtual_destructor:bool = False,
+                                                 no_doxy_comment_constructor:bool = False,
+                                                 no_copy:bool = False)->list:
         """!
         @brief Generate default constructor(s)/destructor declarations for a class
 
@@ -438,16 +473,21 @@ class GenerateCppFileHelper():
         @param indent {number} Indentation space count for the declarations (default = 8)
         @param virtual_destructor {boolean} False if destructor is not virtual (default)
                                            True if virtual decoration on destructor
-        @param no_doxy_comment_constructor {boolean} Doxygen comment disable. False = generate doxygen comments,
-                                                  True = ommit comments
+        @param no_doxy_comment_constructor {boolean} Doxygen comment disable. False = generate
+                                                     doxygen comments, True = ommit comments
         @param no_copy {boolean} Disable copy constructors, True: copy/move constructors = delete
                                                            False: copy/move constructors = default
         @return list of strings - Code to output
         """
         # Setup params for the different constructors
-        other_reference = [ParamRetDict.build_param_dict("other", "const "+class_name+"&", "Reference to object to copy")]
-        other_move = [ParamRetDict.build_param_dict("other", class_name+"&&", "Reference to object to move")]
-        equate_return = ParamRetDict.build_return_dict(class_name+"&", "*this")
+        other_reference = [ParamRetDict.build_param_dict("other",
+                                                         "const "+class_name+"&",
+                                                         "Reference to object to copy")]
+        other_move = [ParamRetDict.build_param_dict("other",
+                                                    class_name+"&&",
+                                                    "Reference to object to move")]
+        equate_return = ParamRetDict.build_return_dict(class_name+"&",
+                                                       "*this")
         destructor_prefix = None
 
         if no_copy:
@@ -459,71 +499,75 @@ class GenerateCppFileHelper():
             destructor_prefix = "virtual"
 
         # Declare default default constructor
-        code_text = self._declare_function_with_decorations(class_name,
-                                                       "Construct a new "+class_name+" object",
-                                                       [],
-                                                       None,
-                                                       indent,
-                                                       no_doxy_comment_constructor,
-                                                       None,
-                                                       "= default")
+        code_text = self.declare_function_with_decorations(class_name,
+                                                           "Construct a new "+class_name+" object",
+                                                           [],
+                                                           None,
+                                                           indent,
+                                                           no_doxy_comment_constructor,
+                                                           None,
+                                                           "= default")
         if not no_doxy_comment_constructor:
             code_text.append("\n")      #whitespace for readability
 
         # Declare default copy constructor
-        code_text.extend(self._declare_function_with_decorations(class_name,
-                                                            "Copy constructor for a new "+class_name+" object",
-                                                            other_reference,
-                                                            None,
-                                                            indent,
-                                                            no_doxy_comment_constructor,
-                                                            None,
-                                                            copy_constructor_postfix))
+        briefdesc = "Copy constructor for a new "+class_name+" object"
+        code_text.extend(self.declare_function_with_decorations(class_name,
+                                                                briefdesc,
+                                                                other_reference,
+                                                                None,
+                                                                indent,
+                                                                no_doxy_comment_constructor,
+                                                                None,
+                                                                copy_constructor_postfix))
 
         if not no_doxy_comment_constructor:
             code_text.append("\n")      #whitespace for readability
 
         # Declare default move constructor
-        code_text.extend(self._declare_function_with_decorations(class_name,
-                                                            "Move constructor for a new "+class_name+" object",
-                                                            other_move,
-                                                            None,
-                                                            indent,
-                                                            no_doxy_comment_constructor,
-                                                            None,
-                                                            copy_constructor_postfix))
+        briefdesc = "Move constructor for a new "+class_name+" object"
+        code_text.extend(self.declare_function_with_decorations(class_name,
+                                                                briefdesc,
+                                                                other_move,
+                                                                None,
+                                                                indent,
+                                                                no_doxy_comment_constructor,
+                                                                None,
+                                                                copy_constructor_postfix))
 
         if not no_doxy_comment_constructor:
             code_text.append("\n")      #whitespace for readability
 
         # Declare default equate constructor
-        code_text.extend(self._declare_function_with_decorations("operator=",
-                                                            "Equate constructor for a new "+class_name+" object",
-                                                            other_reference,
-                                                            equate_return,
-                                                            indent,
-                                                            no_doxy_comment_constructor,
-                                                            None,
-                                                            copy_constructor_postfix))
+        briefdesc = "Equate constructor for a new "+class_name+" object"
+        code_text.extend(self.declare_function_with_decorations("operator=",
+                                                                briefdesc,
+                                                                other_reference,
+                                                                equate_return,
+                                                                indent,
+                                                                no_doxy_comment_constructor,
+                                                                None,
+                                                                copy_constructor_postfix))
 
         if not no_doxy_comment_constructor:
             code_text.append("\n")      #whitespace for readability
 
         # Declare default equate move constructor
-        code_text.extend(self._declare_function_with_decorations("operator=",
-                                                            "Equate move constructor for a new "+class_name+" object",
-                                                            other_move,
-                                                            equate_return,
-                                                            indent,
-                                                            no_doxy_comment_constructor,
-                                                            None,
-                                                            copy_constructor_postfix))
+        briefdesc = "Equate move constructor for a new "+class_name+" object"
+        code_text.extend(self.declare_function_with_decorations("operator=",
+                                                                briefdesc,
+                                                                other_move,
+                                                                equate_return,
+                                                                indent,
+                                                                no_doxy_comment_constructor,
+                                                                None,
+                                                                copy_constructor_postfix))
 
         if not no_doxy_comment_constructor:
             code_text.append("\n")      #whitespace for readability
 
         # Declare default destructor
-        code_text.extend(self._declare_function_with_decorations("~"+class_name,
+        code_text.extend(self.declare_function_with_decorations("~"+class_name,
                                                             "Destructor for "+class_name+" object",
                                                             [],
                                                             None,
@@ -534,7 +578,7 @@ class GenerateCppFileHelper():
         code_text.append("\n")      #whitespace for readability
         return code_text
 
-    def _declare_structure(self, name:str, var_dist_list:list, indent:int=0,
+    def declare_structure(self, name:str, var_dist_list:list, indent:int=0,
                           struct_desc:str = None,
                           prefix_decoration:str = None,
                           postfix_decoration:str = None)->list:
@@ -542,8 +586,10 @@ class GenerateCppFileHelper():
         @brief Generate a structure declaration
 
         @param name {string} Name of the structure
-        @param var_dist_list {list} List of ParamRetDict parameter dictionaries for the data elements
-        @param indent {integer} Number of spaces to indent the code declarations, default = 0
+        @param var_dist_list {list} List of ParamRetDict parameter dictionaries
+                                    for the data elements
+        @param indent {integer} Number of spaces to indent the code declarations,
+                                default = 0
         @param struct_desc {string} Doxygen structure description
         @param prefix_decoration {str} Structure definition prefix decorations
         @param postfix_decoration {str} Structure definition end decorations
@@ -566,7 +612,8 @@ class GenerateCppFileHelper():
 
         # Generate the body code
         for var_dict in var_dist_list:
-            code_text.append(body_indent+self._declare_var_statment(var_dict, 60-self.level_tab_size))
+            code_text.append(body_indent+self.declare_var_statment(var_dict,
+                                                                   60-self.level_tab_size))
 
         # Close the struture
         if postfix_decoration is not None:
@@ -575,7 +622,7 @@ class GenerateCppFileHelper():
             code_text.append(decl_indent+"};\n")
         return code_text
 
-    def _declare_var_statment(self, var_dict:dict, doxy_comment_indent:int = -1)->str:
+    def declare_var_statment(self, var_dict:dict, doxy_comment_indent:int = -1)->str:
         """!
         @brief Declare a class/interface variable
         @param var_dict {dict} ParamRetDict parameter dictionary describing the variable
@@ -585,7 +632,7 @@ class GenerateCppFileHelper():
         # Declare the variable
         type_name = ParamRetDict.get_param_type(var_dict)
         type_mod = ParamRetDict.get_param_type_mod(var_dict)
-        var_type_decl = self._declare_type(type_name, type_mod)
+        var_type_decl = self.declare_type(type_name, type_mod)
         var_decl = var_type_decl+" "+ParamRetDict.get_param_name(var_dict)+";"
 
         # Test for doxycomment skip
@@ -594,12 +641,13 @@ class GenerateCppFileHelper():
                 var_decl = var_decl.ljust(doxy_comment_indent, ' ')
             else:
                 var_decl+= " "
-            var_decl += self.doxy_comment_gen.gen_doxy_var_doc_str(ParamRetDict.get_param_desc(var_dict))
+            vardesc = ParamRetDict.get_param_desc(var_dict)
+            var_decl += self.doxy_comment_gen.gen_doxy_var_doc_str(vardesc)
 
         # Return the final data
         return var_decl+"\n"
 
-    def _gen_add_list_statment(self, list_name:str, value_name:str, is_text:bool=False)->str:
+    def gen_add_list_statment(self, list_name:str, value_name:str, is_text:bool=False)->str:
         """!
         @brief Generate a list add code statement
         @param list_name {string} Name of the list variable to add the value_name to
@@ -610,11 +658,12 @@ class GenerateCppFileHelper():
         @return string - CPP code text
         """
         if is_text:
-            return list_name+".emplace_back(\""+value_name+"\");"
+            retstr = list_name+".emplace_back(\""+value_name+"\");"
         else:
-            return list_name+".emplace_back("+value_name+");"
+            retstr = list_name+".emplace_back("+value_name+");"
+        return retstr
 
-    def _gen_return_statment(self, ret_value:str, is_text:bool=False)->str:
+    def gen_return_statment(self, ret_value:str, is_text:bool=False)->str:
         """!
         @brief Generate a list add code statement
         @param ret_value {string} Name of the return variable
@@ -624,6 +673,7 @@ class GenerateCppFileHelper():
         @return string - CPP code text
         """
         if is_text:
-            return "return \""+ret_value+"\";"
+            retstr = "return \""+ret_value+"\";"
         else:
-            return "return "+ret_value+";"
+            retstr = "return "+ret_value+";"
+        return retstr

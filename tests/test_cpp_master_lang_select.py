@@ -111,7 +111,7 @@ class TestClass01MasterLangSelect:
         """
         cpp_gen = BaseCppStringClassGenerator()
         test_obj = MasterSelectFunctionGenerator(LanguageDescriptionList())
-        expected_list = cpp_gen._define_function_with_decorations(test_obj.select_function_name,
+        expected_list = cpp_gen.define_function_with_decorations(test_obj.select_function_name,
                                                              test_obj.brief_desc,
                                                              [],
                                                              test_obj.base_intf_ret_ptr_dict)
@@ -141,7 +141,7 @@ class TestClass01MasterLangSelect:
         capture_list = test_obj.gen_function(os_lang_selectors)
 
         assert len(capture_list) == 18
-        expected_list = cpp_gen._define_function_with_decorations(test_obj.select_function_name,
+        expected_list = cpp_gen.define_function_with_decorations(test_obj.select_function_name,
                                                              test_obj.brief_desc,
                                                              [],
                                                              test_obj.base_intf_ret_ptr_dict)

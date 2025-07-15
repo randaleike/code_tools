@@ -68,7 +68,7 @@ class TestClass01WindowsLangSelect:
         assert test_obj.param_dict_list[0] == ParamRetDict.build_param_dict("lang_id",
                                                                        "LANGID",
                                                                        "Return value from GetUserDefaultUILanguage() call")
-        assert test_obj.def_osString == "(defined(_WIN64) || defined(_WIN32))"
+        assert test_obj.def_os_str == "(defined(_WIN64) || defined(_WIN32))"
         assert isinstance(test_obj.lang_json_data, LanguageDescriptionList)
         assert isinstance(test_obj.doxy_comment_gen, CDoxyCommentGenerator)
 
@@ -85,7 +85,7 @@ class TestClass01WindowsLangSelect:
         assert test_obj.param_dict_list[0] == ParamRetDict.build_param_dict("lang_id",
                                                                        "LANGID",
                                                                        "Return value from GetUserDefaultUILanguage() call")
-        assert test_obj.def_osString == "(defined(_WIN64) || defined(_WIN32))"
+        assert test_obj.def_os_str == "(defined(_WIN64) || defined(_WIN32))"
         assert isinstance(test_obj.lang_json_data, LanguageDescriptionList)
         assert isinstance(test_obj.doxy_comment_gen, CDoxyCommentGenerator)
 
@@ -109,7 +109,7 @@ class TestClass01WindowsLangSelect:
         """
         cpp_gen = BaseCppStringClassGenerator()
         test_obj = WindowsLangSelectFunctionGenerator(LanguageDescriptionList())
-        expected_list = cpp_gen._define_function_with_decorations(test_obj.select_function_name,
+        expected_list = cpp_gen.define_function_with_decorations(test_obj.select_function_name,
                                                              "Determine the correct local language class from the input LANGID value",
                                                              test_obj.param_dict_list,
                                                              test_obj.base_intf_ret_ptr_dict)
@@ -139,11 +139,11 @@ class TestClass01WindowsLangSelect:
 
         assert len(capture_list) == 25
 
-        assert capture_list[0] == "#if "+test_obj.def_osString+"\n"
-        assert capture_list[1] == cpp_gen._gen_include("<windows.h>")
+        assert capture_list[0] == "#if "+test_obj.def_os_str+"\n"
+        assert capture_list[1] == cpp_gen.gen_include("<windows.h>")
         assert capture_list[2] == "\n"
 
-        expected_list = cpp_gen._define_function_with_decorations(test_obj.select_function_name,
+        expected_list = cpp_gen.define_function_with_decorations(test_obj.select_function_name,
                                                              "Determine the correct local language class from the input LANGID value",
                                                              test_obj.param_dict_list,
                                                              test_obj.base_intf_ret_ptr_dict)
@@ -173,7 +173,7 @@ class TestClass01WindowsLangSelect:
         assert capture_list[capture_index+1] == "            "+cpp_gen._gen_make_ptr_return_statement(default_lang)
         assert capture_list[capture_index+2] == "    }\n"
         assert capture_list[capture_index+3] == "} // end of "+test_obj.select_function_name+"()\n"
-        assert capture_list[capture_index+4] == "#endif // "+test_obj.def_osString+"\n"
+        assert capture_list[capture_index+4] == "#endif // "+test_obj.def_os_str+"\n"
 
     def test008_gen_return_function_call(self):
         """!
@@ -228,7 +228,7 @@ class TestClass01WindowsLangSelect:
 
         # Test starting block
         assert len(text_list) == 423
-        assert text_list[0] == "#if "+test_obj.def_osString+"\n"
+        assert text_list[0] == "#if "+test_obj.def_os_str+"\n"
         assert text_list[1] == "\n"
         assert text_list[2] == "#include <windows.h>\n"
         assert text_list[3] == test_obj.gen_extern_definition()
@@ -252,8 +252,8 @@ class TestClass01WindowsLangSelect:
 
             # Match unknown regions 00 test
             for lang_code in lang_codes:
-                unknown_regionTestName = lang_name.capitalize()+"_unknown_region_00"+str(lang_code)+"_Selection"
-                expected_test_text = test_obj._gen_unittest_test(unknown_regionTestName, lang_code, iso_code, "get_iso_code")
+                unkn_region_tstname = lang_name.capitalize()+"_unknown_region_00"+str(lang_code)+"_Selection"
+                expected_test_text = test_obj._gen_unittest_test(unkn_region_tstname, lang_code, iso_code, "get_iso_code")
                 for index, expected_line in enumerate(expected_test_text):
                     assert text_list[text_index+index] == expected_line
 
@@ -263,8 +263,8 @@ class TestClass01WindowsLangSelect:
 
             # Match unknown regions FFxx test
             for lang_code in lang_codes:
-                unknown_regionTestName = lang_name.capitalize()+"_unknown_region_FF"+str(lang_code)+"_Selection"
-                expected_test_text = test_obj._gen_unittest_test(unknown_regionTestName, 0xFF00+lang_code, iso_code, "get_iso_code")
+                unkn_region_tstname = lang_name.capitalize()+"_unknown_region_FF"+str(lang_code)+"_Selection"
+                expected_test_text = test_obj._gen_unittest_test(unkn_region_tstname, 0xFF00+lang_code, iso_code, "get_iso_code")
 
                 for index, expected_line in enumerate(expected_test_text):
                     assert text_list[text_index+index] == expected_line
@@ -282,7 +282,7 @@ class TestClass01WindowsLangSelect:
         text_index += len(expected_test_text)
 
         # Match end
-        assert text_list[422] == "#endif // "+test_obj.def_osString+"\n"
+        assert text_list[422] == "#endif // "+test_obj.def_os_str+"\n"
         assert text_index == 422
 
     def test012_gen_unit_test_function_call(self):
@@ -306,10 +306,10 @@ class TestClass01WindowsLangSelect:
         text_list = test_obj.get_unittest_extern_include()
 
         assert len(text_list) == 4
-        assert text_list[0] == "#if "+test_obj.def_osString+"\n"
+        assert text_list[0] == "#if "+test_obj.def_os_str+"\n"
         assert text_list[1] == "#include <windows.h>\n"
         assert text_list[2] == get_expected_extern(test_obj.param_dict_list, test_obj.base_intf_ret_ptr_type, test_obj.select_function_name)
-        assert text_list[3] == "#endif // "+test_obj.def_osString+"\n"
+        assert text_list[3] == "#endif // "+test_obj.def_os_str+"\n"
 
     def test014_get_unittest_file_name(self):
         """!

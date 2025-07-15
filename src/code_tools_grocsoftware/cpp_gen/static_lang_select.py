@@ -33,13 +33,16 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
     """!
     Methods for compile switch determined language select function generation
     """
-    def __init__(self, json_lang_data:LanguageDescriptionList, owner:str = None, eula_name:str = None, base_class_name:str = "BaseClass",
+    def __init__(self, json_lang_data:LanguageDescriptionList, owner:str = None,
+                 eula_name:str = None, base_class_name:str = "BaseClass",
                  dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
         """!
         @brief StaticLangSelectFunctionGenerator constructor
         @param json_lang_data {string} JSON language description list file name
-        @param owner {string} Owner name to use in the copyright header message or None to use tool name
-        @param eula_name {string} Name of the EULA to pass down to the BaseCppStringClassGenerator parent
+        @param owner {string} Owner name to use in the copyright header message
+                              or None to use tool name
+        @param eula_name {string} Name of the EULA to pass down to the BaseCppStringClassGenerator
+                                  parent
         @param base_class_name {string} Name of the base class for name generation
         @param dynnamic_compile_switch {string} Dynamic compile switch for #if generation
         """
@@ -51,12 +54,25 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         self.doxy_comment_gen = CDoxyCommentGenerator()
 
     def get_function_name(self)->str:
+        """!
+        @brief Return the selection function name
+        @return string - Selection function name
+        """
         return self.select_function_name
 
     def get_os_define(self)->str:
+        """!
+        @brief Return the non-dynamic OS define string
+        @return string - Static language detection C/CPP compile switch
+        """
         return self.def_static_string
 
     def get_os_dynamic_define(self)->str:
+        """!
+        @brief Return the static language selection define
+               compile switch string
+        @return string - Static language selection define compile switch
+        """
         return self.def_static_string
 
     def gen_function_define(self)->list:
@@ -64,10 +80,11 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         @brief Get the function declaration string for the given name
         @return string list - Function comment block and declaration start
         """
-        code_list = self._define_function_with_decorations(self.select_function_name,
-                                                       "Determine the correct local language class from the compile switch setting",
-                                                       [],
-                                                       self.base_intf_ret_ptr_dict)
+        desc = "Determine the correct local language class from the compile switch setting"
+        code_list = self.define_function_with_decorations(self.select_function_name,
+                                                          desc,
+                                                          [],
+                                                          self.base_intf_ret_ptr_dict)
         code_list.append("{\n")
         return code_list
 
@@ -76,7 +93,7 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         @brief Get the function declaration string for the given name
         @return string - Function close with comment
         """
-        return self._end_function(self.select_function_name)
+        return self.end_function(self.select_function_name)
 
     def gen_function(self)->list:
         """!
@@ -102,13 +119,15 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
                 first_loop = False
             else:
                 ifline += "#elif "
-            ifline += "defined("+self.lang_json_data.get_language_compile_switch_data(lang_name)+")\n"
+            defname = self.lang_json_data.get_language_compile_switch_data(lang_name)
+            ifline += "defined("+defname+")\n"
             function_body.append(ifline)
             function_body.append(body_indent+self._gen_make_ptr_return_statement(lang_name))
 
         # Add the final #else case
         function_body.append("  #else //undefined language compile switch, use default\n")
-        function_body.append(body_indent+"#error one of the language compile switches must be defined\n")
+        errstr = "#error one of the language compile switches must be defined"
+        function_body.append(body_indent+errstr+"\n")
         function_body.append("  #endif //end of language #if/#elifcompile switch chain\n")
 
         # Complete the function
@@ -158,18 +177,20 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         # Generate the tests
         body_indent = "".rjust(4, " ")
         test_var = "test_var"
-        test_varDecl = self.base_intf_ret_ptr_type+" "+test_var
-        test_varTest = test_var+"->"+get_iso_method+"().c_str()"
+        test_var_decl = self.base_intf_ret_ptr_type+" "+test_var
+        expected_val = test_var+"->"+get_iso_method+"().c_str()"
 
         for lang_name in self.lang_json_data.get_language_list():
             switch = self.lang_json_data.get_language_compile_switch_data(lang_name)
             test_body = []
             test_body.append("#if defined("+switch+")\n")
-            test_body.append("TEST(StaticSelectFunction"+lang_name.capitalize()+", CompileSwitchedValue)\n")
+            testblkname = "StaticSelectFunction"+lang_name.capitalize()
+            test_body.append("TEST("+testblkname+", CompileSwitchedValue)\n")
             test_body.append("{\n")
             test_body.append(body_indent+"// Generate the test language string object\n")
-            test_body.append(body_indent+test_varDecl+" = "+self.select_function_name+"();\n")
-            test_body.append(body_indent+"EXPECT_STREQ(\""+self.lang_json_data.get_language_iso_code_data(lang_name)+"\", "+test_varTest+");\n")
+            test_body.append(body_indent+test_var_decl+" = "+self.select_function_name+"();\n")
+            getisoname = self.lang_json_data.get_language_iso_code_data(lang_name)
+            test_body.append(body_indent+"EXPECT_STREQ(\""+getisoname+"\", "+expected_val+");\n")
             # Complete the function
             test_body.append("}\n")
             test_body.append("#endif //end of #if defined("+switch+")\n")
@@ -189,7 +210,12 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         @return list of strings Formatted code lines
         """
         indent_text = "".rjust(indent, " ")
-        do_call = indent_text+self.base_intf_ret_ptr_type+" "+check_var_name+" = "+self.select_function_name+"();\n"
+        do_call = indent_text
+        do_call += self.base_intf_ret_ptr_type
+        do_call += " "
+        do_call += check_var_name
+        do_call += " = "
+        do_call += self.select_function_name+"();\n"
         return [do_call]
 
     def get_unittest_extern_include(self)->list:

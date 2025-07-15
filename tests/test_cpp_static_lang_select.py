@@ -108,7 +108,7 @@ class TestClass01StaticLangSelect:
         """
         cpp_gen = BaseCppStringClassGenerator()
         test_obj = StaticLangSelectFunctionGenerator(LanguageDescriptionList())
-        expected_list = cpp_gen._define_function_with_decorations(test_obj.select_function_name,
+        expected_list = cpp_gen.define_function_with_decorations(test_obj.select_function_name,
                                                              "Determine the correct local language class from the compile switch setting",
                                                              [],
                                                              test_obj.base_intf_ret_ptr_dict)
@@ -139,7 +139,7 @@ class TestClass01StaticLangSelect:
         assert len(capture_list) == 17
         assert capture_list[0] == "#if !defined(DYNAMIC_INTERNATIONALIZATION)\n"
 
-        expected_list = cpp_gen._define_function_with_decorations(test_obj.select_function_name,
+        expected_list = cpp_gen.define_function_with_decorations(test_obj.select_function_name,
                                                              "Determine the correct local language class from the compile switch setting",
                                                              [],
                                                              test_obj.base_intf_ret_ptr_dict)

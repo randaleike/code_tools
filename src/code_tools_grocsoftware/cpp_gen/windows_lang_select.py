@@ -34,29 +34,43 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
     """!
     Methods for Windows language select function generation
     """
-    def __init__(self, json_lang_data:LanguageDescriptionList, owner:str = None, eula_name:str = None, base_class_name:str = "BaseClass",
+    def __init__(self, json_lang_data:LanguageDescriptionList, owner:str = None,
+                 eula_name:str = None, base_class_name:str = "BaseClass",
                  dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
         """!
         @brief WindowsLangSelectFunctionGenerator constructor
         @param json_lang_data {string} JSON language description list file name
-        @param owner {string} Owner name to use in the copyright header message or None to use tool name
-        @param eula_name {string} Name of the EULA to pass down to the BaseCppStringClassGenerator parent
+        @param owner {string} Owner name to use in the copyright header message or
+                              None to use tool name
+        @param eula_name {string} Name of the EULA to pass down to the BaseCppStringClassGenerator
+                                  parent
         @param base_class_name {string} Name of the base class for name generation
         @param dynnamic_compile_switch {string} Dynamic compile switch for #if generation
         """
         super().__init__(owner, eula_name, base_class_name, dynamic_compile_switch)
         self.select_function_name = "get"+base_class_name+"_Windows"
 
-        self.param_dict_list = [ParamRetDict.build_param_dict("lang_id", "LANGID", "Return value from GetUserDefaultUILanguage() call")]
-        self.def_osString = "(defined(_WIN64) || defined(_WIN32))"
+        desc = "Return value from GetUserDefaultUILanguage() call"
+        self.param_dict_list = [ParamRetDict.build_param_dict("lang_id",
+                                                              "LANGID",
+                                                              desc)]
+        self.def_os_str = "(defined(_WIN64) || defined(_WIN32))"
         self.lang_json_data = json_lang_data
         self.doxy_comment_gen = CDoxyCommentGenerator()
 
     def get_function_name(self)->str:
+        """!
+        @brief Return the selection function name
+        @return string - Selection function name
+        """
         return self.select_function_name
 
     def get_os_define(self)->str:
-        return self.def_osString
+        """!
+        @brief Return the windows OS define string
+        @return string - Windows OS C/CPP compile switch
+        """
+        return self.def_os_str
 
     def gen_function_define(self)->list:
         """!
@@ -66,10 +80,11 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
 
         @return string list - Function comment block and declaration start
         """
-        code_list = self._define_function_with_decorations(self.select_function_name,
-                                                       "Determine the correct local language class from the input LANGID value",
-                                                       self.param_dict_list,
-                                                       self.base_intf_ret_ptr_dict)
+        desc = "Determine the correct local language class from the input LANGID value"
+        code_list = self.define_function_with_decorations(self.select_function_name,
+                                                          desc,
+                                                          self.param_dict_list,
+                                                          self.base_intf_ret_ptr_dict)
         code_list.append("{\n")
         return code_list
 
@@ -78,7 +93,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         @brief Get the function declaration string for the given name
         @return string - Function close with comment
         """
-        return self._end_function(self.select_function_name)
+        return self.end_function(self.select_function_name)
 
     def gen_function(self)->list:
         """!
@@ -88,8 +103,8 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         # Generate the #if and includes
         param_name = ParamRetDict.get_param_name(self.param_dict_list[0])
         function_body = []
-        function_body.append("#if "+self.def_osString+"\n")
-        function_body.append(self._gen_include("<windows.h>"))
+        function_body.append("#if "+self.def_os_str+"\n")
+        function_body.append(self.gen_include("<windows.h>"))
         function_body.append("\n")  # whitespace for readability
 
         # Generate function doxygen comment and start
@@ -104,10 +119,10 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         case_indent = body_indent+"".rjust(4, " ")
         case_body_indent = case_indent+"".rjust(4, " ")
         for lang_name in self.lang_json_data.get_language_list():
-            lang_codes, lang_region_list = self.lang_json_data.get_language_langid_data(lang_name)
-            for id in lang_codes:
+            lang_codes, _ = self.lang_json_data.get_language_langid_data(lang_name)
+            for langid in lang_codes:
                 caseline =  case_indent+"case "
-                caseline += hex(id)
+                caseline += hex(langid)
                 caseline += ":\n"
                 function_body.append(caseline)
             case_assign = case_body_indent+self._gen_make_ptr_return_statement(lang_name)
@@ -115,14 +130,14 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
             function_body.append(case_body_indent+"break;\n")
 
         # Add the final default case
-        default_lang, default_iso_code = self.lang_json_data.get_default_data()
+        default_lang, _ = self.lang_json_data.get_default_data()
         function_body.append(case_indent+"default:\n")
         function_body.append(case_body_indent+self._gen_make_ptr_return_statement(default_lang))
         function_body.append(body_indent+"}\n")
 
         # Complete the function
         function_body.append(self.gen_function_end())
-        function_body.append("#endif // "+self.def_osString+"\n")
+        function_body.append("#endif // "+self.def_os_str+"\n")
         return function_body
 
     def gen_return_function_call(self, indent:int = 4)->list:
@@ -149,14 +164,16 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
 
         return [get_param, do_call]
 
-    def _gen_unittest_test(self, test_name:str, langid:int, expected_iso:str, get_iso_method:str)->list:
+    def _gen_unittest_test(self, test_name:str, langid:int,
+                           expected_iso:str, get_iso_method:str)->list:
         """!
         @brief Generate single selection function unit test instance
 
         @param test_name {string} Name of the test
         @param langid {number} LANGID value to test
         @param expected_iso {string} Expected ISO return code for the test variable
-        @param get_iso_method {string} Name of the ParserStringListInterface return ISO code method
+        @param get_iso_method {string} Name of the ParserStringListInterface return
+                                       ISO code method
 
         @return list of strings - Output C code
         """
@@ -166,13 +183,14 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         test_body = self.doxy_comment_gen.gen_doxy_method_comment(breif_desc, [])
 
         test_var = "test_var"
-        test_varDecl = self.base_intf_ret_ptr_type+" "+test_var
-        test_varTest = test_var+"->"+get_iso_method+"().c_str()"
+        test_var_decl = self.base_intf_ret_ptr_type+" "+test_var
+        expected_val = test_var+"->"+get_iso_method+"().c_str()"
         test_body.append("TEST("+test_block_name+", "+test_name+")\n")
         test_body.append("{\n")
         test_body.append(body_indent+"// Generate the test language string object\n")
-        test_body.append(body_indent+test_varDecl+" = "+self.select_function_name+"("+str(langid)+");\n")
-        test_body.append(body_indent+"EXPECT_STREQ(\""+expected_iso+"\", "+test_varTest+");\n")
+        nxtline = test_var_decl+" = "+self.select_function_name+"("+str(langid)+");\n"
+        test_body.append(body_indent+nxtline)
+        test_body.append(body_indent+"EXPECT_STREQ(\""+expected_iso+"\", "+expected_val+");\n")
         test_body.append("}\n")
         return test_body
 
@@ -200,9 +218,9 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         """
         # Generate block start code
         unittest_text = []
-        unittest_text.append("#if "+self.def_osString+"\n")
+        unittest_text.append("#if "+self.def_os_str+"\n")
         unittest_text.append("\n") # white space for readability
-        unittest_text.append(self._gen_include("<windows.h>"))
+        unittest_text.append(self.gen_include("<windows.h>"))
         unittest_text.append(self.gen_extern_definition())
         unittest_text.append("\n") # white space for readability
 
@@ -212,35 +230,44 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
             for lang_id in region_list:
                 # Generate test for each region of known language
                 test_name = lang_name.capitalize()+"_"+str(lang_id)+"_Selection"
+                lang_iso = self.lang_json_data.get_language_iso_code_data(lang_name)
                 test_body = self._gen_unittest_test(test_name,
-                                                 lang_id,
-                                                 self.lang_json_data.get_language_iso_code_data(lang_name),
-                                                 get_iso_method)
+                                                    lang_id,
+                                                    lang_iso,
+                                                    get_iso_method)
                 test_body.append("\n") # whitespace for readability
                 unittest_text.extend(test_body)
 
             # Generate test for unknown region of known language(s)
             for lang_code in lang_codes:
-                unknown_regionTestName = lang_name.capitalize()+"_unknown_region_00"+str(lang_code)+"_Selection"
-                unknown_regionBody = self._gen_unittest_test(unknown_regionTestName,
-                                                          lang_code,
-                                                          self.lang_json_data.get_language_iso_code_data(lang_name),
-                                                          get_iso_method)
-                unknown_regionBody.append("\n") # whitespace for readability
-                unittest_text.extend(unknown_regionBody)
+                lang_iso = self.lang_json_data.get_language_iso_code_data(lang_name)
+                unkn_region_tstname = lang_name.capitalize()
+                unkn_region_tstname += "_unknown_region_00"
+                unkn_region_tstname += str(lang_code)
+                unkn_region_tstname += "_Selection"
+                unkn_region_body = self._gen_unittest_test(unkn_region_tstname,
+                                                           lang_code,
+                                                           lang_iso,
+                                                           get_iso_method)
+                unkn_region_body.append("\n") # whitespace for readability
+                unittest_text.extend(unkn_region_body)
 
             # Generate test for unknown region of known language(s)
             for lang_code in lang_codes:
-                unknown_regionTestName = lang_name.capitalize()+"_unknown_region_FF"+str(lang_code)+"_Selection"
-                unknown_regionBody = self._gen_unittest_test(unknown_regionTestName,
+                region_iso = self.lang_json_data.get_language_iso_code_data(lang_name)
+                unkn_region_tstname = lang_name.capitalize()
+                unkn_region_tstname += "_unknown_region_FF"
+                unkn_region_tstname += str(lang_code)
+                unkn_region_tstname +="_Selection"
+                unkn_region_body = self._gen_unittest_test(unkn_region_tstname,
                                                           0xFF00+lang_code,
-                                                          self.lang_json_data.get_language_iso_code_data(lang_name),
+                                                          region_iso,
                                                           get_iso_method)
-                unknown_regionBody.append("\n") # whitespace for readability
-                unittest_text.extend(unknown_regionBody)
+                unkn_region_body.append("\n") # whitespace for readability
+                unittest_text.extend(unkn_region_body)
 
         # Generate test for unknown region of unknown language and expect default
-        default_lang, default_iso_code = self.lang_json_data.get_default_data()
+        _, default_iso_code = self.lang_json_data.get_default_data()
         unknown_lang_body = self._gen_unittest_test("UnknownLanguageDefaultSelection",
                                                 0,
                                                 default_iso_code,
@@ -248,7 +275,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         unittest_text.extend(unknown_lang_body)
 
         # Generate block end code
-        unittest_text.append("#endif // "+self.def_osString+"\n")
+        unittest_text.append("#endif // "+self.def_os_str+"\n")
         return unittest_text
 
     def gen_unittest_function_call(self, check_var_name:str, indent:int = 4)->list:
@@ -285,10 +312,10 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         @return list of strings - windows specific #if, #include, external function and #endif code
         """
         inc_block = []
-        inc_block.append("#if "+self.def_osString+"\n")
-        inc_block.append(self._gen_include("<windows.h>"))
+        inc_block.append("#if "+self.def_os_str+"\n")
+        inc_block.append(self.gen_include("<windows.h>"))
         inc_block.append(self.gen_extern_definition())
-        inc_block.append("#endif // "+self.def_osString+"\n")
+        inc_block.append("#endif // "+self.def_os_str+"\n")
         return inc_block
 
     def get_unittest_file_name(self)->tuple:

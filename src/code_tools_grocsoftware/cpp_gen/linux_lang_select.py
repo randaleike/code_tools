@@ -34,13 +34,17 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
     """!
     Methods for Linux language select function generation
     """
-    def __init__(self, json_lang_data:LanguageDescriptionList, owner:str = None, eula_name:str = None, base_class_name:str = "BaseClass",
+    def __init__(self, json_lang_data:LanguageDescriptionList,
+                 owner:str = None, eula_name:str = None,
+                 base_class_name:str = "BaseClass",
                  dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
         """!
         @brief LinuxLangSelectFunctionGenerator constructor
         @param json_lang_data {string} JSON language description list file name
-        @param owner {string} Owner name to use in the copyright header message or None to use tool name
-        @param eula_name {string} Name of the EULA to pass down to the BaseCppStringClassGenerator parent
+        @param owner {string} Owner name to use in the copyright header message or
+                              None to use tool name
+        @param eula_name {string} Name of the EULA to pass down to the BaseCppStringClassGenerator
+                                  parent
         @param base_class_name {string} Name of the base class for name generation
         @param dynnamic_compile_switch {string} Dynamic compile switch for #if generation
         """
@@ -49,10 +53,13 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         self.select_function_name = "get"+base_class_name+"_Linux"
 
         ## Dynamic allocation function input parameter dictionary list
-        self.param_dict_list = [ParamRetDict.build_param_dict("langId", "const char*", "Current LANG value from the program environment")]
+        desc = "Current LANG value from the program environment"
+        self.param_dict_list = [ParamRetDict.build_param_dict("langId",
+                                                              "const char*",
+                                                              desc)]
 
         ## Linux OS definition compile switch
-        self.def_osString = "(defined(__linux__) || defined(__unix__))"
+        self.def_os_str = "(defined(__linux__) || defined(__unix__))"
 
         ## Json language data list object
         self.lang_json_data = json_lang_data
@@ -61,20 +68,29 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         self.doxy_comment_gen = CDoxyCommentGenerator()
 
     def get_function_name(self)->str:
+        """!
+        @brief Return the selection function name
+        @return string - Selection function name
+        """
         return self.select_function_name
 
     def get_os_define(self)->str:
-        return self.def_osString
+        """!
+        @brief Return the linux OS define string
+        @return string - Linux OS C/CPP compile switch
+        """
+        return self.def_os_str
 
     def gen_function_define(self)->list:
         """!
         @brief Get the function declaration string for the given name
         @return string list - Function comment block and declaration start
         """
-        code_list = self._define_function_with_decorations(self.select_function_name,
-                                                       "Determine the correct local language class from the input LANG environment setting",
-                                                       self.param_dict_list,
-                                                       self.base_intf_ret_ptr_dict)
+        desc = "Determine the correct local language class from the input LANG environment setting"
+        code_list = self.define_function_with_decorations(self.select_function_name,
+                                                          desc,
+                                                          self.param_dict_list,
+                                                          self.base_intf_ret_ptr_dict)
         code_list.append("{\n")
         return code_list
 
@@ -83,7 +99,7 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         @brief Get the function declaration string for the given name
         @return string - Function close with comment
         """
-        return self._end_function(self.select_function_name)
+        return self.end_function(self.select_function_name)
 
     def gen_function(self)->list:
         """!
@@ -92,9 +108,9 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         """
         # Generate the #if and includes
         function_body = []
-        function_body.append("#if "+self.def_osString+"\n")
-        function_body.append(self._gen_include("<cstdlib>"))
-        function_body.append(self._gen_include("<regex>"))
+        function_body.append("#if "+self.def_os_str+"\n")
+        function_body.append(self.gen_include("<cstdlib>"))
+        function_body.append(self.gen_include("<regex>"))
         function_body.append("\n")  # whitespace for readability
 
         # Generate function doxygen comment and start
@@ -108,18 +124,20 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         function_body.append(body_indent+"{\n")
 
         # Generate if/else if chain for each language in the dictionary
-        if1BodyIndent = body_indent+"".rjust(self.level_tab_size, " ")
-        function_body.append(if1BodyIndent+"// Break the string into its components\n")
-        function_body.append(if1BodyIndent+"std::cmatch search_match;\n")
-        function_body.append(if1BodyIndent+"std::regex search_regex(\"^([a-z]{2})_([A-Z]{2})\\\\.(UTF-[0-9]{1,2})\");\n")
-        function_body.append(if1BodyIndent+"bool matched = std::regex_match("+param_name+", search_match, search_regex);\n")
+        if1_indent = body_indent+"".rjust(self.level_tab_size, " ")
+        function_body.append(if1_indent+"// Break the string into its components\n")
+        function_body.append(if1_indent+"std::cmatch search_match;\n")
+        regexstr = "\"^([a-z]{2})_([A-Z]{2})\\\\.(UTF-[0-9]{1,2})\""
+        function_body.append(if1_indent+"std::regex search_regex("+regexstr+")\");\n")
+        paramstr = param_name+", search_match, search_regex"
+        function_body.append(if1_indent+"bool matched = std::regex_match("+paramstr+");\n")
         function_body.append("\n")  # whitespace for readability
-        function_body.append(if1BodyIndent+"// Determine the language\n")
+        function_body.append(if1_indent+"// Determine the language\n")
 
-        if2BodyIndent = if1BodyIndent+"".rjust(self.level_tab_size, " ")
+        if2_indent = if1_indent+"".rjust(self.level_tab_size, " ")
         first_check = True
         for lang_name in self.lang_json_data.get_language_list():
-            lang_code, region_list = self.lang_json_data.get_language_lang_data(lang_name)
+            lang_code, _ = self.lang_json_data.get_language_lang_data(lang_name)
             ifline = ""
             if first_check:
                 ifline += "if (matched && "
@@ -131,28 +149,28 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
             ifline += lang_code
             ifline += "\"))\n"
 
-            function_body.append(if1BodyIndent+ifline)
-            function_body.append(if1BodyIndent+"{\n")
-            function_body.append(if2BodyIndent+self._gen_make_ptr_return_statement(lang_name))
-            function_body.append(if1BodyIndent+"}\n")
+            function_body.append(if1_indent+ifline)
+            function_body.append(if1_indent+"{\n")
+            function_body.append(if2_indent+self._gen_make_ptr_return_statement(lang_name))
+            function_body.append(if1_indent+"}\n")
 
         # Add the final else (unknown language) case
-        default_lang, default_iso_code = self.lang_json_data.get_default_data()
-        function_body.append(if1BodyIndent+"else //unknown language code, use default language\n")
-        function_body.append(if1BodyIndent+"{\n")
-        function_body.append(if2BodyIndent+self._gen_make_ptr_return_statement(default_lang))
-        function_body.append(if1BodyIndent+"}\n")
+        default_lang, _ = self.lang_json_data.get_default_data()
+        function_body.append(if1_indent+"else //unknown language code, use default language\n")
+        function_body.append(if1_indent+"{\n")
+        function_body.append(if2_indent+self._gen_make_ptr_return_statement(default_lang))
+        function_body.append(if1_indent+"}\n")
 
         # Add the else if nullptr case
         function_body.append(body_indent+"}\n")
         function_body.append(body_indent+"else // null pointer input, use default language\n")
         function_body.append(body_indent+"{\n")
-        function_body.append(if1BodyIndent+self._gen_make_ptr_return_statement(default_lang))
+        function_body.append(if1_indent+self._gen_make_ptr_return_statement(default_lang))
         function_body.append(body_indent+"} // end of if(nullptr != "+param_name+")\n")
 
         # Complete the function
         function_body.append(self.gen_function_end())
-        function_body.append("#endif // "+self.def_osString+"\n")
+        function_body.append("#endif // "+self.def_os_str+"\n")
         return function_body
 
     def gen_return_function_call(self, indent:int = 4)->list:
@@ -179,7 +197,8 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
 
         return [get_param, do_call]
 
-    def _gen_unittest_test(self, test_name:str, linux_env_string:str, expected_iso:str, get_iso_method:str)->list:
+    def _gen_unittest_test(self, test_name:str, linux_env_string:str,
+                           expected_iso:str, get_iso_method:str)->list:
         """!
         @brief Generate single selection function unit test instance
 
@@ -196,14 +215,15 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         test_body = self.doxy_comment_gen.gen_doxy_method_comment(breif_desc, [])
 
         test_var = "test_var"
-        test_varDecl = self.base_intf_ret_ptr_type+" "+test_var
-        test_varTest = test_var+"->"+get_iso_method+"().c_str()"
+        test_var_decl = self.base_intf_ret_ptr_type+" "+test_var
+        test_var_test = test_var+"->"+get_iso_method+"().c_str()"
         test_body.append("TEST("+test_block_name+", "+test_name+")\n")
         test_body.append("{\n")
         test_body.append(body_indent+"// Generate the test language string object\n")
         test_body.append(body_indent+"std::string test_lang_code = \""+linux_env_string+"\";\n")
-        test_body.append(body_indent+test_varDecl+" = "+self.select_function_name+"(test_lang_code.c_str());\n")
-        test_body.append(body_indent+"EXPECT_STREQ(\""+expected_iso+"\", "+test_varTest+");\n")
+        declstr = test_var_decl+" = "+self.select_function_name+"(test_lang_code.c_str());"
+        test_body.append(body_indent+declstr+"\n")
+        test_body.append(body_indent+"EXPECT_STREQ(\""+expected_iso+"\", "+test_var_test+");\n")
         test_body.append("}\n")
         return test_body
 
@@ -230,9 +250,9 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         @return list - Unittest text list
         """
         # Generate block start code
-        unittest_block = ["#if "+self.def_osString+"\n"]
+        unittest_block = ["#if "+self.def_os_str+"\n"]
         unittest_block.append("\n") # white space for readability
-        unittest_block.append(self._gen_include("<cstdlib>"))
+        unittest_block.append(self.gen_include("<cstdlib>"))
         unittest_block.append(self.gen_extern_definition())
         unittest_block.append("\n") # white space for readability
 
@@ -246,24 +266,24 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
                 linux_env_string = lang_code+"_"+region+".UTF-8"
                 test_name = lang_name.capitalize()+"_"+region+"_Selection"
                 test_body = self._gen_unittest_test(test_name,
-                                                 linux_env_string,
-                                                 iso_code,
-                                                 get_iso_method)
+                                                    linux_env_string,
+                                                    iso_code,
+                                                    get_iso_method)
                 test_body.append("\n") # whitespace for readability
                 unittest_block.extend(test_body)
 
             # Generate test for unknown region of known language
-            unknown_regionTestName =lang_name.capitalize()+"_unknown_region_Selection"
-            unknown_regionEnv = lang_code+"_XX.UTF-8"
-            unknown_regionBody = self._gen_unittest_test(unknown_regionTestName,
-                                                      unknown_regionEnv,
-                                                      iso_code,
-                                                      get_iso_method)
-            unknown_regionBody.append("\n") # whitespace for readability
-            unittest_block.extend(unknown_regionBody)
+            unkn_region_tst_name =lang_name.capitalize()+"_unknown_region_Selection"
+            unkn_region_env = lang_code+"_XX.UTF-8"
+            unkn_region_body = self._gen_unittest_test(unkn_region_tst_name,
+                                                       unkn_region_env,
+                                                       iso_code,
+                                                       get_iso_method)
+            unkn_region_body.append("\n") # whitespace for readability
+            unittest_block.extend(unkn_region_body)
 
         # Generate test for unknown region of unknown language and expect default
-        default_lang, default_iso_code = self.lang_json_data.get_default_data()
+        _, default_iso_code = self.lang_json_data.get_default_data()
         unknown_lang_body = self._gen_unittest_test("UnknownLanguageDefaultSelection",
                                                 "xx_XX.UTF-8",
                                                 default_iso_code,
@@ -271,7 +291,7 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         unittest_block.extend(unknown_lang_body)
 
         # Generate block end code
-        unittest_block.append("#endif // "+self.def_osString+"\n")
+        unittest_block.append("#endif // "+self.def_os_str+"\n")
         return unittest_block
 
     def gen_unittest_function_call(self, check_var_name:str, indent:int = 4)->list:
@@ -308,10 +328,10 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         @return list of strings - linux specific #if, #include, external function and #endif code
         """
         inc_block = []
-        inc_block.append("#if "+self.def_osString+"\n")
-        inc_block.append(self._gen_include("<cstdlib>"))
+        inc_block.append("#if "+self.def_os_str+"\n")
+        inc_block.append(self.gen_include("<cstdlib>"))
         inc_block.append(self.gen_extern_definition())
-        inc_block.append("#endif // "+self.def_osString+"\n")
+        inc_block.append("#endif // "+self.def_os_str+"\n")
         return inc_block
 
     def get_unittest_file_name(self)->tuple:

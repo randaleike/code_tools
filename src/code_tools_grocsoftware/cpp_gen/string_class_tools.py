@@ -29,8 +29,12 @@ from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.cpp_gen.file_gen_base import GenerateCppFileHelper
 
 class BaseCppStringClassGenerator(GenerateCppFileHelper):
+    """!
+    Base string class generation class
+    """
     def __init__(self, owner:str = None, eula_name:str = None,
-                 base_class_name:str = "BaseClass", dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
+                 base_class_name:str = "BaseClass",
+                 dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
         """!
         @brief BaseCppStringClassGenerator constructor
         @param owner {string} Owner string for the copyright/EULA file header comment
@@ -57,8 +61,8 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         self.base_intf_ret_ptr_type = "std::shared_ptr<"+self.base_class_name+">"
 
         ## CPP ParamRetDict return dictionary for the language selection static function
-        self.base_intf_ret_ptr_dict = ParamRetDict.build_return_dict('sharedptr',
-                                                                "Shared pointer to "+self.base_class_name+"<lang> based on OS local language")
+        retdesc = "Shared pointer to "+self.base_class_name+"<lang> based on OS local language"
+        self.base_intf_ret_ptr_dict = ParamRetDict.build_return_dict('sharedptr', retdesc)
 
         # Add the specialty types
         self.type_xlation_dict['LANGID'] = "LANGID"
@@ -136,69 +140,75 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         @brief Generate the boiler plate file header with copyright and eula
         @return list - List of strings for the header
         """
-        return super()._generate_generic_file_header(self.auto_tool_name, 2025, self.owner)
+        return super().generate_generic_file_header(self.auto_tool_name, 2025, self.owner)
 
-    def _generateHFileName(self, lang_name:str = None)->str:
+    def gen_h_fname(self, lang_name:str = None)->str:
         """!
         @brief Generate the include file name based on the class and language names
         @return string - include file name
         """
         if lang_name is not None:
-            return self.base_class_name+lang_name.capitalize()+".h"
+            retstr = self.base_class_name+lang_name.capitalize()+".h"
         else:
-            return self.base_class_name+".h"
+            retstr = self.base_class_name+".h"
+        return retstr
 
-    def _generate_cpp_file_name(self, lang_name:str = None)->str:
+    def gen_cpp_fname(self, lang_name:str = None)->str:
         """!
         @brief Generate the source file name based on the class and language names
         @return string - source file name
         """
         if lang_name is not None:
-            return self.base_class_name+lang_name.capitalize()+".cpp"
+            retstr = self.base_class_name+lang_name.capitalize()+".cpp"
         else:
-            return self.base_class_name+".cpp"
+            retstr = self.base_class_name+".cpp"
+        return retstr
 
-    def _generate_unittest_file_name(self, lang_name:str = None)->str:
+    def gen_unittest_fname(self, lang_name:str = None)->str:
         """!
         @brief Generate the unittest source file name based on the class and language names
         @return string - unittest source file name
         """
         if lang_name is not None:
-            return self.base_class_name+lang_name.capitalize()+"_test.cpp"
+            retstr = self.base_class_name+lang_name.capitalize()+"_test.cpp"
         else:
-            return self.base_class_name+"_test.cpp"
+            retstr = self.base_class_name+"_test.cpp"
+        return retstr
 
-    def _generate_unittest_target_name(self, lang_name:str = None)->str:
+    def gen_unittest_target_name(self, lang_name:str = None)->str:
         """!
         @brief Generate the unittest target class name based on the class and language names
         @return string - unittest target class name
         """
         if lang_name is not None:
-            return self.base_class_name+lang_name.capitalize()+"_test"
+            retstr = self.base_class_name+lang_name.capitalize()+"_test"
         else:
-            return self.base_class_name+"_test"
+            retstr = self.base_class_name+"_test"
+        return retstr
 
-    def _generate_mockHFileName(self, lang_name:str = None)->str:
+    def gen_mock_h_fname(self, lang_name:str = None)->str:
         """!
         @brief Generate the mock include file name based on the class and language names
         @return string - mock include file name
         """
         if lang_name is not None:
-            return "mock_"+self.base_class_name+lang_name.capitalize()+".h"
+            retstr = "mock_"+self.base_class_name+lang_name.capitalize()+".h"
         else:
-            return "mock_"+self.base_class_name+".h"
+            retstr = "mock_"+self.base_class_name+".h"
+        return retstr
 
-    def _generate_mockCppFileName(self, lang_name:str = None)->str:
+    def gen_mock_cpp_fname(self, lang_name:str = None)->str:
         """!
         @brief Generate the mock source file name based on the class and language names
         @return string - mock source file name
         """
         if lang_name is not None:
-            return "mock_"+self.base_class_name+lang_name.capitalize()+".cpp"
+            retstr = "mock_"+self.base_class_name+lang_name.capitalize()+".cpp"
         else:
-            return "mock_"+self.base_class_name+".cpp"
+            retstr = "mock_"+self.base_class_name+".cpp"
+        return retstr
 
-    def _write_method(self, method_name:str, method_desc:str,
+    def write_method(self, method_name:str, method_desc:str,
                      method_params:list, return_dict:dict, prefix:str, postfix:str,
                      skip_doxygen_comment:bool = True, inline_code:list = None)->list:
         """!
@@ -210,7 +220,8 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         @param return_dict {dictionary} Return data definition
         @param prefix {string} Method declaration prefix
         @param postfix {string} Method declaration postfix
-        @param skip_doxygen_comment {boolean} True = skip doxygen method comment generation, False = generate doxygen method comment
+        @param skip_doxygen_comment {boolean} True = skip doxygen method comment generation,
+                                              False = generate doxygen method comment
         @param inline_code {list of strings} Inline code strings or None if there is no inline code
 
         @return list of strings
@@ -224,7 +235,7 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
             postfix_final = postfix
 
         # Output final declaration
-        decl_text = self._declare_function_with_decorations(method_name,
+        decl_text = self.declare_function_with_decorations(method_name,
                                                         method_desc,
                                                         method_params,
                                                         return_dict,
@@ -236,7 +247,8 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
 
         return decl_text
 
-    def _write_mock_method(self, method_name:str, method_params:list, return_dict:dict, postfix:str)->list:
+    def write_mock_method(self, method_name:str, method_params:list,
+                          return_dict:dict, postfix:str)->list:
         """!
         @brief Write the property method definitions
 
@@ -259,13 +271,14 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         # Output mock declaration
         decl_text = "".rjust(self.declare_indent, ' ')
         decl_text += "MOCK_METHOD("
-        decl_text += self._declare_type(ParamRetDict.get_return_type(return_dict), ParamRetDict.get_param_type_mod(return_dict))
+        decl_text += self.declare_type(ParamRetDict.get_return_type(return_dict),
+                                       ParamRetDict.get_param_type_mod(return_dict))
         decl_text += ", "
         decl_text += method_name
         decl_text += ", "
 
         # Add the parameters
-        decl_text += self._gen_function_params(method_params)
+        decl_text += self.gen_function_params(method_params)
 
         # Add the post fix data
         if postfix_final is not None:
