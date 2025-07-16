@@ -352,7 +352,7 @@ class Test01CppFilehelper:
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
 
         function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict)
-        assert len(function_text) == 11
+        assert len(function_text) == 10
         assert function_text[0] == '/**\n'
         assert function_text[1] == ' * @brief My test function\n'
         assert function_text[2] == ' * \n'
@@ -362,7 +362,7 @@ class Test01CppFilehelper:
         assert function_text[6] == ' * @return number - return int\n'
         assert function_text[7] == ' */\n'
         assert function_text[8] == 'public my_test(foo:number, moo:number):number\n'
-        assert function_text[9] == '{\n'
+        assert function_text[9] == '{//! @todo Implement code }\n'
 
     def test21_declare_function_with_prefix(self):
         """!
@@ -376,7 +376,7 @@ class Test01CppFilehelper:
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
 
         function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict, 8, prefix_decaration='public')
-        assert len(function_text) == 11
+        assert len(function_text) == 10
         assert function_text[0] == '        /**\n'
         assert function_text[1] == '         * @brief My test function\n'
         assert function_text[2] == '         * \n'
@@ -386,7 +386,7 @@ class Test01CppFilehelper:
         assert function_text[6] == '         * @return number - return int\n'
         assert function_text[7] == '         */\n'
         assert function_text[8] == '        public my_test(foo:number, moo:number):number\n'
-        assert function_text[9] == '        {\n'
+        assert function_text[9] == '        {//! @todo Implement code }\n'
 
     def test22_declare_function_with_postfix(self):
         """!
@@ -401,7 +401,7 @@ class Test01CppFilehelper:
 
         function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict, 8,
                                                               postfix_decaration='@configurable(false)')
-        assert len(function_text) == 12
+        assert len(function_text) == 11
         assert function_text[0] == '        /**\n'
         assert function_text[1] == '         * @brief My test function\n'
         assert function_text[2] == '         * \n'
@@ -412,8 +412,7 @@ class Test01CppFilehelper:
         assert function_text[7] == '         */\n'
         assert function_text[8] == '        @configurable(false)\n'
         assert function_text[9] == '        public my_test(foo:number, moo:number):number\n'
-        assert function_text[10] == '        {\n'
-        assert function_text[11] == '        }\n'
+        assert function_text[10] == '        {//! @todo Implement code }\n'
 
     def test23_declare_function_with_pre_and_postfix(self):
         """!
@@ -428,7 +427,7 @@ class Test01CppFilehelper:
 
         function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
                                                               8, prefix_decaration="private", postfix_decaration='@configurable(false)')
-        assert len(function_text) == 12
+        assert len(function_text) == 11
         assert function_text[0] == '        /**\n'
         assert function_text[1] == '         * @brief My test function\n'
         assert function_text[2] == '         * \n'
@@ -439,8 +438,7 @@ class Test01CppFilehelper:
         assert function_text[7] == '         */\n'
         assert function_text[8] == '        @configurable(false)\n'
         assert function_text[9] == '        private my_test(foo:number, moo:number):number\n'
-        assert function_text[10] == '        {\n'
-        assert function_text[11] == '        }\n'
+        assert function_text[10] == '        {//! @todo Implement code }\n'
 
     def test24_declare_function_with_pre_and_postfix_no_comment(self):
         """!
@@ -455,11 +453,10 @@ class Test01CppFilehelper:
 
         function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
                                                               8, True, "public", '@enumerable(false)')
-        assert len(function_text) == 4
+        assert len(function_text) == 3
         assert function_text[0] == '        @enumerable(false)\n'
         assert function_text[1] == '        public my_test(foo:number, moo:number):number\n'
-        assert function_text[2] == '        {\n'
-        assert function_text[3] == '        }\n'
+        assert function_text[2] == '        {//! @todo Implement code }\n'
 
     def test25_declare_function_with_no_comment_inline_single_line(self):
         """!
@@ -647,15 +644,14 @@ class Test01CppFilehelper:
         helper = GenerateTypeScriptFileHelper()
 
         test_text = helper.gen_class_default_constructor("MyTestClassName")
-        assert len(test_text) == 8
+        assert len(test_text) == 7
         assert test_text[0] == "        /**\n"
         assert test_text[1] == "         * @brief Construct a new MyTestClassName object\n"
         assert test_text[2] == "         * \n"
         assert test_text[3] == "         */\n"
         assert test_text[4] == "        public constructor()\n"
-        assert test_text[5] == "        {\n"
-        assert test_text[6] == "        }\n"
-        assert test_text[7] == "\n"
+        assert test_text[5] == "        {//! @todo Implement code }\n"
+        assert test_text[6] == "\n"
 
     def test39_gen_class_default_contrutor_no_doxy(self):
         """!
@@ -664,11 +660,10 @@ class Test01CppFilehelper:
         helper = GenerateTypeScriptFileHelper()
 
         test_text = helper.gen_class_default_constructor("MyTestClassName", no_doxy_comment_constructor=True)
-        assert len(test_text) == 4
+        assert len(test_text) == 3
         assert test_text[0] == "        public constructor()\n"
-        assert test_text[1] == "        {\n"
-        assert test_text[2] == "        }\n"
-        assert test_text[3] == "\n"
+        assert test_text[1] == "        {//! @todo Implement code }\n"
+        assert test_text[2] == "\n"
 
     def test40_gen_class_default_construtor_with_input_params(self):
         """!
@@ -678,7 +673,7 @@ class Test01CppFilehelper:
         params = [ParamRetDict.build_param_dict_with_mod("one", "string", "Parameter one", 0),
                   ParamRetDict.build_param_dict_with_mod("two", "integer", "Parameter two", 0)]
         test_text = helper.gen_class_default_constructor("MyTestClassName", param_list=params)
-        assert len(test_text) == 11
+        assert len(test_text) == 10
         assert test_text[0] == "        /**\n"
         assert test_text[1] == "         * @brief Construct a new MyTestClassName object\n"
         assert test_text[2] == "         * \n"
@@ -687,9 +682,8 @@ class Test01CppFilehelper:
         assert test_text[5] == "         * \n"
         assert test_text[6] == "         */\n"
         assert test_text[7] == "        public constructor(one:string, two:number)\n"
-        assert test_text[8] == "        {\n"
-        assert test_text[9] == "        }\n"
-        assert test_text[10] == "\n"
+        assert test_text[8] == "        {//! @todo Implement code }\n"
+        assert test_text[9] == "\n"
 
     def test41_gen_class_default_construtor_no_doxy_input_params(self):
         """!
@@ -699,11 +693,10 @@ class Test01CppFilehelper:
         params = [ParamRetDict.build_param_dict_with_mod("one", "string", "Parameter one", 0),
                   ParamRetDict.build_param_dict_with_mod("two", "integer", "Parameter two", 0)]
         test_text = helper.gen_class_default_constructor("MyTestClassName", param_list=params, no_doxy_comment_constructor=True)
-        assert len(test_text) == 4
+        assert len(test_text) == 3
         assert test_text[0] == "        public constructor(one:string, two:number)\n"
-        assert test_text[1] == "        {\n"
-        assert test_text[2] == "        }\n"
-        assert test_text[3] == "\n"
+        assert test_text[1] == "        {//! @todo Implement code }\n"
+        assert test_text[2] == "\n"
 
     def test42_gen_class_default_construtor_no_doxy_with_inline(self):
         """!
@@ -871,7 +864,9 @@ class Test01CppFilehelper:
         helper = GenerateTypeScriptFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict, postfix_decaration="const")
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list, ret_dict)
         assert len(test_text) == 9
         assert test_text[0] == "/**\n"
         assert test_text[1] == " * @brief Brief description\n"
@@ -890,8 +885,10 @@ class Test01CppFilehelper:
         helper = GenerateTypeScriptFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict,
-                                                         prefix_decaration="export", postfix_decaration="const")
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list, ret_dict,
+                                                            prefix_decaration="export")
         assert len(test_text) == 9
         assert test_text[0] == "/**\n"
         assert test_text[1] == " * @brief Brief description\n"

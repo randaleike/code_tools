@@ -454,7 +454,7 @@ class GeneratePythonFileHelper():
                                                        None,
                                                        None,
                                                        constructor_code)
-        code_text.append("".rjust(indent, ' ')+"\n")      #whitespace for readability
+        code_text.append("\n")      #whitespace for readability
         return code_text
 
     def declare_structure(self, name:str, var_dist_list:list, indent:int=0,

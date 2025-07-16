@@ -146,8 +146,9 @@ class TestClass01LinuxLangSelect:
         assert capture_list[2] == cpp_gen.gen_include("<regex>")
         assert capture_list[3] == "\n"
 
+        desc = "Determine the correct local language class from the input LANG environment setting"
         expected_list = cpp_gen.define_function_with_decorations(test_obj.select_function_name,
-                                                             "Determine the correct local language class from the input LANG environment setting",
+                                                             desc,
                                                              test_obj.param_dict_list,
                                                              test_obj.base_intf_ret_ptr_dict)
         expected_list.append("{\n")

@@ -128,7 +128,7 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         function_body.append(if1_indent+"// Break the string into its components\n")
         function_body.append(if1_indent+"std::cmatch search_match;\n")
         regexstr = "\"^([a-z]{2})_([A-Z]{2})\\\\.(UTF-[0-9]{1,2})\""
-        function_body.append(if1_indent+"std::regex search_regex("+regexstr+")\");\n")
+        function_body.append(if1_indent+"std::regex search_regex("+regexstr+");\n")
         paramstr = param_name+", search_match, search_regex"
         function_body.append(if1_indent+"bool matched = std::regex_match("+paramstr+");\n")
         function_body.append("\n")  # whitespace for readability

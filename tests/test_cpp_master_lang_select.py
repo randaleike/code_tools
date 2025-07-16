@@ -69,8 +69,9 @@ class TestClass01MasterLangSelect:
         assert test_obj.select_base_function_name == "getLocalParserStringListInterface"
         assert test_obj.dynamic_compile_switch == "DYNAMIC_INTERNATIONALIZATION"
         assert test_obj.select_function_name == "BaseClass::getLocalParserStringListInterface"
-        assert test_obj.brief_desc == "Determine the OS use OS specific functions to determine the correct local language" \
-                                    "based on the OS specific local language setting and return the correct class object"
+        assert test_obj.brief_desc == "Determine the OS use OS specific functions to determine " \
+                                      "the correct local language based on the OS specific " \
+                                      "local language setting and return the correct class object"
         assert isinstance(test_obj.doxy_comment_gen, CDoxyCommentGenerator)
 
     def test002_constructor_non_default(self):
@@ -83,8 +84,9 @@ class TestClass01MasterLangSelect:
         assert test_obj.select_base_function_name == "getLocalLang"
         assert test_obj.dynamic_compile_switch == "TEST_DYNAM_SWITCH"
         assert test_obj.select_function_name == "TestBaseClass::getLocalLang"
-        assert test_obj.brief_desc == "Determine the OS use OS specific functions to determine the correct local language" \
-                                    "based on the OS specific local language setting and return the correct class object"
+        assert test_obj.brief_desc == "Determine the OS use OS specific functions to determine " \
+                                      "the correct local language based on the OS specific " \
+                                      "local language setting and return the correct class object"
         assert isinstance(test_obj.doxy_comment_gen, CDoxyCommentGenerator)
 
     def test003_get_function_name(self):
