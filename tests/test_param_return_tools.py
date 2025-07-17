@@ -108,8 +108,10 @@ class Test01Buildmodification:
         @brief Test the get array size value
         """
         test_list = [0,1,2,37,62,100,1000,10000]
+        mask = ParamRetDict.type_mod_array_mask
+        shift = ParamRetDict.type_mod_array_shift
         for test_value in test_list:
-            expected_val = (test_value & ParamRetDict.type_mod_array_mask) << ParamRetDict.type_mod_array_shift
+            expected_val = (test_value & mask) << shift
             assert expected_val == ParamRetDict.set_type_mod_array_size(0, test_value)
 
     def test11_test_set_type_mod_array_size_ptr_override(self):
@@ -117,9 +119,12 @@ class Test01Buildmodification:
         @brief Test the get array size value
         """
         test_list = [0,1,2,37,62,100,1000,10000]
+        mask = ParamRetDict.type_mod_array_mask
+        shift = ParamRetDict.type_mod_array_shift
+        lstmod = ParamRetDict.type_mod_list
         for test_value in test_list:
-            expected_val = (test_value & ParamRetDict.type_mod_array_mask) << ParamRetDict.type_mod_array_shift
-            assert expected_val == ParamRetDict.set_type_mod_array_size(ParamRetDict.type_mod_list, test_value)
+            expected_val = (test_value & mask) << shift
+            assert expected_val == ParamRetDict.set_type_mod_array_size(lstmod, test_value)
 
     def test12_test_get_array_size(self):
         """!
@@ -152,7 +157,8 @@ class Test02ReturnDict:
         """!
         @brief Test build return dictionary function, default modification
         """
-        test_dict = ParamRetDict.build_return_dict("string", "Test return base description")
+        test_dict = ParamRetDict.build_return_dict("string",
+                                                   "Test return base description")
         key_list = list(test_dict.keys())
         assert 3 == len(key_list)
         assert 'type' in key_list
@@ -167,7 +173,9 @@ class Test02ReturnDict:
         """!
         @brief Test build return dictionary function, list modification
         """
-        test_dict = ParamRetDict.build_return_dict("string", "Test return list modification", True)
+        test_dict = ParamRetDict.build_return_dict("string",
+                                                   "Test return list modification",
+                                                   True)
         key_list = list(test_dict.keys())
         assert 3 == len(key_list)
         assert 'type' in key_list
@@ -182,7 +190,9 @@ class Test02ReturnDict:
         """!
         @brief Test build return dictionary function, reference modification
         """
-        test_dict = ParamRetDict.build_return_dict("integer", "Test return reference modification", is_reference=True)
+        test_dict = ParamRetDict.build_return_dict("integer",
+                                                   "Test return reference modification",
+                                                   is_reference=True)
         key_list = list(test_dict.keys())
         assert 3 == len(key_list)
         assert 'type' in key_list
@@ -197,7 +207,9 @@ class Test02ReturnDict:
         """!
         @brief Test build return dictionary function, pointer modification
         """
-        test_dict = ParamRetDict.build_return_dict("integer", "Test return pointer modification", is_ptr=True)
+        test_dict = ParamRetDict.build_return_dict("integer",
+                                                   "Test return pointer modification",
+                                                   is_ptr=True)
         key_list = list(test_dict.keys())
         assert 3 == len(key_list)
         assert 'type' in key_list
@@ -212,7 +224,9 @@ class Test02ReturnDict:
         """!
         @brief Test build return dictionary function, undefined modification
         """
-        test_dict = ParamRetDict.build_return_dict("unsigned", "Test return undefined modification", or_undef=True)
+        test_dict = ParamRetDict.build_return_dict("unsigned",
+                                                   "Test return undefined modification",
+                                                   or_undef=True)
         key_list = list(test_dict.keys())
         assert 3 == len(key_list)
         assert 'type' in key_list
@@ -227,8 +241,12 @@ class Test02ReturnDict:
         """!
         @brief Test build return dictionary function, multiple modifications
         """
-        test_dict = ParamRetDict.build_return_dict("size", "Test return multiple modifications",
-                                                is_list=True, is_reference=True, is_ptr=True, or_undef=True)
+        test_dict = ParamRetDict.build_return_dict("size",
+                                                   "Test return multiple modifications",
+                                                   is_list=True,
+                                                   is_reference=True,
+                                                   is_ptr=True,
+                                                   or_undef=True)
         key_list = list(test_dict.keys())
         assert 3 == len(key_list)
         assert 'type' in key_list
@@ -237,14 +255,18 @@ class Test02ReturnDict:
 
         assert "size" == test_dict['type']
         assert "Test return multiple modifications" == test_dict['desc']
-        expected_mod = ParamRetDict.type_mod_list|ParamRetDict.type_mod_ptr|ParamRetDict.type_mod_ref|ParamRetDict.type_mod_undef
+        expected_mod = ParamRetDict.type_mod_list
+        expected_mod |= ParamRetDict.type_mod_ptr
+        expected_mod |= ParamRetDict.type_mod_ref
+        expected_mod |= ParamRetDict.type_mod_undef
         assert expected_mod == test_dict['typeMod']
 
     def test07_build_return_dict_default_plus_array(self):
         """!
         @brief Test build return dictionary function, add array set
         """
-        test_dict = ParamRetDict.build_return_dict("float", "Test return array post modification")
+        test_dict = ParamRetDict.build_return_dict("float",
+                                                   "Test return array post modification")
         ParamRetDict.set_array_size(test_dict, 7)
 
         key_list = list(test_dict.keys())
@@ -262,7 +284,9 @@ class Test02ReturnDict:
         """!
         @brief Test build return dictionary function, pointer modification plus array set
         """
-        test_dict = ParamRetDict.build_return_dict("float", "Test return ptr array post modification", is_ptr=True)
+        test_dict = ParamRetDict.build_return_dict("float",
+                                                   "Test return ptr array post modification",
+                                                   is_ptr=True)
         ParamRetDict.set_array_size(test_dict, 8)
 
         key_list = list(test_dict.keys())
@@ -280,7 +304,10 @@ class Test02ReturnDict:
         """!
         @brief Test build return dictionary function, pointer modification plus array set
         """
-        test_dict = ParamRetDict.build_return_dict_with_mod("struct", "Test return dictionary with mode input", 55)
+        desc = "Test return dictionary with mode input"
+        test_dict = ParamRetDict.build_return_dict_with_mod("struct",
+                                                            desc,
+                                                            55)
 
         key_list = list(test_dict.keys())
         assert 3 == len(key_list)
@@ -296,7 +323,10 @@ class Test02ReturnDict:
         """!
         @brief Test return dictionary get data function
         """
-        test_dict = ParamRetDict.build_return_dict_with_mod("struct", "Test return dictionary with mode input", ParamRetDict.type_mod_list)
+        desc = "Test return dictionary with mode input"
+        test_dict = ParamRetDict.build_return_dict_with_mod("struct",
+                                                            desc,
+                                                            ParamRetDict.type_mod_list)
         assert "struct" == ParamRetDict.get_return_type(test_dict)
         assert "Test return dictionary with mode input" == ParamRetDict.get_return_desc(test_dict)
         assert ParamRetDict.type_mod_list == ParamRetDict.get_return_type_mod(test_dict)
@@ -305,7 +335,10 @@ class Test02ReturnDict:
         """!
         @brief Test return dictionary get data tuple function
         """
-        test_dict = ParamRetDict.build_return_dict_with_mod("struct", "Test return dictionary with mode input", ParamRetDict.type_mod_ptr)
+        desc = "Test return dictionary with mode input"
+        test_dict = ParamRetDict.build_return_dict_with_mod("struct",
+                                                            desc,
+                                                            ParamRetDict.type_mod_ptr)
 
         ret_type, ret_desc, ret_mode = ParamRetDict.get_return_data(test_dict)
         assert "struct" == ret_type
@@ -322,7 +355,9 @@ class Test03ParamDict:
         """!
         @brief Test build parameter dictionary function, default modification
         """
-        test_dict = ParamRetDict.build_param_dict("foo", "string", "Test parameter base description")
+        test_dict = ParamRetDict.build_param_dict("foo",
+                                                  "string",
+                                                  "Test parameter base description")
         key_list = list(test_dict.keys())
         assert 4 == len(key_list)
         assert 'name' in key_list
@@ -339,7 +374,10 @@ class Test03ParamDict:
         """!
         @brief Test build parameter dictionary function, list modification
         """
-        test_dict = ParamRetDict.build_param_dict("moo", "string", "Test parameter list modification", True)
+        test_dict = ParamRetDict.build_param_dict("moo",
+                                                  "string",
+                                                  "Test parameter list modification",
+                                                  True)
         key_list = list(test_dict.keys())
         assert 4 == len(key_list)
         assert 'name' in key_list
@@ -356,7 +394,10 @@ class Test03ParamDict:
         """!
         @brief Test build parameter dictionary function, reference modification
         """
-        test_dict = ParamRetDict.build_param_dict("goo", "integer", "Test parameter reference modification", is_reference=True)
+        test_dict = ParamRetDict.build_param_dict("goo",
+                                                  "integer",
+                                                  "Test parameter reference modification",
+                                                  is_reference=True)
         key_list = list(test_dict.keys())
         assert 4 == len(key_list)
         assert 'name' in key_list
@@ -373,7 +414,10 @@ class Test03ParamDict:
         """!
         @brief Test build parameter dictionary function, pointer modification
         """
-        test_dict = ParamRetDict.build_param_dict("shoo", "integer", "Test parameter pointer modification", is_ptr=True)
+        test_dict = ParamRetDict.build_param_dict("shoo",
+                                                  "integer",
+                                                  "Test parameter pointer modification",
+                                                  is_ptr=True)
         key_list = list(test_dict.keys())
         assert 4 == len(key_list)
         assert 'name' in key_list
@@ -390,7 +434,10 @@ class Test03ParamDict:
         """!
         @brief Test build parameter dictionary function, undefined modification
         """
-        test_dict = ParamRetDict.build_param_dict("too", "unsigned", "Test parameter undefined modification", or_undef=True)
+        test_dict = ParamRetDict.build_param_dict("too",
+                                                  "unsigned",
+                                                  "Test parameter undefined modification",
+                                                  or_undef=True)
         key_list = list(test_dict.keys())
         assert 4 == len(key_list)
         assert 'name' in key_list
@@ -407,8 +454,13 @@ class Test03ParamDict:
         """!
         @brief Test build parameter dictionary function, multiple modifications
         """
-        test_dict = ParamRetDict.build_param_dict("yoo", "size", "Test parameter multiple modifications",
-                                                is_list=True, is_reference=True, is_ptr=True, or_undef=True)
+        test_dict = ParamRetDict.build_param_dict("yoo",
+                                                  "size",
+                                                  "Test parameter multiple modifications",
+                                                   is_list=True,
+                                                   is_reference=True,
+                                                   is_ptr=True,
+                                                   or_undef=True)
         key_list = list(test_dict.keys())
         assert 4 == len(key_list)
         assert 'name' in key_list
@@ -419,14 +471,19 @@ class Test03ParamDict:
         assert "yoo" == test_dict['name']
         assert "size" == test_dict['type']
         assert "Test parameter multiple modifications" == test_dict['desc']
-        expected_mod = ParamRetDict.type_mod_list|ParamRetDict.type_mod_ptr|ParamRetDict.type_mod_ref|ParamRetDict.type_mod_undef
+        expected_mod = ParamRetDict.type_mod_list
+        expected_mod |= ParamRetDict.type_mod_ptr
+        expected_mod |= ParamRetDict.type_mod_ref
+        expected_mod |= ParamRetDict.type_mod_undef
         assert expected_mod == test_dict['typeMod']
 
     def test07_build_param_dict_default_plus_array(self):
         """!
         @brief Test build parameter dictionary function, add array set
         """
-        test_dict = ParamRetDict.build_param_dict("pi", "float", "Test parameter array post modification")
+        test_dict = ParamRetDict.build_param_dict("pi",
+                                                  "float",
+                                                  "Test parameter array post modification")
         ParamRetDict.set_array_size(test_dict, 7)
 
         key_list = list(test_dict.keys())
@@ -446,7 +503,11 @@ class Test03ParamDict:
         """!
         @brief Test build parameter dictionary function, pointer modification plus array set
         """
-        test_dict = ParamRetDict.build_param_dict("rugbyPlayers", "string", "Test parameter ptr array post modification", is_ptr=True)
+        desc = "Test parameter ptr array post modification"
+        test_dict = ParamRetDict.build_param_dict("rugbyPlayers",
+                                                  "string",
+                                                  desc,
+                                                  is_ptr=True)
         ParamRetDict.set_array_size(test_dict, 23)
 
         key_list = list(test_dict.keys())
@@ -466,7 +527,11 @@ class Test03ParamDict:
         """!
         @brief Test build parameter dictionary function, pointer modification plus array set
         """
-        test_dict = ParamRetDict.build_param_dict_with_mod("employees", "struct", "Test parameter dictionary with mode input", 0x0440002)
+        desc = "Test parameter dictionary with mode input"
+        test_dict = ParamRetDict.build_param_dict_with_mod("employees",
+                                                           "struct",
+                                                           desc,
+                                                           0x0440002)
 
         key_list = list(test_dict.keys())
         assert 4 == len(key_list)
@@ -484,7 +549,11 @@ class Test03ParamDict:
         """!
         @brief Test parameter dictionary get data function
         """
-        test_dict = ParamRetDict.build_param_dict_with_mod("employees", "struct", "Test parameter dictionary with mode input", 0x0440002)
+        desc = "Test parameter dictionary with mode input"
+        test_dict = ParamRetDict.build_param_dict_with_mod("employees",
+                                                           "struct",
+                                                           desc,
+                                                           0x0440002)
         assert "employees" == ParamRetDict.get_param_name(test_dict)
         assert "struct" == ParamRetDict.get_param_type(test_dict)
         assert "Test parameter dictionary with mode input" == ParamRetDict.get_param_desc(test_dict)
@@ -494,7 +563,11 @@ class Test03ParamDict:
         """!
         @brief Test parameter dictionary get data tuple function
         """
-        test_dict = ParamRetDict.build_param_dict_with_mod("uid", "integer", "Test parameter dictionary with mode input", ParamRetDict.type_mod_ptr)
+        desc = "Test parameter dictionary with mode input"
+        test_dict = ParamRetDict.build_param_dict_with_mod("uid",
+                                                           "integer",
+                                                           desc,
+                                                           ParamRetDict.type_mod_ptr)
         param_name, param_type, param_desc, param_mode = ParamRetDict.get_param_data(test_dict)
 
         assert "uid" == param_name

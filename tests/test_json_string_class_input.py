@@ -25,8 +25,6 @@ Unittest for programmer base tools utility
 #==========================================================================
 
 import os
-import io
-import contextlib
 from unittest.mock import patch
 
 from code_tools_grocsoftware.base.json_string_class_description import TransTxtParser
@@ -37,50 +35,63 @@ from tests.dir_init import TESTFILEPATH
 
 # pylint: disable=protected-access
 
+LIST_PROMPT = "[T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: "
+RET_PROMPT = "Enter return base type "+LIST_PROMPT
+PARAM_PROMPT = "Enter parameter base type "+LIST_PROMPT
+
 class Test02StringClassDescription:
     """!
     @brief Unit test for the StringClassDescription class
     """
     @classmethod
     def setup_class(cls):
+        """!
+        @brief class setup function
+        """
         cls.test_json = os.path.join(TESTFILEPATH, "teststrdesc.json")
         cls.testlanglist = os.path.join(TESTFILEPATH, "teststringlanglist.json")
 
 
     @classmethod
     def teardown_class(cls):
+        """!
+        @brief class teardown function
+        """
         if os.path.exists("jsonStringClassDescription.json"):
-            os.remove("jsonStringClassDescription.json")   # Delete in case it was accidently created
+            # Delete in case it was accidently created
+            os.remove("jsonStringClassDescription.json")
 
 
     @staticmethod
-    def mock_param_ret_input(prompt, input_str):
-        if prompt == "Is full type a list [y/n]:":
-            return "n"
-        elif prompt == "Is full type a pointer [y/n]:":
-            return "n"
-        elif prompt == "Is full type a reference [y/n]:":
-            return "n"
-        elif prompt == "Can value be undefined [y/n]:":
-            return "n"
-        elif prompt == "Is full type an array [y/n]:":
+    def mock_param_ret_input(prompt:str, input_str)->str:
+        """!
+        @brief input parameter user input simulation
+        @param prompt {str} input call prompt
+        @param input_str {iterator} Test specific input response strings
+        @return string - simulater user response
+        """
+        modprompts = ["Is full type a list [y/n]:",
+                      "Is full type a pointer [y/n]:",
+                      "Is full type a reference [y/n]:",
+                      "Can value be undefined [y/n]:",
+                      "Is full type an array [y/n]:"]
+        if prompt in modprompts:
             return "n"
         elif prompt == 'Enter custom type: ':
             return "foobar"
         else:
             return next(input_str)
 
-    def test01_input_iso_translate_code_good_input(self):
+    def test01_input_iso_translate_code_good_input(self, capsys):
         """!
         @brief Test _input_iso_translate_code(), good input
         """
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', return_value='fr'):
+        with patch('builtins.input', return_value='fr'):
             testobj = StringClassDescription()
             assert testobj._input_iso_translate_code() == 'fr'
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
-    def test02_input_iso_translate_code_invalid_input(self):
+    def test02_input_iso_translate_code_invalid_input(self, capsys):
         """!
         @brief Test _input_iso_translate_code(), invalid input
         """
@@ -88,114 +99,122 @@ class Test02StringClassDescription:
         def test_mock_in(_:str)->str:
             return next(input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
             assert testobj._input_iso_translate_code() == 'de'
             expected_str = "Error: Only two characters a-z are allowed in the code, try again.\n"
             expected_str += "Error: Only two characters a-z are allowed in the code, try again.\n"
             expected_str += "Error: Only two characters a-z are allowed in the code, try again.\n"
             expected_str += "Error: Only two characters a-z are allowed in the code, try again.\n"
-            assert output.getvalue() == expected_str
+            assert capsys.readouterr().out == expected_str
 
-    def test03_input_var_method_name_good_input(self):
+    def test03_input_var_method_name_good_input(self, capsys):
         """!
         @brief Test _input_var_method_name(), method_name=true, good input
         """
-        input_str = (text for text in ["validMethodName", "validMethodName2", "valid_method_name", "valid_method3_name"])
+        input_str = (text for text in ["validMethodName",
+                                       "validMethodName2",
+                                       "valid_method_name",
+                                       "valid_method3_name"])
         def test_mock_in(_:str)->str:
             return next(input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
             assert testobj._input_var_method_name(True) == 'validMethodName'
             assert testobj._input_var_method_name(True) == 'validMethodName2'
             assert testobj._input_var_method_name(True) == 'valid_method_name'
             assert testobj._input_var_method_name(True) == 'valid_method3_name'
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
-    def test04_input_var_method_name_invalid_input(self):
+    def test04_input_var_method_name_invalid_input(self, capsys):
         """!
         @brief Test _input_var_method_name(), method_name=true, invalid input
         """
-        input_str = (text for text in ["", "2invalid_method_name", "invalid-method-name", "invalid;Name", "validMethodName"])
+        input_str = (text for text in ["",
+                                       "2invalid_method_name",
+                                       "invalid-method-name",
+                                       "invalid;Name",
+                                       "validMethodName"])
         def test_mock_in(_:str)->str:
             return next(input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
             assert testobj._input_var_method_name(True) == 'validMethodName'
             expected_str = "Error:  is not a valid code name, try again.\n"
             expected_str += "Error: 2invalid_method_name is not a valid code name, try again.\n"
             expected_str += "Error: invalid-method-name is not a valid code name, try again.\n"
             expected_str += "Error: invalid;Name is not a valid code name, try again.\n"
-            assert output.getvalue() == expected_str
+            assert capsys.readouterr().out == expected_str
 
-    def test05_input_var_method_name_good_input_method_false(self):
+    def test05_input_var_method_name_good_input_method_false(self, capsys):
         """!
         @brief Test _input_var_method_name(), method_name=false, good input
         """
-        input_str = (text for text in ["validParamName", "validParamName2", "valid_param_name", "valid_param3_name"])
+        input_str = (text for text in ["validParamName",
+                                       "validParamName2",
+                                       "valid_param_name",
+                                       "valid_param3_name"])
         def test_mock_in(_:str)->str:
             return next(input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
             assert testobj._input_var_method_name(False) == 'validParamName'
             assert testobj._input_var_method_name(False) == 'validParamName2'
             assert testobj._input_var_method_name(False) == 'valid_param_name'
             assert testobj._input_var_method_name(False) == 'valid_param3_name'
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
-    def test06_input_var_method_name_invalid_input_method_false(self):
+    def test06_input_var_method_name_invalid_input_method_false(self, capsys):
         """!
         @brief Test _input_var_method_name(), method_name=false, invalid input
         """
-        input_str = (text for text in ["", "2invalid_param_name", "invalid-param-name", "invalid#ParamName",  "validParamName"])
+        input_str = (text for text in ["",
+                                       "2invalid_param_name",
+                                       "invalid-param-name",
+                                       "invalid#ParamName",
+                                       "validParamName"])
         def test_mock_in(_:str)->str:
             return next(input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
             assert testobj._input_var_method_name(False) == 'validParamName'
             expected_str = "Error:  is not a valid code name, try again.\n"
             expected_str += "Error: 2invalid_param_name is not a valid code name, try again.\n"
             expected_str += "Error: invalid-param-name is not a valid code name, try again.\n"
             expected_str += "Error: invalid#ParamName is not a valid code name, try again.\n"
-            assert output.getvalue() == expected_str
+            assert capsys.readouterr().out == expected_str
 
-    def test07_input_array_modifier_valid_input(self):
+    def test07_input_array_modifier_valid_input(self, capsys):
         """!
         @brief Test _input_var_method_name(), Valid input
         """
         testobj = StringClassDescription()
 
         expected_mod = ParamRetDict.set_type_mod_array_size(0, 10)
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', return_value='10'):
+        with patch('builtins.input', return_value='10'):
             assert testobj._input_array_modifier(0) == expected_mod
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
         expected_mod2 = ParamRetDict.set_type_mod_array_size(0, 23)
-        with contextlib.redirect_stdout(output), patch('builtins.input', return_value='23'):
+        with patch('builtins.input', return_value='23'):
             assert testobj._input_array_modifier(0) == expected_mod2
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
         expected_mod3 = ParamRetDict.set_type_mod_array_size(0, 1)
-        with contextlib.redirect_stdout(output), patch('builtins.input', return_value='1'):
+        with patch('builtins.input', return_value='1'):
             assert testobj._input_array_modifier(0) == expected_mod3
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
         expected_mod4 = ParamRetDict.set_type_mod_array_size(0, 65535)
-        with contextlib.redirect_stdout(output), patch('builtins.input', return_value='65535'):
+        with patch('builtins.input', return_value='65535'):
             assert testobj._input_array_modifier(0) == expected_mod4
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
-    def test08_input_array_modifier_invalid_input(self):
+    def test08_input_array_modifier_invalid_input(self, capsys):
         """!
         @brief Test _input_var_method_name(), Invalid input
         """
@@ -207,8 +226,7 @@ class Test02StringClassDescription:
         testobj = StringClassDescription()
 
         expected_mod = ParamRetDict.set_type_mod_array_size(0, 10)
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             assert testobj._input_array_modifier(0) == expected_mod
             expected_error_str = "Error: must be a valid number between 1 and 65535\n"
             expected_error_str += "Error: must be a valid number between 1 and 65535\n"
@@ -216,7 +234,7 @@ class Test02StringClassDescription:
             expected_error_str += "Error: must be a valid number between 1 and 65535\n"
             expected_error_str += "Error: must be an integer value\n"
             expected_error_str += "Error: must be an integer value\n"
-            assert output.getvalue() == expected_error_str
+            assert capsys.readouterr().out == expected_error_str
 
     def test09_input_type_modifier_list_all_no(self):
         """!
@@ -225,8 +243,7 @@ class Test02StringClassDescription:
         def test_mock_in(_:str)->str:
             return 'n'
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
             assert testobj._input_type_modifier() == 0
 
@@ -255,8 +272,7 @@ class Test02StringClassDescription:
             else:
                 return 'n'
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
             for answer in list(input_dict):
                 input_dict[answer] = 'y'
@@ -301,8 +317,7 @@ class Test02StringClassDescription:
             else:
                 return 'n'
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
             for first_yes in list(input_dict):
                 input_dict[first_yes] = 'y'
@@ -339,7 +354,7 @@ class Test02StringClassDescription:
                             expected_mod = ParamRetDict.type_mod_undef | first_mod
                         elif second_yes == 'arrayAns':
                             if first_mod == ParamRetDict.type_mod_list:
-                                expected_mod = (6 << ParamRetDict.type_mod_array_shift)
+                                expected_mod = 6 << ParamRetDict.type_mod_array_shift
                             else:
                                 expected_mod = (6 << ParamRetDict.type_mod_array_shift) | first_mod
                         else:
@@ -362,10 +377,12 @@ class Test02StringClassDescription:
             else:
                 return 'y'
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
-            expected_mod = ParamRetDict.type_mod_list | ParamRetDict.type_mod_ptr | ParamRetDict.type_mod_ref | ParamRetDict.type_mod_undef
+            expected_mod = ParamRetDict.type_mod_list
+            expected_mod |= ParamRetDict.type_mod_ptr
+            expected_mod |= ParamRetDict.type_mod_ref
+            expected_mod |= ParamRetDict.type_mod_undef
             assert testobj._input_type_modifier() == expected_mod
 
     def test13_input_type_modifier_list_all_yes(self):
@@ -378,14 +395,15 @@ class Test02StringClassDescription:
             else:
                 return 'y'
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
-            expected_mod = ParamRetDict.type_mod_ptr | ParamRetDict.type_mod_ref | ParamRetDict.type_mod_undef
+            expected_mod = ParamRetDict.type_mod_ptr
+            expected_mod |= ParamRetDict.type_mod_ref
+            expected_mod |= ParamRetDict.type_mod_undef
             expected_mod |= 7 << ParamRetDict.type_mod_array_shift
             assert testobj._input_type_modifier() == expected_mod
 
-    def test14_input_param_return_type_good_input_text(self):
+    def test14_input_param_return_type_good_input_text(self, capsys):
         """!
         @brief Test _input_param_return_type(), good input, text
         """
@@ -399,10 +417,9 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
-            for i in range(0,len(type_list)):
+            for _ in range(0,len(type_list)):
                 type_name, type_mod = testobj._input_param_return_type(True)
                 assert type_name == 'string'
                 assert type_mod == 0
@@ -411,9 +428,9 @@ class Test02StringClassDescription:
                 assert type_name == 'string'
                 assert type_mod == 0
 
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
-    def test15_input_param_return_type_good_input_integer(self):
+    def test15_input_param_return_type_good_input_integer(self, capsys):
         """!
         @brief Test _input_param_return_type(), good input, integer
         """
@@ -427,10 +444,9 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
-            for i in range(0,len(type_list)):
+            for _ in range(0,len(type_list)):
                 type_name, type_mod = testobj._input_param_return_type(True)
                 assert type_name == 'integer'
                 assert type_mod == 0
@@ -439,9 +455,9 @@ class Test02StringClassDescription:
                 assert type_name == 'integer'
                 assert type_mod == 0
 
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
-    def test16_input_param_return_type_good_input_unsigned(self):
+    def test16_input_param_return_type_good_input_unsigned(self, capsys):
         """!
         @brief Test _input_param_return_type(), good input, integer
         """
@@ -455,10 +471,9 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
-            for i in range(0,len(type_list)):
+            for _ in range(0,len(type_list)):
                 type_name, type_mod = testobj._input_param_return_type(True)
                 assert type_name == 'unsigned'
                 assert type_mod == 0
@@ -467,9 +482,9 @@ class Test02StringClassDescription:
                 assert type_name == 'unsigned'
                 assert type_mod == 0
 
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
-    def test17_input_param_return_type_good_input_size(self):
+    def test17_input_param_return_type_good_input_size(self, capsys):
         """!
         @brief Test _input_param_return_type(), good input, integer
         """
@@ -483,10 +498,9 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
-            for i in range(0,len(type_list)):
+            for _ in range(0,len(type_list)):
                 type_name, type_mod = testobj._input_param_return_type(True)
                 assert type_name == 'size'
                 assert type_mod == 0
@@ -495,9 +509,9 @@ class Test02StringClassDescription:
                 assert type_name == 'size'
                 assert type_mod == 0
 
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
-    def test18_input_param_return_type_good_input_custom_good_name(self):
+    def test18_input_param_return_type_good_input_custom_good_name(self, capsys):
         """!
         @brief Test _input_param_return_type(), good input, custom, good custom name
         """
@@ -511,10 +525,9 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
-            for i in range(0,len(type_list)):
+            for _ in range(0,len(type_list)):
                 type_name, type_mod = testobj._input_param_return_type(True)
                 assert type_name == 'foobar'
                 assert type_mod == 0
@@ -523,26 +536,29 @@ class Test02StringClassDescription:
                 assert type_name == 'foobar'
                 assert type_mod == 0
 
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
-    def test19_input_return_type_input_custom_good_custom_names(self):
+    def test19_input_return_type_input_custom_good_custom_names(self, capsys):
         """!
         @brief Test _input_param_return_type(), return, custom, good names
         """
-        custom_type_list = ["test", "test1", "test_underscore", "namespace::test", "test2__underscore"]
+        custom_type_list = ["test",
+                            "test1",
+                            "test_underscore",
+                            "namespace::test",
+                            "test2__underscore"]
         custom_type_names = (text for text in custom_type_list)
         def test_mock_in(prompt:str)->str:
             if prompt == 'Enter custom type: ':
                 return next(custom_type_names)
-            elif prompt == 'Enter return base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ':
+            elif prompt == RET_PROMPT:
                 return "c"
-            elif prompt == 'Enter parameter base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ':
+            elif prompt == PARAM_PROMPT:
                 return "c"
             else:
                 return "n"
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
 
             for name in custom_type_list:
@@ -550,26 +566,30 @@ class Test02StringClassDescription:
                 assert type_name == name
                 assert type_mod == 0
 
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
-    def test20_input_param_type_input_custom_good_custom_names(self):
+    def test20_input_param_type_input_custom_good_custom_names(self, capsys):
         """!
         @brief Test _input_param_return_type(), return, custom, good names
         """
-        custom_type_list = ["test", "test1", "test_underscore", "namespace::test", "test2__underscore"]
+        custom_type_list = ["test",
+                            "test1",
+                            "test_underscore",
+                            "namespace::test",
+                            "test2__underscore"]
         custom_type_names = (text for text in custom_type_list)
+
         def test_mock_in(prompt:str)->str:
             if prompt == 'Enter custom type: ':
                 return next(custom_type_names)
-            elif prompt == 'Enter return base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ':
+            elif prompt == RET_PROMPT:
                 return "c"
-            elif prompt == 'Enter parameter base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ':
+            elif prompt == PARAM_PROMPT:
                 return "c"
             else:
                 return "n"
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
 
             for name in custom_type_list:
@@ -577,9 +597,9 @@ class Test02StringClassDescription:
                 assert type_name == name
                 assert type_mod == 0
 
-            assert output.getvalue() == ""
+            assert capsys.readouterr().out == ""
 
-    def test21_input_return_type_input_custom_bad_custom_names(self):
+    def test21_input_return_type_input_custom_bad_custom_names(self, capsys):
         """!
         @brief Test _input_param_return_type(), custom, bad names, return type
         """
@@ -588,15 +608,14 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             if prompt == 'Enter custom type: ':
                 return next(custom_type_names)
-            elif prompt == 'Enter return base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ':
+            elif prompt == RET_PROMPT:
                 return "c"
-            elif prompt == 'Enter parameter base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ':
+            elif prompt == PARAM_PROMPT:
                 return "c"
             else:
                 return "n"
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
 
             type_name, type_mod = testobj._input_param_return_type(True)
@@ -607,9 +626,9 @@ class Test02StringClassDescription:
             for name in custom_type_list:
                 if name != 'goodName':
                     expected_str += name+" is not a valid code type name, try again.\n"
-            assert output.getvalue() == expected_str
+            assert capsys.readouterr().out == expected_str
 
-    def test22_input_param_type_input_custom_bad_custom_names(self):
+    def test22_input_param_type_input_custom_bad_custom_names(self, capsys):
         """!
         @brief Test _input_param_return_type(), custom, bad names, param type
         """
@@ -618,15 +637,14 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             if prompt == 'Enter custom type: ':
                 return next(custom_type_names)
-            elif prompt == 'Enter return base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ':
+            elif prompt == RET_PROMPT:
                 return "c"
-            elif prompt == 'Enter parameter base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ':
+            elif prompt == PARAM_PROMPT:
                 return "c"
             else:
                 return "n"
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
 
             type_name, type_mod = testobj._input_param_return_type(False)
@@ -637,9 +655,9 @@ class Test02StringClassDescription:
             for name in custom_type_list:
                 if name != 'goodName':
                     expected_str += name+" is not a valid code type name, try again.\n"
-            assert output.getvalue() == expected_str
+            assert capsys.readouterr().out == expected_str
 
-    def test23_input_param_return_type_input_invalid_type(self):
+    def test23_input_param_return_type_input_invalid_type(self, capsys):
         """!
         @brief Test _input_param_return_type(), invalid type selection
         """
@@ -647,8 +665,7 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
             type_name, type_mod = testobj._input_param_return_type(True)
             assert type_name == 'integer'
@@ -658,36 +675,44 @@ class Test02StringClassDescription:
             assert type_name == 'integer'
             assert type_mod == 0
 
-            expected_str = "Error: \"x\" unknown. Please select one of the options from the menu.\n"
-            expected_str += "Error: \"a\" unknown. Please select one of the options from the menu.\n"
-            expected_str += "Error: \"dict\" unknown. Please select one of the options from the menu.\n"
-            expected_str += "Error: \"x\" unknown. Please select one of the options from the menu.\n"
-            expected_str += "Error: \"z\" unknown. Please select one of the options from the menu.\n"
-            expected_str += "Error: \"list\" unknown. Please select one of the options from the menu.\n"
-            assert output.getvalue() == expected_str
+            expected_str = "Error: \"x\" unknown. Please select one of the options from " \
+                           "the menu.\n"
+            expected_str += "Error: \"a\" unknown. Please select one of the options from " \
+                            "the menu.\n"
+            expected_str += "Error: \"dict\" unknown. Please select one of the options from " \
+                            "the menu.\n"
+            expected_str += "Error: \"x\" unknown. Please select one of the options from " \
+                            "the menu.\n"
+            expected_str += "Error: \"z\" unknown. Please select one of the options from " \
+                            "the menu.\n"
+            expected_str += "Error: \"list\" unknown. Please select one of the options " \
+                            "from the menu.\n"
+            assert capsys.readouterr().out == expected_str
 
     def test24_input_parameter_data(self):
         """!
-        @brief Test _input_parameter_data(), simple as all the sub functions have already been tested
+        @brief Test _input_parameter_data(), simple as all the sub
+               functions have already been tested
         """
         def test_mock_in(prompt:str)->str:
-            if ((prompt == "Is full type a list [y/n]:") or
-                (prompt == "Is full type a pointer [y/n]:") or
-                (prompt == "Is full type a reference [y/n]:") or
-                (prompt == "Can value be undefined [y/n]:") or
-                (prompt == "Is full type an array [y/n]:")):
+            modprompts = ["Is full type a list [y/n]:",
+                          "Is full type a pointer [y/n]:",
+                          "Is full type a reference [y/n]:",
+                          "Can value be undefined [y/n]:",
+                          "Is full type an array [y/n]:"]
+            if prompt in modprompts:
                 return 'n'
             elif prompt == "Enter parameter name: ":
                 return "paramName"
-            elif prompt == "Enter parameter base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ":
+            elif prompt == "Enter parameter base type [T(ext)|i(nteger)|" \
+                           "u(nsigned)|s(ize)|c(ustom)]: ":
                 return "i"
             elif prompt == "Enter brief parameter description for doxygen comment: ":
                 return "Brief parameter description"
             else:
                 return "n"
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
             param_dict = testobj._input_parameter_data()
             assert isinstance(param_dict, dict)
@@ -702,11 +727,12 @@ class Test02StringClassDescription:
         @brief Test _input_return_data(), simple as all the sub functions have already been tested
         """
         def test_mock_in(prompt:str)->str:
-            if ((prompt == "Is full type a list [y/n]:") or
-                (prompt == "Is full type a pointer [y/n]:") or
-                (prompt == "Is full type a reference [y/n]:") or
-                (prompt == "Can value be undefined [y/n]:") or
-                (prompt == "Is full type an array [y/n]:")):
+            modprompts = ["Is full type a list [y/n]:",
+                          "Is full type a pointer [y/n]:",
+                          "Is full type a reference [y/n]:",
+                          "Can value be undefined [y/n]:",
+                          "Is full type an array [y/n]:"]
+            if prompt in modprompts:
                 return 'n'
             elif prompt == "Enter return base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ":
                 return "t"
@@ -715,8 +741,7 @@ class Test02StringClassDescription:
             else:
                 return "n"
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
             return_dict = testobj._input_return_data()
             assert isinstance(return_dict, dict)
@@ -731,16 +756,18 @@ class Test02StringClassDescription:
         """
         testobj = StringClassDescription(self.test_json)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "string", "Test param one")]
-        valid, match_count, param_count, parsed_str_data = testobj._validate_translate_string(param_list, 'Test string with input @foo@')
+        tststr = 'Test string with input @foo@'
+        valid, match_count, param_count, str_data = testobj._validate_translate_string(param_list,
+                                                                                       tststr)
         assert valid
         assert match_count == 1
         assert param_count == 1
-        assert isinstance(parsed_str_data, list)
-        assert len(parsed_str_data) == 2
-        assert parsed_str_data[0][0] == TransTxtParser.parsed_type_text
-        assert parsed_str_data[0][1] == "Test string with input "
-        assert parsed_str_data[1][0] == TransTxtParser.parsed_type_param
-        assert parsed_str_data[1][1] == "foo"
+        assert isinstance(str_data, list)
+        assert len(str_data) == 2
+        assert str_data[0][0] == TransTxtParser.parsed_type_text
+        assert str_data[0][1] == "Test string with input "
+        assert str_data[1][0] == TransTxtParser.parsed_type_param
+        assert str_data[1][1] == "foo"
 
     def test27_validate_translate_string_pass_two(self):
         """!
@@ -749,20 +776,22 @@ class Test02StringClassDescription:
         testobj = StringClassDescription(self.test_json)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "string", "Test param one"),
                      ParamRetDict.build_param_dict_with_mod("moo", "string", "Test param two")]
-        valid, match_count, param_count, parsed_str_data = testobj._validate_translate_string(param_list, 'Test string with input @foo@ and @moo@')
+        tststr = 'Test string with input @foo@ and @moo@'
+        valid, mcount, pcount, str_data = testobj._validate_translate_string(param_list,
+                                                                             tststr)
         assert valid
-        assert match_count == 2
-        assert param_count == 2
-        assert isinstance(parsed_str_data, list)
-        assert len(parsed_str_data) == 4
-        assert parsed_str_data[0][0] == TransTxtParser.parsed_type_text
-        assert parsed_str_data[0][1] == "Test string with input "
-        assert parsed_str_data[1][0] == TransTxtParser.parsed_type_param
-        assert parsed_str_data[1][1] == "foo"
-        assert parsed_str_data[2][0] == TransTxtParser.parsed_type_text
-        assert parsed_str_data[2][1] == " and "
-        assert parsed_str_data[3][0] == TransTxtParser.parsed_type_param
-        assert parsed_str_data[3][1] == "moo"
+        assert mcount == 2
+        assert pcount == 2
+        assert isinstance(str_data, list)
+        assert len(str_data) == 4
+        assert str_data[0][0] == TransTxtParser.parsed_type_text
+        assert str_data[0][1] == "Test string with input "
+        assert str_data[1][0] == TransTxtParser.parsed_type_param
+        assert str_data[1][1] == "foo"
+        assert str_data[2][0] == TransTxtParser.parsed_type_text
+        assert str_data[2][1] == " and "
+        assert str_data[3][0] == TransTxtParser.parsed_type_param
+        assert str_data[3][1] == "moo"
 
     def test28_validate_translate_string_fail(self):
         """!
@@ -771,16 +800,18 @@ class Test02StringClassDescription:
         testobj = StringClassDescription(self.test_json)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "string", "Test param one"),
                      ParamRetDict.build_param_dict_with_mod("moo", "string", "Test param two")]
-        valid, match_count, param_count, parsed_str_data = testobj._validate_translate_string(param_list, 'Test string with input @foo@')
+        tststr = 'Test string with input @foo@'
+        valid, mcount, pcount, str_data = testobj._validate_translate_string(param_list,
+                                                                             tststr)
         assert not valid
-        assert match_count == 1
-        assert param_count == 1
-        assert isinstance(parsed_str_data, list)
-        assert len(parsed_str_data) == 2
-        assert parsed_str_data[0][0] == TransTxtParser.parsed_type_text
-        assert parsed_str_data[0][1] == "Test string with input "
-        assert parsed_str_data[1][0] == TransTxtParser.parsed_type_param
-        assert parsed_str_data[1][1] == "foo"
+        assert mcount == 1
+        assert pcount == 1
+        assert isinstance(str_data, list)
+        assert len(str_data) == 2
+        assert str_data[0][0] == TransTxtParser.parsed_type_text
+        assert str_data[0][1] == "Test string with input "
+        assert str_data[1][0] == TransTxtParser.parsed_type_param
+        assert str_data[1][1] == "foo"
 
     def test29_validate_translate_string_fail_too_many(self):
         """!
@@ -788,29 +819,32 @@ class Test02StringClassDescription:
         """
         testobj = StringClassDescription(self.test_json)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "string", "Test param one")]
-        valid, match_count, param_count, parsed_str_data = testobj._validate_translate_string(param_list, 'Test string with input @foo@ and @moo@')
+        tststr = 'Test string with input @foo@ and @moo@'
+        valid, mcount, pcount, str_data = testobj._validate_translate_string(param_list,
+                                                                             tststr)
         assert not valid
-        assert match_count == 1
-        assert param_count == 2
-        assert isinstance(parsed_str_data, list)
-        assert len(parsed_str_data) == 4
-        assert parsed_str_data[0][0] == TransTxtParser.parsed_type_text
-        assert parsed_str_data[0][1] == "Test string with input "
-        assert parsed_str_data[1][0] == TransTxtParser.parsed_type_param
-        assert parsed_str_data[1][1] == "foo"
-        assert parsed_str_data[2][0] == TransTxtParser.parsed_type_text
-        assert parsed_str_data[2][1] == " and "
-        assert parsed_str_data[3][0] == TransTxtParser.parsed_type_param
-        assert parsed_str_data[3][1] == "moo"
+        assert mcount == 1
+        assert pcount == 2
+        assert isinstance(str_data, list)
+        assert len(str_data) == 4
+        assert str_data[0][0] == TransTxtParser.parsed_type_text
+        assert str_data[0][1] == "Test string with input "
+        assert str_data[1][0] == TransTxtParser.parsed_type_param
+        assert str_data[1][1] == "foo"
+        assert str_data[2][0] == TransTxtParser.parsed_type_text
+        assert str_data[2][1] == " and "
+        assert str_data[3][0] == TransTxtParser.parsed_type_param
+        assert str_data[3][1] == "moo"
 
-    def test30_input_translate_string_good(self):
+    def test30_input_translate_string_good(self,capsys):
         """!
         @brief Test _input_translate_string method, proper message
         """
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', return_value='Test string with input @foo@'):
+        with patch('builtins.input', return_value='Test string with input @foo@'):
             testobj = StringClassDescription(self.test_json)
-            param_list = [ParamRetDict.build_param_dict_with_mod("foo", "string", "Test param one")]
+            param_list = [ParamRetDict.build_param_dict_with_mod("foo",
+                                                                 "string",
+                                                                 "Test param one")]
             parsed_str_data = testobj._input_translate_string(param_list)
             assert isinstance(parsed_str_data, list)
             assert len(parsed_str_data) == 2
@@ -824,18 +858,18 @@ class Test02StringClassDescription:
             expected_str += "where the function parameters should be inserted.\n"
             expected_str += "Example with single input parameter name \"keyString\":\n"
             expected_str += "  Found argument key @keyString@\n"
-            assert output.getvalue() == expected_str
+            assert capsys.readouterr().out == expected_str
 
-    def test31_input_translate_string_with_too_many_error(self):
+    def test31_input_translate_string_with_too_many_error(self, capsys):
         """!
         @brief Test _input_translate_string method, improper message, too many params
         """
-        input_str = (text for text in ["Test string with input @foo@ and @moo@", "Test string with input @foo@"])
+        input_str = (text for text in ["Test string with input @foo@ and @moo@",
+                                       "Test string with input @foo@"])
         def test_mock_in(_:str)->str:
             return next(input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription(self.test_json)
             param_list = [ParamRetDict.build_param_dict_with_mod("foo", "string", "Test param one")]
             parsed_str_data = testobj._input_translate_string(param_list)
@@ -854,19 +888,19 @@ class Test02StringClassDescription:
             expected_str += "    Test string with input @foo@ and @moo@\n"
             expected_str += "Expected parameter list:\n"
             expected_str += "    @foo@\n"
-            assert output.getvalue() == expected_str
+            assert capsys.readouterr().out == expected_str
 
 
-    def test32_input_translate_string_with_too_few_error(self):
+    def test32_input_translate_string_with_too_few_error(self, capsys):
         """!
         @brief Test _input_translate_string method, improper message
         """
-        input_str = (text for text in ["Test string with input @foo@", "Test string with input @foo@ and @moo@"])
+        input_str = (text for text in ["Test string with input @foo@",
+                                       "Test string with input @foo@ and @moo@"])
         def test_mock_in(_:str)->str:
             return next(input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription(self.test_json)
             param_list = [ParamRetDict.build_param_dict_with_mod("foo", "string", "Test param one"),
                          ParamRetDict.build_param_dict_with_mod("moo", "integer", "Test param two")]
@@ -886,9 +920,9 @@ class Test02StringClassDescription:
             expected_str += "    Test string with input @foo@\n"
             expected_str += "Expected parameter list:\n"
             expected_str += "    @foo@, @moo@\n"
-            assert output.getvalue() == expected_str
+            assert capsys.readouterr().out == expected_str
 
-    def test33_input_translate_string_with_misspell_error(self):
+    def test33_input_translate_string_with_misspell_error(self, capsys):
         """!
         @brief Test _input_translate_string method, improper message
         """
@@ -899,8 +933,7 @@ class Test02StringClassDescription:
         def test_mock_in(_:str)->str:
             return next(input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription(self.test_json)
             param_list = [ParamRetDict.build_param_dict_with_mod("foo", "string", "Test param one"),
                          ParamRetDict.build_param_dict_with_mod("moo", "integer", "Test param two")]
@@ -929,9 +962,9 @@ class Test02StringClassDescription:
             expected_str += "    Test string with input @doo@ and @goo@\n"
             expected_str += "Expected parameter list:\n"
             expected_str += "    @foo@, @moo@\n"
-            assert output.getvalue() == expected_str
+            assert capsys.readouterr().out == expected_str
 
-    def test34_input_translate_string_with_double_param_error(self):
+    def test34_input_translate_string_with_double_param_error(self, capsys):
         """!
         @brief Test _input_translate_string method, improper message
         """
@@ -940,8 +973,7 @@ class Test02StringClassDescription:
         def test_mock_in(_:str)->str:
             return next(input_str)
 
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
+        with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription(self.test_json)
             param_list = [ParamRetDict.build_param_dict_with_mod("foo", "string", "Test param one"),
                          ParamRetDict.build_param_dict_with_mod("moo", "integer", "Test param two")]
@@ -963,6 +995,6 @@ class Test02StringClassDescription:
             expected_str += "    Test string with input @foo@, @foo@ and @moo@\n"
             expected_str += "Expected parameter list:\n"
             expected_str += "    @foo@, @moo@\n"
-            assert output.getvalue() == expected_str
+            assert capsys.readouterr().out == expected_str
 
 # pylint: enable=protected-access

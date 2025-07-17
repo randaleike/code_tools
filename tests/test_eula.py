@@ -145,7 +145,7 @@ class TestEula:
         @brief Test the EULA constructor error case
         """
         with pytest.raises(Exception) as context:
-            eula = EulaText()
+            EulaText()
         assert "ERROR: Standard or custom EULA is required." in str(context.value)
 
 
@@ -160,11 +160,14 @@ class TestEula:
         for line in formatedtext:
             assert len(line) <=80
 
-        assert formatedtext[0] == "Permission is hereby granted, free of charge, to any person obtaining a copy of"
+        assert formatedtext[0] == "Permission is hereby granted, free of charge, to any person " \
+                                  "obtaining a copy of"
         assert formatedtext[6] == ""
-        assert formatedtext[7] == "The above copyright notice and self permission notice shall be included in all"
+        assert formatedtext[7] == "The above copyright notice and self permission notice shall " \
+                                  "be included in all"
         assert formatedtext[9] == ""
-        assert formatedtext[10] == "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR"
+        assert formatedtext[10] == "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY " \
+                                   "KIND, EXPRESS OR"
         assert formatedtext[16] == "SOFTWARE."
         assert formatedtext[17] == ""
 
@@ -179,13 +182,21 @@ class TestEula:
         for line in formatedtext:
             assert len(line) ==80
 
-        assert formatedtext[0] == "Permission is hereby granted, free of charge, to any person obtaining a copy of "
-        assert formatedtext[6] == "                                                                                "
-        assert formatedtext[7] == "The above copyright notice and self permission notice shall be included in all  "
-        assert formatedtext[9] == "                                                                                "
-        assert formatedtext[10] == "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR      "
-        assert formatedtext[16] == "SOFTWARE.                                                                       "
-        assert formatedtext[17] == "                                                                                "
+        assert formatedtext[0] == "Permission is hereby granted, free of charge, to any person " \
+                                  "obtaining a copy of "
+        assert formatedtext[6] == "                                                            " \
+                                  "                    "
+        assert formatedtext[7] == "The above copyright notice and self permission notice shall " \
+                                  "be included in all  "
+
+        assert formatedtext[9] == "                                                            " \
+                                  "                    "
+        assert formatedtext[10] == "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY " \
+                                   "KIND, EXPRESS OR      "
+        assert formatedtext[16] == "SOFTWARE.                                                  " \
+                                   "                     "
+        assert formatedtext[17] == "                                                            " \
+                                   "                    "
 
     def test15_format_eula_text_length50(self):
         """!

@@ -26,7 +26,6 @@ Unittest for programmer base tools utility
 
 import os
 
-from unittest.mock import patch, MagicMock
 import pytest
 
 from code_tools_grocsoftware.base.json_string_class_description import TransTxtParser
@@ -37,6 +36,21 @@ from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionL
 from tests.dir_init import TESTFILEPATH
 
 # pylint: disable=protected-access
+
+class MockTranslator():
+    """!
+    Mock Translator class for testing
+    """
+
+    def translate_text(self, source_lang:str, target_lang:str, text:str="")->str:
+        """!
+        @brief Mock Translate the input text
+        @param source_lang {string} ISO 639-1 language code of the input text
+        @param target_lang {string} ISO 639-1 language code for the output text
+        @param text {string} text to translate
+        @return string - Mock translated text
+        """
+        return source_lang+"->"+target_lang+":"+text
 
 class Test02StringClassDescription:
     """!
@@ -50,17 +64,18 @@ class Test02StringClassDescription:
         cls.test_json = os.path.join(TESTFILEPATH, "teststrdesc.json")
         cls.testlanglist = os.path.join(TESTFILEPATH, "teststringlanglist.json")
 
-
     @classmethod
     def teardown_class(cls):
         """!
         @brief Tear down the test class
         """
         if os.path.exists("jsonStringClassDescription.json"):
-            os.remove("jsonStringClassDescription.json")   # Delete in case it was accidently created
-        if os.path.exists("temp.json"):
-            os.remove("temp.json")   # Delete in case it was accidently not deleted
+            # Delete in case it was accidently created
+            os.remove("jsonStringClassDescription.json")
 
+        if os.path.exists("temp.json"):
+            # Delete in case it was accidently not deleted
+            os.remove("temp.json")
 
     def test01_default_constructor(self):
         """!
@@ -83,7 +98,8 @@ class Test02StringClassDescription:
         assert testobj.filename == self.test_json
         assert testobj.string_jason_data['baseClassName'] == "ParserStringListInterface"
         assert testobj.string_jason_data['namespace'] == "argparser"
-        assert testobj.string_jason_data['dynamicCompileSwitch'] == "TEST_DYNAMIC_INTERNATIONALIZATION"
+        switch = testobj.string_jason_data['dynamicCompileSwitch']
+        assert switch == "TEST_DYNAMIC_INTERNATIONALIZATION"
         assert len(testobj.string_jason_data['propertyMethods']) == 1
         assert list(testobj.string_jason_data['propertyMethods'])[0] == 'getLangIsoCode'
         assert len(testobj.string_jason_data['translateMethods']) == 1
@@ -125,8 +141,10 @@ class Test02StringClassDescription:
         @brief Test get_language_class_name_with_namespace method
         """
         testobj = StringClassDescription()
-        assert testobj.get_language_class_name_with_namespace("Moo") == "Moo::baseclass"
-        assert testobj.get_language_class_name_with_namespace("Moo", ",", "english") == "Moo,baseclassEnglish"
+        tststr = testobj.get_language_class_name_with_namespace("Moo")
+        tststr1 = testobj.get_language_class_name_with_namespace("Moo", ",", "english")
+        assert tststr == "Moo::baseclass"
+        assert tststr1 == "Moo,baseclassEnglish"
 
     def test14_set_namespace_name(self):
         """!
@@ -158,14 +176,18 @@ class Test02StringClassDescription:
         @brief Test get_dynamic_compile_switch method
         """
         testobj = StringClassDescription()
-        assert testobj.string_jason_data['dynamicCompileSwitch'] == testobj.get_dynamic_compile_switch()
+        switch = testobj.string_jason_data['dynamicCompileSwitch']
+        assert switch == testobj.get_dynamic_compile_switch()
 
     def test18_define_property_function_entry(self):
         """!
         @brief Test _define_property_function_entry method
         """
         testobj = StringClassDescription()
-        property_dict = testobj._define_property_function_entry("silly", "Silly property", "integer", "Some number")
+        property_dict = testobj._define_property_function_entry("silly",
+                                                                "Silly property",
+                                                                "integer",
+                                                                "Some number")
         assert property_dict['name'] == "silly"
         assert property_dict['briefDesc'] == "Silly property"
         assert isinstance(property_dict['params'], list)
@@ -176,7 +198,11 @@ class Test02StringClassDescription:
         assert property_dict['return']['desc'] == "Some number"
         assert property_dict['return']['typeMod'] == 0
 
-        property_dict = testobj._define_property_function_entry("billy", "Billy property", "size", "Some size list", True)
+        property_dict = testobj._define_property_function_entry("billy",
+                                                                "Billy property",
+                                                                "size",
+                                                                "Some size list",
+                                                                True)
         assert property_dict['name'] == "billy"
         assert property_dict['briefDesc'] == "Billy property"
         assert isinstance(property_dict['params'], list)
@@ -217,16 +243,16 @@ class Test02StringClassDescription:
         @brief Test get_property_method_data method
         """
         testobj = StringClassDescription(self.test_json)
-        property_name, property_desc, param_list, return_dict = testobj.get_property_method_data('getLangIsoCode')
-        assert property_name == 'isoCode'
-        assert property_desc == 'Get the ISO 639 set 1 language code for this object'
-        assert isinstance(param_list, list)
-        assert len(param_list) == 0
-        assert isinstance(return_dict, dict)
-        assert len(return_dict) == 3
-        assert return_dict['type'] == 'string'
-        assert return_dict['desc'] == 'ISO 639 set 1 language code'
-        assert return_dict['typeMod'] == 0
+        name, desc, plist, rdict = testobj.get_property_method_data('getLangIsoCode')
+        assert name == 'isoCode'
+        assert desc == 'Get the ISO 639 set 1 language code for this object'
+        assert isinstance(plist, list)
+        assert len(plist) == 0
+        assert isinstance(rdict, dict)
+        assert len(rdict) == 3
+        assert rdict['type'] == 'string'
+        assert rdict['desc'] == 'ISO 639 set 1 language code'
+        assert rdict['typeMod'] == 0
 
     def test23_define_translation_dict(self):
         """!
@@ -274,10 +300,12 @@ class Test02StringClassDescription:
 
         testobj = StringClassDescription(self.test_json)
         assert testobj.add_manual_translation('getNotListTypeMessage', "es", trans_data_list)
-        assert isinstance(testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es'], list)
-        assert len(testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es']) == 1
-        assert testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es'][0][0] == TransTxtParser.parsed_type_text
-        assert testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es'][0][1] == "Simple text"
+        json_data = testobj.string_jason_data
+        tst_list = json_data['translateMethods']['getNotListTypeMessage']['translateDesc']['es']
+        assert isinstance(tst_list, list)
+        assert len(tst_list) == 1
+        assert tst_list[0][0] == TransTxtParser.parsed_type_text
+        assert tst_list[0][1] == "Simple text"
 
     def test27_add_manual_translation_fail_no_text_data(self):
         """!
@@ -298,58 +326,42 @@ class Test02StringClassDescription:
         """!
         @brief Test _translate_text method, dummy translate
         """
-        class dummy_translate:
-            def translate(self, text, target_language, format_, source_language, model):
-                return {'translatedText': "Translated Text"}
-
         testobj = StringClassDescription()
-        testobj.trans_client = dummy_translate()
-        assert testobj._translate_text("en", "zh", "Some Text") == "Translated Text"
-
-    def test30_translate_text_mock_google(self):
-        """!
-        @brief Test _translate_text method, mock google.translate client
-        """
-        class mock_dummy_translate:
-            def translate(self, text, target_language, format_, source_language, model):
-                return {'translatedText': "Patch Translated Text"}
-
-        testobj = StringClassDescription()
-        with patch('google.cloud.translate_v2.Client', MagicMock(return_value=mock_dummy_translate())):
-            assert testobj._translate_text("fr", "en", "Some Other Text") == "Patch Translated Text"
+        testobj.trans_client = MockTranslator()
+        assert testobj._translate_text("en", "zh", "Some Text") == "en->zh:Some Text"
 
     def test31_translate_method_text_no_lang_list(self):
         """!
         @brief Test _translate_text method, no language list
         """
         testobj = StringClassDescription(self.test_json)
+        testobj.trans_client = MockTranslator()
         testobj._translate_method_text("getNotListTypeMessage")
-        trans_method_desc = testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']
-        assert len(trans_method_desc) == 1
-        assert 'en' in list(trans_method_desc)
+        jsondata = testobj.string_jason_data
+        tm_desc = jsondata['translateMethods']['getNotListTypeMessage']['translateDesc']
+        assert len(tm_desc) == 1
+        assert 'en' in list(tm_desc)
 
     def test32_translate_method_text_mock_google(self):
         """!
         @brief Test _translate_text method, mock google.translate client
         """
-        class mock_dummy_translate:
-            def translate(self, text, target_language, format_, source_language, model):
-                return {'translatedText': "Patch Translated Method Text @nargs@"}
-
         lang_list = LanguageDescriptionList(self.testlanglist)
         testobj = StringClassDescription(self.test_json)
-        with patch('google.cloud.translate_v2.Client', MagicMock(return_value=mock_dummy_translate())):
-            testobj._translate_method_text("getNotListTypeMessage", lang_list)
-            trans_method_desc = testobj.string_jason_data['translateMethods']['getNotListTypeMessage']['translateDesc']
-            assert len(trans_method_desc) == 2
-            assert 'es' in list(trans_method_desc)
+        testobj.trans_client = MockTranslator()
 
-            trans_list = trans_method_desc['es']
-            assert len(trans_list) ==2
-            assert trans_list[0][0] == TransTxtParser.parsed_type_text
-            assert trans_list[0][1] == "Patch Translated Method Text "
-            assert trans_list[1][0] == TransTxtParser.parsed_type_param
-            assert trans_list[1][1] == "nargs"
+        testobj._translate_method_text("getNotListTypeMessage", lang_list)
+        jsondata = testobj.string_jason_data
+        tm_desc = jsondata['translateMethods']['getNotListTypeMessage']['translateDesc']
+        assert len(tm_desc) == 2
+        assert 'es' in list(tm_desc)
+
+        trans_list = tm_desc['es']
+        assert len(trans_list) == 2
+        assert trans_list[0][0] == TransTxtParser.parsed_type_text
+        assert trans_list[0][1] == "en->es:Only list type arguments can have an argument count of "
+        assert trans_list[1][0] == TransTxtParser.parsed_type_param
+        assert trans_list[1][1] == "nargs"
 
     def test33_define_translate_function_entry(self):
         """!
@@ -360,21 +372,25 @@ class Test02StringClassDescription:
         trans_list = [(TransTxtParser.parsed_type_text, "Return text of "),
                      (TransTxtParser.parsed_type_param,"name")]
         testobj = StringClassDescription()
-        function_dict = testobj._define_translate_function_entry("Brief Description", testparams, testret, "en", trans_list)
+        function_dict = testobj._define_translate_function_entry("Brief Description",
+                                                                 testparams,
+                                                                 testret,
+                                                                 "en",
+                                                                 trans_list)
 
         assert function_dict['briefDesc'] == "Brief Description"
         assert isinstance(function_dict['params'], list)
         assert len(function_dict['params']) == len(testparams)
         for index, parm_dict in enumerate(testparams):
             assert isinstance(function_dict['params'][index], dict)
-            for id in list(testret):
+            for paramfield in list(testparams[index]):
                 assert len(function_dict['params'][index]) == len(parm_dict)
-                assert function_dict['params'][index][id] == parm_dict[id]
+                assert function_dict['params'][index][paramfield] == parm_dict[paramfield]
 
         assert isinstance(function_dict['return'], dict)
         assert len(function_dict['return']) == len(testret)
-        for id in list(testret):
-            assert function_dict['return'][id] == testret[id]
+        for retfield in list(testret):
+            assert function_dict['return'][retfield] == testret[retfield]
 
         assert isinstance(function_dict['translateDesc'], dict)
         assert len(function_dict['translateDesc']) == 1
@@ -397,16 +413,16 @@ class Test02StringClassDescription:
         @brief Test get_tranlate_method_function_data method
         """
         testobj = StringClassDescription(self.test_json)
-        brief_desc, param_data, return_data = testobj.get_tranlate_method_function_data('getNotListTypeMessage')
+        desc, pdata, rdata = testobj.get_tranlate_method_function_data('getNotListTypeMessage')
 
-        assert brief_desc == 'Return non-list varg error message'
-        assert isinstance(param_data, list)
-        assert len(param_data) == 1
-        assert isinstance(param_data[0], dict)
-        assert len(param_data[0]) == 4
+        assert desc == 'Return non-list varg error message'
+        assert isinstance(pdata, list)
+        assert len(pdata) == 1
+        assert isinstance(pdata[0], dict)
+        assert len(pdata[0]) == 4
 
-        assert isinstance(return_data, dict)
-        assert len(return_data) == 3
+        assert isinstance(rdata, dict)
+        assert len(rdata) == 3
 
     def test36_get_tranlate_method_text_data(self):
         """!
@@ -425,7 +441,6 @@ class Test02StringClassDescription:
         """!
         @brief Test update()
         """
-
         testobj = StringClassDescription("temp.json")
         pytest.raises(FileNotFoundError)
         assert testobj.filename == "temp.json"
@@ -438,13 +453,23 @@ class Test02StringClassDescription:
         testobj.string_jason_data['baseClassName'] = "foobar"
         testobj.string_jason_data['namespace'] = "planetx"
         testobj.string_jason_data['dynamicCompileSwitch'] = "MAGIC"
-        new_property_entry = testobj._define_property_function_entry("Distance", "Distance to star in AU", "integer", "AU to star")
+        new_property_entry = testobj._define_property_function_entry("Distance",
+                                                                     "Distance to star in AU",
+                                                                     "integer",
+                                                                     "AU to star")
         testobj.string_jason_data['propertyMethods']['testProperty'] = new_property_entry
 
         xlate_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "Xlated units", 0)
-        param_list = [ParamRetDict.build_param_dict_with_mod("units", "integer", "Units to translate", 0)]
+        param_list = [ParamRetDict.build_param_dict_with_mod("units",
+                                                             "integer",
+                                                             "Units to translate",
+                                                             0)]
         translate_text_list = TransTxtParser.parse_translate_string("Test string @units@")
-        new_xlate_entry = testobj._define_translate_function_entry("Brief xlate desc", param_list, xlate_ret_dict, "en", translate_text_list)
+        new_xlate_entry = testobj._define_translate_function_entry("Brief xlate desc",
+                                                                   param_list,
+                                                                   xlate_ret_dict,
+                                                                   "en",
+                                                                   translate_text_list)
         testobj.string_jason_data['translateMethods']['testXlate'] = new_xlate_entry
 
         testobj.update()
@@ -457,46 +482,48 @@ class Test02StringClassDescription:
 
         assert len(updateobj.string_jason_data['propertyMethods']) == 1
 
-        assert isinstance(updateobj.string_jason_data['propertyMethods']['testProperty'], dict)
-        assert len(updateobj.string_jason_data['propertyMethods']['testProperty']) == 4
-        assert updateobj.string_jason_data['propertyMethods']['testProperty']['name'] == 'Distance'
-        assert updateobj.string_jason_data['propertyMethods']['testProperty']['briefDesc'] == 'Distance to star in AU'
+        tst_prop_dict = updateobj.string_jason_data['propertyMethods']['testProperty']
+        assert isinstance(tst_prop_dict, dict)
+        assert len(tst_prop_dict) == 4
+        assert tst_prop_dict['name'] == 'Distance'
+        assert tst_prop_dict['briefDesc'] == 'Distance to star in AU'
 
-        assert isinstance(updateobj.string_jason_data['propertyMethods']['testProperty']['params'], list)
-        assert len(updateobj.string_jason_data['propertyMethods']['testProperty']['params']) == 0
+        assert isinstance(tst_prop_dict['params'], list)
+        assert len(tst_prop_dict['params']) == 0
 
-        assert isinstance(updateobj.string_jason_data['propertyMethods']['testProperty']['return'], dict)
-        assert len(updateobj.string_jason_data['propertyMethods']['testProperty']['return']) == 3
-        assert updateobj.string_jason_data['propertyMethods']['testProperty']['return']['type'] == "integer"
-        assert updateobj.string_jason_data['propertyMethods']['testProperty']['return']['desc'] == "AU to star"
-        assert updateobj.string_jason_data['propertyMethods']['testProperty']['return']['typeMod'] == 0
+        assert isinstance(tst_prop_dict['return'], dict)
+        assert len(tst_prop_dict['return']) == 3
+        assert tst_prop_dict['return']['type'] == "integer"
+        assert tst_prop_dict['return']['desc'] == "AU to star"
+        assert tst_prop_dict['return']['typeMod'] == 0
 
+        tst_tm_dict = updateobj.string_jason_data['translateMethods']['testXlate']
         assert len(updateobj.string_jason_data['translateMethods']) == 1
-        assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate'], dict)
-        assert len(updateobj.string_jason_data['translateMethods']['testXlate']) == 4
-        assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate']['params'], list)
-        assert len(updateobj.string_jason_data['translateMethods']['testXlate']['params']) == 1
-        assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate']['params'][0], dict)
-        assert len(updateobj.string_jason_data['translateMethods']['testXlate']['params'][0]) == 4
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['params'][0]['name'] == "units"
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['params'][0]['type'] == "integer"
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['params'][0]['desc'] == "Units to translate"
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['params'][0]['typeMod'] == 0
+        assert isinstance(tst_tm_dict, dict)
+        assert len(tst_tm_dict) == 4
+        assert isinstance(tst_tm_dict['params'], list)
+        assert len(tst_tm_dict['params']) == 1
+        assert isinstance(tst_tm_dict['params'][0], dict)
+        assert len(tst_tm_dict['params'][0]) == 4
+        assert tst_tm_dict['params'][0]['name'] == "units"
+        assert tst_tm_dict['params'][0]['type'] == "integer"
+        assert tst_tm_dict['params'][0]['desc'] == "Units to translate"
+        assert tst_tm_dict['params'][0]['typeMod'] == 0
 
-        assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate']['return'], dict)
-        assert len(updateobj.string_jason_data['translateMethods']['testXlate']['return']) == 3
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['return']['type'] == "integer"
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['return']['desc'] == "Xlated units"
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['return']['typeMod'] == 0
+        assert isinstance(tst_tm_dict['return'], dict)
+        assert len(tst_tm_dict['return']) == 3
+        assert tst_tm_dict['return']['type'] == "integer"
+        assert tst_tm_dict['return']['desc'] == "Xlated units"
+        assert tst_tm_dict['return']['typeMod'] == 0
 
-        assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc'], dict)
-        assert len(updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']) == 1
-        assert isinstance(updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'], list)
-        assert len(updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en']) == 2
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][0][0] == TransTxtParser.parsed_type_text
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][0][1] == "Test string "
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][1][0] == TransTxtParser.parsed_type_param
-        assert updateobj.string_jason_data['translateMethods']['testXlate']['translateDesc']['en'][1][1] == "units"
+        assert isinstance(tst_tm_dict['translateDesc'], dict)
+        assert len(tst_tm_dict['translateDesc']) == 1
+        assert isinstance(tst_tm_dict['translateDesc']['en'], list)
+        assert len(tst_tm_dict['translateDesc']['en']) == 2
+        assert tst_tm_dict['translateDesc']['en'][0][0] == TransTxtParser.parsed_type_text
+        assert tst_tm_dict['translateDesc']['en'][0][1] == "Test string "
+        assert tst_tm_dict['translateDesc']['en'][1][0] == TransTxtParser.parsed_type_param
+        assert tst_tm_dict['translateDesc']['en'][1][1] == "units"
 
         os.remove("temp.json")
 
@@ -504,20 +531,18 @@ class Test02StringClassDescription:
         """!
         @brief Test update_tranlations()
         """
-        class mock_dummy_translate:
-            def translate(self, text, target_language, format_, source_language, model):
-                return {'translatedText': text}
-
         testobj = StringClassDescription(self.test_json)
-        lang_list = LanguageDescriptionList(self.testlanglist)
+        testobj.trans_client = MockTranslator
 
         for method_name in testobj.get_tranlate_method_list():
-            assert len(testobj.string_jason_data['translateMethods'][method_name]['translateDesc']) == 1
+            temp = testobj.string_jason_data['translateMethods']
+            assert len(temp[method_name]['translateDesc']) == 1
 
-        with patch('google.cloud.translate_v2.Client', MagicMock(return_value=mock_dummy_translate())):
-            testobj.update_tranlations(lang_list)
+        lang_list = LanguageDescriptionList(self.testlanglist)
+        testobj.update_tranlations(lang_list)
+        temp = testobj.string_jason_data['translateMethods']
 
-            for method_name in testobj.get_tranlate_method_list():
-                assert len(testobj.string_jason_data['translateMethods'][method_name]['translateDesc']) == 2
+        for method_name in testobj.get_tranlate_method_list():
+            assert len(temp[method_name]['translateDesc']) == 2
 
 # pylint: enable=protected-access

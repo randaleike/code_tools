@@ -31,6 +31,7 @@ import json
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 from code_tools_grocsoftware.base.translate_text_parser import TransTxtParser
+from code_tools_grocsoftware.base.translate import Translator
 
 from code_tools_grocsoftware.base.commit_check import get_commit_over_write_flag
 from code_tools_grocsoftware.base.commit_check import get_commit_flag
@@ -260,20 +261,17 @@ class StringClassDescription():
         @param text {string} text to translate
         @return string - Translated text
         """
-        from google.cloud import translate_v2   # pylint: disable=import-outside-toplevel
         if self.trans_client is None:
-            self.trans_client = translate_v2.Client()
+            print ("Create translator")
+            self.trans_client = Translator()
 
-        if isinstance(text, bytes):
-            text = text.decode("utf-8")
-
-        transtext = self.trans_client.translate(text,
-                                                target_language=target_lang,
-                                                format_='text',
-                                                source_language=source_lang,
-                                                model='nmt')
-        raw_translated_text = transtext['translatedText']
-        return raw_translated_text
+        print ("source: "+source_lang)
+        print ("target: "+target_lang)
+        print ("text: "+text)
+        transtext = self.trans_client.translate_text(source_lang,
+                                                     target_lang,
+                                                     text)
+        return transtext
 
     def _translate_method_text(self, method_name:str,
                                json_lang_data:LanguageDescriptionList = None):

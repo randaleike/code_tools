@@ -1,6 +1,5 @@
 """@package test_programmer_tools
 Unittest for programmer base tools utility
-
 """
 
 #==========================================================================
@@ -30,6 +29,10 @@ from datetime import datetime
 
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.typescript_gen.file_gen_base import GenerateTypeScriptFileHelper
+
+# pylint: disable=too-many-lines
+# pylint: disable=protected-access
+# pylint: disable=too-many-public-methods
 
 class Test01CppFilehelper:
     """!
@@ -171,7 +174,7 @@ class Test01CppFilehelper:
         assert helper.declare_type('text', 7 << ParamRetDict.type_mod_array_shift) == "string[]"
         assert helper.declare_type('size', 10 << ParamRetDict.type_mod_array_shift) == "number[]"
         assert helper.declare_type('integer', 20 << ParamRetDict.type_mod_array_shift) == "number[]"
-        assert helper.declare_type('unsigned', 13 << ParamRetDict.type_mod_array_shift) == "number[]"
+        assert helper.declare_type('unsigned', 13 << ParamRetDict.type_mod_array_shift)=="number[]"
         assert helper.declare_type('tuple', 14 << ParamRetDict.type_mod_array_shift) == "tuple[]"
 
     def test09declare_type_array_ptr(self):
@@ -224,19 +227,26 @@ class Test01CppFilehelper:
         typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list
         assert helper.declare_type('string', typemod) == "string[]|undefined"
 
-        typemod = (25 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ptr
+        typemod = 25 << ParamRetDict.type_mod_array_shift
+        typemod |= ParamRetDict.type_mod_undef
+        typemod |= ParamRetDict.type_mod_ptr
         assert helper.declare_type('string', typemod) == "string[]|undefined"
 
-        typemod = (7 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ref
+        typemod = 7 << ParamRetDict.type_mod_array_shift
+        typemod |= ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ref
         assert helper.declare_type('string', typemod) == "string[]|undefined"
 
         typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list
         assert helper.declare_type('string', typemod) == "string[]|undefined"
 
-        typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list | ParamRetDict.type_mod_ptr
+        typemod = ParamRetDict.type_mod_undef
+        typemod |= ParamRetDict.type_mod_list
+        typemod |= ParamRetDict.type_mod_ptr
         assert helper.declare_type('string', typemod) == "string[]|undefined"
 
-        typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list | ParamRetDict.type_mod_ref
+        typemod = ParamRetDict.type_mod_undef
+        typemod |= ParamRetDict.type_mod_list
+        typemod |= ParamRetDict.type_mod_ref
         assert helper.declare_type('string', typemod) == "string[]|undefined"
 
     def test12_xlate_param_list(self):
@@ -244,26 +254,35 @@ class Test01CppFilehelper:
         @brief Test the xlate_params method
         """
         helper = GenerateTypeScriptFileHelper()
-        gen_param_list = []
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("goo", "string", "mystr", ParamRetDict.type_mod_list))
+        params = []
+        params.append(ParamRetDict.build_param_dict_with_mod("foo",
+                                                             "integer",
+                                                             "myint",
+                                                             0))
+        params.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                             "size",
+                                                             "mysize",
+                                                             ParamRetDict.type_mod_ptr))
+        params.append(ParamRetDict.build_param_dict_with_mod("goo",
+                                                             "string",
+                                                             "mystr",
+                                                             ParamRetDict.type_mod_list))
 
-        xlate_list = helper.xlate_params(gen_param_list)
-        assert len(xlate_list) == len(gen_param_list)
-        assert ParamRetDict.get_param_name(xlate_list[0]) == ParamRetDict.get_param_name(gen_param_list[0])
+        xlate_list = helper.xlate_params(params)
+        assert len(xlate_list) == len(params)
+        assert ParamRetDict.get_param_name(xlate_list[0]) == ParamRetDict.get_param_name(params[0])
         assert ParamRetDict.get_param_type(xlate_list[0]) == "number"
-        assert ParamRetDict.get_param_desc(xlate_list[0]) == ParamRetDict.get_param_desc(gen_param_list[0])
+        assert ParamRetDict.get_param_desc(xlate_list[0]) == ParamRetDict.get_param_desc(params[0])
         assert ParamRetDict.get_param_type_mod(xlate_list[0]) == 0
 
-        assert ParamRetDict.get_param_name(xlate_list[1]) == ParamRetDict.get_param_name(gen_param_list[1])
+        assert ParamRetDict.get_param_name(xlate_list[1]) == ParamRetDict.get_param_name(params[1])
         assert ParamRetDict.get_param_type(xlate_list[1]) == "number"
-        assert ParamRetDict.get_param_desc(xlate_list[1]) == ParamRetDict.get_param_desc(gen_param_list[1])
+        assert ParamRetDict.get_param_desc(xlate_list[1]) == ParamRetDict.get_param_desc(params[1])
         assert ParamRetDict.get_param_type_mod(xlate_list[1]) == 0
 
-        assert ParamRetDict.get_param_name(xlate_list[2]) == ParamRetDict.get_param_name(gen_param_list[2])
+        assert ParamRetDict.get_param_name(xlate_list[2]) == ParamRetDict.get_param_name(params[2])
         assert ParamRetDict.get_param_type(xlate_list[2]) == "string[]"
-        assert ParamRetDict.get_param_desc(xlate_list[2]) == ParamRetDict.get_param_desc(gen_param_list[2])
+        assert ParamRetDict.get_param_desc(xlate_list[2]) == ParamRetDict.get_param_desc(params[2])
         assert ParamRetDict.get_param_type_mod(xlate_list[2]) == 0
 
     def test13_xlate_param_empty_list(self):
@@ -305,7 +324,9 @@ class Test01CppFilehelper:
         return_text = helper.gen_function_ret_type(gen_ret_dict)
         assert return_text == ":number"
 
-        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "myint", ParamRetDict.type_mod_list)
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer",
+                                                               "myint",
+                                                               ParamRetDict.type_mod_list)
         return_text = helper.gen_function_ret_type(gen_ret_dict)
         assert return_text == ":number[]"
 
@@ -325,8 +346,14 @@ class Test01CppFilehelper:
         helper = GenerateTypeScriptFileHelper()
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("goo", "string", "mystr", ParamRetDict.type_mod_list))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("goo",
+                                                                     "string",
+                                                                     "mystr",
+                                                                     ParamRetDict.type_mod_list))
 
         return_text = helper.gen_function_params(gen_param_list)
         assert return_text == "(foo:number, moo:number, goo:string[])"
@@ -349,9 +376,13 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict)
+        function_text = helper.declare_function_with_decorations("my_test", "My test function",
+                                                                 gen_param_list, gen_ret_dict)
         assert len(function_text) == 10
         assert function_text[0] == '/**\n'
         assert function_text[1] == ' * @brief My test function\n'
@@ -373,9 +404,17 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict, 8, prefix_decaration='public')
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 prefix_decaration='public')
         assert len(function_text) == 10
         assert function_text[0] == '        /**\n'
         assert function_text[1] == '         * @brief My test function\n'
@@ -397,10 +436,18 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict, 8,
-                                                              postfix_decaration='@configurable(false)')
+        pf_decaration = '@configurable(false)'
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 postfix_decaration=pf_decaration)
         assert len(function_text) == 11
         assert function_text[0] == '        /**\n'
         assert function_text[1] == '         * @brief My test function\n'
@@ -423,10 +470,19 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
-                                                              8, prefix_decaration="private", postfix_decaration='@configurable(false)')
+        pf_decaration = '@configurable(false)'
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 prefix_decaration="private",
+                                                                 postfix_decaration=pf_decaration)
         assert len(function_text) == 11
         assert function_text[0] == '        /**\n'
         assert function_text[1] == '         * @brief My test function\n'
@@ -442,17 +498,27 @@ class Test01CppFilehelper:
 
     def test24_declare_function_with_pre_and_postfix_no_comment(self):
         """!
-        @brief Test the declare_function_with_decorations method, prefix, postfix decoration, no comment
+        @brief Test the declare_function_with_decorations method,
+               prefix, postfix decoration, no comment
         """
         helper = GenerateTypeScriptFileHelper()
         gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return int", 0)
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
-                                                              8, True, "public", '@enumerable(false)')
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 True,
+                                                                 "public",
+                                                                 '@enumerable(false)')
         assert len(function_text) == 3
         assert function_text[0] == '        @enumerable(false)\n'
         assert function_text[1] == '        public my_test(foo:number, moo:number):number\n'
@@ -467,10 +533,20 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
-                                                              8, True, "public", '@enumerable(false)', ["return 15;"])
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 True,
+                                                                 "public",
+                                                                 '@enumerable(false)',
+                                                                 ["return 15;"])
         assert len(function_text) == 3
         assert function_text[0] == '        @enumerable(false)\n'
         assert function_text[1] == '        public my_test(foo:number, moo:number):number\n'
@@ -481,19 +557,31 @@ class Test01CppFilehelper:
         @brief Test the declare_function_with_decorations method, no comment inline code
         """
         helper = GenerateTypeScriptFileHelper()
-        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return list", ParamRetDict.type_mod_list)
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer",
+                                                               "return list",
+                                                               ParamRetDict.type_mod_list)
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
         inline_code =["number retvar[];",
                      "retvar.push_back(15);",
                      "retvar.push_back(25);",
                      "return retvar;"]
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
-                                                              8, True, "public", '@enumerable(false)', inline_code)
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 True,
+                                                                 "public",
+                                                                 '@enumerable(false)',
+                                                                 inline_code)
         assert len(function_text) == 8
         assert function_text[0] == '        @enumerable(false)\n'
         assert function_text[1] == '        public my_test(foo:number, moo:number):number[]\n'
@@ -521,11 +609,13 @@ class Test01CppFilehelper:
         header_text = helper.generate_generic_file_header("unittest", current_year, "Me")
         copyright_msg = "* Copyright (c) "+str(current_year)+" Me"
         assert len(header_text) == 27
-        assert header_text[0] == "/*------------------------------------------------------------------------------\n"
+        assert header_text[0] == "/*--------------------------------------------------------" \
+                                 "----------------------\n"
         assert header_text[1] == copyright_msg+"\n"
         assert header_text[3] == "* MIT License\n"
         assert header_text[24] == "* This file was autogenerated by unittest do not edit\n"
-        assert header_text[26] == "* ----------------------------------------------------------------------------*/\n"
+        assert header_text[26] == "* ------------------------------------------------------" \
+                                  "----------------------*/\n"
 
     def test29_gen_import(self):
         """!
@@ -544,7 +634,10 @@ class Test01CppFilehelper:
         @brief Test the gen_import_block method
         """
         helper = GenerateTypeScriptFileHelper()
-        include_list = [("class1", "module1"), ("class2", "module2"), ("class3", "module3"), ("class4", None)]
+        include_list = [("class1", "module1"),
+                        ("class2", "module2"),
+                        ("class3", "module3"),
+                        ("class4", None)]
         include_text = helper.gen_import_block(include_list)
         assert len(include_text) == len(include_list) + 1
         assert include_text[0] == "// Imports\n"
@@ -615,7 +708,11 @@ class Test01CppFilehelper:
         """
         helper = GenerateTypeScriptFileHelper()
 
-        test_text = helper.gen_class_open("MyTestClassName", "My class description", "MyBaseClass", "export", 2)
+        test_text = helper.gen_class_open("MyTestClassName",
+                                          "My class description",
+                                          "MyBaseClass",
+                                          "export",
+                                          2)
         assert len(test_text) == 5
         assert test_text[0] == "  /**\n"
         assert test_text[1] == "   * @brief My class description\n"
@@ -659,7 +756,8 @@ class Test01CppFilehelper:
         """
         helper = GenerateTypeScriptFileHelper()
 
-        test_text = helper.gen_class_default_constructor("MyTestClassName", no_doxy_comment_constructor=True)
+        test_text = helper.gen_class_default_constructor("MyTestClassName",
+                                                         no_doxy_comment_constructor=True)
         assert len(test_text) == 3
         assert test_text[0] == "        public constructor()\n"
         assert test_text[1] == "        {//! @todo Implement code }\n"
@@ -667,7 +765,8 @@ class Test01CppFilehelper:
 
     def test40_gen_class_default_construtor_with_input_params(self):
         """!
-        @brief Test the gen_class_default_constructor method, with doxygen comments, and parameter list
+        @brief Test the gen_class_default_constructor method, with doxygen
+               comments, and parameter list
         """
         helper = GenerateTypeScriptFileHelper()
         params = [ParamRetDict.build_param_dict_with_mod("one", "string", "Parameter one", 0),
@@ -687,12 +786,15 @@ class Test01CppFilehelper:
 
     def test41_gen_class_default_construtor_no_doxy_input_params(self):
         """!
-        @brief Test the gen_class_default_constructor method, with no doxygen comments, and parameter list
+        @brief Test the gen_class_default_constructor method,
+               with no doxygen comments, and parameter list
         """
         helper = GenerateTypeScriptFileHelper()
         params = [ParamRetDict.build_param_dict_with_mod("one", "string", "Parameter one", 0),
                   ParamRetDict.build_param_dict_with_mod("two", "integer", "Parameter two", 0)]
-        test_text = helper.gen_class_default_constructor("MyTestClassName", param_list=params, no_doxy_comment_constructor=True)
+        test_text = helper.gen_class_default_constructor("MyTestClassName",
+                                                         param_list=params,
+                                                         no_doxy_comment_constructor=True)
         assert len(test_text) == 3
         assert test_text[0] == "        public constructor(one:string, two:number)\n"
         assert test_text[1] == "        {//! @todo Implement code }\n"
@@ -700,7 +802,8 @@ class Test01CppFilehelper:
 
     def test42_gen_class_default_construtor_no_doxy_with_inline(self):
         """!
-        @brief Test the gen_class_default_constructor method, with virtual destructor, no doxycomment, no copy
+        @brief Test the gen_class_default_constructor method, with virtual destructor,
+               no doxycomment, no copy
         """
         helper = GenerateTypeScriptFileHelper()
 
@@ -708,7 +811,11 @@ class Test01CppFilehelper:
         params = [ParamRetDict.build_param_dict_with_mod("one", "string", "Parameter one", 0),
                   ParamRetDict.build_param_dict_with_mod("two", "integer", "Parameter two", 0)]
         inline_code = ["this.one = one;", "this.two = two;"]
-        test_text = helper.gen_class_default_constructor("MyTestClassName", 4, params, inline_code, True)
+        test_text = helper.gen_class_default_constructor("MyTestClassName",
+                                                         4,
+                                                         params,
+                                                         inline_code,
+                                                         True)
         assert len(test_text) == 6
         assert test_text[0] == "    public constructor(one:string, two:number)\n"
         assert test_text[1] == "    {\n"
@@ -747,8 +854,10 @@ class Test01CppFilehelper:
         assert test_text[1] == " * @brief Test structure\n"
         assert test_text[2] == " */\n"
         assert test_text[3] == "interface MyTestStructName {\n"
-        assert test_text[4] == "    foo:number;                                             //!< Test integer\n"
-        assert test_text[5] == "    moo:number;                                             //!< Test unsigned\n"
+        assert test_text[4] == "    foo:number;                    " \
+                               "                         //!< Test integer\n"
+        assert test_text[5] == "    moo:number;                    " \
+                               "                         //!< Test unsigned\n"
         assert test_text[6] == "}\n"
 
     def test45_declare_struct_with_decorations(self):
@@ -760,14 +869,21 @@ class Test01CppFilehelper:
         member1 = ParamRetDict.build_param_dict_with_mod("foo", "integer", "Test integer", 0)
         member2 = ParamRetDict.build_param_dict_with_mod("moo", "unsigned", "Test unsigned", 0)
         var_list = [member1, member2]
-        test_text = helper.declare_structure("MyTestStructName", var_list, 0, "Test structure", "export", "const")
+        test_text = helper.declare_structure("MyTestStructName",
+                                             var_list,
+                                             0,
+                                             "Test structure",
+                                             "export",
+                                             "const")
         assert len(test_text) == 7
         assert test_text[0] == "/**\n"
         assert test_text[1] == " * @brief Test structure\n"
         assert test_text[2] == " */\n"
         assert test_text[3] == "export interface MyTestStructName {\n"
-        assert test_text[4] == "    foo:number;                                             //!< Test integer\n"
-        assert test_text[5] == "    moo:number;                                             //!< Test unsigned\n"
+        assert test_text[4] == "    foo:number;                        " \
+                               "                     //!< Test integer\n"
+        assert test_text[5] == "    moo:number;                        " \
+                               "                     //!< Test unsigned\n"
         assert test_text[6] == "} const\n"
 
     def test46_declare_variable(self):
@@ -825,7 +941,10 @@ class Test01CppFilehelper:
         helper = GenerateTypeScriptFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict)
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list,
+                                                            ret_dict)
         assert len(test_text) == 9
         assert test_text[0] == "/**\n"
         assert test_text[1] == " * @brief Brief description\n"
@@ -845,7 +964,12 @@ class Test01CppFilehelper:
         helper = GenerateTypeScriptFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict, False, "export")
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list,
+                                                            ret_dict,
+                                                            False,
+                                                            "export")
         assert len(test_text) == 9
         assert test_text[0] == "/**\n"
         assert test_text[1] == " * @brief Brief description\n"
@@ -907,7 +1031,11 @@ class Test01CppFilehelper:
         helper = GenerateTypeScriptFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict, True)
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list,
+                                                            ret_dict,
+                                                            True)
         assert len(test_text) == 2
         assert test_text[0] == "function MyDefineFunc(foo:number):number\n"
         assert test_text[1] == "{\n"
@@ -918,7 +1046,14 @@ class Test01CppFilehelper:
         """
         helper = GenerateTypeScriptFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", [], ret_dict, True)
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            [],
+                                                            ret_dict,
+                                                            True)
         assert len(test_text) == 2
         assert test_text[0] == "function MyDefineFunc():number\n"
         assert test_text[1] == "{\n"
+
+# pylint: enable=too-many-public-methods
+# pylint: enable=protected-access
