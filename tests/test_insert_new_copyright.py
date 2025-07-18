@@ -36,10 +36,17 @@ from code_tools_grocsoftware.base.insert_new_copyright_block import insert_new_c
 from tests.dir_init import TESTFILEPATH
 TEST_FILE_BASE_DIR = TESTFILEPATH
 
-c_comment_parms =   {'blockStart': "/*", 'blockEnd': "*/", 'blockLineStart': "", 'singleLine': "//"}
-pyCommentParms =  {'blockStart': "\"\"\"", 'blockEnd':"\"\"\"", 'blockLineStart': "", 'singleLine': "#"}
-shCommentParms =  {'blockStart': None, 'blockEnd': None, 'blockLineStart': "#", 'singleLine': "#"}
-batCommentParms = {'blockStart': None, 'blockEnd': None, 'blockLineStart': "REM ", 'singleLine': "REM ",}
+c_comment_parms =   {'blockStart': "/*", 'blockEnd': "*/",
+                     'blockLineStart': "", 'singleLine': "//"}
+
+py_comment_parms =  {'blockStart': "\"\"\"", 'blockEnd':"\"\"\"",
+                     'blockLineStart': "", 'singleLine': "#"}
+
+sh_comment_parms =  {'blockStart': None, 'blockEnd': None,
+                     'blockLineStart': "#", 'singleLine': "#"}
+
+bat_comment_parms = {'blockStart': None, 'blockEnd': None,
+                     'blockLineStart': "REM ", 'singleLine': "REM ",}
 
 class TestClass03InsertNewCopyrightBlock:
     """!

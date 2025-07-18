@@ -25,6 +25,7 @@ for a language string generation library
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
+# pylint: disable=too-few-public-methods
 class Translator:
     """!
     String object class definitions
@@ -53,3 +54,5 @@ class Translator:
                                                 model='nmt')
         raw_translated_text = transtext['translatedText']
         return raw_translated_text
+
+# pylint: enable=too-few-public-methods

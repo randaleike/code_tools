@@ -122,6 +122,7 @@ class TestClass01LinuxLangSelect:
         test_obj = LinuxLangSelectFunctionGenerator(LanguageDescriptionList())
         assert test_obj.gen_function_end() == "} // end of "+test_obj.select_function_name+"()\n"
 
+    # pylint: disable=too-many-statements
     def test007_gen_function(self):
         """!
         @brief Test gen_function
@@ -163,7 +164,7 @@ class TestClass01LinuxLangSelect:
 
         first = True
         for index, lang_name in enumerate(lang_list.get_language_list()):
-            lang_code, _ = lang_list.get_language_lang_data(lang_name)
+            lang_code, _ = lang_list.get_language_data(lang_name)
             if first:
                 if_line = "if (matched && "
                 first = False
@@ -193,6 +194,8 @@ class TestClass01LinuxLangSelect:
         assert capture_list[38] == "    } // end of if(nullptr != "+param_name+")\n"
         assert capture_list[39] == "} // end of "+test_obj.select_function_name+"()\n"
         assert capture_list[40] == "#endif // "+test_obj.def_os_str+"\n"
+    # pylint: enable=too-many-statements
+
 
     def test008_gen_return_function_call(self):
         """!
@@ -261,8 +264,8 @@ class TestClass01LinuxLangSelect:
         # Match each test function
         text_index = 5
         for lang_name in lang_list.get_language_list():
-            lang_code, region_list = lang_list.get_language_lang_data(lang_name)
-            iso_code = lang_list.get_language_iso_code_data(lang_name)
+            lang_code, region_list = lang_list.get_language_data(lang_name)
+            iso_code = lang_list.get_iso_code_data(lang_name)
             for region in region_list:
                 linux_env_string = lang_code+"_"+region+".UTF-8"
                 test_name = lang_name.capitalize()+"_"+region+"_Selection"

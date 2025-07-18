@@ -198,7 +198,7 @@ class ExpectedStrHelper():
         @return string - Expected property list string
         @return int - Maximum index for the list
         """
-        propopt = LangDesc.get_language_property_list()
+        propopt = LangDesc.get_property_list()
 
         expected_str = "Select language property, from options:\n"
         option_text = ""
@@ -631,14 +631,14 @@ class Test03StringClassDescriptionMacroMethods:
             return next(input_str)
 
         testobj = StringClassDescription()
-        propopt = LangDesc.get_language_property_list()
+        propopt = LangDesc.get_property_list()
 
         with patch('builtins.input', test_mock_in):
             for index in range(0,6):
                 property_id, method_name, rtype, desc, lst = testobj._get_property_return_data()
 
-                ertype, erdesc, eislst = LangDesc.get_language_property_return_data(propopt[index])
-                expname = LangDesc.get_language_property_method_name(propopt[index])
+                ertype, erdesc, eislst = LangDesc.get_property_return_data(propopt[index])
+                expname = LangDesc.get_property_method_name(propopt[index])
 
                 assert property_id == propopt[index]
                 assert method_name == expname
@@ -655,14 +655,14 @@ class Test03StringClassDescriptionMacroMethods:
             return next(input_str)
 
         testobj = StringClassDescription()
-        propopt = LangDesc.get_language_property_list()
+        propopt = LangDesc.get_property_list()
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
             property_id, method_name, rtype, desc, lst = testobj._get_property_return_data()
 
-            ertype, edesc, elst = LangDesc.get_language_property_return_data(propopt[0])
-            expname = LangDesc.get_language_property_method_name(propopt[0])
+            ertype, edesc, elst = LangDesc.get_property_return_data(propopt[0])
+            expname = LangDesc.get_property_method_name(propopt[0])
 
             assert property_id == propopt[0]
             assert method_name == expname
@@ -683,15 +683,15 @@ class Test03StringClassDescriptionMacroMethods:
             return next(input_str)
 
         testobj = StringClassDescription()
-        propopt = LangDesc.get_language_property_list()
+        propopt = LangDesc.get_property_list()
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
             assert testobj.new_property_method_entry()
 
-            rtype, desc, lst = LangDesc.get_language_property_return_data(propopt[0])
+            rtype, desc, lst = LangDesc.get_property_return_data(propopt[0])
             expret = ParamRetDict.build_return_dict(rtype, desc, lst)
-            expname = LangDesc.get_language_property_method_name(propopt[0])
+            expname = LangDesc.get_property_method_name(propopt[0])
 
             expected_str, _ = ExpectedStrHelper.get_expected_option_list()
             expected_str += ExpectedStrHelper.get_expected_new_property_str(expname,
@@ -708,20 +708,20 @@ class Test03StringClassDescriptionMacroMethods:
             return next(input_str)
 
         testobj = StringClassDescription()
-        propopt = LangDesc.get_language_property_list()
+        propopt = LangDesc.get_property_list()
         option_string, _ = ExpectedStrHelper.get_expected_option_list()
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
             assert testobj.new_property_method_entry()
 
-            rtype, desc, lst = LangDesc.get_language_property_return_data(propopt[0])
+            rtype, desc, lst = LangDesc.get_property_return_data(propopt[0])
             expret = ParamRetDict.build_return_dict(rtype, desc, lst)
-            expname = LangDesc.get_language_property_method_name(propopt[0])
+            expname = LangDesc.get_property_method_name(propopt[0])
 
-            rtype1, desc1, lst1 = LangDesc.get_language_property_return_data(propopt[1])
+            rtype1, desc1, lst1 = LangDesc.get_property_return_data(propopt[1])
             expret1 = ParamRetDict.build_return_dict(rtype1, desc1, lst1)
-            expname1 = LangDesc.get_language_property_method_name(propopt[1])
+            expname1 = LangDesc.get_property_method_name(propopt[1])
 
             expected_str = option_string
             expected_str += ExpectedStrHelper.get_expected_new_property_str(expname,
@@ -742,16 +742,16 @@ class Test03StringClassDescriptionMacroMethods:
             return next(input_str)
 
         testobj = StringClassDescription()
-        propopt = LangDesc.get_language_property_list()
+        propopt = LangDesc.get_property_list()
         option_string, _ = ExpectedStrHelper.get_expected_option_list()
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
             assert not testobj.new_property_method_entry()
 
-            rtype, desc, lst = LangDesc.get_language_property_return_data(propopt[0])
+            rtype, desc, lst = LangDesc.get_property_return_data(propopt[0])
             exp_ret = ParamRetDict.build_return_dict(rtype, desc, lst)
-            exp_name = LangDesc.get_language_property_method_name(propopt[0])
+            exp_name = LangDesc.get_property_method_name(propopt[0])
 
             expected_str = option_string
             expected_str += ExpectedStrHelper.get_expected_new_property_str(exp_name,
@@ -768,15 +768,15 @@ class Test03StringClassDescriptionMacroMethods:
             return next(input_str)
 
         testobj = StringClassDescription()
-        propopt = LangDesc.get_language_property_list()
+        propopt = LangDesc.get_property_list()
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
             assert testobj.add_property_method_entry(propopt[3])
 
-            rtype, desc, lst = LangDesc.get_language_property_return_data(propopt[3])
+            rtype, desc, lst = LangDesc.get_property_return_data(propopt[3])
             exp_ret = ParamRetDict.build_return_dict(rtype, desc, lst)
-            exp_name = LangDesc.get_language_property_method_name(propopt[3])
+            exp_name = LangDesc.get_property_method_name(propopt[3])
 
             assert exp_name in testobj.get_property_method_list()
             tstdata = testobj.string_jason_data['propertyMethods'][exp_name]
@@ -799,12 +799,12 @@ class Test03StringClassDescriptionMacroMethods:
             return next(input_str)
 
         testobj = StringClassDescription()
-        property_opt = LangDesc.get_language_property_list()
+        property_opt = LangDesc.get_property_list()
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output), patch('builtins.input', test_mock_in):
             assert not testobj.add_property_method_entry(property_opt[3])
-            exp_name = LangDesc.get_language_property_method_name(property_opt[3])
+            exp_name = LangDesc.get_property_method_name(property_opt[3])
             assert exp_name not in testobj.get_property_method_list()
 
     def test14_add_translate_method_entry_badtranslate_string(self):

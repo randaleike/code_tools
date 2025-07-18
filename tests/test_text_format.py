@@ -70,7 +70,9 @@ class Test01MultiLineFormat:
         """!
         @brief Test simple case of a short line
         """
-        str_list = mult_line_format("Test return description, longer line to induce wrap. More text to create another line", 32)
+        tststr = "Test return description, longer line to induce wrap. " \
+                 "More text to create another line"
+        str_list = mult_line_format(tststr, 32)
         assert 3 == len(str_list)
         assert "Test return description, longer" == str_list[0]
         assert "line to induce wrap. More text" == str_list[1]

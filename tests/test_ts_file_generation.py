@@ -32,7 +32,6 @@ from code_tools_grocsoftware.typescript_gen.file_gen_base import GenerateTypeScr
 
 # pylint: disable=too-many-lines
 # pylint: disable=protected-access
-# pylint: disable=too-many-public-methods
 
 class Test01CppFilehelper:
     """!

@@ -119,7 +119,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         case_indent = body_indent+"".rjust(4, " ")
         case_body_indent = case_indent+"".rjust(4, " ")
         for lang_name in self.lang_json_data.get_language_list():
-            lang_codes, _ = self.lang_json_data.get_language_langid_data(lang_name)
+            lang_codes, _ = self.lang_json_data.get_langid_data(lang_name)
             for langid in lang_codes:
                 caseline =  case_indent+"case "
                 caseline += hex(langid)
@@ -226,11 +226,11 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
 
         # Generate the tests
         for lang_name in self.lang_json_data.get_language_list():
-            lang_codes, region_list = self.lang_json_data.get_language_langid_data(lang_name)
+            lang_codes, region_list = self.lang_json_data.get_langid_data(lang_name)
             for lang_id in region_list:
                 # Generate test for each region of known language
                 test_name = lang_name.capitalize()+"_"+str(lang_id)+"_Selection"
-                lang_iso = self.lang_json_data.get_language_iso_code_data(lang_name)
+                lang_iso = self.lang_json_data.get_iso_code_data(lang_name)
                 test_body = self._gen_unittest_test(test_name,
                                                     lang_id,
                                                     lang_iso,
@@ -240,7 +240,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
 
             # Generate test for unknown region of known language(s)
             for lang_code in lang_codes:
-                lang_iso = self.lang_json_data.get_language_iso_code_data(lang_name)
+                lang_iso = self.lang_json_data.get_iso_code_data(lang_name)
                 unkn_region_tstname = lang_name.capitalize()
                 unkn_region_tstname += "_unknown_region_00"
                 unkn_region_tstname += str(lang_code)
@@ -254,7 +254,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
 
             # Generate test for unknown region of known language(s)
             for lang_code in lang_codes:
-                region_iso = self.lang_json_data.get_language_iso_code_data(lang_name)
+                region_iso = self.lang_json_data.get_iso_code_data(lang_name)
                 unkn_region_tstname = lang_name.capitalize()
                 unkn_region_tstname += "_unknown_region_FF"
                 unkn_region_tstname += str(lang_code)

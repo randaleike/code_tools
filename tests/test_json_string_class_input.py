@@ -77,10 +77,9 @@ class Test02StringClassDescription:
                       "Is full type an array [y/n]:"]
         if prompt in modprompts:
             return "n"
-        elif prompt == 'Enter custom type: ':
+        if prompt == 'Enter custom type: ':
             return "foobar"
-        else:
-            return next(input_str)
+        return next(input_str)
 
     def test01_input_iso_translate_code_good_input(self, capsys):
         """!
@@ -247,6 +246,7 @@ class Test02StringClassDescription:
             testobj = StringClassDescription()
             assert testobj._input_type_modifier() == 0
 
+    # pylint: disable=too-many-return-statements
     def test10_input_type_modifier_list_one_yes(self):
         """!
         @brief Test _input_type_modifier(), Simple case, one yes
@@ -259,18 +259,17 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             if prompt == "Is full type a list [y/n]:":
                 return input_dict['listAns']
-            elif prompt == "Is full type a pointer [y/n]:":
+            if prompt == "Is full type a pointer [y/n]:":
                 return input_dict['ptrAns']
-            elif prompt == "Is full type a reference [y/n]:":
+            if prompt == "Is full type a reference [y/n]:":
                 return input_dict['refAns']
-            elif prompt == "Can value be undefined [y/n]:":
+            if prompt == "Can value be undefined [y/n]:":
                 return input_dict['undefAns']
-            elif prompt == "Is full type an array [y/n]:":
+            if prompt == "Is full type an array [y/n]:":
                 return input_dict['arrayAns']
-            elif prompt == "Size of the array in entries: ":
+            if prompt == "Size of the array in entries: ":
                 return "5"
-            else:
-                return 'n'
+            return 'n'
 
         with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
@@ -291,7 +290,10 @@ class Test02StringClassDescription:
 
                 assert testobj._input_type_modifier() == expected_mod
                 input_dict[answer] = 'n'
+    # pylint: enable=too-many-return-statements
 
+    # pylint: disable=too-many-statements
+    # pylint: disable=too-many-return-statements
     def test11_input_type_modifier_list_two_yes(self):
         """!
         @brief Test _input_type_modifier(), two yes
@@ -304,18 +306,17 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             if prompt == "Is full type a list [y/n]:":
                 return input_dict['listAns']
-            elif prompt == "Is full type a pointer [y/n]:":
+            if prompt == "Is full type a pointer [y/n]:":
                 return input_dict['ptrAns']
-            elif prompt == "Is full type a reference [y/n]:":
+            if prompt == "Is full type a reference [y/n]:":
                 return input_dict['refAns']
-            elif prompt == "Can value be undefined [y/n]:":
+            if prompt == "Can value be undefined [y/n]:":
                 return input_dict['undefAns']
-            elif prompt == "Is full type an array [y/n]:":
+            if prompt == "Is full type an array [y/n]:":
                 return input_dict['arrayAns']
-            elif prompt == "Size of the array in entries: ":
+            if prompt == "Size of the array in entries: ":
                 return "6"
-            else:
-                return 'n'
+            return 'n'
 
         with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
@@ -365,6 +366,9 @@ class Test02StringClassDescription:
 
                 input_dict[first_yes] = 'n'
 
+    # pylint: enable=too-many-return-statements
+    # pylint: enable=too-many-statements
+
     def test12_input_type_modifier_list_all_yes_except_array(self):
         """!
         @brief Test _input_type_modifier(), all yes, except array
@@ -372,10 +376,9 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             if prompt == "Is full type an array [y/n]:":
                 return 'n'
-            elif prompt == "Size of the array in entries: ":
+            if prompt == "Size of the array in entries: ":
                 return "7"
-            else:
-                return 'y'
+            return 'y'
 
         with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
@@ -392,8 +395,7 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             if prompt == "Size of the array in entries: ":
                 return "7"
-            else:
-                return 'y'
+            return 'y'
 
         with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
@@ -551,12 +553,11 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             if prompt == 'Enter custom type: ':
                 return next(custom_type_names)
-            elif prompt == RET_PROMPT:
+            if prompt == RET_PROMPT:
                 return "c"
-            elif prompt == PARAM_PROMPT:
+            if prompt == PARAM_PROMPT:
                 return "c"
-            else:
-                return "n"
+            return "n"
 
         with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
@@ -582,12 +583,11 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             if prompt == 'Enter custom type: ':
                 return next(custom_type_names)
-            elif prompt == RET_PROMPT:
+            if prompt == RET_PROMPT:
                 return "c"
-            elif prompt == PARAM_PROMPT:
+            if prompt == PARAM_PROMPT:
                 return "c"
-            else:
-                return "n"
+            return "n"
 
         with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
@@ -608,12 +608,11 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             if prompt == 'Enter custom type: ':
                 return next(custom_type_names)
-            elif prompt == RET_PROMPT:
+            if prompt == RET_PROMPT:
                 return "c"
-            elif prompt == PARAM_PROMPT:
+            if prompt == PARAM_PROMPT:
                 return "c"
-            else:
-                return "n"
+            return "n"
 
         with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
@@ -637,12 +636,11 @@ class Test02StringClassDescription:
         def test_mock_in(prompt:str)->str:
             if prompt == 'Enter custom type: ':
                 return next(custom_type_names)
-            elif prompt == RET_PROMPT:
+            if prompt == RET_PROMPT:
                 return "c"
-            elif prompt == PARAM_PROMPT:
+            if prompt == PARAM_PROMPT:
                 return "c"
-            else:
-                return "n"
+            return "n"
 
         with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
@@ -695,22 +693,14 @@ class Test02StringClassDescription:
                functions have already been tested
         """
         def test_mock_in(prompt:str)->str:
-            modprompts = ["Is full type a list [y/n]:",
-                          "Is full type a pointer [y/n]:",
-                          "Is full type a reference [y/n]:",
-                          "Can value be undefined [y/n]:",
-                          "Is full type an array [y/n]:"]
-            if prompt in modprompts:
-                return 'n'
-            elif prompt == "Enter parameter name: ":
+            if prompt == "Enter parameter name: ":
                 return "paramName"
-            elif prompt == "Enter parameter base type [T(ext)|i(nteger)|" \
+            if prompt == "Enter parameter base type [T(ext)|i(nteger)|" \
                            "u(nsigned)|s(ize)|c(ustom)]: ":
                 return "i"
-            elif prompt == "Enter brief parameter description for doxygen comment: ":
+            if prompt == "Enter brief parameter description for doxygen comment: ":
                 return "Brief parameter description"
-            else:
-                return "n"
+            return "n"
 
         with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()
@@ -727,19 +717,13 @@ class Test02StringClassDescription:
         @brief Test _input_return_data(), simple as all the sub functions have already been tested
         """
         def test_mock_in(prompt:str)->str:
-            modprompts = ["Is full type a list [y/n]:",
-                          "Is full type a pointer [y/n]:",
-                          "Is full type a reference [y/n]:",
-                          "Can value be undefined [y/n]:",
-                          "Is full type an array [y/n]:"]
-            if prompt in modprompts:
-                return 'n'
-            elif prompt == "Enter return base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ":
-                return "t"
+            if prompt == "Enter return base type [T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: ":
+                retstr = "t"
             elif prompt == "Enter brief description of the return value for doxygen comment: ":
-                return "Brief return data description"
+                retstr = "Brief return data description"
             else:
-                return "n"
+                retstr = "n"
+            return retstr
 
         with patch('builtins.input', test_mock_in):
             testobj = StringClassDescription()

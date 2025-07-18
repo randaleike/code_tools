@@ -119,7 +119,7 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
                 first_loop = False
             else:
                 ifline += "#elif "
-            defname = self.lang_json_data.get_language_compile_switch_data(lang_name)
+            defname = self.lang_json_data.get_compile_switch_data(lang_name)
             ifline += "defined("+defname+")\n"
             function_body.append(ifline)
             function_body.append(body_indent+self._gen_make_ptr_return_statement(lang_name))
@@ -181,7 +181,7 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         expected_val = test_var+"->"+get_iso_method+"().c_str()"
 
         for lang_name in self.lang_json_data.get_language_list():
-            switch = self.lang_json_data.get_language_compile_switch_data(lang_name)
+            switch = self.lang_json_data.get_compile_switch_data(lang_name)
             test_body = []
             test_body.append("#if defined("+switch+")\n")
             testblkname = "StaticSelectFunction"+lang_name.capitalize()
@@ -189,7 +189,7 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
             test_body.append("{\n")
             test_body.append(body_indent+"// Generate the test language string object\n")
             test_body.append(body_indent+test_var_decl+" = "+self.select_function_name+"();\n")
-            getisoname = self.lang_json_data.get_language_iso_code_data(lang_name)
+            getisoname = self.lang_json_data.get_iso_code_data(lang_name)
             test_body.append(body_indent+"EXPECT_STREQ(\""+getisoname+"\", "+expected_val+");\n")
             # Complete the function
             test_body.append("}\n")

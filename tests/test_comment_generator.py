@@ -1,6 +1,5 @@
 """@package test_programmer_tools
 Unittest for programmer base tools utility
-
 """
 
 #==========================================================================
@@ -27,10 +26,24 @@ Unittest for programmer base tools utility
 
 from code_tools_grocsoftware.base.comment_gen_tools import CommentGenerator
 
-c_comment_parms =   {'blockStart': "/*", 'blockEnd': "*/", 'blockLineStart': "", 'singleLine': "//"}
-py_comment_parms =  {'blockStart': "\"\"\"", 'blockEnd':"\"\"\"", 'blockLineStart': "", 'singleLine': "#"}
-sh_comment_parms =  {'blockStart': None, 'blockEnd': None, 'blockLineStart': "#", 'singleLine': "#"}
-batCommentParms = {'blockStart': None, 'blockEnd': None, 'blockLineStart': "REM ", 'singleLine': "REM ",}
+from code_tools_grocsoftware.base.comment_gen_tools import CCommentGenerator
+from code_tools_grocsoftware.base.comment_gen_tools import PyCommentGenerator
+from code_tools_grocsoftware.base.comment_gen_tools import TsCommentGenerator
+from code_tools_grocsoftware.base.comment_gen_tools import JsCommentGenerator
+from code_tools_grocsoftware.base.comment_gen_tools import BatchCommentGenerator
+from code_tools_grocsoftware.base.comment_gen_tools import BashCommentGenerator
+
+c_comment_parms =   {'blockStart': "/*", 'blockEnd': "*/", ''
+                     'blockLineStart': "", 'singleLine': "//"}
+
+py_comment_parms =  {'blockStart': "\"\"\"", 'blockEnd':"\"\"\"",
+                     'blockLineStart': "", 'singleLine': "#"}
+
+sh_comment_parms =  {'blockStart': None, 'blockEnd': None,
+                     'blockLineStart': "#", 'singleLine': "#"}
+
+bat_comment_parms = {'blockStart': None, 'blockEnd': None,
+                     'blockLineStart': "REM ", 'singleLine': "REM ",}
 
 class Test07CommentGeneration:
     """!
@@ -741,8 +754,6 @@ class Test07CommentGeneration:
         """!
         @brief Test all generatoe constructors
         """
-        from code_tools_grocsoftware.base.comment_gen_tools import CCommentGenerator
-
         generator = CCommentGenerator()
         assert generator.line_length is None
         assert generator.eoltext is None
@@ -758,8 +769,6 @@ class Test07CommentGeneration:
         """!
         @brief Test all generatoe constructors
         """
-        from code_tools_grocsoftware.base.comment_gen_tools import PyCommentGenerator
-
         generator = PyCommentGenerator()
         assert generator.line_length is None
         assert generator.eoltext is None
@@ -775,8 +784,6 @@ class Test07CommentGeneration:
         """!
         @brief Test all generatoe constructors
         """
-        from code_tools_grocsoftware.base.comment_gen_tools import TsCommentGenerator
-
         generator = TsCommentGenerator()
         assert generator.line_length is None
         assert generator.eoltext is None
@@ -792,8 +799,6 @@ class Test07CommentGeneration:
         """!
         @brief Test all generatoe constructors
         """
-        from code_tools_grocsoftware.base.comment_gen_tools import JsCommentGenerator
-
         generator = JsCommentGenerator()
         assert generator.line_length is None
         assert generator.eoltext is None
@@ -809,8 +814,6 @@ class Test07CommentGeneration:
         """!
         @brief Test all generatoe constructors
         """
-        from code_tools_grocsoftware.base.comment_gen_tools import BashCommentGenerator
-
         generator = BashCommentGenerator()
         assert generator.line_length is None
         assert generator.eoltext is None
@@ -826,8 +829,6 @@ class Test07CommentGeneration:
         """!
         @brief Test all generatoe constructors
         """
-        from code_tools_grocsoftware.base.comment_gen_tools import BatchCommentGenerator
-
         generator = BatchCommentGenerator()
         assert generator.line_length is None
         assert generator.eoltext is None

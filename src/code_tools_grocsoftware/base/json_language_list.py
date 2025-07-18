@@ -133,7 +133,7 @@ class LanguageDescriptionList():
         """
         return list(self.lang_json_data['languages'].keys())
 
-    def get_language_property_data(self, language_name:str, property_name:str):
+    def get_property_data(self, language_name:str, property_name:str):
         """!
         @brief Get a list of the current defined languages
         @param language_name {string} Language entry key to fetch the ptoperty value from
@@ -142,7 +142,7 @@ class LanguageDescriptionList():
         """
         return self.lang_json_data['languages'][language_name][property_name]
 
-    def get_language_iso_code_data(self, language_name:str)->str:
+    def get_iso_code_data(self, language_name:str)->str:
         """!
         @brief Get the ISO 639 code data for the given entry_name language
         @param language_name {string} Language entry key to fetch the ptoperty value from
@@ -150,7 +150,7 @@ class LanguageDescriptionList():
         """
         return self.lang_json_data['languages'][language_name]['isoCode']
 
-    def get_language_lang_data(self, language_name:str)->tuple:
+    def get_language_data(self, language_name:str)->tuple:
         """!
         @brief Get the LANG and LANG_regions data for the given entry_name language
         @param language_name {string} Language entry key to fetch the ptoperty value from
@@ -162,7 +162,7 @@ class LanguageDescriptionList():
         region_list = self.lang_json_data['languages'][language_name]['LANG_regions']
         return lang_code, region_list
 
-    def get_language_langid_data(self, language_name:str)->tuple:
+    def get_langid_data(self, language_name:str)->tuple:
         """!
         @brief Get the LANGID and LANGID_regions data for the given entry_name language
         @param language_name {string} Language entry key to fetch the ptoperty value from
@@ -174,7 +174,7 @@ class LanguageDescriptionList():
         region_list = self.lang_json_data['languages'][language_name]['LANGID_regions']
         return lang_code, region_list
 
-    def get_language_compile_switch_data(self, language_name:str)->str:
+    def get_compile_switch_data(self, language_name:str)->str:
         """!
         @brief Get the compile_switch data for the given entry_name language
         @param language_name {string} Language entry key to fetch the ptoperty value from
@@ -183,7 +183,7 @@ class LanguageDescriptionList():
         return self.lang_json_data['languages'][language_name]['compileSwitch']
 
     @staticmethod
-    def get_language_property_list()->list:
+    def get_property_list()->list:
         """!
         @brief Return a tuple list of the usable language dictionary entries
         @return list of language entry property names
@@ -193,10 +193,10 @@ class LanguageDescriptionList():
         return list(entry_template.keys())
 
     @staticmethod
-    def get_language_property_return_data(property_name:str)->tuple:
+    def get_property_return_data(property_name:str)->tuple:
         """!
         @brief Get the property description
-        @param property_name (string) Name of the property from get_language_property_list()
+        @param property_name (string) Name of the property from get_property_list()
         @return tuple - Data type (text|number) or None if the property_name is unknown
                         Description or None if the property_name is unknown
                         True if data is a list else False
@@ -229,20 +229,20 @@ class LanguageDescriptionList():
         return prop_type, prop_desc, is_list
 
     @staticmethod
-    def is_language_property_text(property_name:str)->bool:
+    def is_property_text(property_name:str)->bool:
         """!
         @brief Return true if the data is stored as text or false if the data is stored as a number
-        @param property_name (string) Name of the property from get_language_property_list()
+        @param property_name (string) Name of the property from get_property_list()
         @return boolean - True if the data is stored as text or
                           False if the data is stored as a number
         """
         return bool(property_name in ['LANG', 'LANG_regions', 'isoCode', 'compileSwitch'])
 
     @staticmethod
-    def get_language_property_method_name(property_name:str)->str:
+    def get_property_method_name(property_name:str)->str:
         """!
         @brief Get the property method name
-        @param property_name (string) Name of the property from get_language_property_list()
+        @param property_name (string) Name of the property from get_property_list()
         @return string CPP description or None if the property_name is unknown
         """
         if property_name == 'LANG':
@@ -262,12 +262,12 @@ class LanguageDescriptionList():
         return retname
 
     @staticmethod
-    def get_language_iso_property_method_name()->str:
+    def get_iso_property_method_name()->str:
         """!
         @brief Get the property method name
         @return string CPP description or None if the property_name is unknown
         """
-        return LanguageDescriptionList.get_language_property_method_name('isoCode')
+        return LanguageDescriptionList.get_property_method_name('isoCode')
 
     def add_language(self, lang_name:str, linux_env_code:str, linux_region_list:list,
                     windows_lang_id:list, windows_region_list:list,

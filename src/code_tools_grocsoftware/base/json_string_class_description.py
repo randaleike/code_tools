@@ -287,7 +287,7 @@ class StringClassDescription():
 
             # Determine if any language translations are missing
             for language in language_list:
-                lang_iso_code = json_lang_data.get_language_iso_code_data(language)
+                lang_iso_code = json_lang_data.get_iso_code_data(language)
                 if lang_iso_code not in existing_langages:
                     # Use the first language
                     source_language = existing_langages[0]
@@ -733,7 +733,7 @@ class StringClassDescription():
                                                  Return type description for Doxygen comment
                                                  True if return is a list, else False
         """
-        property_options = LanguageDescriptionList.get_language_property_list()
+        property_options = LanguageDescriptionList.get_property_list()
 
         print ("Select language property, from options:")
         option_text = ""
@@ -755,8 +755,8 @@ class StringClassDescription():
             else:
                 print ("Valid input values are 0 to "+str(max_index-1)+", try again")
 
-        rtype, rdesc, is_list = LanguageDescriptionList.get_language_property_return_data(propid)
-        method_name = LanguageDescriptionList.get_language_property_method_name(propid)
+        rtype, rdesc, is_list = LanguageDescriptionList.get_property_return_data(propid)
+        method_name = LanguageDescriptionList.get_property_method_name(propid)
         return propid, method_name, rtype, rdesc, is_list
 
     def new_property_method_entry(self, override:bool = False)->bool:
@@ -799,20 +799,20 @@ class StringClassDescription():
         """!
         @brief Add a new translate string return function dictionary
                to the list of translate functions
-        @param property_name {string} LanguageDescriptionList.get_language_property_list()
+        @param property_name {string} LanguageDescriptionList.get_property_list()
                                       property key
         @param override {boolean} True = Override existing without asking
         @return boolean True if new entry was written, else false
         """
         # Make sure property exists in the language data
-        property_list = LanguageDescriptionList.get_language_property_list()
+        property_list = LanguageDescriptionList.get_property_list()
         commit_flag = False
 
         # Property exists, generate the new entry
         if property_name in property_list:
-            return_type, return_desc, is_list = LanguageDescriptionList.get_language_property_return_data(property_name) # pylint: disable=line-too-long
+            return_type, return_desc, is_list = LanguageDescriptionList.get_property_return_data(property_name) # pylint: disable=line-too-long
             method_desc = "Get the "+return_desc+" for this object"
-            method_name = LanguageDescriptionList.get_language_property_method_name(property_name)
+            method_name = LanguageDescriptionList.get_property_method_name(property_name)
 
             new_entry = self._define_property_function_entry(property_name, method_desc,
                                                              return_type, return_desc, is_list)

@@ -1,6 +1,5 @@
 """@package test_programmer_tools
 Unittest for programmer base tools utility
-
 """
 
 #==========================================================================
@@ -25,11 +24,11 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
-
 from datetime import datetime
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.cpp_gen.file_gen_base import GenerateCppFileHelper
 
+# pylint: disable=too-many-lines
 
 class Test01CppFilehelper:
     """!
@@ -161,11 +160,12 @@ class Test01CppFilehelper:
         helper = GenerateCppFileHelper()
 
         # Test the xlate path
-        assert helper.declare_type('string', 5 << ParamRetDict.type_mod_array_shift) == "std::array<std::string, 5>"
-        assert helper.declare_type('text', 7 << ParamRetDict.type_mod_array_shift) == "std::array<std::string, 7>"
-        assert helper.declare_type('size', 10 << ParamRetDict.type_mod_array_shift) == "std::array<size_t, 10>"
-        assert helper.declare_type('integer', 20 << ParamRetDict.type_mod_array_shift) == "std::array<int, 20>"
-        assert helper.declare_type('unsigned', 13 << ParamRetDict.type_mod_array_shift) == "std::array<unsigned, 13>"
+        shft = ParamRetDict.type_mod_array_shift
+        assert helper.declare_type('string', 5 << shft) == "std::array<std::string, 5>"
+        assert helper.declare_type('text', 7 << shft) == "std::array<std::string, 7>"
+        assert helper.declare_type('size', 10 << shft) == "std::array<size_t, 10>"
+        assert helper.declare_type('integer', 20 << shft) == "std::array<int, 20>"
+        assert helper.declare_type('unsigned', 13 << shft) == "std::array<unsigned, 13>"
 
     def test09declare_type_array_ptr(self):
         """!
@@ -216,19 +216,27 @@ class Test01CppFilehelper:
         typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list
         assert helper.declare_type('string', typemod) == "std::list<std::string>"
 
-        typemod = (25 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ptr
+        typemod = 25 << ParamRetDict.type_mod_array_shift
+        typemod |= ParamRetDict.type_mod_undef
+        typemod |= ParamRetDict.type_mod_ptr
         assert helper.declare_type('string', typemod) == "std::array<std::string*, 25>"
 
-        typemod = (7 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ref
+        typemod = 7 << ParamRetDict.type_mod_array_shift
+        typemod |= ParamRetDict.type_mod_undef
+        typemod |= ParamRetDict.type_mod_ref
         assert helper.declare_type('string', typemod) == "std::array<std::string&, 7>"
 
         typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list
         assert helper.declare_type('string', typemod) == "std::list<std::string>"
 
-        typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list | ParamRetDict.type_mod_ptr
+        typemod = ParamRetDict.type_mod_undef
+        typemod |= ParamRetDict.type_mod_list
+        typemod |= ParamRetDict.type_mod_ptr
         assert helper.declare_type('string', typemod) == "std::list<std::string*>"
 
-        typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list | ParamRetDict.type_mod_ref
+        typemod = ParamRetDict.type_mod_undef
+        typemod |= ParamRetDict.type_mod_list
+        typemod |= ParamRetDict.type_mod_ref
         assert helper.declare_type('string', typemod) == "std::list<std::string&>"
 
     def test12_xlate_param_list(self):
@@ -236,26 +244,32 @@ class Test01CppFilehelper:
         @brief Test the xlate_params method
         """
         helper = GenerateCppFileHelper()
-        gen_param_list = []
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("goo", "string", "mystr", ParamRetDict.type_mod_list))
+        tst_plst = []
+        tst_plst.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
+        tst_plst.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                               "size",
+                                                               "mysize",
+                                                               ParamRetDict.type_mod_ptr))
+        tst_plst.append(ParamRetDict.build_param_dict_with_mod("goo",
+                                                               "string",
+                                                               "mystr",
+                                                               ParamRetDict.type_mod_list))
 
-        xlate_list = helper.xlate_params(gen_param_list)
-        assert len(xlate_list) == len(gen_param_list)
-        assert ParamRetDict.get_param_name(xlate_list[0]) == ParamRetDict.get_param_name(gen_param_list[0])
-        assert ParamRetDict.get_param_type(xlate_list[0]) == "int"
-        assert ParamRetDict.get_param_desc(xlate_list[0]) == ParamRetDict.get_param_desc(gen_param_list[0])
+        xlate_list = helper.xlate_params(tst_plst)
+        assert len(xlate_list) == len(tst_plst)
+        assert ParamRetDict.get_param_name(xlate_list[0])==ParamRetDict.get_param_name(tst_plst[0])
+        assert ParamRetDict.get_param_type(xlate_list[0])=="int"
+        assert ParamRetDict.get_param_desc(xlate_list[0])==ParamRetDict.get_param_desc(tst_plst[0])
         assert ParamRetDict.get_param_type_mod(xlate_list[0]) == 0
 
-        assert ParamRetDict.get_param_name(xlate_list[1]) == ParamRetDict.get_param_name(gen_param_list[1])
-        assert ParamRetDict.get_param_type(xlate_list[1]) == "size_t*"
-        assert ParamRetDict.get_param_desc(xlate_list[1]) == ParamRetDict.get_param_desc(gen_param_list[1])
+        assert ParamRetDict.get_param_name(xlate_list[1])==ParamRetDict.get_param_name(tst_plst[1])
+        assert ParamRetDict.get_param_type(xlate_list[1])=="size_t*"
+        assert ParamRetDict.get_param_desc(xlate_list[1])==ParamRetDict.get_param_desc(tst_plst[1])
         assert ParamRetDict.get_param_type_mod(xlate_list[1]) == 0
 
-        assert ParamRetDict.get_param_name(xlate_list[2]) == ParamRetDict.get_param_name(gen_param_list[2])
-        assert ParamRetDict.get_param_type(xlate_list[2]) == "std::list<std::string>"
-        assert ParamRetDict.get_param_desc(xlate_list[2]) == ParamRetDict.get_param_desc(gen_param_list[2])
+        assert ParamRetDict.get_param_name(xlate_list[2])==ParamRetDict.get_param_name(tst_plst[2])
+        assert ParamRetDict.get_param_type(xlate_list[2])=="std::list<std::string>"
+        assert ParamRetDict.get_param_desc(xlate_list[2])==ParamRetDict.get_param_desc(tst_plst[2])
         assert ParamRetDict.get_param_type_mod(xlate_list[2]) == 0
 
     def test13_xlate_param_empty_list(self):
@@ -297,7 +311,9 @@ class Test01CppFilehelper:
         return_text = helper.gen_function_ret_type(gen_ret_dict)
         assert return_text == "int "
 
-        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "myint", ParamRetDict.type_mod_list)
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer",
+                                                               "myint",
+                                                               ParamRetDict.type_mod_list)
         return_text = helper.gen_function_ret_type(gen_ret_dict)
         assert return_text == "std::list<int> "
 
@@ -317,8 +333,14 @@ class Test01CppFilehelper:
         helper = GenerateCppFileHelper()
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("goo", "string", "mystr", ParamRetDict.type_mod_list))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("goo",
+                                                                     "string",
+                                                                     "mystr",
+                                                                     ParamRetDict.type_mod_list))
 
         return_text = helper.gen_function_params(gen_param_list)
         assert return_text == "(int foo, size_t* moo, std::list<std::string> goo)"
@@ -341,9 +363,16 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict)
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict)
+
         assert len(function_text) == 9
         assert function_text[0] == '/**\n'
         assert function_text[1] == ' * @brief My test function\n'
@@ -364,9 +393,18 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict, 8, prefix_decaration='virtual')
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 prefix_decaration='virtual')
+
         assert len(function_text) == 9
         assert function_text[0] == '        /**\n'
         assert function_text[1] == '         * @brief My test function\n'
@@ -387,9 +425,18 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict, 8, postfix_decaration='const override')
+        function_text=helper.declare_function_with_decorations("my_test",
+                                                               "My test function",
+                                                               gen_param_list,
+                                                               gen_ret_dict,
+                                                               8,
+                                                               postfix_decaration='const override')
+
         assert len(function_text) == 9
         assert function_text[0] == '        /**\n'
         assert function_text[1] == '         * @brief My test function\n'
@@ -410,10 +457,18 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
-                                                              8, prefix_decaration="[[nodiscard]]", postfix_decaration='const override')
+        function_text=helper.declare_function_with_decorations("my_test",
+                                                               "My test function",
+                                                               gen_param_list,
+                                                               gen_ret_dict,
+                                                               8,
+                                                               prefix_decaration="[[nodiscard]]",
+                                                               postfix_decaration='const override')
         assert len(function_text) == 9
         assert function_text[0] == '        /**\n'
         assert function_text[1] == '         * @brief My test function\n'
@@ -423,23 +478,39 @@ class Test01CppFilehelper:
         assert function_text[5] == '         * \n'
         assert function_text[6] == '         * @return int - return int\n'
         assert function_text[7] == '         */\n'
-        assert function_text[8] == '        [[nodiscard]] int my_test(int foo, size_t* moo) const override;\n'
+        assert function_text[8] == "        [[nodiscard]] int my_test(int foo, size_t* moo) " \
+                                   "const override;\n"
 
     def test24_declare_function_with_pre_and_postfix_no_comment(self):
         """!
-        @brief Test the declare_function_with_decorations method, prefix, postfix decoration, no comment
+        @brief Test the declare_function_with_decorations method, prefix,
+               postfix decoration, no comment
         """
         helper = GenerateCppFileHelper()
         gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return int", 0)
 
         gen_param_list = []
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo",
+                                                                     "integer",
+                                                                     "myint",
+                                                                     0))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
-                                                              8, True, "[[nodiscard]]", 'const override')
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 True,
+                                                                 "[[nodiscard]]",
+                                                                 'const override')
+
         assert len(function_text) == 1
-        assert function_text[0] == '        [[nodiscard]] int my_test(int foo, size_t* moo) const override;\n'
+        assert function_text[0] == "        [[nodiscard]] int my_test(int foo, size_t* moo) " \
+                                   "const override;\n"
 
     def test25_declare_function_with_no_comment_inline_single_line(self):
         """!
@@ -449,13 +520,28 @@ class Test01CppFilehelper:
         gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return int", 0)
 
         gen_param_list = []
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo",
+                                                                     "integer",
+                                                                     "myint",
+                                                                     0))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
-                                                              8, True, "[[nodiscard]]", 'const override', ["return 15;"])
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 True,
+                                                                 "[[nodiscard]]",
+                                                                 'const override',
+                                                                 ["return 15;"])
+
         assert len(function_text) == 2
-        assert function_text[0] == '        [[nodiscard]] int my_test(int foo, size_t* moo) const override\n'
+        assert function_text[0] == "        [[nodiscard]] int my_test(int foo, size_t* moo) " \
+                                   "const override\n"
         assert function_text[1] == '        {return 15;}\n'
 
     def test26_declare_function_with_no_comment_inline_multi_line(self):
@@ -463,21 +549,38 @@ class Test01CppFilehelper:
         @brief Test the declare_function_with_decorations method, no comment inline code
         """
         helper = GenerateCppFileHelper()
-        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return list", ParamRetDict.type_mod_list)
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer",
+                                                               "return list",
+                                                               ParamRetDict.type_mod_list)
 
         gen_param_list = []
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo",
+                                                                     "integer",
+                                                                     "myint",
+                                                                     0))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
         inline_code =["std::list<int> retvar;",
                      "retvar.push_back(15);",
                      "retvar.push_back(25);",
                      "return retvar;"]
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
-                                                              8, True, "[[nodiscard]]", 'const override', inline_code)
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 True,
+                                                                 "[[nodiscard]]",
+                                                                 'const override',
+                                                                 inline_code)
+
         assert len(function_text) == 7
-        assert function_text[0] == '        [[nodiscard]] std::list<int> my_test(int foo, size_t* moo) const override\n'
+        assert function_text[0] == "        [[nodiscard]] std::list<int> my_test(int foo, " \
+                                   "size_t* moo) const override\n"
         assert function_text[1] == '        {\n'
         assert function_text[2] == '            '+inline_code[0]+'\n'
         assert function_text[3] == '            '+inline_code[1]+'\n'
@@ -502,18 +605,22 @@ class Test01CppFilehelper:
         header_text = helper.generate_generic_file_header("unittest", current_year, "Me")
         copyright_msg = "* Copyright (c) "+str(current_year)+" Me"
         assert len(header_text) == 27
-        assert header_text[0] == "/*------------------------------------------------------------------------------\n"
+        assert header_text[0] == "/*------------------------------------------------------------" \
+                                 "------------------\n"
         assert header_text[1] == copyright_msg+"\n"
         assert header_text[3] == "* MIT License\n"
         assert header_text[24] == "* This file was autogenerated by unittest do not edit\n"
-        assert header_text[26] == "* ----------------------------------------------------------------------------*/\n"
+        assert header_text[26] == "* -----------------------------------------------------------" \
+                                  "-----------------*/\n"
 
         min_text = helper.generate_generic_file_header("unittest")
         assert len(min_text) == 4
-        assert min_text[0] == "/*------------------------------------------------------------------------------\n"
+        assert min_text[0] == "/*--------------------------------------------------------------" \
+                              "----------------\n"
         assert min_text[1] == "* This file was autogenerated by unittest do not edit\n"
         assert min_text[2] == "* \n"
-        assert min_text[3] == "* ----------------------------------------------------------------------------*/\n"
+        assert min_text[3] == "* --------------------------------------------------------------" \
+                              "--------------*/\n"
 
     def test29gen_include(self):
         """!
@@ -603,7 +710,9 @@ class Test01CppFilehelper:
         """
         helper = GenerateCppFileHelper()
 
-        test_text = helper.gen_class_open("MyTestClassName", "My class description", "public MyBaseClass")
+        test_text = helper.gen_class_open("MyTestClassName",
+                                          "My class description",
+                                          "public MyBaseClass")
         assert len(test_text) == 5
         assert test_text[0] == "/**\n"
         assert test_text[1] == " * @brief My class description\n"
@@ -617,7 +726,11 @@ class Test01CppFilehelper:
         """
         helper = GenerateCppFileHelper()
 
-        test_text = helper.gen_class_open("MyTestClassName", "My class description", "public MyBaseClass", "final", 2)
+        test_text = helper.gen_class_open("MyTestClassName",
+                                          "My class description",
+                                          "public MyBaseClass",
+                                          "final",
+                                          2)
         assert len(test_text) == 5
         assert test_text[0] == "  /**\n"
         assert test_text[1] == "   * @brief My class description\n"
@@ -654,7 +767,8 @@ class Test01CppFilehelper:
         assert test_text[4] == "        MyTestClassName() = default;\n"
         assert test_text[5] == "\n"
         assert test_text[6] == "        /**\n"
-        assert test_text[7] == "         * @brief Copy constructor for a new MyTestClassName object\n"
+        assert test_text[7] == "         * @brief Copy constructor for a new MyTestClassName " \
+                               "object\n"
         assert test_text[8] == "         * \n"
         assert test_text[9] == "         * @param other Reference to object to copy\n"
         assert test_text[10] == "         * \n"
@@ -662,7 +776,8 @@ class Test01CppFilehelper:
         assert test_text[12] == "        MyTestClassName(const MyTestClassName& other) = default;\n"
         assert test_text[13] == "\n"
         assert test_text[14] == "        /**\n"
-        assert test_text[15] == "         * @brief Move constructor for a new MyTestClassName object\n"
+        assert test_text[15] == "         * @brief Move constructor for a new MyTestClassName " \
+                                "object\n"
         assert test_text[16] == "         * \n"
         assert test_text[17] == "         * @param other Reference to object to move\n"
         assert test_text[18] == "         * \n"
@@ -670,22 +785,26 @@ class Test01CppFilehelper:
         assert test_text[20] == "        MyTestClassName(MyTestClassName&& other) = default;\n"
         assert test_text[21] == "\n"
         assert test_text[22] == "        /**\n"
-        assert test_text[23] == "         * @brief Equate constructor for a new MyTestClassName object\n"
+        assert test_text[23] == "         * @brief Equate constructor for a new MyTestClassName " \
+                                "object\n"
         assert test_text[24] == "         * \n"
         assert test_text[25] == "         * @param other Reference to object to copy\n"
         assert test_text[26] == "         * \n"
         assert test_text[27] == "         * @return MyTestClassName& - *this\n"
         assert test_text[28] == "         */\n"
-        assert test_text[29] == "        MyTestClassName& operator=(const MyTestClassName& other) = default;\n"
+        assert test_text[29] == "        MyTestClassName& operator=(const MyTestClassName& other)" \
+                                " = default;\n"
         assert test_text[30] == "\n"
         assert test_text[31] == "        /**\n"
-        assert test_text[32] == "         * @brief Equate move constructor for a new MyTestClassName object\n"
+        assert test_text[32] == "         * @brief Equate move constructor for a new " \
+                                "MyTestClassName object\n"
         assert test_text[33] == "         * \n"
         assert test_text[34] == "         * @param other Reference to object to move\n"
         assert test_text[35] == "         * \n"
         assert test_text[36] == "         * @return MyTestClassName& - *this\n"
         assert test_text[37] == "         */\n"
-        assert test_text[38] == "        MyTestClassName& operator=(MyTestClassName&& other) = default;\n"
+        assert test_text[38] == "        MyTestClassName& operator=(MyTestClassName&& other)" \
+                                " = default;\n"
         assert test_text[39] == "\n"
         assert test_text[40] == "        /**\n"
         assert test_text[41] == "         * @brief Destructor for MyTestClassName object\n"
@@ -700,61 +819,83 @@ class Test01CppFilehelper:
         """
         helper = GenerateCppFileHelper()
 
-        test_text = helper.gen_class_default_constructor_destructor("MyTestClassName", no_doxy_comment_constructor=True)
+        test_text=helper.gen_class_default_constructor_destructor("MyTestClassName",
+                                                                  no_doxy_comment_constructor=True)
+
         assert len(test_text) == 7
         assert test_text[0] == "        MyTestClassName() = default;\n"
         assert test_text[1] == "        MyTestClassName(const MyTestClassName& other) = default;\n"
         assert test_text[2] == "        MyTestClassName(MyTestClassName&& other) = default;\n"
-        assert test_text[3] == "        MyTestClassName& operator=(const MyTestClassName& other) = default;\n"
-        assert test_text[4] == "        MyTestClassName& operator=(MyTestClassName&& other) = default;\n"
+        assert test_text[3] == "        MyTestClassName& operator=(const MyTestClassName& other)" \
+                               " = default;\n"
+        assert test_text[4] == "        MyTestClassName& operator=(MyTestClassName&& other)" \
+                               " = default;\n"
         assert test_text[5] == "        ~MyTestClassName() = default;\n"
         assert test_text[6] == "\n"
 
     def test40_gen_class_default_con_destrutor_no_doxy_virtual_destructor(self):
         """!
-        @brief Test the gen_class_default_constructor_destructor method, with no doxygen comments, virtual destructor
+        @brief Test the gen_class_default_constructor_destructor method,
+               with no doxygen comments, virtual destructor
         """
         helper = GenerateCppFileHelper()
 
-        test_text = helper.gen_class_default_constructor_destructor("MyTestClassName", virtual_destructor=True, no_doxy_comment_constructor=True)
+        test_text=helper.gen_class_default_constructor_destructor("MyTestClassName",
+                                                                  virtual_destructor=True,
+                                                                  no_doxy_comment_constructor=True)
         assert len(test_text) == 7
         assert test_text[0] == "        MyTestClassName() = default;\n"
         assert test_text[1] == "        MyTestClassName(const MyTestClassName& other) = default;\n"
         assert test_text[2] == "        MyTestClassName(MyTestClassName&& other) = default;\n"
-        assert test_text[3] == "        MyTestClassName& operator=(const MyTestClassName& other) = default;\n"
-        assert test_text[4] == "        MyTestClassName& operator=(MyTestClassName&& other) = default;\n"
+        assert test_text[3] == "        MyTestClassName& operator=(const MyTestClassName& other)" \
+                               " = default;\n"
+        assert test_text[4] == "        MyTestClassName& operator=(MyTestClassName&& other)" \
+                               " = default;\n"
         assert test_text[5] == "        virtual ~MyTestClassName() = default;\n"
         assert test_text[6] == "\n"
 
     def test41_gen_class_default_con_destrutor_no_doxy_no_copy(self):
         """!
-        @brief Test the gen_class_default_constructor_destructor method, with no doxycomment, no copy
+        @brief Test the gen_class_default_constructor_destructor method,
+               with no doxycomment, no copy
         """
         helper = GenerateCppFileHelper()
 
-        test_text = helper.gen_class_default_constructor_destructor("MyTestClassName", no_doxy_comment_constructor=True, no_copy=True)
+        test_text=helper.gen_class_default_constructor_destructor("MyTestClassName",
+                                                                  no_doxy_comment_constructor=True,
+                                                                  no_copy=True)
         assert len(test_text) == 7
         assert test_text[0] == "        MyTestClassName() = default;\n"
         assert test_text[1] == "        MyTestClassName(const MyTestClassName& other) = delete;\n"
         assert test_text[2] == "        MyTestClassName(MyTestClassName&& other) = delete;\n"
-        assert test_text[3] == "        MyTestClassName& operator=(const MyTestClassName& other) = delete;\n"
-        assert test_text[4] == "        MyTestClassName& operator=(MyTestClassName&& other) = delete;\n"
+        assert test_text[3] == "        MyTestClassName& operator=(const MyTestClassName& other)" \
+                                        " = delete;\n"
+        assert test_text[4] == "        MyTestClassName& operator=(MyTestClassName&& other)" \
+                                        " = delete;\n"
         assert test_text[5] == "        ~MyTestClassName() = default;\n"
         assert test_text[6] == "\n"
 
     def test42_gen_class_default_con_destrutor_no_doxy_no_copy(self):
         """!
-        @brief Test the gen_class_default_constructor_destructor method, with virtual destructor, no doxycomment, no copy
+        @brief Test the gen_class_default_constructor_destructor method,
+               with virtual destructor, no doxycomment, no copy
         """
         helper = GenerateCppFileHelper()
 
-        test_text = helper.gen_class_default_constructor_destructor("MyTestClassName", 6, True, True, True)
+        test_text = helper.gen_class_default_constructor_destructor("MyTestClassName",
+                                                                    6,
+                                                                    True,
+                                                                    True,
+                                                                    True)
+
         assert len(test_text) == 7
         assert test_text[0] == "      MyTestClassName() = default;\n"
         assert test_text[1] == "      MyTestClassName(const MyTestClassName& other) = delete;\n"
         assert test_text[2] == "      MyTestClassName(MyTestClassName&& other) = delete;\n"
-        assert test_text[3] == "      MyTestClassName& operator=(const MyTestClassName& other) = delete;\n"
-        assert test_text[4] == "      MyTestClassName& operator=(MyTestClassName&& other) = delete;\n"
+        assert test_text[3] == "      MyTestClassName& operator=(const MyTestClassName& other)" \
+                                      " = delete;\n"
+        assert test_text[4] == "      MyTestClassName& operator=(MyTestClassName&& other)" \
+                                      " = delete;\n"
         assert test_text[5] == "      virtual ~MyTestClassName() = default;\n"
         assert test_text[6] == "\n"
 
@@ -790,8 +931,10 @@ class Test01CppFilehelper:
         assert test_text[2] == " */\n"
         assert test_text[3] == "structure MyTestStructName\n"
         assert test_text[4] == "{\n"
-        assert test_text[5] == "    int foo;                                                //!< Test integer\n"
-        assert test_text[6] == "    unsigned moo;                                           //!< Test unsigned\n"
+        assert test_text[5] == "    int foo;                                                " \
+                               "//!< Test integer\n"
+        assert test_text[6] == "    unsigned moo;                                           " \
+                               "//!< Test unsigned\n"
         assert test_text[7] == "};\n"
 
     def test45_declare_struct_with_decorations(self):
@@ -803,15 +946,23 @@ class Test01CppFilehelper:
         member1 = ParamRetDict.build_param_dict_with_mod("foo", "integer", "Test integer", 0)
         member2 = ParamRetDict.build_param_dict_with_mod("moo", "unsigned", "Test unsigned", 0)
         var_list = [member1, member2]
-        test_text = helper.declare_structure("MyTestStructName", var_list, 0, "Test structure", "public", "const")
+        test_text = helper.declare_structure("MyTestStructName",
+                                             var_list,
+                                             0,
+                                             "Test structure",
+                                             "public",
+                                             "const")
+
         assert len(test_text) == 8
         assert test_text[0] == "/**\n"
         assert test_text[1] == " * @brief Test structure\n"
         assert test_text[2] == " */\n"
         assert test_text[3] == "public structure MyTestStructName\n"
         assert test_text[4] == "{\n"
-        assert test_text[5] == "    int foo;                                                //!< Test integer\n"
-        assert test_text[6] == "    unsigned moo;                                           //!< Test unsigned\n"
+        assert test_text[5] == "    int foo;                                                " \
+                               "//!< Test integer\n"
+        assert test_text[6] == "    unsigned moo;                                           " \
+                               "//!< Test unsigned\n"
         assert test_text[7] == "} const;\n"
 
     def test46_declare_variable(self):
@@ -872,7 +1023,10 @@ class Test01CppFilehelper:
         helper = GenerateCppFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict)
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list,
+                                                            ret_dict)
         assert len(test_text) == 8
         assert test_text[0] == "/**\n"
         assert test_text[1] == " * @brief Brief description\n"
@@ -890,7 +1044,12 @@ class Test01CppFilehelper:
         helper = GenerateCppFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict, False, "static")
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list,
+                                                            ret_dict,
+                                                            False,
+                                                            "static")
         assert len(test_text) == 8
         assert test_text[0] == "/**\n"
         assert test_text[1] == " * @brief Brief description\n"
@@ -908,7 +1067,11 @@ class Test01CppFilehelper:
         helper = GenerateCppFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict, postfix_decaration="const")
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list,
+                                                            ret_dict,
+                                                            postfix_decaration="const")
         assert len(test_text) == 8
         assert test_text[0] == "/**\n"
         assert test_text[1] == " * @brief Brief description\n"
@@ -926,8 +1089,12 @@ class Test01CppFilehelper:
         helper = GenerateCppFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict,
-                                                         prefix_decaration="static", postfix_decaration="const")
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list,
+                                                            ret_dict,
+                                                            prefix_decaration="static",
+                                                            postfix_decaration="const")
         assert len(test_text) == 8
         assert test_text[0] == "/**\n"
         assert test_text[1] == " * @brief Brief description\n"
@@ -945,17 +1112,26 @@ class Test01CppFilehelper:
         helper = GenerateCppFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict, True)
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list,
+                                                            ret_dict,
+                                                            True)
         assert len(test_text) == 1
         assert test_text[0] == "int MyDefineFunc(unsigned foo)\n"
 
     def test54_define_function_empty_param_list(self):
         """!
-        @brief Test the define_function_with_decorations method, with empty param list
+        @brief Test the define_function_with_decorations method,
+        with empty param list
         """
         helper = GenerateCppFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", [], ret_dict, True)
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            [],
+                                                            ret_dict,
+                                                            True)
         assert len(test_text) == 1
         assert test_text[0] == "int MyDefineFunc()\n"
 

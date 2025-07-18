@@ -154,7 +154,7 @@ class TestClass01WindowsLangSelect:
 
         capture_index += 2
         for lang_name in lang_list.get_language_list():
-            lang_codes, _ = lang_list.get_language_langid_data(lang_name)
+            lang_codes, _ = lang_list.get_langid_data(lang_name)
             for langid in lang_codes:
                 assert capture_list[capture_index] == "        case "+hex(langid)+":\n"
                 capture_index += 1
@@ -239,8 +239,8 @@ class TestClass01WindowsLangSelect:
         # Match each test function
         text_index = 5
         for lang_name in lang_list.get_language_list():
-            lang_codes, region_list = lang_list.get_language_langid_data(lang_name)
-            iso_code = lang_list.get_language_iso_code_data(lang_name)
+            lang_codes, region_list = lang_list.get_langid_data(lang_name)
+            iso_code = lang_list.get_iso_code_data(lang_name)
             for region in region_list:
                 test_name = lang_name.capitalize()+"_"+str(region)+"_Selection"
                 expected_test_text = test_obj._gen_unittest_test(test_name,

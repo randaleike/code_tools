@@ -135,7 +135,8 @@ class Test01TranslationTextParser:
         """!
         @brief Test parse_translate_string(), single quoted param
         """
-        out_list = TransTxtParser.parse_translate_string("Quoted param single \"@paramName@\" in it")
+        txt = "Quoted param single \"@paramName@\" in it"
+        out_list = TransTxtParser.parse_translate_string(txt)
         assert len(out_list) == 5
         assert out_list[0][0] == TransTxtParser.parsed_type_text
         assert out_list[0][1] == 'Quoted param single '
@@ -152,7 +153,9 @@ class Test01TranslationTextParser:
         """!
         @brief Test parse_translate_string(), double parameter, no quote
         """
-        out_list = TransTxtParser.parse_translate_string("Simple with @param_name1@ and @param_name2@ in it")
+        txt = "Simple with @param_name1@ and @param_name2@ in it"
+        out_list = TransTxtParser.parse_translate_string(txt)
+
         assert len(out_list) == 5
         assert out_list[0][0] == TransTxtParser.parsed_type_text
         assert out_list[0][1] == 'Simple with '
@@ -169,7 +172,9 @@ class Test01TranslationTextParser:
         """!
         @brief Test parse_translate_string(), double parameter, one quoted
         """
-        out_list = TransTxtParser.parse_translate_string("Quoted with @param_name1@ and \"@param_name2@\" in it")
+        txt = "Quoted with @param_name1@ and \"@param_name2@\" in it"
+        out_list = TransTxtParser.parse_translate_string(txt)
+
         assert len(out_list) == 7
         assert out_list[0][0] == TransTxtParser.parsed_type_text
         assert out_list[0][1] == 'Quoted with '
@@ -230,7 +235,7 @@ class Test01TranslationTextParser:
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
             with pytest.raises(TypeError):
-                out_str = TransTxtParser.assemble_parsed_str_data(param_list)
+                TransTxtParser.assemble_parsed_str_data(param_list)
                 assert output == "Unknown string description tuple type: Unknown"
 
     def test16_assemble_stream(self):
@@ -264,11 +269,14 @@ class Test01TranslationTextParser:
                      (TransTxtParser.parsed_type_text, " and "),
                      (TransTxtParser.parsed_type_param, "param_name2")]
         out_str = TransTxtParser.assemble_stream(param_list)
-        assert out_str == ' << "Multiple text with \\\'" << param_name1 << "\\\' and " << param_name2'
+        expstr = ' << "Multiple text with \\\''
+        expstr += '" << param_name1 << "\\\' and " << param_name2'
+        assert out_str == expstr
 
     def test19_assemble_stream_quotes_multiple_stream_spec(self):
         """!
-        @brief Test assemble_parsed_str_data(), simple, one param, quotes, non-default stream operator
+        @brief Test assemble_parsed_str_data(), simple, one param, quotes,
+               non-default stream operator
         """
         param_list = [(TransTxtParser.parsed_type_text, "Multiple text with "),
                      (TransTxtParser.parsed_type_special, "'"),
@@ -290,7 +298,7 @@ class Test01TranslationTextParser:
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
             with pytest.raises(TypeError):
-                out_str = TransTxtParser.assemble_stream(param_list)
+                TransTxtParser.assemble_stream(param_list)
                 assert output == "Unknown string description tuple type: Unknown"
 
     def test21_is_parsed_text_type(self):
@@ -298,7 +306,8 @@ class Test01TranslationTextParser:
         @brief Test is_parsed_text_type()
         """
         assert TransTxtParser.is_parsed_text_type((TransTxtParser.parsed_type_text, "text"))
-        assert not TransTxtParser.is_parsed_text_type((TransTxtParser.parsed_type_param, "paramName"))
+        assert not TransTxtParser.is_parsed_text_type((TransTxtParser.parsed_type_param,
+                                                       "paramName"))
         assert not TransTxtParser.is_parsed_text_type((TransTxtParser.parsed_type_special, "'"))
         assert not TransTxtParser.is_parsed_text_type(('notOne', ""))
 
@@ -316,7 +325,8 @@ class Test01TranslationTextParser:
         @brief Test is_parsed_special_type()
         """
         assert not TransTxtParser.is_parsed_special_type((TransTxtParser.parsed_type_text, "text"))
-        assert not TransTxtParser.is_parsed_special_type((TransTxtParser.parsed_type_param, "paramName"))
+        assert not TransTxtParser.is_parsed_special_type((TransTxtParser.parsed_type_param,
+                                                          "paramName"))
         assert TransTxtParser.is_parsed_special_type((TransTxtParser.parsed_type_special, "'"))
         assert not TransTxtParser.is_parsed_text_type(('notOne', ""))
 
@@ -324,9 +334,16 @@ class Test01TranslationTextParser:
         """!
         @brief Test get_parsed_str_data()
         """
-        assert TransTxtParser.get_parsed_str_data((TransTxtParser.parsed_type_text, "text")) == "text"
-        assert TransTxtParser.get_parsed_str_data((TransTxtParser.parsed_type_param, "paramName")) == "paramName"
-        assert TransTxtParser.get_parsed_str_data((TransTxtParser.parsed_type_special, "'")) == "'"
+        txt_entry = TransTxtParser.get_parsed_str_data((TransTxtParser.parsed_type_text, "text"))
+        assert txt_entry == "text"
+
+        parm_entry = TransTxtParser.get_parsed_str_data((TransTxtParser.parsed_type_param,
+                                                        "paramName"))
+        assert parm_entry == "paramName"
+
+        spcl_entry = TransTxtParser.get_parsed_str_data((TransTxtParser.parsed_type_special, "'"))
+        assert spcl_entry == "'"
+
         assert TransTxtParser.get_parsed_str_data(('notOne', "55")) == "55"
 
     def test25_assemble_test_return_string(self):
@@ -338,7 +355,8 @@ class Test01TranslationTextParser:
                      (TransTxtParser.parsed_type_param, 'paramName'),
                      (TransTxtParser.parsed_type_special, '"')]
         value_xlate_dict = {'paramName': ("xlateName", False)}
-        assert TransTxtParser.assemble_test_return_string(test_tuple, value_xlate_dict) == "Starting text \\\"xlateName\\\""
+        retstr = TransTxtParser.assemble_test_return_string(test_tuple, value_xlate_dict)
+        assert retstr == "Starting text \\\"xlateName\\\""
 
     def test26_assemble_test_return_string_error(self):
         """!
@@ -352,4 +370,5 @@ class Test01TranslationTextParser:
                      ]
         value_xlate_dict = {'paramName': ("xlateName", False)}
         with pytest.raises(TypeError):
-            assert TransTxtParser.assemble_test_return_string(test_tuple, value_xlate_dict) == "Starting text "
+            retstr = TransTxtParser.assemble_test_return_string(test_tuple, value_xlate_dict)
+            assert retstr == "Starting text "

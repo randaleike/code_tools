@@ -137,7 +137,7 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         if2_indent = if1_indent+"".rjust(self.level_tab_size, " ")
         first_check = True
         for lang_name in self.lang_json_data.get_language_list():
-            lang_code, _ = self.lang_json_data.get_language_lang_data(lang_name)
+            lang_code, _ = self.lang_json_data.get_language_data(lang_name)
             ifline = ""
             if first_check:
                 ifline += "if (matched && "
@@ -258,8 +258,8 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
 
         # Generate the tests
         for lang_name in self.lang_json_data.get_language_list():
-            lang_code, region_list = self.lang_json_data.get_language_lang_data(lang_name)
-            iso_code = self.lang_json_data.get_language_iso_code_data(lang_name)
+            lang_code, region_list = self.lang_json_data.get_language_data(lang_name)
+            iso_code = self.lang_json_data.get_iso_code_data(lang_name)
 
             for region in region_list:
                 # Generate test for each region of known language

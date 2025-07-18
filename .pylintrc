@@ -6,5 +6,5 @@ max-attributes=15
 max-args=12
 max-positional-arguments=12
 max-locals=20
-max-public-methods=22
+max-public-methods=60
 max-branches=25

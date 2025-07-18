@@ -237,19 +237,27 @@ class Test01CppFilehelper:
         typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list
         assert helper.declare_type('string', typemod) == "list"
 
-        typemod = (25 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ptr
+        typemod = 25 << ParamRetDict.type_mod_array_shift
+        typemod |= ParamRetDict.type_mod_undef
+        typemod |= ParamRetDict.type_mod_ptr
         assert helper.declare_type('string', typemod) == "list"
 
-        typemod = (7 << ParamRetDict.type_mod_array_shift) | ParamRetDict.type_mod_undef | ParamRetDict.type_mod_ref
+        typemod = 7 << ParamRetDict.type_mod_array_shift
+        typemod |= ParamRetDict.type_mod_undef
+        typemod |= ParamRetDict.type_mod_ref
         assert helper.declare_type('string', typemod) == "list"
 
         typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list
         assert helper.declare_type('string', typemod) == "list"
 
-        typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list | ParamRetDict.type_mod_ptr
+        typemod = ParamRetDict.type_mod_undef
+        typemod |= ParamRetDict.type_mod_list
+        typemod |= ParamRetDict.type_mod_ptr
         assert helper.declare_type('string', typemod) == "list"
 
-        typemod = ParamRetDict.type_mod_undef | ParamRetDict.type_mod_list | ParamRetDict.type_mod_ref
+        typemod = ParamRetDict.type_mod_undef
+        typemod |= ParamRetDict.type_mod_list
+        typemod |= ParamRetDict.type_mod_ref
         assert helper.declare_type('string', typemod) == "list"
 
     def test12_xlate_param_list(self):
@@ -257,26 +265,32 @@ class Test01CppFilehelper:
         @brief Test the xlate_params method
         """
         helper = GeneratePythonFileHelper()
-        gen_param_list = []
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("goo", "string", "mystr", ParamRetDict.type_mod_list))
+        exp = []
+        exp.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
+        exp.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                          "size",
+                                                          "mysize",
+                                                          ParamRetDict.type_mod_ptr))
+        exp.append(ParamRetDict.build_param_dict_with_mod("goo",
+                                                          "string",
+                                                          "mystr",
+                                                          ParamRetDict.type_mod_list))
 
-        xlate_list = helper.xlate_params(gen_param_list)
-        assert len(xlate_list) == len(gen_param_list)
-        assert ParamRetDict.get_param_name(xlate_list[0]) == ParamRetDict.get_param_name(gen_param_list[0])
+        xlate_list = helper.xlate_params(exp)
+        assert len(xlate_list) == len(exp)
+        assert ParamRetDict.get_param_name(xlate_list[0]) == ParamRetDict.get_param_name(exp[0])
         assert ParamRetDict.get_param_type(xlate_list[0]) == "int"
-        assert ParamRetDict.get_param_desc(xlate_list[0]) == ParamRetDict.get_param_desc(gen_param_list[0])
+        assert ParamRetDict.get_param_desc(xlate_list[0]) == ParamRetDict.get_param_desc(exp[0])
         assert ParamRetDict.get_param_type_mod(xlate_list[0]) == 0
 
-        assert ParamRetDict.get_param_name(xlate_list[1]) == ParamRetDict.get_param_name(gen_param_list[1])
+        assert ParamRetDict.get_param_name(xlate_list[1]) == ParamRetDict.get_param_name(exp[1])
         assert ParamRetDict.get_param_type(xlate_list[1]) == "int"
-        assert ParamRetDict.get_param_desc(xlate_list[1]) == ParamRetDict.get_param_desc(gen_param_list[1])
+        assert ParamRetDict.get_param_desc(xlate_list[1]) == ParamRetDict.get_param_desc(exp[1])
         assert ParamRetDict.get_param_type_mod(xlate_list[1]) == 0
 
-        assert ParamRetDict.get_param_name(xlate_list[2]) == ParamRetDict.get_param_name(gen_param_list[2])
+        assert ParamRetDict.get_param_name(xlate_list[2]) == ParamRetDict.get_param_name(exp[2])
         assert ParamRetDict.get_param_type(xlate_list[2]) == "list"
-        assert ParamRetDict.get_param_desc(xlate_list[2]) == ParamRetDict.get_param_desc(gen_param_list[2])
+        assert ParamRetDict.get_param_desc(xlate_list[2]) == ParamRetDict.get_param_desc(exp[2])
         assert ParamRetDict.get_param_type_mod(xlate_list[2]) == 0
 
     def test13_xlate_param_empty_list(self):
@@ -318,7 +332,10 @@ class Test01CppFilehelper:
         return_text = helper.gen_function_ret_type(gen_ret_dict)
         assert return_text == " -> int:"
 
-        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "myint", ParamRetDict.type_mod_list)
+        gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer",
+                                                               "myint",
+                                                               ParamRetDict.type_mod_list)
+
         return_text = helper.gen_function_ret_type(gen_ret_dict)
         assert return_text == " -> list:"
 
@@ -338,8 +355,14 @@ class Test01CppFilehelper:
         helper = GeneratePythonFileHelper()
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("goo", "string", "mystr", ParamRetDict.type_mod_list))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("goo",
+                                                                     "string",
+                                                                     "mystr",
+                                                                     ParamRetDict.type_mod_list))
 
         return_text = helper.gen_function_params(gen_param_list)
         assert return_text == "(foo:int, moo:int, goo:list)"
@@ -362,9 +385,15 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict)
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict)
         assert len(function_text) == 10
         assert function_text[0] == '    def my_test(foo:int, moo:int) -> int:\n'
         assert function_text[1] == '        """!\n'
@@ -386,9 +415,18 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict, 8, prefix_decaration='@staticmethod')
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 prefix_decaration='@staticmethod')
+
         assert len(function_text) == 11
         assert function_text[0] == '        @staticmethod\n'
         assert function_text[1] == '        def my_test(foo:int, moo:int) -> int:\n'
@@ -443,7 +481,10 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size", "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
         function_text = helper.declare_function_with_decorations("my_test",
                                                                  "My test function",
@@ -466,15 +507,18 @@ class Test01CppFilehelper:
 
     def test24_declare_function_with_pre_and_postfix_no_comment(self):
         """!
-        @brief Test the declare_function_with_decorations method, prefix, postfix decoration, no comment
+        @brief Test the declare_function_with_decorations method, prefix,
+               postfix decoration, no comment
         """
         helper = GeneratePythonFileHelper()
         gen_ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return int", 0)
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size",
-                                                                     "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
         function_text = helper.declare_function_with_decorations("my_test", "My test function",
                                                                  gen_param_list, gen_ret_dict,
@@ -493,12 +537,18 @@ class Test01CppFilehelper:
 
         gen_param_list = []
         gen_param_list.append(ParamRetDict.build_param_dict_with_mod("foo", "integer", "myint", 0))
-        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo", "size",
-                                                                     "mysize", ParamRetDict.type_mod_ptr))
+        gen_param_list.append(ParamRetDict.build_param_dict_with_mod("moo",
+                                                                     "size",
+                                                                     "mysize",
+                                                                     ParamRetDict.type_mod_ptr))
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function",
-                                                                 gen_param_list, gen_ret_dict,
-                                                                 8, True, "@staticmethod",
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 True,
+                                                                 "@staticmethod",
                                                                  ["return 15"])
         assert len(function_text) == 3
         assert function_text[0] == '        @staticmethod\n'
@@ -523,8 +573,13 @@ class Test01CppFilehelper:
                      "retvar.append(25)",
                      "return retvar"]
 
-        function_text = helper.declare_function_with_decorations("my_test", "My test function", gen_param_list, gen_ret_dict,
-                                                              8, True, inlinecode = inline_code)
+        function_text = helper.declare_function_with_decorations("my_test",
+                                                                 "My test function",
+                                                                 gen_param_list,
+                                                                 gen_ret_dict,
+                                                                 8,
+                                                                 True,
+                                                                 inlinecode = inline_code)
         assert len(function_text) == 5
         assert function_text[0] == '        def my_test(foo:int, moo:int) -> list:\n'
         assert function_text[1] == '            '+inline_code[0]+'\n'
@@ -549,18 +604,22 @@ class Test01CppFilehelper:
         header_text = helper.generate_generic_file_header("unittest", current_year, "Me")
         copyright_msg = "# Copyright (c) "+str(current_year)+" Me"
         assert len(header_text) == 27
-        assert header_text[0] == "#-------------------------------------------------------------------------------\n"
+        assert header_text[0] == "#----------------------------------------------------------" \
+                                 "---------------------\n"
         assert header_text[1] == copyright_msg+"\n"
         assert header_text[3] == "# MIT License\n"
         assert header_text[24] == "# This file was autogenerated by unittest do not edit\n"
-        assert header_text[26] == "#-------------------------------------------------------------------------------\n"
+        assert header_text[26] == "#----------------------------------------------------------" \
+                                  "---------------------\n"
 
         min_text = helper.generate_generic_file_header("unittest")
         assert len(min_text) == 4
-        assert min_text[0] == "#-------------------------------------------------------------------------------\n"
+        assert min_text[0] == "#---------------------------------------------------------------" \
+                              "----------------\n"
         assert min_text[1] == "# This file was autogenerated by unittest do not edit\n"
         assert min_text[2] == "# \n"
-        assert min_text[3] == "#-------------------------------------------------------------------------------\n"
+        assert min_text[3] == "#---------------------------------------------------------------" \
+                              "----------------\n"
 
     def test29gen_include(self):
         """!
@@ -579,7 +638,10 @@ class Test01CppFilehelper:
         @brief Test the gen_import_block method
         """
         helper = GeneratePythonFileHelper()
-        include_list = [("re", None), ("datetime", "datetime"), ("MyImportClass", "import_module_name")]
+        include_list = [("re", None),
+                        ("datetime", "datetime"),
+                        ("MyImportClass", "import_module_name")]
+
         include_text = helper.gen_import_block(include_list)
         assert len(include_text) == len(include_list) + 1
         assert include_text[0] == "// Imports\n"
@@ -655,7 +717,12 @@ class Test01CppFilehelper:
         """
         helper = GeneratePythonFileHelper()
 
-        test_text = helper.gen_class_open("MyTestClassName", "My class description", "MyBaseClass", "final", 2)
+        test_text = helper.gen_class_open("MyTestClassName",
+                                          "My class description",
+                                          "MyBaseClass",
+                                          "final",
+                                           2)
+
         assert len(test_text) == 5
         assert test_text[0] == "  @final\n"
         assert test_text[1] == "  class MyTestClassName(MyBaseClass):\n"
@@ -699,7 +766,8 @@ class Test01CppFilehelper:
         """
         helper = GeneratePythonFileHelper()
 
-        test_text = helper.gen_class_default_constructor("MyTestClassName", no_doxy_comment_constructor=True)
+        test_text = helper.gen_class_default_constructor("MyTestClassName",
+                                                         no_doxy_comment_constructor=True)
         assert len(test_text) == 3
         assert test_text[0] == "    def __init__():\n"
         assert test_text[1] == '        ## @todo Implement code\n'
@@ -794,7 +862,10 @@ class Test01CppFilehelper:
         helper = GeneratePythonFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict)
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list,
+                                                            ret_dict)
         assert len(test_text) == 8
         assert test_text[0] == 'def MyDefineFunc(foo:int) -> int:\n'
         assert test_text[1] == '    """!\n'
@@ -812,7 +883,12 @@ class Test01CppFilehelper:
         helper = GeneratePythonFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict, False, "@static")
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list,
+                                                            ret_dict,
+                                                            False,
+                                                            "@static")
         assert len(test_text) == 9
         assert test_text[0] == '@static\n'
         assert test_text[1] == 'def MyDefineFunc(foo:int) -> int:\n'
@@ -831,7 +907,10 @@ class Test01CppFilehelper:
         helper = GeneratePythonFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict)
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list,
+                                                            ret_dict)
         assert len(test_text) == 8
         assert test_text[0] == 'def MyDefineFunc(foo:int) -> int:\n'
         assert test_text[1] == '    """!\n'
@@ -870,7 +949,11 @@ class Test01CppFilehelper:
         helper = GeneratePythonFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
         param_list = [ParamRetDict.build_param_dict_with_mod("foo", "unsigned", "Foo input", 0)]
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", param_list, ret_dict, True)
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            param_list,
+                                                            ret_dict,
+                                                            True)
         assert len(test_text) == 1
         assert test_text[0] == 'def MyDefineFunc(foo:int) -> int:\n'
 
@@ -880,7 +963,11 @@ class Test01CppFilehelper:
         """
         helper = GeneratePythonFileHelper()
         ret_dict = ParamRetDict.build_return_dict_with_mod("integer", "return value", 0)
-        test_text = helper.define_function_with_decorations("MyDefineFunc", "Brief description", [], ret_dict, True)
+        test_text = helper.define_function_with_decorations("MyDefineFunc",
+                                                            "Brief description",
+                                                            [],
+                                                            ret_dict,
+                                                            True)
         assert len(test_text) == 1
         assert test_text[0] == 'def MyDefineFunc() -> int:\n'
 

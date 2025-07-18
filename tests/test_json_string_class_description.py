@@ -37,6 +37,7 @@ from tests.dir_init import TESTFILEPATH
 
 # pylint: disable=protected-access
 
+# pylint: disable=too-few-public-methods
 class MockTranslator():
     """!
     Mock Translator class for testing
@@ -51,6 +52,7 @@ class MockTranslator():
         @return string - Mock translated text
         """
         return source_lang+"->"+target_lang+":"+text
+# pylint: enable=too-few-public-methods
 
 class Test02StringClassDescription:
     """!
@@ -383,7 +385,7 @@ class Test02StringClassDescription:
         assert len(function_dict['params']) == len(testparams)
         for index, parm_dict in enumerate(testparams):
             assert isinstance(function_dict['params'][index], dict)
-            for paramfield in list(testparams[index]):
+            for paramfield in list(parm_dict):
                 assert len(function_dict['params'][index]) == len(parm_dict)
                 assert function_dict['params'][index][paramfield] == parm_dict[paramfield]
 
@@ -437,6 +439,7 @@ class Test02StringClassDescription:
         assert trans_string_list[1][0] == TransTxtParser.parsed_type_param
         assert trans_string_list[1][1] == "nargs"
 
+    # pylint: disable=too-many-statements
     def test37_update(self):
         """!
         @brief Test update()
@@ -526,6 +529,7 @@ class Test02StringClassDescription:
         assert tst_tm_dict['translateDesc']['en'][1][1] == "units"
 
         os.remove("temp.json")
+    # pylint: enable=too-many-statements
 
     def test38_update_tranlations(self):
         """!

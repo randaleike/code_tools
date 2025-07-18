@@ -143,7 +143,7 @@ class TestClass01StaticLangSelect:
         list_index = len(expected_list) + 1
         first = True
         for index, lang_name in enumerate(lang_list.get_language_list()):
-            switch = lang_list.get_language_compile_switch_data(lang_name)
+            switch = lang_list.get_compile_switch_data(lang_name)
             if first:
                 if_line = "#if "
                 first = False
@@ -208,8 +208,8 @@ class TestClass01StaticLangSelect:
         # Match each test function
         text_index = 7
         for lang_name in lang_list.get_language_list():
-            iso_code = lang_list.get_language_iso_code_data(lang_name)
-            switch = lang_list.get_language_compile_switch_data(lang_name)
+            iso_code = lang_list.get_iso_code_data(lang_name)
+            switch = lang_list.get_compile_switch_data(lang_name)
 
             # Match language
             expected_body = ["#if defined("+switch+")\n"]
