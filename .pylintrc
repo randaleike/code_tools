@@ -1,5 +1,6 @@
 [MASTER]
 init-hook="import sys; sys.path.append('./src')"
+ignore-paths=^tests/test_data/.*$
 
 [DESIGN]
 max-attributes=15
