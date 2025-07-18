@@ -622,7 +622,7 @@ class Test03StringClassDescriptionMacroMethods:
             for index, transdesc in enumerate(trans_desc_list):
                 assert ten[index] == transdesc
 
-    def test07_get_property_return_data(self):
+    def test07_get_property_return_data(self, capsys):
         """!
         @brief Test _get_property_return_data()
         """
@@ -645,6 +645,13 @@ class Test03StringClassDescriptionMacroMethods:
                 assert rtype == ertype
                 assert desc == erdesc
                 assert lst == eislst
+
+        prompt = "Select language property, from options:\n"
+        prompt += "    0: LANG, 1: LANG_regions, 2: LANGID, 3: LANGID_regions, "
+        prompt += "4: isoCode, 5: compileSwitch\n"
+        expected = prompt+prompt+prompt+prompt+prompt+prompt
+        output = capsys.readouterr()
+        assert output.out == expected
 
     def test08_get_property_return_data_bad_input(self):
         """!

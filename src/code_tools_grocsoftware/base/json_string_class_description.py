@@ -265,9 +265,6 @@ class StringClassDescription():
             print ("Create translator")
             self.trans_client = Translator()
 
-        print ("source: "+source_lang)
-        print ("target: "+target_lang)
-        print ("text: "+text)
         transtext = self.trans_client.translate_text(source_lang,
                                                      target_lang,
                                                      text)
