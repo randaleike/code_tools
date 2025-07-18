@@ -77,7 +77,6 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">python_gen.file_gen_base.GeneratePythonFileHelper Class Reference</div></div>
 </div><!--header-->
@@ -85,32 +84,75 @@ $(function() {
 
 <p>File generation helper class.  
  <a href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#details">More...</a></p>
-<div class="dynheader">
-Inheritance diagram for python_gen.file_gen_base.GeneratePythonFileHelper:</div>
-<div class="dyncontent">
-<div class="center"><img src="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper__inherit__graph.png" border="0" usemap="#apython__gen_8file__gen__base_8GeneratePythonFileHelper_inherit__map" alt="Inheritance graph"/></div>
-<map name="apython__gen_8file__gen__base_8GeneratePythonFileHelper_inherit__map" id="apython__gen_8file__gen__base_8GeneratePythonFileHelper_inherit__map">
-<area shape="rect" title="File generation helper class." alt="" coords="5,79,240,119"/>
-<area shape="rect" title=" " alt="" coords="91,5,154,31"/>
-<area shape="poly" title=" " alt="" coords="125,44,125,79,120,79,120,44"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for python_gen.file_gen_base.GeneratePythonFileHelper:</div>
-<div class="dyncontent">
-<div class="center"><img src="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper__coll__graph.png" border="0" usemap="#apython__gen_8file__gen__base_8GeneratePythonFileHelper_coll__map" alt="Collaboration graph"/></div>
-<map name="apython__gen_8file__gen__base_8GeneratePythonFileHelper_coll__map" id="apython__gen_8file__gen__base_8GeneratePythonFileHelper_coll__map">
-<area shape="rect" title="File generation helper class." alt="" coords="5,79,240,119"/>
-<area shape="rect" title=" " alt="" coords="91,5,154,31"/>
-<area shape="poly" title=" " alt="" coords="125,44,125,79,120,79,120,44"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a575dc1bdc1de8717f2b3ca4768580bdc" id="r_a575dc1bdc1de8717f2b3ca4768580bdc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a575dc1bdc1de8717f2b3ca4768580bdc">__init__</a> (self, str|None eula_name=None)</td></tr>
-<tr class="memdesc:a575dc1bdc1de8717f2b3ca4768580bdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">GenerateFileHelper constructor.  <br /></td></tr>
-<tr class="separator:a575dc1bdc1de8717f2b3ca4768580bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adae4ef0fcce6291e392bb6feb3d07639" id="r_adae4ef0fcce6291e392bb6feb3d07639"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#adae4ef0fcce6291e392bb6feb3d07639">__init__</a> (self, str eula_name=None)</td></tr>
+<tr class="memdesc:adae4ef0fcce6291e392bb6feb3d07639"><td class="mdescLeft">&#160;</td><td class="mdescRight">GenerateFileHelper constructor.  <br /></td></tr>
+<tr class="separator:adae4ef0fcce6291e392bb6feb3d07639"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8be6e9bb596efd832219668048d0046" id="r_ad8be6e9bb596efd832219668048d0046"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#ad8be6e9bb596efd832219668048d0046">declare_type</a> (self, str base_type, int type_mod=0)</td></tr>
+<tr class="memdesc:ad8be6e9bb596efd832219668048d0046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the type text based on the input type name and type modification data.  <br /></td></tr>
+<tr class="separator:ad8be6e9bb596efd832219668048d0046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8939e886d22e90f123280e37dfca2657" id="r_a8939e886d22e90f123280e37dfca2657"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a8939e886d22e90f123280e37dfca2657">xlate_params</a> (self, list param_dict_list)</td></tr>
+<tr class="memdesc:a8939e886d22e90f123280e37dfca2657"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translate the generic parameter list type strings to the python specific parameter type strings.  <br /></td></tr>
+<tr class="separator:a8939e886d22e90f123280e37dfca2657"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeba4657db16db0b6a936c35ed05b0f2d" id="r_aeba4657db16db0b6a936c35ed05b0f2d"><td class="memItemLeft" align="right" valign="top">dict&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#aeba4657db16db0b6a936c35ed05b0f2d">xlate_return_dict</a> (self, dict ret_dict)</td></tr>
+<tr class="memdesc:aeba4657db16db0b6a936c35ed05b0f2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translate the generic return dictionary to the python specific return dictionary.  <br /></td></tr>
+<tr class="separator:aeba4657db16db0b6a936c35ed05b0f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fa9c4c56c1b64d913c764077242d4f9" id="r_a6fa9c4c56c1b64d913c764077242d4f9"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a6fa9c4c56c1b64d913c764077242d4f9">gen_function_ret_type</a> (self, dict return_dict)</td></tr>
+<tr class="memdesc:a6fa9c4c56c1b64d913c764077242d4f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the function return+name string.  <br /></td></tr>
+<tr class="separator:a6fa9c4c56c1b64d913c764077242d4f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a506ba898a2c9df28caad4417c09a1f6f" id="r_a506ba898a2c9df28caad4417c09a1f6f"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a506ba898a2c9df28caad4417c09a1f6f">gen_function_params</a> (self, list param_dict_list)</td></tr>
+<tr class="memdesc:a506ba898a2c9df28caad4417c09a1f6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the parameter method string.  <br /></td></tr>
+<tr class="separator:a506ba898a2c9df28caad4417c09a1f6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bb74571eecb1e05496ef2858558284c" id="r_a5bb74571eecb1e05496ef2858558284c"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a5bb74571eecb1e05496ef2858558284c">declare_function_with_decorations</a> (self, str name, str briefdesc, list param_dict_list, dict ret_dict=None, int indent=4, bool no_doxygen=False, str prefix_decaration=None, list inlinecode=None, str long_desc=None)</td></tr>
+<tr class="memdesc:a5bb74571eecb1e05496ef2858558284c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a function declatation text block with doxygen comment.  <br /></td></tr>
+<tr class="separator:a5bb74571eecb1e05496ef2858558284c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa23fcfda040e06ebc6ffdf451e1b951" id="r_afa23fcfda040e06ebc6ffdf451e1b951"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#afa23fcfda040e06ebc6ffdf451e1b951">define_function_with_decorations</a> (self, str name, str briefdesc, list param_dict_list, dict ret_dict, bool no_doxygen=False, str prefix_decaration=None, list long_desc=None)</td></tr>
+<tr class="memdesc:afa23fcfda040e06ebc6ffdf451e1b951"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a function definition start with doxygen comment.  <br /></td></tr>
+<tr class="separator:afa23fcfda040e06ebc6ffdf451e1b951"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72710942252076b5c34f9707d33ae582" id="r_a72710942252076b5c34f9707d33ae582"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a72710942252076b5c34f9707d33ae582">end_function</a> (self, str name)</td></tr>
+<tr class="memdesc:a72710942252076b5c34f9707d33ae582"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the function declaration string for the given name.  <br /></td></tr>
+<tr class="separator:a72710942252076b5c34f9707d33ae582"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf9fc0065b3726476102c497425cbad0" id="r_abf9fc0065b3726476102c497425cbad0"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#abf9fc0065b3726476102c497425cbad0">generate_generic_file_header</a> (self, str autotoolname, int start_year=2025, str owner=None)</td></tr>
+<tr class="memdesc:abf9fc0065b3726476102c497425cbad0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the boiler plate file header with copyright and eula.  <br /></td></tr>
+<tr class="separator:abf9fc0065b3726476102c497425cbad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28bfc444729a6bc8f858acd5df0051e4" id="r_a28bfc444729a6bc8f858acd5df0051e4"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a28bfc444729a6bc8f858acd5df0051e4">gen_import</a> (self, str class_name, str module_name=None)</td></tr>
+<tr class="memdesc:a28bfc444729a6bc8f858acd5df0051e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add Include line to the output file.  <br /></td></tr>
+<tr class="separator:a28bfc444729a6bc8f858acd5df0051e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43d3ccbf786422bfb8f3216736a9943d" id="r_a43d3ccbf786422bfb8f3216736a9943d"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a43d3ccbf786422bfb8f3216736a9943d">gen_import_block</a> (self, list include_names)</td></tr>
+<tr class="memdesc:a43d3ccbf786422bfb8f3216736a9943d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a series if include line(s) for each name in the list.  <br /></td></tr>
+<tr class="separator:a43d3ccbf786422bfb8f3216736a9943d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a3aac7ab1750996e3fcb6fc755fe51c" id="r_a2a3aac7ab1750996e3fcb6fc755fe51c"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a2a3aac7ab1750996e3fcb6fc755fe51c">gen_namespace_open</a> (self, str _)</td></tr>
+<tr class="memdesc:a2a3aac7ab1750996e3fcb6fc755fe51c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate namespace start code for include file.  <br /></td></tr>
+<tr class="separator:a2a3aac7ab1750996e3fcb6fc755fe51c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3a8c2c01dc7bf3a84179628879bab8f" id="r_ae3a8c2c01dc7bf3a84179628879bab8f"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#ae3a8c2c01dc7bf3a84179628879bab8f">gen_namespace_close</a> (self, str _)</td></tr>
+<tr class="memdesc:ae3a8c2c01dc7bf3a84179628879bab8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate namespace start code for include file.  <br /></td></tr>
+<tr class="separator:ae3a8c2c01dc7bf3a84179628879bab8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e703a55ff380beb81593e060cf6f6d6" id="r_a2e703a55ff380beb81593e060cf6f6d6"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a2e703a55ff380beb81593e060cf6f6d6">gen_using_namespace</a> (self, str _)</td></tr>
+<tr class="memdesc:a2e703a55ff380beb81593e060cf6f6d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate namespace start code for include file.  <br /></td></tr>
+<tr class="separator:a2e703a55ff380beb81593e060cf6f6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f823ba658b3e94bc87571ffc9396abf" id="r_a4f823ba658b3e94bc87571ffc9396abf"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a4f823ba658b3e94bc87571ffc9396abf">gen_class_open</a> (self, str class_name, str class_desc=None, str inheritence=None, str class_decoration=None, int indent=0)</td></tr>
+<tr class="memdesc:a4f823ba658b3e94bc87571ffc9396abf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the class open code.  <br /></td></tr>
+<tr class="separator:a4f823ba658b3e94bc87571ffc9396abf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab162ad5d722b07e0f884871ca43f8c38" id="r_ab162ad5d722b07e0f884871ca43f8c38"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#ab162ad5d722b07e0f884871ca43f8c38">gen_class_close</a> (self, str class_name, int indent=0)</td></tr>
+<tr class="memdesc:ab162ad5d722b07e0f884871ca43f8c38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the class close code.  <br /></td></tr>
+<tr class="separator:ab162ad5d722b07e0f884871ca43f8c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f61e4e7033a49617bb820580ddb1510" id="r_a4f61e4e7033a49617bb820580ddb1510"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a4f61e4e7033a49617bb820580ddb1510">gen_class_default_constructor</a> (self, str class_name, int indent=4, list param_list=None, list constructor_code=None, bool no_doxy_comment_constructor=False)</td></tr>
+<tr class="memdesc:a4f61e4e7033a49617bb820580ddb1510"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate default constructor(s)/destructor declarations for a class.  <br /></td></tr>
+<tr class="separator:a4f61e4e7033a49617bb820580ddb1510"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af35fd84251abefed700c132b57e544e4" id="r_af35fd84251abefed700c132b57e544e4"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#af35fd84251abefed700c132b57e544e4">declare_structure</a> (self, str name, list var_dist_list, int indent=0, str struct_desc=None)</td></tr>
+<tr class="memdesc:af35fd84251abefed700c132b57e544e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a structure declaration.  <br /></td></tr>
+<tr class="separator:af35fd84251abefed700c132b57e544e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a08dad854e31079c03292588e026dbd" id="r_a8a08dad854e31079c03292588e026dbd"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a8a08dad854e31079c03292588e026dbd">declare_var_statment</a> (self, dict var_dict, int doxy_comment_indent=-1)</td></tr>
+<tr class="memdesc:a8a08dad854e31079c03292588e026dbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a class/interface variable.  <br /></td></tr>
+<tr class="separator:a8a08dad854e31079c03292588e026dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae39b6ae816db07538d3b552a33c28dd0" id="r_ae39b6ae816db07538d3b552a33c28dd0"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#ae39b6ae816db07538d3b552a33c28dd0">gen_add_list_statment</a> (self, str list_name, str value_name, bool is_text=False)</td></tr>
+<tr class="memdesc:ae39b6ae816db07538d3b552a33c28dd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a list add code statement.  <br /></td></tr>
+<tr class="separator:ae39b6ae816db07538d3b552a33c28dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c5fea95b1088e8bccae2a2787093c1f" id="r_a6c5fea95b1088e8bccae2a2787093c1f"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a6c5fea95b1088e8bccae2a2787093c1f">gen_return_statment</a> (self, str ret_value, bool is_text=False)</td></tr>
+<tr class="memdesc:a6c5fea95b1088e8bccae2a2787093c1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a list add code statement.  <br /></td></tr>
+<tr class="separator:a6c5fea95b1088e8bccae2a2787093c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -138,79 +180,13 @@ Public Attributes</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>type_xlation_dict</b></td></tr>
 <tr class="memdesc:a59713e3063e17bb87a9b09805a051b39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translation dictionary from generic data types to CPP specific data types. <br /></td></tr>
 <tr class="separator:a59713e3063e17bb87a9b09805a051b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a6f544e03029cb9d942cae7576b61a1a2" id="r_a6f544e03029cb9d942cae7576b61a1a2"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a6f544e03029cb9d942cae7576b61a1a2">_declare_type</a> (self, str base_type, int type_mod=0)</td></tr>
-<tr class="memdesc:a6f544e03029cb9d942cae7576b61a1a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the type text based on the input type name and type modification data.  <br /></td></tr>
-<tr class="separator:a6f544e03029cb9d942cae7576b61a1a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94ffbf56f0771ca306909ef451e4a999" id="r_a94ffbf56f0771ca306909ef451e4a999"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a94ffbf56f0771ca306909ef451e4a999">_xlate_params</a> (self, list param_dict_list)</td></tr>
-<tr class="memdesc:a94ffbf56f0771ca306909ef451e4a999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translate the generic parameter list type strings to the python specific parameter type strings.  <br /></td></tr>
-<tr class="separator:a94ffbf56f0771ca306909ef451e4a999"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a832b4c5d630fe87b1b42faaafd9292cc" id="r_a832b4c5d630fe87b1b42faaafd9292cc"><td class="memItemLeft" align="right" valign="top">dict|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a832b4c5d630fe87b1b42faaafd9292cc">_xlate_return_dict</a> (self, dict|None ret_dict)</td></tr>
-<tr class="memdesc:a832b4c5d630fe87b1b42faaafd9292cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translate the generic return dictionary to the python specific return dictionary.  <br /></td></tr>
-<tr class="separator:a832b4c5d630fe87b1b42faaafd9292cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ac92536945c71a6a76dd36cdf2ce9ee" id="r_a0ac92536945c71a6a76dd36cdf2ce9ee"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a0ac92536945c71a6a76dd36cdf2ce9ee">_gen_function_ret_type</a> (self, dict|None return_dict)</td></tr>
-<tr class="memdesc:a0ac92536945c71a6a76dd36cdf2ce9ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the function return+name string.  <br /></td></tr>
-<tr class="separator:a0ac92536945c71a6a76dd36cdf2ce9ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a002ff668968d3e21c38cd05856f8f70d" id="r_a002ff668968d3e21c38cd05856f8f70d"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a002ff668968d3e21c38cd05856f8f70d">_gen_function_params</a> (self, list param_dict_list)</td></tr>
-<tr class="memdesc:a002ff668968d3e21c38cd05856f8f70d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the parameter method string.  <br /></td></tr>
-<tr class="separator:a002ff668968d3e21c38cd05856f8f70d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac658630ab799188411d6946516f46139" id="r_ac658630ab799188411d6946516f46139"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#ac658630ab799188411d6946516f46139">_declare_function_with_decorations</a> (self, str name, str briefdesc, list param_dict_list, dict|None ret_dict=None, int indent=4, bool no_doxygen=False, str|None prefix_decaration=None, str|None postfix_decaration=None, list|None inlinecode=None, str|None long_desc=None)</td></tr>
-<tr class="memdesc:ac658630ab799188411d6946516f46139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a function declatation text block with doxygen comment.  <br /></td></tr>
-<tr class="separator:ac658630ab799188411d6946516f46139"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b6944d96c0f0cabb17a82946b3fc64d" id="r_a6b6944d96c0f0cabb17a82946b3fc64d"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a6b6944d96c0f0cabb17a82946b3fc64d">_define_function_with_decorations</a> (self, str name, str briefdesc, list param_dict_list, dict ret_dict, bool no_doxygen=False, str|None prefix_decaration=None, str|None postfix_decaration=None, list|None long_desc=None)</td></tr>
-<tr class="memdesc:a6b6944d96c0f0cabb17a82946b3fc64d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a function definition start with doxygen comment.  <br /></td></tr>
-<tr class="separator:a6b6944d96c0f0cabb17a82946b3fc64d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53e4bda81af049cf05534dea1b013a99" id="r_a53e4bda81af049cf05534dea1b013a99"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a53e4bda81af049cf05534dea1b013a99">_end_function</a> (self, str name)</td></tr>
-<tr class="memdesc:a53e4bda81af049cf05534dea1b013a99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the function declaration string for the given name.  <br /></td></tr>
-<tr class="separator:a53e4bda81af049cf05534dea1b013a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34adcd031a1a0f6d4cd99951299e0db4" id="r_a34adcd031a1a0f6d4cd99951299e0db4"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a34adcd031a1a0f6d4cd99951299e0db4">_generate_generic_file_header</a> (self, str autotoolname, int start_year=2025, str|None owner=None)</td></tr>
-<tr class="memdesc:a34adcd031a1a0f6d4cd99951299e0db4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the boiler plate file header with copyright and eula.  <br /></td></tr>
-<tr class="separator:a34adcd031a1a0f6d4cd99951299e0db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfb301a61b10a7a2c51e864f33485010" id="r_abfb301a61b10a7a2c51e864f33485010"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#abfb301a61b10a7a2c51e864f33485010">_gen_import</a> (self, str class_name, str module_name=None)</td></tr>
-<tr class="memdesc:abfb301a61b10a7a2c51e864f33485010"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add Include line to the output file.  <br /></td></tr>
-<tr class="separator:abfb301a61b10a7a2c51e864f33485010"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abece1d9a583954bb403b113e1c0e393f" id="r_abece1d9a583954bb403b113e1c0e393f"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#abece1d9a583954bb403b113e1c0e393f">_gen_importBlock</a> (self, list include_names)</td></tr>
-<tr class="memdesc:abece1d9a583954bb403b113e1c0e393f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a series if include line(s) for each name in the list.  <br /></td></tr>
-<tr class="separator:abece1d9a583954bb403b113e1c0e393f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac65c65bd99cc70dcd1c4a776d4f47d8c" id="r_ac65c65bd99cc70dcd1c4a776d4f47d8c"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#ac65c65bd99cc70dcd1c4a776d4f47d8c">_gen_namespace_open</a> (self, str namespace_name)</td></tr>
-<tr class="memdesc:ac65c65bd99cc70dcd1c4a776d4f47d8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate namespace start code for include file.  <br /></td></tr>
-<tr class="separator:ac65c65bd99cc70dcd1c4a776d4f47d8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f510ebff64f7c628b2c0b425ce6ef38" id="r_a7f510ebff64f7c628b2c0b425ce6ef38"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a7f510ebff64f7c628b2c0b425ce6ef38">_gen_namespace_close</a> (self, str namespace_name)</td></tr>
-<tr class="memdesc:a7f510ebff64f7c628b2c0b425ce6ef38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate namespace start code for include file.  <br /></td></tr>
-<tr class="separator:a7f510ebff64f7c628b2c0b425ce6ef38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaaff6b36dce4f29c89442ed40efdb269" id="r_aaaff6b36dce4f29c89442ed40efdb269"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#aaaff6b36dce4f29c89442ed40efdb269">_gen_using_namespace</a> (self, str namespace_name)</td></tr>
-<tr class="memdesc:aaaff6b36dce4f29c89442ed40efdb269"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate namespace start code for include file.  <br /></td></tr>
-<tr class="separator:aaaff6b36dce4f29c89442ed40efdb269"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48038bc520885c3439860c3e10b22a60" id="r_a48038bc520885c3439860c3e10b22a60"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a48038bc520885c3439860c3e10b22a60">_gen_class_open</a> (self, str class_name, str|None class_desc=None, str|None inheritence=None, str|None class_decoration=None, int indent=0)</td></tr>
-<tr class="memdesc:a48038bc520885c3439860c3e10b22a60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the class open code.  <br /></td></tr>
-<tr class="separator:a48038bc520885c3439860c3e10b22a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef8e93ec4c2cc13da98124c77fc1a491" id="r_aef8e93ec4c2cc13da98124c77fc1a491"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#aef8e93ec4c2cc13da98124c77fc1a491">_gen_class_close</a> (self, str class_name, int indent=0)</td></tr>
-<tr class="memdesc:aef8e93ec4c2cc13da98124c77fc1a491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the class close code.  <br /></td></tr>
-<tr class="separator:aef8e93ec4c2cc13da98124c77fc1a491"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcdae9f92f251a0bc7145e6e94510263" id="r_adcdae9f92f251a0bc7145e6e94510263"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#adcdae9f92f251a0bc7145e6e94510263">_gen_class_default_constructor</a> (self, str class_name, int indent=4, list param_list=[], list constructor_code=[], bool no_doxy_comment_constructor=False)</td></tr>
-<tr class="memdesc:adcdae9f92f251a0bc7145e6e94510263"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate default constructor(s)/destructor declarations for a class.  <br /></td></tr>
-<tr class="separator:adcdae9f92f251a0bc7145e6e94510263"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59c189438df9b44137d1e7c0292fb898" id="r_a59c189438df9b44137d1e7c0292fb898"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a59c189438df9b44137d1e7c0292fb898">_declare_structure</a> (self, str name, list var_dist_list, int indent=0, str|None struct_desc=None)</td></tr>
-<tr class="memdesc:a59c189438df9b44137d1e7c0292fb898"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a structure declaration.  <br /></td></tr>
-<tr class="separator:a59c189438df9b44137d1e7c0292fb898"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c9e223cbcb47fea72dd79ccad99fed4" id="r_a9c9e223cbcb47fea72dd79ccad99fed4"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a9c9e223cbcb47fea72dd79ccad99fed4">_declare_var_statment</a> (self, dict var_dict, int doxy_comment_indent=-1)</td></tr>
-<tr class="memdesc:a9c9e223cbcb47fea72dd79ccad99fed4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a class/interface variable.  <br /></td></tr>
-<tr class="separator:a9c9e223cbcb47fea72dd79ccad99fed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a029946e223b846072de1ba2ee764e1be" id="r_a029946e223b846072de1ba2ee764e1be"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a029946e223b846072de1ba2ee764e1be">_gen_add_list_statment</a> (self, str list_name, str value_name, bool is_text=False)</td></tr>
-<tr class="memdesc:a029946e223b846072de1ba2ee764e1be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a list add code statement.  <br /></td></tr>
-<tr class="separator:a029946e223b846072de1ba2ee764e1be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60402223ef2de0c3704172dc278bb920" id="r_a60402223ef2de0c3704172dc278bb920"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpython__gen_1_1file__gen__base_1_1GeneratePythonFileHelper.html#a60402223ef2de0c3704172dc278bb920">_gen_return_statment</a> (self, str ret_value, bool is_text=False)</td></tr>
-<tr class="memdesc:a60402223ef2de0c3704172dc278bb920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a list add code statement.  <br /></td></tr>
-<tr class="separator:a60402223ef2de0c3704172dc278bb920"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>File generation helper class. </p>
 <p>This class implements boiler plate data and helper functions used by the parent file specific generation class to generate the file </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a575dc1bdc1de8717f2b3ca4768580bdc" name="a575dc1bdc1de8717f2b3ca4768580bdc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a575dc1bdc1de8717f2b3ca4768580bdc">&#9670;&#160;</a></span>__init__()</h2>
+<a id="adae4ef0fcce6291e392bb6feb3d07639" name="adae4ef0fcce6291e392bb6feb3d07639"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adae4ef0fcce6291e392bb6feb3d07639">&#9670;&#160;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -224,7 +200,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>eula_name</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
@@ -246,17 +222,14 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac658630ab799188411d6946516f46139" name="ac658630ab799188411d6946516f46139"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac658630ab799188411d6946516f46139">&#9670;&#160;</a></span>_declare_function_with_decorations()</h2>
+<a id="a5bb74571eecb1e05496ef2858558284c" name="a5bb74571eecb1e05496ef2858558284c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bb74571eecb1e05496ef2858558284c">&#9670;&#160;</a></span>declare_function_with_decorations()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper._declare_function_with_decorations </td>
+          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper.declare_function_with_decorations </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -282,7 +255,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">dict|None &#160;</td>
+          <td class="paramtype">dict &#160;</td>
           <td class="paramname"><em>ret_dict</em> = <code>None</code>, </td>
         </tr>
         <tr>
@@ -300,25 +273,19 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>prefix_decaration</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
-          <td class="paramname"><em>postfix_decaration</em> = <code>None</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">list|None &#160;</td>
+          <td class="paramtype">list &#160;</td>
           <td class="paramname"><em>inlinecode</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>long_desc</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
@@ -327,11 +294,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate a function declatation text block with doxygen comment. </p>
@@ -343,8 +305,8 @@ Protected Member Functions</h2></td></tr>
     <tr><td class="paramname">ret_dict</td><td>{dictionary or None} - Return parameter data or None </td></tr>
     <tr><td class="paramname">indent</td><td>{integer} Comment and function declaration indentation </td></tr>
     <tr><td class="paramname">no_doxygen</td><td>{boolean} True skip doxygen comment generation, False generate doxygen comment block </td></tr>
-    <tr><td class="paramname">prefix_decaration</td><td>{string} Valid C/C++ declaration prefix decoration, i.e "virtual" </td></tr>
-    <tr><td class="paramname">postfix_decaration</td><td>{string} Valid C/C++ declaration postfix decoration, i.e "const" | "override" ... </td></tr>
+    <tr><td class="paramname">prefix_decaration</td><td>{string} Valid python declaration prefix decoration, i.e "virtual" </td></tr>
+    <tr><td class="paramname">postfix_decaration</td><td>{string} Valid python declaration postfix decoration, i.e "const" | "override" ... </td></tr>
     <tr><td class="paramname">inlinecode</td><td>{sting list or None} Inline code for the declaration or None id there is no inline definition </td></tr>
     <tr><td class="paramname">long_desc</td><td>{string or None} Long description of the function</td></tr>
   </table>
@@ -354,17 +316,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a59c189438df9b44137d1e7c0292fb898" name="a59c189438df9b44137d1e7c0292fb898"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59c189438df9b44137d1e7c0292fb898">&#9670;&#160;</a></span>_declare_structure()</h2>
+<a id="af35fd84251abefed700c132b57e544e4" name="af35fd84251abefed700c132b57e544e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af35fd84251abefed700c132b57e544e4">&#9670;&#160;</a></span>declare_structure()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper._declare_structure </td>
+          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper.declare_structure </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -390,7 +349,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>struct_desc</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
@@ -399,11 +358,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate a structure declaration. </p>
@@ -412,7 +366,7 @@ Protected Member Functions</h2></td></tr>
     <tr><td class="paramname">name</td><td>{string} Name of the structure </td></tr>
     <tr><td class="paramname">var_dist_list</td><td>{list} List of ParamRetDict parameter dictionaries for the data elements </td></tr>
     <tr><td class="paramname">indent</td><td>{integer} Number of spaces to indent the code declarations, default = 0 </td></tr>
-    <tr><td class="paramname">struct_desc</td><td>{string|None} Doxygen structure description</td></tr>
+    <tr><td class="paramname">struct_desc</td><td>{string} Doxygen structure description</td></tr>
   </table>
   </dd>
 </dl>
@@ -420,17 +374,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6f544e03029cb9d942cae7576b61a1a2" name="a6f544e03029cb9d942cae7576b61a1a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f544e03029cb9d942cae7576b61a1a2">&#9670;&#160;</a></span>_declare_type()</h2>
+<a id="ad8be6e9bb596efd832219668048d0046" name="ad8be6e9bb596efd832219668048d0046"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8be6e9bb596efd832219668048d0046">&#9670;&#160;</a></span>declare_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper._declare_type </td>
+          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper.declare_type </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -453,11 +404,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate the type text based on the input type name and type modification data. </p>
@@ -472,17 +418,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9c9e223cbcb47fea72dd79ccad99fed4" name="a9c9e223cbcb47fea72dd79ccad99fed4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c9e223cbcb47fea72dd79ccad99fed4">&#9670;&#160;</a></span>_declare_var_statment()</h2>
+<a id="a8a08dad854e31079c03292588e026dbd" name="a8a08dad854e31079c03292588e026dbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a08dad854e31079c03292588e026dbd">&#9670;&#160;</a></span>declare_var_statment()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper._declare_var_statment </td>
+          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper.declare_var_statment </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -505,11 +448,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Declare a class/interface variable. </p>
@@ -524,17 +462,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6b6944d96c0f0cabb17a82946b3fc64d" name="a6b6944d96c0f0cabb17a82946b3fc64d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b6944d96c0f0cabb17a82946b3fc64d">&#9670;&#160;</a></span>_define_function_with_decorations()</h2>
+<a id="afa23fcfda040e06ebc6ffdf451e1b951" name="afa23fcfda040e06ebc6ffdf451e1b951"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa23fcfda040e06ebc6ffdf451e1b951">&#9670;&#160;</a></span>define_function_with_decorations()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper._define_function_with_decorations </td>
+          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper.define_function_with_decorations </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -572,19 +507,13 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>prefix_decaration</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
-          <td class="paramname"><em>postfix_decaration</em> = <code>None</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">list|None &#160;</td>
+          <td class="paramtype">list &#160;</td>
           <td class="paramname"><em>long_desc</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
@@ -593,11 +522,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate a function definition start with doxygen comment. </p>
@@ -608,8 +532,7 @@ Protected Member Functions</h2></td></tr>
     <tr><td class="paramname">param_dict_list</td><td>{list of dictionaries} - Return parameter data </td></tr>
     <tr><td class="paramname">ret_dict</td><td>{dictionary} - Return parameter data </td></tr>
     <tr><td class="paramname">no_doxygen</td><td>{boolean} True skip doxygen comment generation, False generate doxygen comment block </td></tr>
-    <tr><td class="paramname">prefix_decaration</td><td>{string or None} Valid C/C++ decldefine_function_with_decorationsaration prefix decoration, i.e "virtual" </td></tr>
-    <tr><td class="paramname">postfix_decaration</td><td>{string or None} Valid C/C++ declaration postfix decoration, i.e "const" | "override" ... </td></tr>
+    <tr><td class="paramname">prefix_decaration</td><td>{string or None} Valid python prefix decoration, i.e "virtual" </td></tr>
     <tr><td class="paramname">long_desc</td><td>{string or None} Long description of the function</td></tr>
   </table>
   </dd>
@@ -618,17 +541,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a53e4bda81af049cf05534dea1b013a99" name="a53e4bda81af049cf05534dea1b013a99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53e4bda81af049cf05534dea1b013a99">&#9670;&#160;</a></span>_end_function()</h2>
+<a id="a72710942252076b5c34f9707d33ae582" name="a72710942252076b5c34f9707d33ae582"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72710942252076b5c34f9707d33ae582">&#9670;&#160;</a></span>end_function()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper._end_function </td>
+          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper.end_function </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -645,11 +565,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Get the function declaration string for the given name. </p>
@@ -663,17 +578,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a029946e223b846072de1ba2ee764e1be" name="a029946e223b846072de1ba2ee764e1be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a029946e223b846072de1ba2ee764e1be">&#9670;&#160;</a></span>_gen_add_list_statment()</h2>
+<a id="ae39b6ae816db07538d3b552a33c28dd0" name="ae39b6ae816db07538d3b552a33c28dd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae39b6ae816db07538d3b552a33c28dd0">&#9670;&#160;</a></span>gen_add_list_statment()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper._gen_add_list_statment </td>
+          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper.gen_add_list_statment </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -702,11 +614,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate a list add code statement. </p>
@@ -722,17 +629,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aef8e93ec4c2cc13da98124c77fc1a491" name="aef8e93ec4c2cc13da98124c77fc1a491"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef8e93ec4c2cc13da98124c77fc1a491">&#9670;&#160;</a></span>_gen_class_close()</h2>
+<a id="ab162ad5d722b07e0f884871ca43f8c38" name="ab162ad5d722b07e0f884871ca43f8c38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab162ad5d722b07e0f884871ca43f8c38">&#9670;&#160;</a></span>gen_class_close()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper._gen_class_close </td>
+          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper.gen_class_close </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -755,11 +659,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate the class close code. </p>
@@ -774,17 +673,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="adcdae9f92f251a0bc7145e6e94510263" name="adcdae9f92f251a0bc7145e6e94510263"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adcdae9f92f251a0bc7145e6e94510263">&#9670;&#160;</a></span>_gen_class_default_constructor()</h2>
+<a id="a4f61e4e7033a49617bb820580ddb1510" name="a4f61e4e7033a49617bb820580ddb1510"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f61e4e7033a49617bb820580ddb1510">&#9670;&#160;</a></span>gen_class_default_constructor()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper._gen_class_default_constructor </td>
+          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper.gen_class_default_constructor </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -805,13 +701,13 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">list&#160;</td>
-          <td class="paramname"><em>param_list</em> = <code>[]</code>, </td>
+          <td class="paramname"><em>param_list</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">list&#160;</td>
-          <td class="paramname"><em>constructor_code</em> = <code>[]</code>, </td>
+          <td class="paramname"><em>constructor_code</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -825,11 +721,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate default constructor(s)/destructor declarations for a class. </p>
@@ -847,17 +738,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a48038bc520885c3439860c3e10b22a60" name="a48038bc520885c3439860c3e10b22a60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48038bc520885c3439860c3e10b22a60">&#9670;&#160;</a></span>_gen_class_open()</h2>
+<a id="a4f823ba658b3e94bc87571ffc9396abf" name="a4f823ba658b3e94bc87571ffc9396abf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f823ba658b3e94bc87571ffc9396abf">&#9670;&#160;</a></span>gen_class_open()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper._gen_class_open </td>
+          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper.gen_class_open </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -871,19 +759,19 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None&#160;</td>
+          <td class="paramtype">str&#160;</td>
           <td class="paramname"><em>class_desc</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>inheritence</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>class_decoration</em> = <code>None</code>, </td>
         </tr>
         <tr>
@@ -898,11 +786,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate the class open code. </p>
@@ -920,17 +803,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a002ff668968d3e21c38cd05856f8f70d" name="a002ff668968d3e21c38cd05856f8f70d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a002ff668968d3e21c38cd05856f8f70d">&#9670;&#160;</a></span>_gen_function_params()</h2>
+<a id="a506ba898a2c9df28caad4417c09a1f6f" name="a506ba898a2c9df28caad4417c09a1f6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a506ba898a2c9df28caad4417c09a1f6f">&#9670;&#160;</a></span>gen_function_params()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper._gen_function_params </td>
+          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper.gen_function_params </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -947,11 +827,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate the parameter method string. </p>
@@ -965,17 +840,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0ac92536945c71a6a76dd36cdf2ce9ee" name="a0ac92536945c71a6a76dd36cdf2ce9ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ac92536945c71a6a76dd36cdf2ce9ee">&#9670;&#160;</a></span>_gen_function_ret_type()</h2>
+<a id="a6fa9c4c56c1b64d913c764077242d4f9" name="a6fa9c4c56c1b64d913c764077242d4f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fa9c4c56c1b64d913c764077242d4f9">&#9670;&#160;</a></span>gen_function_ret_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper._gen_function_ret_type </td>
+          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper.gen_function_ret_type </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -983,7 +855,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">dict|None&#160;</td>
+          <td class="paramtype">dict&#160;</td>
           <td class="paramname"><em>return_dict</em>&#160;</td>
         </tr>
         <tr>
@@ -992,17 +864,12 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate the function return+name string. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">return_dict</td><td>(dict|None) Return ParamRetDict dictionary </td></tr>
+    <tr><td class="paramname">return_dict</td><td>(dict) Return ParamRetDict dictionary </td></tr>
   </table>
   </dd>
 </dl>
@@ -1010,17 +877,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abfb301a61b10a7a2c51e864f33485010" name="abfb301a61b10a7a2c51e864f33485010"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfb301a61b10a7a2c51e864f33485010">&#9670;&#160;</a></span>_gen_import()</h2>
+<a id="a28bfc444729a6bc8f858acd5df0051e4" name="a28bfc444729a6bc8f858acd5df0051e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28bfc444729a6bc8f858acd5df0051e4">&#9670;&#160;</a></span>gen_import()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper._gen_import </td>
+          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper.gen_import </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1043,11 +907,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Add Include line to the output file. </p>
@@ -1062,17 +921,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abece1d9a583954bb403b113e1c0e393f" name="abece1d9a583954bb403b113e1c0e393f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abece1d9a583954bb403b113e1c0e393f">&#9670;&#160;</a></span>_gen_importBlock()</h2>
+<a id="a43d3ccbf786422bfb8f3216736a9943d" name="a43d3ccbf786422bfb8f3216736a9943d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43d3ccbf786422bfb8f3216736a9943d">&#9670;&#160;</a></span>gen_import_block()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper._gen_importBlock </td>
+          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper.gen_import_block </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1089,11 +945,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate a series if include line(s) for each name in the list. </p>
@@ -1107,17 +958,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7f510ebff64f7c628b2c0b425ce6ef38" name="a7f510ebff64f7c628b2c0b425ce6ef38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f510ebff64f7c628b2c0b425ce6ef38">&#9670;&#160;</a></span>_gen_namespace_close()</h2>
+<a id="ae3a8c2c01dc7bf3a84179628879bab8f" name="ae3a8c2c01dc7bf3a84179628879bab8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3a8c2c01dc7bf3a84179628879bab8f">&#9670;&#160;</a></span>gen_namespace_close()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper._gen_namespace_close </td>
+          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper.gen_namespace_close </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1126,7 +974,7 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">str&#160;</td>
-          <td class="paramname"><em>namespace_name</em>&#160;</td>
+          <td class="paramname"><em>_</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1134,11 +982,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate namespace start code for include file. </p>
@@ -1152,17 +995,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ac65c65bd99cc70dcd1c4a776d4f47d8c" name="ac65c65bd99cc70dcd1c4a776d4f47d8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac65c65bd99cc70dcd1c4a776d4f47d8c">&#9670;&#160;</a></span>_gen_namespace_open()</h2>
+<a id="a2a3aac7ab1750996e3fcb6fc755fe51c" name="a2a3aac7ab1750996e3fcb6fc755fe51c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a3aac7ab1750996e3fcb6fc755fe51c">&#9670;&#160;</a></span>gen_namespace_open()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper._gen_namespace_open </td>
+          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper.gen_namespace_open </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1171,7 +1011,7 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">str&#160;</td>
-          <td class="paramname"><em>namespace_name</em>&#160;</td>
+          <td class="paramname"><em>_</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1179,11 +1019,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate namespace start code for include file. </p>
@@ -1197,17 +1032,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a60402223ef2de0c3704172dc278bb920" name="a60402223ef2de0c3704172dc278bb920"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60402223ef2de0c3704172dc278bb920">&#9670;&#160;</a></span>_gen_return_statment()</h2>
+<a id="a6c5fea95b1088e8bccae2a2787093c1f" name="a6c5fea95b1088e8bccae2a2787093c1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c5fea95b1088e8bccae2a2787093c1f">&#9670;&#160;</a></span>gen_return_statment()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper._gen_return_statment </td>
+          <td class="memname">str python_gen.file_gen_base.GeneratePythonFileHelper.gen_return_statment </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1230,11 +1062,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate a list add code statement. </p>
@@ -1249,17 +1076,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aaaff6b36dce4f29c89442ed40efdb269" name="aaaff6b36dce4f29c89442ed40efdb269"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaaff6b36dce4f29c89442ed40efdb269">&#9670;&#160;</a></span>_gen_using_namespace()</h2>
+<a id="a2e703a55ff380beb81593e060cf6f6d6" name="a2e703a55ff380beb81593e060cf6f6d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e703a55ff380beb81593e060cf6f6d6">&#9670;&#160;</a></span>gen_using_namespace()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper._gen_using_namespace </td>
+          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper.gen_using_namespace </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1268,7 +1092,7 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">str&#160;</td>
-          <td class="paramname"><em>namespace_name</em>&#160;</td>
+          <td class="paramname"><em>_</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1276,11 +1100,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate namespace start code for include file. </p>
@@ -1294,17 +1113,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a34adcd031a1a0f6d4cd99951299e0db4" name="a34adcd031a1a0f6d4cd99951299e0db4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34adcd031a1a0f6d4cd99951299e0db4">&#9670;&#160;</a></span>_generate_generic_file_header()</h2>
+<a id="abf9fc0065b3726476102c497425cbad0" name="abf9fc0065b3726476102c497425cbad0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf9fc0065b3726476102c497425cbad0">&#9670;&#160;</a></span>generate_generic_file_header()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper._generate_generic_file_header </td>
+          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper.generate_generic_file_header </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1324,7 +1140,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>owner</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
@@ -1333,11 +1149,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate the boiler plate file header with copyright and eula. </p>
@@ -1353,17 +1164,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a94ffbf56f0771ca306909ef451e4a999" name="a94ffbf56f0771ca306909ef451e4a999"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94ffbf56f0771ca306909ef451e4a999">&#9670;&#160;</a></span>_xlate_params()</h2>
+<a id="a8939e886d22e90f123280e37dfca2657" name="a8939e886d22e90f123280e37dfca2657"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8939e886d22e90f123280e37dfca2657">&#9670;&#160;</a></span>xlate_params()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper._xlate_params </td>
+          <td class="memname">list python_gen.file_gen_base.GeneratePythonFileHelper.xlate_params </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1380,11 +1188,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Translate the generic parameter list type strings to the python specific parameter type strings. </p>
@@ -1398,17 +1201,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a832b4c5d630fe87b1b42faaafd9292cc" name="a832b4c5d630fe87b1b42faaafd9292cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a832b4c5d630fe87b1b42faaafd9292cc">&#9670;&#160;</a></span>_xlate_return_dict()</h2>
+<a id="aeba4657db16db0b6a936c35ed05b0f2d" name="aeba4657db16db0b6a936c35ed05b0f2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeba4657db16db0b6a936c35ed05b0f2d">&#9670;&#160;</a></span>xlate_return_dict()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">dict|None python_gen.file_gen_base.GeneratePythonFileHelper._xlate_return_dict </td>
+          <td class="memname">dict python_gen.file_gen_base.GeneratePythonFileHelper.xlate_return_dict </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1416,7 +1216,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">dict|None&#160;</td>
+          <td class="paramtype">dict&#160;</td>
           <td class="paramname"><em>ret_dict</em>&#160;</td>
         </tr>
         <tr>
@@ -1425,11 +1225,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Translate the generic return dictionary to the python specific return dictionary. </p>
@@ -1439,7 +1234,7 @@ Protected Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>dictionary|None - ParamRetDict return dictionary with the translated type or None if input is None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>dictionary - ParamRetDict return dictionary with the translated type or None if input is None </dd></dl>
 
 </div>
 </div>

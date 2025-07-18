@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['parse_5ftext_5fblock_0',['parse_text_block',['../classbase_1_1json__string__class__description_1_1TranslationTextParser.html#a98694877b6d020d9d472543be8d62b02',1,'base::json_string_class_description::TranslationTextParser']]],
-  ['parse_5ftranslate_5fstring_1',['parse_translate_string',['../classbase_1_1json__string__class__description_1_1TranslationTextParser.html#aa796fc028454b405b6c372604ec85c96',1,'base::json_string_class_description::TranslationTextParser']]]
+  ['make_5fparam_5fentry_0',['make_param_entry',['../classbase_1_1translate__text__parser_1_1TransTxtParser.html#a4c45058918e4916cd18df9602247ae46',1,'base::translate_text_parser::TransTxtParser']]],
+  ['make_5fspecial_5fchar_5fentry_1',['make_special_char_entry',['../classbase_1_1translate__text__parser_1_1TransTxtParser.html#a7ddf71cb44f8c36659f4524f08ccbae5',1,'base::translate_text_parser::TransTxtParser']]],
+  ['make_5ftext_5fentry_2',['make_text_entry',['../classbase_1_1translate__text__parser_1_1TransTxtParser.html#a6d3a0376914c083944151fc1a0bea7c8',1,'base::translate_text_parser::TransTxtParser']]]
 ];

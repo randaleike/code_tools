@@ -77,7 +77,6 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">typescript_gen.file_gen_base.GenerateTypeScriptFileHelper Class Reference</div></div>
 </div><!--header-->
@@ -85,32 +84,72 @@ $(function() {
 
 <p>File generation helper class.  
  <a href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#details">More...</a></p>
-<div class="dynheader">
-Inheritance diagram for typescript_gen.file_gen_base.GenerateTypeScriptFileHelper:</div>
-<div class="dyncontent">
-<div class="center"><img src="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper__inherit__graph.png" border="0" usemap="#atypescript__gen_8file__gen__base_8GenerateTypeScriptFileHelper_inherit__map" alt="Inheritance graph"/></div>
-<map name="atypescript__gen_8file__gen__base_8GenerateTypeScriptFileHelper_inherit__map" id="atypescript__gen_8file__gen__base_8GenerateTypeScriptFileHelper_inherit__map">
-<area shape="rect" title="File generation helper class." alt="" coords="5,79,228,133"/>
-<area shape="rect" title=" " alt="" coords="85,5,148,31"/>
-<area shape="poly" title=" " alt="" coords="119,44,119,79,114,79,114,44"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for typescript_gen.file_gen_base.GenerateTypeScriptFileHelper:</div>
-<div class="dyncontent">
-<div class="center"><img src="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper__coll__graph.png" border="0" usemap="#atypescript__gen_8file__gen__base_8GenerateTypeScriptFileHelper_coll__map" alt="Collaboration graph"/></div>
-<map name="atypescript__gen_8file__gen__base_8GenerateTypeScriptFileHelper_coll__map" id="atypescript__gen_8file__gen__base_8GenerateTypeScriptFileHelper_coll__map">
-<area shape="rect" title="File generation helper class." alt="" coords="5,79,228,133"/>
-<area shape="rect" title=" " alt="" coords="85,5,148,31"/>
-<area shape="poly" title=" " alt="" coords="119,44,119,79,114,79,114,44"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a255d7a83e1ba00e6f7077d540d405292" id="r_a255d7a83e1ba00e6f7077d540d405292"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a255d7a83e1ba00e6f7077d540d405292">__init__</a> (self, str|None eula_name=None)</td></tr>
-<tr class="memdesc:a255d7a83e1ba00e6f7077d540d405292"><td class="mdescLeft">&#160;</td><td class="mdescRight">GenerateFileHelper constructor.  <br /></td></tr>
-<tr class="separator:a255d7a83e1ba00e6f7077d540d405292"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d698b3bf00f04b403a8fd37f65ff92d" id="r_a6d698b3bf00f04b403a8fd37f65ff92d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a6d698b3bf00f04b403a8fd37f65ff92d">__init__</a> (self, str eula_name=None)</td></tr>
+<tr class="memdesc:a6d698b3bf00f04b403a8fd37f65ff92d"><td class="mdescLeft">&#160;</td><td class="mdescRight">GenerateFileHelper constructor.  <br /></td></tr>
+<tr class="separator:a6d698b3bf00f04b403a8fd37f65ff92d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8166f18a0581a53d2bdc0359c15120b5" id="r_a8166f18a0581a53d2bdc0359c15120b5"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a8166f18a0581a53d2bdc0359c15120b5">declare_type</a> (self, str base_type, int type_mod=0)</td></tr>
+<tr class="memdesc:a8166f18a0581a53d2bdc0359c15120b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the type text based on the input type name and type modification data.  <br /></td></tr>
+<tr class="separator:a8166f18a0581a53d2bdc0359c15120b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0c6c6f0c0b8a99c2885f611ffe86107" id="r_aa0c6c6f0c0b8a99c2885f611ffe86107"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#aa0c6c6f0c0b8a99c2885f611ffe86107">xlate_params</a> (self, list param_dict_list)</td></tr>
+<tr class="memdesc:aa0c6c6f0c0b8a99c2885f611ffe86107"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translate the generic parameter list type strings to the typescript specific parameter type strings.  <br /></td></tr>
+<tr class="separator:aa0c6c6f0c0b8a99c2885f611ffe86107"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a440513c75b2226258e32781fea84e74f" id="r_a440513c75b2226258e32781fea84e74f"><td class="memItemLeft" align="right" valign="top">dict&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a440513c75b2226258e32781fea84e74f">xlate_return_dict</a> (self, dict ret_dict)</td></tr>
+<tr class="memdesc:a440513c75b2226258e32781fea84e74f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translate the generic return dictionary to the typescript specific return dictionary.  <br /></td></tr>
+<tr class="separator:a440513c75b2226258e32781fea84e74f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2c533f903cc536573132eb2afae12c1" id="r_af2c533f903cc536573132eb2afae12c1"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#af2c533f903cc536573132eb2afae12c1">gen_function_ret_type</a> (self, dict ret_dict=None)</td></tr>
+<tr class="memdesc:af2c533f903cc536573132eb2afae12c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the type text based on the variable input ParamRetDict dictionary.  <br /></td></tr>
+<tr class="separator:af2c533f903cc536573132eb2afae12c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a927fbf5ddd09313f3462f7560bfbca78" id="r_a927fbf5ddd09313f3462f7560bfbca78"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a927fbf5ddd09313f3462f7560bfbca78">gen_function_params</a> (self, list param_dict_list)</td></tr>
+<tr class="memdesc:a927fbf5ddd09313f3462f7560bfbca78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the parameter method string.  <br /></td></tr>
+<tr class="separator:a927fbf5ddd09313f3462f7560bfbca78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab67ca449488cce6d382f4a348dfe853e" id="r_ab67ca449488cce6d382f4a348dfe853e"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#ab67ca449488cce6d382f4a348dfe853e">declare_function_with_decorations</a> (self, str name, str briefdesc, list param_dict_list, dict ret_dict=None, int indent=0, bool no_doxygen=False, str prefix_decaration=&quot;public&quot;, str postfix_decaration=None, list inlinecode=None, str long_desc=None)</td></tr>
+<tr class="memdesc:ab67ca449488cce6d382f4a348dfe853e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a function declatation text block with doxygen comment.  <br /></td></tr>
+<tr class="separator:ab67ca449488cce6d382f4a348dfe853e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8713d57e3eccdb1d4136d5a307d8f11" id="r_ad8713d57e3eccdb1d4136d5a307d8f11"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#ad8713d57e3eccdb1d4136d5a307d8f11">define_function_with_decorations</a> (self, str name, str briefdesc, list param_dict_list, dict ret_dict, bool no_doxygen=False, str prefix_decaration=None, list long_desc=None)</td></tr>
+<tr class="memdesc:ad8713d57e3eccdb1d4136d5a307d8f11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a function definition start with doxygen comment.  <br /></td></tr>
+<tr class="separator:ad8713d57e3eccdb1d4136d5a307d8f11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35aa4df3a0edc74226c20904949a24d1" id="r_a35aa4df3a0edc74226c20904949a24d1"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a35aa4df3a0edc74226c20904949a24d1">end_function</a> (self, str name)</td></tr>
+<tr class="memdesc:a35aa4df3a0edc74226c20904949a24d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the function declaration string for the given name.  <br /></td></tr>
+<tr class="separator:a35aa4df3a0edc74226c20904949a24d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03065444a4780dab210e2abe0177cef4" id="r_a03065444a4780dab210e2abe0177cef4"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a03065444a4780dab210e2abe0177cef4">generate_generic_file_header</a> (self, str autotoolname, int start_year=2025, str owner=None)</td></tr>
+<tr class="memdesc:a03065444a4780dab210e2abe0177cef4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the boiler plate file header with copyright and eula.  <br /></td></tr>
+<tr class="separator:a03065444a4780dab210e2abe0177cef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac86a07451d6bb30de52f4aa8e931bd9c" id="r_ac86a07451d6bb30de52f4aa8e931bd9c"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#ac86a07451d6bb30de52f4aa8e931bd9c">gen_import</a> (self, str class_name, str module_name=None)</td></tr>
+<tr class="memdesc:ac86a07451d6bb30de52f4aa8e931bd9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add Include line to the output file.  <br /></td></tr>
+<tr class="separator:ac86a07451d6bb30de52f4aa8e931bd9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ea46c2dfa26967a2389176c6236bf97" id="r_a8ea46c2dfa26967a2389176c6236bf97"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a8ea46c2dfa26967a2389176c6236bf97">gen_import_block</a> (self, list include_names)</td></tr>
+<tr class="memdesc:a8ea46c2dfa26967a2389176c6236bf97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a series if include line(s) for each name in the list.  <br /></td></tr>
+<tr class="separator:a8ea46c2dfa26967a2389176c6236bf97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae396fb504d59134ea39568a1db0383dc" id="r_ae396fb504d59134ea39568a1db0383dc"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#ae396fb504d59134ea39568a1db0383dc">gen_namespace_open</a> (self, str namespace_name)</td></tr>
+<tr class="memdesc:ae396fb504d59134ea39568a1db0383dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate namespace start code for include file.  <br /></td></tr>
+<tr class="separator:ae396fb504d59134ea39568a1db0383dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96464e868c70478bd36a3c5880dee21e" id="r_a96464e868c70478bd36a3c5880dee21e"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a96464e868c70478bd36a3c5880dee21e">gen_namespace_close</a> (self, str namespace_name)</td></tr>
+<tr class="memdesc:a96464e868c70478bd36a3c5880dee21e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate namespace start code for include file.  <br /></td></tr>
+<tr class="separator:a96464e868c70478bd36a3c5880dee21e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ef13bf6773f6194b64335cd8f132123" id="r_a0ef13bf6773f6194b64335cd8f132123"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a0ef13bf6773f6194b64335cd8f132123">gen_class_open</a> (self, str class_name, str class_desc=None, str inheritence=None, str class_decoration=None, int indent=0)</td></tr>
+<tr class="memdesc:a0ef13bf6773f6194b64335cd8f132123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the class open code.  <br /></td></tr>
+<tr class="separator:a0ef13bf6773f6194b64335cd8f132123"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c0674c4caa94edf74ebd06d26f29dbe" id="r_a9c0674c4caa94edf74ebd06d26f29dbe"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a9c0674c4caa94edf74ebd06d26f29dbe">gen_class_close</a> (self, str class_name, int indent=0)</td></tr>
+<tr class="memdesc:a9c0674c4caa94edf74ebd06d26f29dbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the class close code.  <br /></td></tr>
+<tr class="separator:a9c0674c4caa94edf74ebd06d26f29dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2afccc9ce478536b9d0e3b6d618f3e2" id="r_ad2afccc9ce478536b9d0e3b6d618f3e2"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#ad2afccc9ce478536b9d0e3b6d618f3e2">gen_class_default_constructor</a> (self, str class_name, int indent=8, list param_list=None, list constructor_code=None, bool no_doxy_comment_constructor=False)</td></tr>
+<tr class="memdesc:ad2afccc9ce478536b9d0e3b6d618f3e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate default constructor(s)/destructor declarations for a class.  <br /></td></tr>
+<tr class="separator:ad2afccc9ce478536b9d0e3b6d618f3e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5edad3a838fbd6f112af59dc4c34f7a9" id="r_a5edad3a838fbd6f112af59dc4c34f7a9"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a5edad3a838fbd6f112af59dc4c34f7a9">declare_structure</a> (self, str name, list var_dist_list, int indent=0, str struct_desc=None, str prefix_decoration=None, str postfix_decoration=None)</td></tr>
+<tr class="memdesc:a5edad3a838fbd6f112af59dc4c34f7a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a structure declaration.  <br /></td></tr>
+<tr class="separator:a5edad3a838fbd6f112af59dc4c34f7a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af84d39cf76c92307d9012d6e01baf3ec" id="r_af84d39cf76c92307d9012d6e01baf3ec"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#af84d39cf76c92307d9012d6e01baf3ec">declare_var_statment</a> (self, dict var_dict, int doxy_comment_indent=-1)</td></tr>
+<tr class="memdesc:af84d39cf76c92307d9012d6e01baf3ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a class/interface variable.  <br /></td></tr>
+<tr class="separator:af84d39cf76c92307d9012d6e01baf3ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fbca160b625edb9390d86be2a708f3f" id="r_a0fbca160b625edb9390d86be2a708f3f"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a0fbca160b625edb9390d86be2a708f3f">gen_add_list_statment</a> (self, str list_name, str value_name, bool is_text=False)</td></tr>
+<tr class="memdesc:a0fbca160b625edb9390d86be2a708f3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a list add code statement.  <br /></td></tr>
+<tr class="separator:a0fbca160b625edb9390d86be2a708f3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18d5351c6ff95f686946699f9b5d57a3" id="r_a18d5351c6ff95f686946699f9b5d57a3"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a18d5351c6ff95f686946699f9b5d57a3">gen_return_statment</a> (self, str ret_value, bool is_text=False)</td></tr>
+<tr class="memdesc:a18d5351c6ff95f686946699f9b5d57a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a list add code statement.  <br /></td></tr>
+<tr class="separator:a18d5351c6ff95f686946699f9b5d57a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -138,76 +177,13 @@ Public Attributes</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>type_xlation_dict</b></td></tr>
 <tr class="memdesc:a40f7d22f550e6d47458b516a6b3325b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translation dictionary from generic data types to CPP specific data types. <br /></td></tr>
 <tr class="separator:a40f7d22f550e6d47458b516a6b3325b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a2fd46d08c6264644f2b0c7fa76dd39a2" id="r_a2fd46d08c6264644f2b0c7fa76dd39a2"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a2fd46d08c6264644f2b0c7fa76dd39a2">_declare_type</a> (self, str base_type, int type_mod=0)</td></tr>
-<tr class="memdesc:a2fd46d08c6264644f2b0c7fa76dd39a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the type text based on the input type name and type modification data.  <br /></td></tr>
-<tr class="separator:a2fd46d08c6264644f2b0c7fa76dd39a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27c86657e1749f334ec5d512d366d870" id="r_a27c86657e1749f334ec5d512d366d870"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a27c86657e1749f334ec5d512d366d870">_xlate_params</a> (self, list param_dict_list)</td></tr>
-<tr class="memdesc:a27c86657e1749f334ec5d512d366d870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translate the generic parameter list type strings to the typescript specific parameter type strings.  <br /></td></tr>
-<tr class="separator:a27c86657e1749f334ec5d512d366d870"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ac9d69611e510cf0c4940383268f440" id="r_a6ac9d69611e510cf0c4940383268f440"><td class="memItemLeft" align="right" valign="top">dict|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a6ac9d69611e510cf0c4940383268f440">_xlate_return_dict</a> (self, dict|None ret_dict)</td></tr>
-<tr class="memdesc:a6ac9d69611e510cf0c4940383268f440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translate the generic return dictionary to the typescript specific return dictionary.  <br /></td></tr>
-<tr class="separator:a6ac9d69611e510cf0c4940383268f440"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04b538e255b0bfeb9e31fcfbe51f57d4" id="r_a04b538e255b0bfeb9e31fcfbe51f57d4"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a04b538e255b0bfeb9e31fcfbe51f57d4">_gen_function_ret_type</a> (self, dict|None ret_dict=None)</td></tr>
-<tr class="memdesc:a04b538e255b0bfeb9e31fcfbe51f57d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the type text based on the variable input ParamRetDict dictionary.  <br /></td></tr>
-<tr class="separator:a04b538e255b0bfeb9e31fcfbe51f57d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a262d307f748b29467f2e1ddb6f8a55" id="r_a2a262d307f748b29467f2e1ddb6f8a55"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a2a262d307f748b29467f2e1ddb6f8a55">_gen_function_params</a> (self, list param_dict_list)</td></tr>
-<tr class="memdesc:a2a262d307f748b29467f2e1ddb6f8a55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the parameter method string.  <br /></td></tr>
-<tr class="separator:a2a262d307f748b29467f2e1ddb6f8a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24b46a6525bbe00bc71317d3f96fb307" id="r_a24b46a6525bbe00bc71317d3f96fb307"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a24b46a6525bbe00bc71317d3f96fb307">_declare_function_with_decorations</a> (self, str name, str briefdesc, list param_dict_list, dict|None ret_dict=None, int indent=0, bool no_doxygen=False, str prefix_decaration=&quot;public&quot;, str|None postfix_decaration=None, list inlinecode=[], str|None long_desc=None)</td></tr>
-<tr class="memdesc:a24b46a6525bbe00bc71317d3f96fb307"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a function declatation text block with doxygen comment.  <br /></td></tr>
-<tr class="separator:a24b46a6525bbe00bc71317d3f96fb307"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af93414c49c7fd300d83538aaeb6e0941" id="r_af93414c49c7fd300d83538aaeb6e0941"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#af93414c49c7fd300d83538aaeb6e0941">_define_function_with_decorations</a> (self, str name, str briefdesc, list param_dict_list, dict ret_dict, bool no_doxygen=False, str|None prefix_decaration=None, str|None postfix_decaration=None, list|None long_desc=None)</td></tr>
-<tr class="memdesc:af93414c49c7fd300d83538aaeb6e0941"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a function definition start with doxygen comment.  <br /></td></tr>
-<tr class="separator:af93414c49c7fd300d83538aaeb6e0941"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf06734c37a6ff8255ac7f3e08a0c205" id="r_adf06734c37a6ff8255ac7f3e08a0c205"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#adf06734c37a6ff8255ac7f3e08a0c205">_end_function</a> (self, str name)</td></tr>
-<tr class="memdesc:adf06734c37a6ff8255ac7f3e08a0c205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the function declaration string for the given name.  <br /></td></tr>
-<tr class="separator:adf06734c37a6ff8255ac7f3e08a0c205"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae056b9106e08aa4e19e32a822cd4097f" id="r_ae056b9106e08aa4e19e32a822cd4097f"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#ae056b9106e08aa4e19e32a822cd4097f">_generate_generic_file_header</a> (self, str autotoolname, int start_year=2025, str|None owner=None)</td></tr>
-<tr class="memdesc:ae056b9106e08aa4e19e32a822cd4097f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the boiler plate file header with copyright and eula.  <br /></td></tr>
-<tr class="separator:ae056b9106e08aa4e19e32a822cd4097f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78150123cd9730ec600e4b01d5f0b027" id="r_a78150123cd9730ec600e4b01d5f0b027"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a78150123cd9730ec600e4b01d5f0b027">_gen_import</a> (self, str class_name, str module_name=None)</td></tr>
-<tr class="memdesc:a78150123cd9730ec600e4b01d5f0b027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add Include line to the output file.  <br /></td></tr>
-<tr class="separator:a78150123cd9730ec600e4b01d5f0b027"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb0d2718fd9896d69d9850ff640720b4" id="r_abb0d2718fd9896d69d9850ff640720b4"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#abb0d2718fd9896d69d9850ff640720b4">_gen_importBlock</a> (self, list include_names)</td></tr>
-<tr class="memdesc:abb0d2718fd9896d69d9850ff640720b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a series if include line(s) for each name in the list.  <br /></td></tr>
-<tr class="separator:abb0d2718fd9896d69d9850ff640720b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd47270163b7b5ebf7a6a915499ae6e0" id="r_afd47270163b7b5ebf7a6a915499ae6e0"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#afd47270163b7b5ebf7a6a915499ae6e0">_gen_namespace_open</a> (self, str namespace_name)</td></tr>
-<tr class="memdesc:afd47270163b7b5ebf7a6a915499ae6e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate namespace start code for include file.  <br /></td></tr>
-<tr class="separator:afd47270163b7b5ebf7a6a915499ae6e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65570ec6f7db8ba6df21827644825271" id="r_a65570ec6f7db8ba6df21827644825271"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a65570ec6f7db8ba6df21827644825271">_gen_namespace_close</a> (self, str namespace_name)</td></tr>
-<tr class="memdesc:a65570ec6f7db8ba6df21827644825271"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate namespace start code for include file.  <br /></td></tr>
-<tr class="separator:a65570ec6f7db8ba6df21827644825271"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b62594687135c9b4940531490c31d0b" id="r_a1b62594687135c9b4940531490c31d0b"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a1b62594687135c9b4940531490c31d0b">_gen_class_open</a> (self, str class_name, str|None class_desc=None, str|None inheritence=None, str|None class_decoration=None, int indent=0)</td></tr>
-<tr class="memdesc:a1b62594687135c9b4940531490c31d0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the class open code.  <br /></td></tr>
-<tr class="separator:a1b62594687135c9b4940531490c31d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02bc9923856c3e7dc9cb118921ae205a" id="r_a02bc9923856c3e7dc9cb118921ae205a"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a02bc9923856c3e7dc9cb118921ae205a">_gen_class_close</a> (self, str class_name, int indent=0)</td></tr>
-<tr class="memdesc:a02bc9923856c3e7dc9cb118921ae205a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the class close code.  <br /></td></tr>
-<tr class="separator:a02bc9923856c3e7dc9cb118921ae205a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad398b08928f6b3db87e816b693af06f2" id="r_ad398b08928f6b3db87e816b693af06f2"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#ad398b08928f6b3db87e816b693af06f2">_gen_class_default_constructor</a> (self, str class_name, int indent=8, list param_list=[], list constructor_code=[], bool no_doxy_comment_constructor=False)</td></tr>
-<tr class="memdesc:ad398b08928f6b3db87e816b693af06f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate default constructor(s)/destructor declarations for a class.  <br /></td></tr>
-<tr class="separator:ad398b08928f6b3db87e816b693af06f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54038e517ad62597014efe05eb96289f" id="r_a54038e517ad62597014efe05eb96289f"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a54038e517ad62597014efe05eb96289f">_declare_structure</a> (self, str name, list var_dist_list, int indent=0, str|None struct_desc=None, str|None prefix_decoration=None, str|None postfix_decoration=None)</td></tr>
-<tr class="memdesc:a54038e517ad62597014efe05eb96289f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a structure declaration.  <br /></td></tr>
-<tr class="separator:a54038e517ad62597014efe05eb96289f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0656eda7d5ed7e43d9c31808fb32f7c" id="r_ab0656eda7d5ed7e43d9c31808fb32f7c"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#ab0656eda7d5ed7e43d9c31808fb32f7c">_declare_var_statment</a> (self, dict var_dict, int doxy_comment_indent=-1)</td></tr>
-<tr class="memdesc:ab0656eda7d5ed7e43d9c31808fb32f7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a class/interface variable.  <br /></td></tr>
-<tr class="separator:ab0656eda7d5ed7e43d9c31808fb32f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade37357c583b84623a734a4c5ea404ce" id="r_ade37357c583b84623a734a4c5ea404ce"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#ade37357c583b84623a734a4c5ea404ce">_gen_add_list_statment</a> (self, str list_name, str value_name, bool is_text=False)</td></tr>
-<tr class="memdesc:ade37357c583b84623a734a4c5ea404ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a list add code statement.  <br /></td></tr>
-<tr class="separator:ade37357c583b84623a734a4c5ea404ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ad7b172bcd8a1e4e3d565c132d6dc3b" id="r_a3ad7b172bcd8a1e4e3d565c132d6dc3b"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtypescript__gen_1_1file__gen__base_1_1GenerateTypeScriptFileHelper.html#a3ad7b172bcd8a1e4e3d565c132d6dc3b">_gen_return_statment</a> (self, str ret_value, bool is_text=False)</td></tr>
-<tr class="memdesc:a3ad7b172bcd8a1e4e3d565c132d6dc3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a list add code statement.  <br /></td></tr>
-<tr class="separator:a3ad7b172bcd8a1e4e3d565c132d6dc3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>File generation helper class. </p>
 <p>This class implements boiler plate data and helper functions used by the parent file specific generation class to generate the file </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a255d7a83e1ba00e6f7077d540d405292" name="a255d7a83e1ba00e6f7077d540d405292"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a255d7a83e1ba00e6f7077d540d405292">&#9670;&#160;</a></span>__init__()</h2>
+<a id="a6d698b3bf00f04b403a8fd37f65ff92d" name="a6d698b3bf00f04b403a8fd37f65ff92d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d698b3bf00f04b403a8fd37f65ff92d">&#9670;&#160;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -221,7 +197,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>eula_name</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
@@ -243,17 +219,14 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a24b46a6525bbe00bc71317d3f96fb307" name="a24b46a6525bbe00bc71317d3f96fb307"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24b46a6525bbe00bc71317d3f96fb307">&#9670;&#160;</a></span>_declare_function_with_decorations()</h2>
+<a id="ab67ca449488cce6d382f4a348dfe853e" name="ab67ca449488cce6d382f4a348dfe853e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab67ca449488cce6d382f4a348dfe853e">&#9670;&#160;</a></span>declare_function_with_decorations()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._declare_function_with_decorations </td>
+          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.declare_function_with_decorations </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -279,7 +252,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">dict|None &#160;</td>
+          <td class="paramtype">dict &#160;</td>
           <td class="paramname"><em>ret_dict</em> = <code>None</code>, </td>
         </tr>
         <tr>
@@ -303,19 +276,19 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>postfix_decaration</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">list &#160;</td>
-          <td class="paramname"><em>inlinecode</em> = <code>[]</code>, </td>
+          <td class="paramname"><em>inlinecode</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>long_desc</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
@@ -324,11 +297,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate a function declatation text block with doxygen comment. </p>
@@ -340,8 +308,8 @@ Protected Member Functions</h2></td></tr>
     <tr><td class="paramname">ret_dict</td><td>{dictionary or None} - Return parameter data or None </td></tr>
     <tr><td class="paramname">indent</td><td>{integer} Comment and function declaration indentation </td></tr>
     <tr><td class="paramname">no_doxygen</td><td>{boolean} True skip doxygen comment generation, False generate doxygen comment block </td></tr>
-    <tr><td class="paramname">prefix_decaration</td><td>{string} Valid C/C++ declaration prefix decoration, i.e "virtual" </td></tr>
-    <tr><td class="paramname">postfix_decaration</td><td>{string} Valid C/C++ declaration postfix decoration, i.e "const" | "override" ... </td></tr>
+    <tr><td class="paramname">prefix_decaration</td><td>{string} Valid typescript declaration prefix decoration, i.e "virtual" </td></tr>
+    <tr><td class="paramname">postfix_decaration</td><td>{string} Valid typescript declaration postfix decoration, i.e "const" | "override" ... </td></tr>
     <tr><td class="paramname">inlinecode</td><td>{sting list or None} Inline code for the declaration or None id there is no inline definition </td></tr>
     <tr><td class="paramname">long_desc</td><td>{string or None} Long description of the function</td></tr>
   </table>
@@ -351,17 +319,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a54038e517ad62597014efe05eb96289f" name="a54038e517ad62597014efe05eb96289f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54038e517ad62597014efe05eb96289f">&#9670;&#160;</a></span>_declare_structure()</h2>
+<a id="a5edad3a838fbd6f112af59dc4c34f7a9" name="a5edad3a838fbd6f112af59dc4c34f7a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5edad3a838fbd6f112af59dc4c34f7a9">&#9670;&#160;</a></span>declare_structure()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._declare_structure </td>
+          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.declare_structure </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -387,19 +352,19 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>struct_desc</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>prefix_decoration</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>postfix_decoration</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
@@ -408,11 +373,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate a structure declaration. </p>
@@ -421,7 +381,7 @@ Protected Member Functions</h2></td></tr>
     <tr><td class="paramname">name</td><td>{string} Name of the structure </td></tr>
     <tr><td class="paramname">var_dist_list</td><td>{list} List of ParamRetDict parameter dictionaries for the data elements </td></tr>
     <tr><td class="paramname">indent</td><td>{integer} Number of spaces to indent the code declarations, default = 0 </td></tr>
-    <tr><td class="paramname">struct_desc</td><td>{string|None} Doxygen structure description </td></tr>
+    <tr><td class="paramname">struct_desc</td><td>{string} Doxygen structure description </td></tr>
     <tr><td class="paramname">prefix_decoration</td><td>{str} Structure definition prefix decorations unused in python </td></tr>
     <tr><td class="paramname">postfix_decoration</td><td>{str} Structure definition end decorations unused in python</td></tr>
   </table>
@@ -431,17 +391,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2fd46d08c6264644f2b0c7fa76dd39a2" name="a2fd46d08c6264644f2b0c7fa76dd39a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2fd46d08c6264644f2b0c7fa76dd39a2">&#9670;&#160;</a></span>_declare_type()</h2>
+<a id="a8166f18a0581a53d2bdc0359c15120b5" name="a8166f18a0581a53d2bdc0359c15120b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8166f18a0581a53d2bdc0359c15120b5">&#9670;&#160;</a></span>declare_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._declare_type </td>
+          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.declare_type </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -464,11 +421,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate the type text based on the input type name and type modification data. </p>
@@ -483,17 +435,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab0656eda7d5ed7e43d9c31808fb32f7c" name="ab0656eda7d5ed7e43d9c31808fb32f7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0656eda7d5ed7e43d9c31808fb32f7c">&#9670;&#160;</a></span>_declare_var_statment()</h2>
+<a id="af84d39cf76c92307d9012d6e01baf3ec" name="af84d39cf76c92307d9012d6e01baf3ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af84d39cf76c92307d9012d6e01baf3ec">&#9670;&#160;</a></span>declare_var_statment()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._declare_var_statment </td>
+          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.declare_var_statment </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -516,11 +465,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Declare a class/interface variable. </p>
@@ -535,17 +479,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af93414c49c7fd300d83538aaeb6e0941" name="af93414c49c7fd300d83538aaeb6e0941"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af93414c49c7fd300d83538aaeb6e0941">&#9670;&#160;</a></span>_define_function_with_decorations()</h2>
+<a id="ad8713d57e3eccdb1d4136d5a307d8f11" name="ad8713d57e3eccdb1d4136d5a307d8f11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8713d57e3eccdb1d4136d5a307d8f11">&#9670;&#160;</a></span>define_function_with_decorations()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._define_function_with_decorations </td>
+          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.define_function_with_decorations </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -583,19 +524,13 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>prefix_decaration</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
-          <td class="paramname"><em>postfix_decaration</em> = <code>None</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">list|None &#160;</td>
+          <td class="paramtype">list &#160;</td>
           <td class="paramname"><em>long_desc</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
@@ -604,11 +539,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate a function definition start with doxygen comment. </p>
@@ -619,8 +549,7 @@ Protected Member Functions</h2></td></tr>
     <tr><td class="paramname">param_dict_list</td><td>{list of dictionaries} - Return parameter data </td></tr>
     <tr><td class="paramname">ret_dict</td><td>{dictionary} - Return parameter data </td></tr>
     <tr><td class="paramname">no_doxygen</td><td>{boolean} True skip doxygen comment generation, False generate doxygen comment block </td></tr>
-    <tr><td class="paramname">prefix_decaration</td><td>{string or None} Valid C/C++ decldefine_function_with_decorationsaration prefix decoration, i.e "virtual" </td></tr>
-    <tr><td class="paramname">postfix_decaration</td><td>{string or None} Valid C/C++ declaration postfix decoration, i.e "const" | "override" ... </td></tr>
+    <tr><td class="paramname">prefix_decaration</td><td>{string or None} Valid typescript method prefix decoration, i.e "virtual" </td></tr>
     <tr><td class="paramname">long_desc</td><td>{string or None} Long description of the function</td></tr>
   </table>
   </dd>
@@ -629,17 +558,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="adf06734c37a6ff8255ac7f3e08a0c205" name="adf06734c37a6ff8255ac7f3e08a0c205"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf06734c37a6ff8255ac7f3e08a0c205">&#9670;&#160;</a></span>_end_function()</h2>
+<a id="a35aa4df3a0edc74226c20904949a24d1" name="a35aa4df3a0edc74226c20904949a24d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35aa4df3a0edc74226c20904949a24d1">&#9670;&#160;</a></span>end_function()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._end_function </td>
+          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.end_function </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -656,11 +582,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Get the function declaration string for the given name. </p>
@@ -674,17 +595,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ade37357c583b84623a734a4c5ea404ce" name="ade37357c583b84623a734a4c5ea404ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade37357c583b84623a734a4c5ea404ce">&#9670;&#160;</a></span>_gen_add_list_statment()</h2>
+<a id="a0fbca160b625edb9390d86be2a708f3f" name="a0fbca160b625edb9390d86be2a708f3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fbca160b625edb9390d86be2a708f3f">&#9670;&#160;</a></span>gen_add_list_statment()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._gen_add_list_statment </td>
+          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.gen_add_list_statment </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -713,11 +631,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate a list add code statement. </p>
@@ -733,17 +646,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a02bc9923856c3e7dc9cb118921ae205a" name="a02bc9923856c3e7dc9cb118921ae205a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a02bc9923856c3e7dc9cb118921ae205a">&#9670;&#160;</a></span>_gen_class_close()</h2>
+<a id="a9c0674c4caa94edf74ebd06d26f29dbe" name="a9c0674c4caa94edf74ebd06d26f29dbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c0674c4caa94edf74ebd06d26f29dbe">&#9670;&#160;</a></span>gen_class_close()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._gen_class_close </td>
+          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.gen_class_close </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -766,11 +676,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate the class close code. </p>
@@ -785,17 +690,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad398b08928f6b3db87e816b693af06f2" name="ad398b08928f6b3db87e816b693af06f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad398b08928f6b3db87e816b693af06f2">&#9670;&#160;</a></span>_gen_class_default_constructor()</h2>
+<a id="ad2afccc9ce478536b9d0e3b6d618f3e2" name="ad2afccc9ce478536b9d0e3b6d618f3e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2afccc9ce478536b9d0e3b6d618f3e2">&#9670;&#160;</a></span>gen_class_default_constructor()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._gen_class_default_constructor </td>
+          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.gen_class_default_constructor </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -816,13 +718,13 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">list&#160;</td>
-          <td class="paramname"><em>param_list</em> = <code>[]</code>, </td>
+          <td class="paramname"><em>param_list</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">list&#160;</td>
-          <td class="paramname"><em>constructor_code</em> = <code>[]</code>, </td>
+          <td class="paramname"><em>constructor_code</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -836,11 +738,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate default constructor(s)/destructor declarations for a class. </p>
@@ -858,17 +755,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a1b62594687135c9b4940531490c31d0b" name="a1b62594687135c9b4940531490c31d0b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b62594687135c9b4940531490c31d0b">&#9670;&#160;</a></span>_gen_class_open()</h2>
+<a id="a0ef13bf6773f6194b64335cd8f132123" name="a0ef13bf6773f6194b64335cd8f132123"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ef13bf6773f6194b64335cd8f132123">&#9670;&#160;</a></span>gen_class_open()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._gen_class_open </td>
+          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.gen_class_open </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -882,19 +776,19 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>class_desc</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>inheritence</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>class_decoration</em> = <code>None</code>, </td>
         </tr>
         <tr>
@@ -909,11 +803,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate the class open code. </p>
@@ -931,17 +820,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2a262d307f748b29467f2e1ddb6f8a55" name="a2a262d307f748b29467f2e1ddb6f8a55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a262d307f748b29467f2e1ddb6f8a55">&#9670;&#160;</a></span>_gen_function_params()</h2>
+<a id="a927fbf5ddd09313f3462f7560bfbca78" name="a927fbf5ddd09313f3462f7560bfbca78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a927fbf5ddd09313f3462f7560bfbca78">&#9670;&#160;</a></span>gen_function_params()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._gen_function_params </td>
+          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.gen_function_params </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -958,11 +844,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate the parameter method string. </p>
@@ -976,17 +857,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a04b538e255b0bfeb9e31fcfbe51f57d4" name="a04b538e255b0bfeb9e31fcfbe51f57d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04b538e255b0bfeb9e31fcfbe51f57d4">&#9670;&#160;</a></span>_gen_function_ret_type()</h2>
+<a id="af2c533f903cc536573132eb2afae12c1" name="af2c533f903cc536573132eb2afae12c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2c533f903cc536573132eb2afae12c1">&#9670;&#160;</a></span>gen_function_ret_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._gen_function_ret_type </td>
+          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.gen_function_ret_type </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -994,7 +872,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">dict|None &#160;</td>
+          <td class="paramtype">dict &#160;</td>
           <td class="paramname"><em>ret_dict</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
@@ -1003,17 +881,12 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate the type text based on the variable input ParamRetDict dictionary. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ret_dict</td><td>(dict|None) Variable ParamRetDict description dictionary </td></tr>
+    <tr><td class="paramname">ret_dict</td><td>(dict) Variable ParamRetDict description dictionary </td></tr>
   </table>
   </dd>
 </dl>
@@ -1021,17 +894,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a78150123cd9730ec600e4b01d5f0b027" name="a78150123cd9730ec600e4b01d5f0b027"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78150123cd9730ec600e4b01d5f0b027">&#9670;&#160;</a></span>_gen_import()</h2>
+<a id="ac86a07451d6bb30de52f4aa8e931bd9c" name="ac86a07451d6bb30de52f4aa8e931bd9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac86a07451d6bb30de52f4aa8e931bd9c">&#9670;&#160;</a></span>gen_import()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._gen_import </td>
+          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.gen_import </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1054,11 +924,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Add Include line to the output file. </p>
@@ -1073,17 +938,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abb0d2718fd9896d69d9850ff640720b4" name="abb0d2718fd9896d69d9850ff640720b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb0d2718fd9896d69d9850ff640720b4">&#9670;&#160;</a></span>_gen_importBlock()</h2>
+<a id="a8ea46c2dfa26967a2389176c6236bf97" name="a8ea46c2dfa26967a2389176c6236bf97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ea46c2dfa26967a2389176c6236bf97">&#9670;&#160;</a></span>gen_import_block()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._gen_importBlock </td>
+          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.gen_import_block </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1100,11 +962,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate a series if include line(s) for each name in the list. </p>
@@ -1118,17 +975,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a65570ec6f7db8ba6df21827644825271" name="a65570ec6f7db8ba6df21827644825271"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65570ec6f7db8ba6df21827644825271">&#9670;&#160;</a></span>_gen_namespace_close()</h2>
+<a id="a96464e868c70478bd36a3c5880dee21e" name="a96464e868c70478bd36a3c5880dee21e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96464e868c70478bd36a3c5880dee21e">&#9670;&#160;</a></span>gen_namespace_close()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._gen_namespace_close </td>
+          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.gen_namespace_close </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1145,11 +999,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate namespace start code for include file. </p>
@@ -1163,17 +1012,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="afd47270163b7b5ebf7a6a915499ae6e0" name="afd47270163b7b5ebf7a6a915499ae6e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd47270163b7b5ebf7a6a915499ae6e0">&#9670;&#160;</a></span>_gen_namespace_open()</h2>
+<a id="ae396fb504d59134ea39568a1db0383dc" name="ae396fb504d59134ea39568a1db0383dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae396fb504d59134ea39568a1db0383dc">&#9670;&#160;</a></span>gen_namespace_open()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._gen_namespace_open </td>
+          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.gen_namespace_open </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1190,11 +1036,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate namespace start code for include file. </p>
@@ -1208,17 +1049,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a3ad7b172bcd8a1e4e3d565c132d6dc3b" name="a3ad7b172bcd8a1e4e3d565c132d6dc3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ad7b172bcd8a1e4e3d565c132d6dc3b">&#9670;&#160;</a></span>_gen_return_statment()</h2>
+<a id="a18d5351c6ff95f686946699f9b5d57a3" name="a18d5351c6ff95f686946699f9b5d57a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18d5351c6ff95f686946699f9b5d57a3">&#9670;&#160;</a></span>gen_return_statment()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._gen_return_statment </td>
+          <td class="memname">str typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.gen_return_statment </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1241,11 +1079,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate a list add code statement. </p>
@@ -1260,17 +1093,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae056b9106e08aa4e19e32a822cd4097f" name="ae056b9106e08aa4e19e32a822cd4097f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae056b9106e08aa4e19e32a822cd4097f">&#9670;&#160;</a></span>_generate_generic_file_header()</h2>
+<a id="a03065444a4780dab210e2abe0177cef4" name="a03065444a4780dab210e2abe0177cef4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03065444a4780dab210e2abe0177cef4">&#9670;&#160;</a></span>generate_generic_file_header()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._generate_generic_file_header </td>
+          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.generate_generic_file_header </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1290,7 +1120,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str|None &#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>owner</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
@@ -1299,11 +1129,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Generate the boiler plate file header with copyright and eula. </p>
@@ -1319,17 +1144,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a27c86657e1749f334ec5d512d366d870" name="a27c86657e1749f334ec5d512d366d870"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27c86657e1749f334ec5d512d366d870">&#9670;&#160;</a></span>_xlate_params()</h2>
+<a id="aa0c6c6f0c0b8a99c2885f611ffe86107" name="aa0c6c6f0c0b8a99c2885f611ffe86107"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0c6c6f0c0b8a99c2885f611ffe86107">&#9670;&#160;</a></span>xlate_params()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._xlate_params </td>
+          <td class="memname">list typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.xlate_params </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1346,11 +1168,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Translate the generic parameter list type strings to the typescript specific parameter type strings. </p>
@@ -1364,17 +1181,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6ac9d69611e510cf0c4940383268f440" name="a6ac9d69611e510cf0c4940383268f440"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ac9d69611e510cf0c4940383268f440">&#9670;&#160;</a></span>_xlate_return_dict()</h2>
+<a id="a440513c75b2226258e32781fea84e74f" name="a440513c75b2226258e32781fea84e74f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a440513c75b2226258e32781fea84e74f">&#9670;&#160;</a></span>xlate_return_dict()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">dict|None typescript_gen.file_gen_base.GenerateTypeScriptFileHelper._xlate_return_dict </td>
+          <td class="memname">dict typescript_gen.file_gen_base.GenerateTypeScriptFileHelper.xlate_return_dict </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -1382,7 +1196,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">dict|None&#160;</td>
+          <td class="paramtype">dict&#160;</td>
           <td class="paramname"><em>ret_dict</em>&#160;</td>
         </tr>
         <tr>
@@ -1391,11 +1205,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Translate the generic return dictionary to the typescript specific return dictionary. </p>
@@ -1405,7 +1214,7 @@ Protected Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>dictionary|None - ParamRetDict return dictionary with the translated type or None if input is None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>dictionary - ParamRetDict return dictionary with the translated type or None if input is None </dd></dl>
 
 </div>
 </div>
