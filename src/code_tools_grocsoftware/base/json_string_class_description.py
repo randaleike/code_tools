@@ -59,6 +59,7 @@ class StringClassDescription():
             self.string_jason_data = {'baseClassName': "baseclass",
                                       'namespace': "myNamespace",
                                       'dynamicCompileSwitch': "DYNAMIC_INTERNATIONALIZATION",
+                                      'baseSelectionFunction': "getLocalStringListInterface",
                                       'propertyMethods':{},
                                       'translateMethods':{}}
         else:
@@ -169,6 +170,20 @@ class StringClassDescription():
         @return string - Dynamic language compile switch string from the JSON file
         """
         return self.string_jason_data['dynamicCompileSwitch']
+
+    def set_base_selection_name(self, function_name:str):
+        """!
+        @brief Set the base class language selection function name
+        @param function_name {string} Name of the function
+        """
+        self.string_jason_data['baseSelectionFunction'] = function_name
+
+    def get_base_selection_name(self)->str:
+        """!
+        @brief Get the base class language selection function name
+        @return string - Name of the base class language selection function name
+        """
+        return self.string_jason_data['baseSelectionFunction']
 
     def _define_property_function_entry(self, property_name:str = "", brief_desc:str = "",
                                      ret_type:str = "", ret_desc:str = "",

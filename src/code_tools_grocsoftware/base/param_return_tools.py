@@ -286,3 +286,12 @@ class ParamRetDict():
         @param array_size {integer} Size of the array
         """
         var_dict['typeMod'] = ParamRetDict.set_type_mod_array_size(var_dict['typeMod'], array_size)
+
+    @staticmethod
+    def is_return_list(return_dict:dict)->bool:
+        """!
+        @brief Detrmine if the return dictionary is a list type
+        @param returnDict {dict} ParamRetDict return dictionary to test
+        @return bool - True if it's a list, else false
+        """
+        return ParamRetDict.is_mod_list(ParamRetDict.get_return_type_mod(return_dict))
