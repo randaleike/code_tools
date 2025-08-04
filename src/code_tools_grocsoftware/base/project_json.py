@@ -88,9 +88,10 @@ class ProjectDescription():
         @return (string) - EULA name
         """
         if self.project_json_data['eula_name'] != 'custom':
-            return EulaText(eula_type = self.project_json_data['eula_name'])
+            eula = EulaText(eula_type = self.project_json_data['eula_name'])
         else:
-            return EulaText(custom_eula = self.project_json_data['custom_text'])
+            eula = EulaText(custom_eula = self.project_json_data['custom_text'])
+        return eula
 
     def set_eula_name(self, eula_name:str):
         """!

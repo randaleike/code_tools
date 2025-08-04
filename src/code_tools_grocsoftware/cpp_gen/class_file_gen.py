@@ -26,6 +26,8 @@ for a language string generation library
 #==========================================================================
 
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
+from code_tools_grocsoftware.base.project_json import ProjectDescription
+
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
 from code_tools_grocsoftware.base.translate_text_parser import TransTxtParser
@@ -43,54 +45,61 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
     data and generates the base and language specific source, include, mock and unittest
     files.
     """
-    def __init__(self, project:LanguageDescriptionList, classStrings:StringClassDescription,
-                 owner:str|None = None, eulaName:str|None = None):
+    def __init__(self, project_data:ProjectDescription):
         """!
         @brief GenerateBaseLangFile constructor
 
-        @param languageList {StringClassDescription} JSON language list object
-        @param classStrings {LanguageDescriptionList} JSON property/translate string
-                                                      object to use
-        @param owner {string|None} Owner name to use in the copyright header message or
-                                   None to use tool name
-        @param eulaName {string|None} EULA text to use in the header message or
-                                      None to default MIT Open
+        @param project_data {ProjectDescription} JSON project data object
         """
-        super().__init__(owner, eulaName, classStrings.get_base_class_name(),
-                         classStrings.get_dynamic_compile_switch())
+        ## Json project data object
+        self.project_data = project_data
+        ## Json language data list object
+        self.json_lang_data:LanguageDescriptionList = project_data.get_lang_data()
+        ## Json string class description object
+        self.json_str_data:StringClassDescription = project_data.get_string_data()
 
+        super().__init__(project_data.get_owner(),
+                         project_data.get_eula(),
+                         self.json_str_data.get_base_class_name(),
+                         self.json_str_data.get_dynamic_compile_switch())
+
+        ## Class generator version information
         self.version = {'Major': 1,
                         'Minor': 0,
                         'Patch': 0}
 
-        self.jsonLangData = languageList
-        self.jsonStringsData = classStrings
-
-        self.osLangSelectList = [LinuxLangSelectFunctionGenerator(self.jsonLangData,
-                                                                  owner,
-                                                                  eulaName,
-                                                                  classStrings.get_base_class_name(),
-                                                                  classStrings.get_dynamic_compile_switch()),
-                                 WindowsLangSelectFunctionGenerator(self.jsonLangData,
-                                                                    owner,
-                                                                    eulaName,
-                                                                    classStrings.get_base_class_name(),
-                                                                    classStrings.get_dynamic_compile_switch())
+        ## OS specific language selection function generator list
+        self.os_lang_sel_list = [LinuxLangSelectFunctionGenerator(self.project_data),
+                                 WindowsLangSelectFunctionGenerator(self.project_data)
                                  # Add additional OS lang select classes here
                                  ]
 
-        self.masterFunctionName = classStrings.get_base_selection_name()
-        self.nameSpaceName = classStrings.get_namespace_name()
-        self.masterFunction = MasterSelectFunctionGenerator(owner,
-                                                            eulaName,
-                                                            classStrings.getBaseClassName(),
-                                                            self.masterFunctionName,
-                                                            classStrings.getDynamicCompileSwitch())
+        ## Master language selection function name
+        self.master_function_name = self.json_str_data.get_base_selection_name()
+        ## Name space name
+        self.namespace_name = self.json_str_data.get_namespace_name()
+        ## Master language selection function generator
+        self.master_func_gen = MasterSelectFunctionGenerator(self.project_data,
+                                                             self.master_function_name)
 
+        ## File name dictionary
+        #  {language_name: {'include': include_fname,
+        #                   'source': source_fname,
+        #                   'mockInclude': mock_include_fname,
+        #                   'mockSource': mock_source_fname,
+        #                   'unittest': unittest_fname}}
         self.fnames = {}
+        ## Include subdirectory list
         self.inc_subdirs = []
 
-        self.testParamValues = {'keyString': ("--myKey", True),
+        ## Parameter test value dictionary
+        #  {param_name: (value, is_text)}
+        #  is_text is True if the value is a text string and should be quoted
+        #  when used in the test code
+        #  param_name is one of:
+        #    keyString, envKeyString, jsonKeyString, xmlKeyString,
+        #    nargs, nargsExpected, nargsFound,
+        self.test_param_values = {'keyString': ("--myKey", True),
                                 'envKeyString': ("MY_ENV_KEY", True),
                                 'jsonKeyString': ("jsonkey:", True),
                                 'xmlKeyString': ("<xmlkey>", True),
@@ -101,10 +110,8 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
                                 'vargType': ("integer", True),
                                 'valueString': ("23", True)
                                 }
-
-        self.mockClassName = "mock_"+self.jsonStringsData.getBaseClassName()
-
-
+        ## Mock class name
+        self.mock_class_name = "mock_"+self.json_str_data.get_base_class_name()
 
     def add_inculde_dir(self, subdir_name:str):
         """!
@@ -162,16 +169,16 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         @brief Generate a list of source file names
         @return list - list of unittest source, unittest file names
         """
-        unittestSets = []
-        language_list = self.jsonLangData.get_language_list()
+        unittest_sets = []
+        language_list = self.json_lang_data.get_language_list()
         for language_name in language_list:
             unittest_target = self.gen_unittest_target_name(language_name)
-            unittestSets.append((language_name,
-                                 self.fnames[language_name]['source'],
-                                 self.fnames[language_name]['unittest'],
-                                 unittest_target))
+            unittest_sets.append((language_name,
+                                  self.fnames[language_name]['source'],
+                                  self.fnames[language_name]['unittest'],
+                                  unittest_target))
 
-        return unittestSets
+        return unittest_sets
 
     def _get_param_test_value(self, param_name:str)->str:
         """!
@@ -179,14 +186,15 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         @param param_name (string) Name fot the value
         @return string - Test value
         """
-        if param_name in self.testParamValues:
-            value, is_text = self.testParamValues[param_name]
+        if param_name in self.test_param_values:
+            value, is_text = self.test_param_values[param_name]
             if is_text:
-                return "\""+value+"\""
+                retstr = "\""+value+"\""
             else:
-                return value
+                retstr = value
         else:
-            return "42"
+            retstr = "42"
+        return retstr
 
     def _gen_property_code(self, lang_name:str, property_name:str, property_return:dict)->list:
         """!
@@ -202,7 +210,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         if ParamRetDict.is_return_list(property_return):
             # List case
             code_text.append(self.gen_function_ret_type(property_return)+"returnData;")
-            data_list = self.jsonLangData.getLanguagePropertyData(lang_name, property_name)
+            data_list = self.json_lang_data.getLanguagePropertyData(lang_name, property_name)
 
             # Determine data type
             for data_item in data_list:
@@ -210,7 +218,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
             code_text.append("return returnData;")
         else:
             # Single item case
-            data_item = self.jsonLangData.get_property_data(lang_name, property_name)
+            data_item = self.json_lang_data.get_property_data(lang_name, property_name)
             code_text.append(self.gen_return_statment(data_item, is_text))
 
         return code_text
@@ -233,9 +241,9 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
             prefix = None
             skipdox = True
 
-        method_list = self.jsonStringsData.get_property_method_list()
+        method_list = self.json_str_data.get_property_method_list()
         for method_name in method_list:
-            _, desc, params, ret = self.jsonStringsData.get_property_method_data(method_name)
+            _, desc, params, ret = self.json_str_data.get_property_method_data(method_name)
             if len(params) == 0:
                 postfix = "const "+base_postfix
             else:
@@ -261,9 +269,9 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         @param class_name {string} Class name decoration
         """
         skipdox = bool(lang_name is None)
-        method_list = self.jsonStringsData.get_property_method_list()
+        method_list = self.json_str_data.get_property_method_list()
         for method in method_list:
-            name, desc, params, ret = self.jsonStringsData.get_property_method_data(method)
+            name, desc, params, ret = self.json_str_data.get_property_method_data(method)
 
             # Translate the return type
             if len(params) == 0:
@@ -325,9 +333,9 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
             postfix = "final"
             skipdox = True
 
-        method_list = self.jsonStringsData.get_tranlate_method_list()
+        method_list = self.json_str_data.get_tranlate_method_list()
         for method_name in method_list:
-            desc, params, ret = self.jsonStringsData.get_tranlate_method_function_data(method_name)
+            desc, params, ret = self.json_str_data.get_tranlate_method_function_data(method_name)
 
             hfile.writelines(self.write_method(method_name,
                                                desc,
@@ -349,9 +357,9 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         """
         skipdox = bool(lang_name is None)
 
-        methods = self.jsonStringsData.get_tranlate_method_list()
+        methods = self.json_str_data.get_tranlate_method_list()
         for name in methods:
-            desc, params, ret = self.jsonStringsData.get_tranlate_method_function_data(name)
+            desc, params, ret = self.json_str_data.get_tranlate_method_function_data(name)
 
             # Translate the return type
             if len(params) == 0:
@@ -371,10 +379,10 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
             cppfile.writelines(method_def)
 
             # Get the language generation string if needed
-            target_lang = self.jsonLangData.get_iso_code_data(lang_name)
+            target_lang = self.json_lang_data.get_iso_code_data(lang_name)
 
             # Get the language data replacements
-            stream_data = self.jsonStringsData.get_tranlate_method_text_data(name, target_lang)
+            stream_data = self.json_str_data.get_tranlate_method_text_data(name, target_lang)
             code_text = self._gen_stream_code(stream_data)
 
             # Output code body
@@ -391,7 +399,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         """
         # Set the class name and description
         decl_indent = self.level_tab_size*2
-        class_name = self.jsonStringsData.get_language_class_name(lang_name)
+        class_name = self.json_str_data.get_language_class_name(lang_name)
         if lang_name is None:
             class_desc = "Parser error/help string generation interface"
             inheritence = None
@@ -400,7 +408,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
             nocopy = False
         else:
             class_desc = "Language specific parser error/help string generation interface"
-            inheritence = "public "+self.jsonStringsData.get_base_class_name()
+            inheritence = "public "+self.json_str_data.get_base_class_name()
             class_decoration = "final"
             skipdoxy = False
             nocopy = True
@@ -413,11 +421,11 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         if lang_name is None:
             # Base includes
             include_list = ["<cstddef>", "<cstdlib>", "<memory>", "<string>"]
-            filename = self.jsonStringsData.get_base_class_name()+".h"
+            filename = self.json_str_data.get_base_class_name()+".h"
         else:
             # Language specific includes
-            include_list = [self.jsonStringsData.get_base_class_name()+".h"]
-            filename = self.jsonStringsData.get_language_class_name(lang_name)+".h"
+            include_list = [self.json_str_data.get_base_class_name()+".h"]
+            filename = self.json_str_data.get_language_class_name(lang_name)+".h"
 
         hfile.writelines(self.gen_include_block(include_list))
         hfile.writelines(["\n"]) # whitespace for readability
@@ -429,7 +437,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
 
         # Class definition
         hfile.writelines(["#pragma once\n"])
-        hfile.writelines(self.gen_namespace_open(self.nameSpaceName))
+        hfile.writelines(self.gen_namespace_open(self.namespace_name))
         hfile.writelines(["\n"]) # whitespace for readability
 
         # Start class definition
@@ -452,7 +460,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
 
         if lang_name is None:
             # Add the static generation function declaration
-            sname, sdesc, sret, sparams = self.masterFunction.get_function_desc()
+            sname, sdesc, sret, sparams = self.master_func_gen.get_function_desc()
             sfunc = self.declare_function_with_decorations(sname,
                                                            sdesc,
                                                            sparams,
@@ -467,7 +475,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
 
         # Close the namespace
         hfile.writelines(["\n"]) # whitespace for readability
-        hfile.writelines(self.gen_namespace_close(self.nameSpaceName))
+        hfile.writelines(self.gen_namespace_close(self.namespace_name))
 
         if group_name is not None:
             # Complete the doxygen group

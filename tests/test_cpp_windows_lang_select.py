@@ -94,7 +94,7 @@ class TestClass01WindowsLangSelect:
         mock_string_data.get_dynamic_compile_switch = mocker.Mock(return_value="DYNAMIC_INTERNATIONALIZATION")
 
         return mock_project_data
-    
+
     def test001_constructor_default(self, mocker):
         """!
         @brief Test constructor, default input

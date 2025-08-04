@@ -26,7 +26,6 @@ for a language string generation library
 #==========================================================================
 
 from code_tools_grocsoftware.base.project_json import ProjectDescription
-from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
 
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
@@ -42,7 +41,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         @brief WindowsLangSelectFunctionGenerator constructor
         @param json_project_data {ProjectDescription} JSON project description data
         """
-        jsonstringdesc = json_project_data.get_string_data()
+        jsonstringdesc:StringClassDescription = json_project_data.get_string_data()
         base_class_name = jsonstringdesc.get_base_class_name()
         dynamic_compile_switch = jsonstringdesc.get_dynamic_compile_switch()
 
@@ -50,7 +49,7 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
                          json_project_data.get_eula(),
                          base_class_name,
                          dynamic_compile_switch)
-     
+
         self.select_function_name = "get"+base_class_name+"_Windows"
 
         desc = "Return value from GetUserDefaultUILanguage() call"

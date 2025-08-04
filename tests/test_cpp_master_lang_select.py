@@ -28,7 +28,6 @@ import os
 
 from code_tools_grocsoftware.base.doxygen_gen_tools import CDoxyCommentGenerator
 from code_tools_grocsoftware.base.eula import EulaText
-from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 
 from code_tools_grocsoftware.cpp_gen.string_class_tools import BaseCppStringClassGenerator
 from code_tools_grocsoftware.cpp_gen.windows_lang_select import WindowsLangSelectFunctionGenerator

@@ -42,7 +42,7 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
         @param project_data {ProjectDescription} JSON project description data
         @param method_name {string} Function name to be used for generation
         """
-        jsonstringdesc = project_data.get_string_data()
+        jsonstringdesc:StringClassDescription = project_data.get_string_data()
         base_class_name = jsonstringdesc.get_base_class_name()
         dynamic_compile_switch = jsonstringdesc.get_dynamic_compile_switch()
 
