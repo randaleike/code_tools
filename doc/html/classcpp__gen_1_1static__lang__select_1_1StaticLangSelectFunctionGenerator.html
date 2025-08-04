@@ -107,9 +107,9 @@ Collaboration diagram for cpp_gen.static_lang_select.StaticLangSelectFunctionGen
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad84326c50c9ccaf5fab52e13e11afce6" id="r_ad84326c50c9ccaf5fab52e13e11afce6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__gen_1_1static__lang__select_1_1StaticLangSelectFunctionGenerator.html#ad84326c50c9ccaf5fab52e13e11afce6">__init__</a> (self, LanguageDescriptionList json_lang_data, str owner=None, str eula_name=None, str base_class_name=&quot;BaseClass&quot;, str dynamic_compile_switch=&quot;DYNAMIC_INTERNATIONALIZATION&quot;)</td></tr>
-<tr class="memdesc:ad84326c50c9ccaf5fab52e13e11afce6"><td class="mdescLeft">&#160;</td><td class="mdescRight">StaticLangSelectFunctionGenerator constructor.  <br /></td></tr>
-<tr class="separator:ad84326c50c9ccaf5fab52e13e11afce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5c3af988627f12334ca2c55302f5605" id="r_ae5c3af988627f12334ca2c55302f5605"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__gen_1_1static__lang__select_1_1StaticLangSelectFunctionGenerator.html#ae5c3af988627f12334ca2c55302f5605">__init__</a> (self, ProjectDescription json_project_data)</td></tr>
+<tr class="memdesc:ae5c3af988627f12334ca2c55302f5605"><td class="mdescLeft">&#160;</td><td class="mdescRight">StaticLangSelectFunctionGenerator constructor.  <br /></td></tr>
+<tr class="separator:ae5c3af988627f12334ca2c55302f5605"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a732f7412faad82c47fdeeb334a19a4be" id="r_a732f7412faad82c47fdeeb334a19a4be"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__gen_1_1static__lang__select_1_1StaticLangSelectFunctionGenerator.html#a732f7412faad82c47fdeeb334a19a4be">get_function_name</a> (self)</td></tr>
 <tr class="memdesc:a732f7412faad82c47fdeeb334a19a4be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the selection function name.  <br /></td></tr>
 <tr class="separator:a732f7412faad82c47fdeeb334a19a4be"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,8 +167,8 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Methods for compile switch determined language select function generation. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ad84326c50c9ccaf5fab52e13e11afce6" name="ad84326c50c9ccaf5fab52e13e11afce6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad84326c50c9ccaf5fab52e13e11afce6">&#9670;&#160;</a></span>__init__()</h2>
+<a id="ae5c3af988627f12334ca2c55302f5605" name="ae5c3af988627f12334ca2c55302f5605"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5c3af988627f12334ca2c55302f5605">&#9670;&#160;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -182,32 +182,8 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">LanguageDescriptionList&#160;</td>
-          <td class="paramname"><em>json_lang_data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>owner</em> = <code>None</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>eula_name</em> = <code>None</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>base_class_name</em> = <code>&quot;BaseClass&quot;</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>dynamic_compile_switch</em> = <code>&quot;DYNAMIC_INTERNATIONALIZATION&quot;</code>&#160;</td>
+          <td class="paramtype">ProjectDescription&#160;</td>
+          <td class="paramname"><em>json_project_data</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -220,11 +196,7 @@ Public Attributes</h2></td></tr>
 <p>StaticLangSelectFunctionGenerator constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">json_lang_data</td><td>{string} JSON language description list file name </td></tr>
-    <tr><td class="paramname">owner</td><td>{string} Owner name to use in the copyright header message or None to use tool name </td></tr>
-    <tr><td class="paramname">eula_name</td><td>{string} Name of the EULA to pass down to the BaseCppStringClassGenerator parent </td></tr>
-    <tr><td class="paramname">base_class_name</td><td>{string} Name of the base class for name generation </td></tr>
-    <tr><td class="paramname">dynnamic_compile_switch</td><td>{string} Dynamic compile switch for #if generation </td></tr>
+    <tr><td class="paramname">json_project_data</td><td>{ProjectDescription} JSON project description data </td></tr>
   </table>
   </dd>
 </dl>

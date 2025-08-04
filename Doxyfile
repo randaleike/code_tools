@@ -56,7 +56,7 @@ PROJECT_LOGO           = https://www.python.org/static/community_logos/python-lo
 # entered, it will be relative to the location where doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = /media/raid5/github/code_tools/doc
+OUTPUT_DIRECTORY       = /home/randy/github/code_tools/doc
 
 # If the CREATE_SUBDIRS tag is set to YES then doxygen will create 4096 sub-
 # directories (in 2 levels) under the output directory of each output format and

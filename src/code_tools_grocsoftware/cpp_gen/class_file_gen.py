@@ -43,7 +43,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
     data and generates the base and language specific source, include, mock and unittest
     files.
     """
-    def __init__(self, languageList:LanguageDescriptionList, classStrings:StringClassDescription,
+    def __init__(self, project:LanguageDescriptionList, classStrings:StringClassDescription,
                  owner:str|None = None, eulaName:str|None = None):
         """!
         @brief GenerateBaseLangFile constructor

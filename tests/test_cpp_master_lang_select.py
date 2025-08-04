@@ -27,7 +27,9 @@ Unittest for programmer base tools utility
 import os
 
 from code_tools_grocsoftware.base.doxygen_gen_tools import CDoxyCommentGenerator
+from code_tools_grocsoftware.base.eula import EulaText
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
+
 from code_tools_grocsoftware.cpp_gen.string_class_tools import BaseCppStringClassGenerator
 from code_tools_grocsoftware.cpp_gen.windows_lang_select import WindowsLangSelectFunctionGenerator
 from code_tools_grocsoftware.cpp_gen.linux_lang_select import LinuxLangSelectFunctionGenerator
@@ -37,17 +39,50 @@ from tests.dir_init import TESTFILEPATH
 
 testJsonList = os.path.join(TESTFILEPATH,"teststringlanglist.json")
 
+class DummyEulaText(EulaText):
+    """!
+    Dummy EulaText class for testing
+    """
+    def __init__(self):
+        """!
+        @brief DummyEulaText constructor
+        """
+        super().__init__(custom_eula=["Dummy EULA text for testing purposes"])
+
+    @staticmethod
+    def get_expected_eula()->list:
+        """!
+        @brief Get the expected EULA text
+        @return {list} List of expected EULA text lines
+        """
+        return ["Dummy EULA text for testing purposes"]
+
 # pylint: disable=protected-access
 
 class TestClass01MasterLangSelect:
     """!
     @brief Unit test for the BaseCppStringClassGenerator class
     """
-    def test001_constructor_default(self):
+    def default_setup(self, mocker):
+        """!
+        @brief Default setup for the tests
+        """
+        mock_project_data = mocker.Mock()
+        mock_string_data = mocker.Mock()
+        mock_project_data.get_string_data = mocker.Mock(return_value=mock_string_data)
+        mock_project_data.get_owner = mocker.Mock(return_value="TestOwner")
+        mock_project_data.get_eula = mocker.Mock(return_value=DummyEulaText())
+
+        mock_string_data.get_base_class_name = mocker.Mock(return_value="BaseClass")
+        mock_string_data.get_dynamic_compile_switch = mocker.Mock(return_value="DYNAMIC_INTERNATIONALIZATION")
+
+        return mock_project_data
+
+    def test001_constructor_default(self, mocker):
         """!
         @brief Test constructor, default input
         """
-        test_obj = MasterSelectFunctionGenerator()
+        test_obj = MasterSelectFunctionGenerator(self.default_setup(mocker))
 
         assert test_obj.base_class_name == "BaseClass"
         assert test_obj.select_base_function_name == "getLocalParserStringListInterface"
@@ -58,15 +93,21 @@ class TestClass01MasterLangSelect:
                                       "local language setting and return the correct class object"
         assert isinstance(test_obj.doxy_comment_gen, CDoxyCommentGenerator)
 
-    def test002_constructor_non_default(self):
+    def test002_constructor_non_default(self, mocker):
         """!
         @brief Test constructor, with input
         """
-        test_obj = MasterSelectFunctionGenerator("George",
-                                                 "MIT_open",
-                                                 "TestBaseClass",
-                                                 "getLocalLang",
-                                                 "TEST_DYNAM_SWITCH")
+        mock_project_data = mocker.Mock()
+        mock_string_data = mocker.Mock()
+        mock_project_data.get_string_data = mocker.Mock(return_value=mock_string_data)
+        mock_project_data.get_owner = mocker.Mock(return_value="George")
+        mock_project_data.get_eula = mocker.Mock(return_value=DummyEulaText())
+
+        mock_string_data.get_base_class_name = mocker.Mock(return_value="TestBaseClass")
+        mock_string_data.get_dynamic_compile_switch = mocker.Mock(return_value="TEST_DYNAM_SWITCH")
+
+        test_obj = MasterSelectFunctionGenerator(mock_project_data,
+                                                 "getLocalLang")
 
         assert test_obj.base_class_name == "TestBaseClass"
         assert test_obj.select_base_function_name == "getLocalLang"
@@ -77,30 +118,30 @@ class TestClass01MasterLangSelect:
                                       "local language setting and return the correct class object"
         assert isinstance(test_obj.doxy_comment_gen, CDoxyCommentGenerator)
 
-    def test003_get_function_name(self):
+    def test003_get_function_name(self, mocker):
         """!
         @brief Test get_function_name
         """
-        test_obj = MasterSelectFunctionGenerator()
+        test_obj = MasterSelectFunctionGenerator(self.default_setup(mocker))
         assert test_obj.get_function_name() == "BaseClass::getLocalParserStringListInterface"
 
-    def test004_get_function_desc(self):
+    def test004_get_function_desc(self, mocker):
         """!
         @brief Test get_function_desc
         """
-        test_obj = MasterSelectFunctionGenerator()
+        test_obj = MasterSelectFunctionGenerator(self.default_setup(mocker))
         function_name, brief_desc, ret_ptr_dict, parma_list = test_obj.get_function_desc()
         assert function_name == test_obj.select_base_function_name
         assert brief_desc == test_obj.brief_desc
         assert ret_ptr_dict == test_obj.base_intf_ret_ptr_dict
         assert len(parma_list) == 0
 
-    def test005_gen_function_define(self):
+    def test005_gen_function_define(self, mocker):
         """!
         @brief Test gen_function_define
         """
         cpp_gen = BaseCppStringClassGenerator()
-        test_obj = MasterSelectFunctionGenerator(LanguageDescriptionList())
+        test_obj = MasterSelectFunctionGenerator(self.default_setup(mocker))
         expected_list = cpp_gen.define_function_with_decorations(test_obj.select_function_name,
                                                              test_obj.brief_desc,
                                                              [],
@@ -112,21 +153,21 @@ class TestClass01MasterLangSelect:
         for index, expected_text in enumerate(expected_list):
             assert test_list[index] == expected_text
 
-    def test006_gen_function_end(self):
+    def test006_gen_function_end(self, mocker):
         """!
         @brief Test gen_function_end
         """
-        test_obj = MasterSelectFunctionGenerator(LanguageDescriptionList())
+        test_obj = MasterSelectFunctionGenerator(self.default_setup(mocker))
         assert test_obj.gen_function_end() == "} // end of "+test_obj.select_function_name+"()\n"
 
-    def test007_gen_function(self):
+    def test007_gen_function(self, mocker):
         """!
         @brief Test gen_function
         """
         cpp_gen = BaseCppStringClassGenerator()
-        os_lang_selectors = [LinuxLangSelectFunctionGenerator(LanguageDescriptionList()),
-                           WindowsLangSelectFunctionGenerator(LanguageDescriptionList())]
-        test_obj = MasterSelectFunctionGenerator(os_lang_selectors)
+        os_lang_selectors = [LinuxLangSelectFunctionGenerator(self.default_setup(mocker)),
+                           WindowsLangSelectFunctionGenerator(self.default_setup(mocker))]
+        test_obj = MasterSelectFunctionGenerator(self.default_setup(mocker))
 
         capture_list = test_obj.gen_function(os_lang_selectors)
 
@@ -163,22 +204,22 @@ class TestClass01MasterLangSelect:
         assert capture_list[list_index+2] == "#endif // defined os\n"
         assert capture_list[list_index+3] == "} // end of "+test_obj.select_function_name+"()\n"
 
-    def test008_gen_return_function_call(self):
+    def test008_gen_return_function_call(self, mocker):
         """!
         @brief Test gen_return_function_call
         """
-        test_obj = MasterSelectFunctionGenerator()
+        test_obj = MasterSelectFunctionGenerator(self.default_setup(mocker))
         str_list = test_obj.gen_return_function_call()
         assert len(str_list) == 1
         assert str_list[0] == "    return "+test_obj.select_function_name+"();\n"
 
-    def test009_gen_unit_test(self):
+    def test009_gen_unit_test(self, mocker):
         """!
         @brief Test gen_unit_test
         """
-        os_lang_selectors = [LinuxLangSelectFunctionGenerator(LanguageDescriptionList()),
-                           WindowsLangSelectFunctionGenerator(LanguageDescriptionList())]
-        test_obj = MasterSelectFunctionGenerator()
+        os_lang_selectors = [LinuxLangSelectFunctionGenerator(self.default_setup(mocker)),
+                           WindowsLangSelectFunctionGenerator(self.default_setup(mocker))]
+        test_obj = MasterSelectFunctionGenerator(self.default_setup(mocker))
         text_list = test_obj.gen_unit_test("get_iso_code", os_lang_selectors)
 
         # Test extern definitions

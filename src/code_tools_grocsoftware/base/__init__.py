@@ -29,7 +29,7 @@ __version__ = '0.8.3'
 __all__ = ["commit_check", "text_format", "copyright_generator", "eula",
            "comment_gen_tools", "doxygen_gen_tools", "param_return_tools",
            "json_language_list", "json_string_class_description",
-           "insert_new_copyright_block"]
+           "project_json", "insert_new_copyright_block"]
 
 from . import commit_check
 from . import text_format
@@ -45,3 +45,5 @@ from . import param_return_tools
 from . import json_language_list
 from . import json_string_class_description
 from . import insert_new_copyright_block
+from . import project_json
+

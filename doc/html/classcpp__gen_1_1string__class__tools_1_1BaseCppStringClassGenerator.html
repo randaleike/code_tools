@@ -108,9 +108,9 @@ Collaboration diagram for cpp_gen.string_class_tools.BaseCppStringClassGenerator
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3e679ca4b60fbb10357ab169acc755cd" id="r_a3e679ca4b60fbb10357ab169acc755cd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__gen_1_1string__class__tools_1_1BaseCppStringClassGenerator.html#a3e679ca4b60fbb10357ab169acc755cd">__init__</a> (self, str <a class="el" href="classcpp__gen_1_1string__class__tools_1_1BaseCppStringClassGenerator.html#a4d6e0874003c45febdee40fa9c857910">owner</a>=None, str eula_name=None, str <a class="el" href="classcpp__gen_1_1string__class__tools_1_1BaseCppStringClassGenerator.html#aa638d7698beeb0212036e594716a6828">base_class_name</a>=&quot;BaseClass&quot;, str <a class="el" href="classcpp__gen_1_1string__class__tools_1_1BaseCppStringClassGenerator.html#aebbc19bdc31d83401be204476b4da954">dynamic_compile_switch</a>=&quot;DYNAMIC_INTERNATIONALIZATION&quot;)</td></tr>
-<tr class="memdesc:a3e679ca4b60fbb10357ab169acc755cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">BaseCppStringClassGenerator constructor.  <br /></td></tr>
-<tr class="separator:a3e679ca4b60fbb10357ab169acc755cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accc66c0c61743a83c14ba68b06eea196" id="r_accc66c0c61743a83c14ba68b06eea196"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__gen_1_1string__class__tools_1_1BaseCppStringClassGenerator.html#accc66c0c61743a83c14ba68b06eea196">__init__</a> (self, str <a class="el" href="classcpp__gen_1_1string__class__tools_1_1BaseCppStringClassGenerator.html#a4d6e0874003c45febdee40fa9c857910">owner</a>=None, EulaText eula=None, str <a class="el" href="classcpp__gen_1_1string__class__tools_1_1BaseCppStringClassGenerator.html#aa638d7698beeb0212036e594716a6828">base_class_name</a>=&quot;BaseClass&quot;, str <a class="el" href="classcpp__gen_1_1string__class__tools_1_1BaseCppStringClassGenerator.html#aebbc19bdc31d83401be204476b4da954">dynamic_compile_switch</a>=&quot;DYNAMIC_INTERNATIONALIZATION&quot;)</td></tr>
+<tr class="memdesc:accc66c0c61743a83c14ba68b06eea196"><td class="mdescLeft">&#160;</td><td class="mdescRight">BaseCppStringClassGenerator constructor.  <br /></td></tr>
+<tr class="separator:accc66c0c61743a83c14ba68b06eea196"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a6da2785ff0325a519f7fa5aa703426" id="r_a8a6da2785ff0325a519f7fa5aa703426"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__gen_1_1string__class__tools_1_1BaseCppStringClassGenerator.html#a8a6da2785ff0325a519f7fa5aa703426">gen_h_fname</a> (self, str lang_name=None)</td></tr>
 <tr class="memdesc:a8a6da2785ff0325a519f7fa5aa703426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the include file name based on the class and language names.  <br /></td></tr>
 <tr class="separator:a8a6da2785ff0325a519f7fa5aa703426"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,8 +218,8 @@ Protected Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base string class generation class. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3e679ca4b60fbb10357ab169acc755cd" name="a3e679ca4b60fbb10357ab169acc755cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e679ca4b60fbb10357ab169acc755cd">&#9670;&#160;</a></span>__init__()</h2>
+<a id="accc66c0c61743a83c14ba68b06eea196" name="accc66c0c61743a83c14ba68b06eea196"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accc66c0c61743a83c14ba68b06eea196">&#9670;&#160;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -239,8 +239,8 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>eula_name</em> = <code>None</code>, </td>
+          <td class="paramtype">EulaText&#160;</td>
+          <td class="paramname"><em>eula</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -266,7 +266,7 @@ Protected Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">owner</td><td>{string} Owner string for the copyright/EULA file header comment </td></tr>
-    <tr><td class="paramname">eula_name</td><td>{string} EULA name for the copyright/EULA file header comment </td></tr>
+    <tr><td class="paramname">eula</td><td>{EulaText} EULA data for the copyright/EULA file header comment </td></tr>
     <tr><td class="paramname">base_class_name</td><td>{string} Base class name for class definition generation </td></tr>
     <tr><td class="paramname">dynamic_compile_switch</td><td>{string} Dynamic language selection compile switch </td></tr>
   </table>

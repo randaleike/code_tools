@@ -1,3 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classcpp__gen_1_1file__gen__base_1_1GenerateCppFileHelper.html" title="File generation helper class." alt="" coords="5,5,239,45"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,163,223,189"/>
+<area shape="rect" id="Node000001" href="$classcpp__gen_1_1class__file__gen_1_1GenerateLangFiles.html" title="Class takes the LanguageDescriptionList JSON data and StringClassDescription JSON data and generates ..." alt="" coords="310,5,489,45"/>
+<area shape="poly" id="edge11_Node000000_Node000001" title=" " alt="" coords="136,152,194,103,230,77,270,55,309,40,311,45,272,60,233,82,197,107,140,156"/>
+<area shape="rect" id="Node000002" href="$classcpp__gen_1_1linux__lang__select_1_1LinuxLangSelectFunctionGenerator.html" title="Methods for Linux language select function generation." alt="" coords="283,70,516,125"/>
+<area shape="poly" id="edge12_Node000000_Node000002" title=" " alt="" coords="174,157,299,122,300,127,175,162"/>
+<area shape="rect" id="Node000003" href="$classcpp__gen_1_1master__lang__select_1_1MasterSelectFunctionGenerator.html" title="Methods for master language select function generation." alt="" coords="293,149,505,203"/>
+<area shape="poly" id="edge13_Node000000_Node000003" title=" " alt="" coords="237,173,293,173,293,179,237,179"/>
+<area shape="rect" id="Node000004" href="$classcpp__gen_1_1static__lang__select_1_1StaticLangSelectFunctionGenerator.html" title="Methods for compile switch determined language select function generation." alt="" coords="282,227,517,282"/>
+<area shape="poly" id="edge14_Node000000_Node000004" title=" " alt="" coords="175,190,300,225,299,230,174,195"/>
+<area shape="rect" id="Node000005" href="$classcpp__gen_1_1windows__lang__select_1_1WindowsLangSelectFunctionGenerator.html" title="Methods for Windows language select function generation." alt="" coords="271,306,528,361"/>
+<area shape="poly" id="edge15_Node000000_Node000005" title=" " alt="" coords="140,196,198,243,234,269,272,291,300,304,298,308,269,296,231,273,195,248,137,200"/>
 </map>

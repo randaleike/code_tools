@@ -27,22 +27,23 @@ for a language string generation library
 
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.cpp_gen.file_gen_base import GenerateCppFileHelper
+from code_tools_grocsoftware.base.eula import EulaText
 
 class BaseCppStringClassGenerator(GenerateCppFileHelper):
     """!
     Base string class generation class
     """
-    def __init__(self, owner:str = None, eula_name:str = None,
+    def __init__(self, owner:str = None, eula:EulaText=None,
                  base_class_name:str = "BaseClass",
                  dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
         """!
         @brief BaseCppStringClassGenerator constructor
         @param owner {string} Owner string for the copyright/EULA file header comment
-        @param eula_name {string} EULA name for the copyright/EULA file header comment
+        @param eula {EulaText} EULA data for the copyright/EULA file header comment
         @param base_class_name {string} Base class name for class definition generation
         @param dynamic_compile_switch {string} Dynamic language selection compile switch
         """
-        super().__init__(eula_name)
+        super().__init__(eula)
         ## Owner name for file header copyright message generation
         self.owner = "BaseCppStringClassGenerator"
         if owner is not None:

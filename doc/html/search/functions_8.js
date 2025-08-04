@@ -8,5 +8,6 @@ var searchData=
   ['is_5fparsed_5fparam_5ftype_5',['is_parsed_param_type',['../classbase_1_1translate__text__parser_1_1TransTxtParser.html#ae2599515cd054ebbcdd5db727ed9dcb0',1,'base::translate_text_parser::TransTxtParser']]],
   ['is_5fparsed_5fspecial_5ftype_6',['is_parsed_special_type',['../classbase_1_1translate__text__parser_1_1TransTxtParser.html#a62c16405d4e168a9a1681ac7ee2e1157',1,'base::translate_text_parser::TransTxtParser']]],
   ['is_5fparsed_5ftext_5ftype_7',['is_parsed_text_type',['../classbase_1_1translate__text__parser_1_1TransTxtParser.html#ab149d57663d1c6f579c6677df8afb544',1,'base::translate_text_parser::TransTxtParser']]],
-  ['is_5fproperty_5ftext_8',['is_property_text',['../classbase_1_1json__language__list_1_1LanguageDescriptionList.html#a8b7475698e7de3865c446f2e3aa140bf',1,'base::json_language_list::LanguageDescriptionList']]]
+  ['is_5fproperty_5ftext_8',['is_property_text',['../classbase_1_1json__language__list_1_1LanguageDescriptionList.html#a8b7475698e7de3865c446f2e3aa140bf',1,'base::json_language_list::LanguageDescriptionList']]],
+  ['is_5freturn_5flist_9',['is_return_list',['../classbase_1_1param__return__tools_1_1ParamRetDict.html#a9299bbf22987c32ebb7dbd109bf35100',1,'base::param_return_tools::ParamRetDict']]]
 ];

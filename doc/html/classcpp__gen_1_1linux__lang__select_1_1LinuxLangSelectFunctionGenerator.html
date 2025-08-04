@@ -108,9 +108,9 @@ Collaboration diagram for cpp_gen.linux_lang_select.LinuxLangSelectFunctionGener
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a01c85f82d4ada1da7c82f4f4b3c40d8d" id="r_a01c85f82d4ada1da7c82f4f4b3c40d8d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__gen_1_1linux__lang__select_1_1LinuxLangSelectFunctionGenerator.html#a01c85f82d4ada1da7c82f4f4b3c40d8d">__init__</a> (self, LanguageDescriptionList json_lang_data, str owner=None, str eula_name=None, str base_class_name=&quot;BaseClass&quot;, str dynamic_compile_switch=&quot;DYNAMIC_INTERNATIONALIZATION&quot;)</td></tr>
-<tr class="memdesc:a01c85f82d4ada1da7c82f4f4b3c40d8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">LinuxLangSelectFunctionGenerator constructor.  <br /></td></tr>
-<tr class="separator:a01c85f82d4ada1da7c82f4f4b3c40d8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a7c550e002f30027dad6ffb6c70c217" id="r_a7a7c550e002f30027dad6ffb6c70c217"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__gen_1_1linux__lang__select_1_1LinuxLangSelectFunctionGenerator.html#a7a7c550e002f30027dad6ffb6c70c217">__init__</a> (self, ProjectDescription json_project_data)</td></tr>
+<tr class="memdesc:a7a7c550e002f30027dad6ffb6c70c217"><td class="mdescLeft">&#160;</td><td class="mdescRight">LinuxLangSelectFunctionGenerator constructor.  <br /></td></tr>
+<tr class="separator:a7a7c550e002f30027dad6ffb6c70c217"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac218bd61ecb29f5d5efef8e4fc0a64ca" id="r_ac218bd61ecb29f5d5efef8e4fc0a64ca"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__gen_1_1linux__lang__select_1_1LinuxLangSelectFunctionGenerator.html#ac218bd61ecb29f5d5efef8e4fc0a64ca">get_function_name</a> (self)</td></tr>
 <tr class="memdesc:ac218bd61ecb29f5d5efef8e4fc0a64ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the selection function name.  <br /></td></tr>
 <tr class="separator:ac218bd61ecb29f5d5efef8e4fc0a64ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,8 +178,8 @@ Protected Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Methods for Linux language select function generation. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a01c85f82d4ada1da7c82f4f4b3c40d8d" name="a01c85f82d4ada1da7c82f4f4b3c40d8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01c85f82d4ada1da7c82f4f4b3c40d8d">&#9670;&#160;</a></span>__init__()</h2>
+<a id="a7a7c550e002f30027dad6ffb6c70c217" name="a7a7c550e002f30027dad6ffb6c70c217"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a7c550e002f30027dad6ffb6c70c217">&#9670;&#160;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,32 +193,8 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">LanguageDescriptionList&#160;</td>
-          <td class="paramname"><em>json_lang_data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>owner</em> = <code>None</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>eula_name</em> = <code>None</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>base_class_name</em> = <code>&quot;BaseClass&quot;</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>dynamic_compile_switch</em> = <code>&quot;DYNAMIC_INTERNATIONALIZATION&quot;</code>&#160;</td>
+          <td class="paramtype">ProjectDescription&#160;</td>
+          <td class="paramname"><em>json_project_data</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -231,11 +207,7 @@ Protected Member Functions</h2></td></tr>
 <p>LinuxLangSelectFunctionGenerator constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">json_lang_data</td><td>{string} JSON language description list file name </td></tr>
-    <tr><td class="paramname">owner</td><td>{string} Owner name to use in the copyright header message or None to use tool name </td></tr>
-    <tr><td class="paramname">eula_name</td><td>{string} Name of the EULA to pass down to the BaseCppStringClassGenerator parent </td></tr>
-    <tr><td class="paramname">base_class_name</td><td>{string} Name of the base class for name generation </td></tr>
-    <tr><td class="paramname">dynnamic_compile_switch</td><td>{string} Dynamic compile switch for #if generation </td></tr>
+    <tr><td class="paramname">json_project_data</td><td>{ProjectDescription} JSON project description data </td></tr>
   </table>
   </dd>
 </dl>

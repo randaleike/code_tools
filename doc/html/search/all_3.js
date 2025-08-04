@@ -2,7 +2,7 @@ var searchData=
 [
   ['ccommentgenerator_0',['CCommentGenerator',['../classbase_1_1comment__gen__tools_1_1CCommentGenerator.html',1,'base::comment_gen_tools']]],
   ['cdoxycommentgenerator_1',['CDoxyCommentGenerator',['../classbase_1_1doxygen__gen__tools_1_1CDoxyCommentGenerator.html',1,'base::doxygen_gen_tools']]],
-  ['clear_2',['clear',['../classbase_1_1json__language__list_1_1LanguageDescriptionList.html#a78b6edaae8bc492a31a7e04be6db7c1a',1,'base::json_language_list::LanguageDescriptionList']]],
+  ['clear_2',['clear',['../classbase_1_1json__language__list_1_1LanguageDescriptionList.html#a78b6edaae8bc492a31a7e04be6db7c1a',1,'base.json_language_list.LanguageDescriptionList.clear()'],['../classbase_1_1project__json_1_1ProjectDescription.html#acc309d87db0739308c638b5611ee025a',1,'base.project_json.ProjectDescription.clear()']]],
   ['code_5ftools_3',['code_tools',['../index.html',1,'']]],
   ['comment_5fdata_4',['comment_data',['../classbase_1_1comment__gen__tools_1_1CommentGenerator.html#ab235673bf8ff75fcab7bb9aedff4109c',1,'base::comment_gen_tools::CommentGenerator']]],
   ['commentgenerator_5',['CommentGenerator',['../classbase_1_1comment__gen__tools_1_1CommentGenerator.html',1,'base::comment_gen_tools']]],

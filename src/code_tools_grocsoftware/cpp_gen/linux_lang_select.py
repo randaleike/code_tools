@@ -26,7 +26,10 @@ for a language string generation library
 #==========================================================================
 
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
+from code_tools_grocsoftware.base.project_json import ProjectDescription
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
+from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
+
 from code_tools_grocsoftware.base.doxygen_gen_tools import CDoxyCommentGenerator
 from code_tools_grocsoftware.cpp_gen.string_class_tools import BaseCppStringClassGenerator
 
@@ -34,21 +37,20 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
     """!
     Methods for Linux language select function generation
     """
-    def __init__(self, json_lang_data:LanguageDescriptionList,
-                 owner:str = None, eula_name:str = None,
-                 base_class_name:str = "BaseClass",
-                 dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
+    def __init__(self, json_project_data:ProjectDescription):
         """!
         @brief LinuxLangSelectFunctionGenerator constructor
-        @param json_lang_data {string} JSON language description list file name
-        @param owner {string} Owner name to use in the copyright header message or
-                              None to use tool name
-        @param eula_name {string} Name of the EULA to pass down to the BaseCppStringClassGenerator
-                                  parent
-        @param base_class_name {string} Name of the base class for name generation
-        @param dynnamic_compile_switch {string} Dynamic compile switch for #if generation
+        @param json_project_data {ProjectDescription} JSON project description data
         """
-        super().__init__(owner, eula_name, base_class_name, dynamic_compile_switch)
+        jsonstringdesc = json_project_data.get_string_data()
+        base_class_name = jsonstringdesc.get_base_class_name()
+        dynamic_compile_switch = jsonstringdesc.get_dynamic_compile_switch()
+
+        super().__init__(json_project_data.get_owner(),
+                         json_project_data.get_eula(),
+                         base_class_name,
+                         dynamic_compile_switch)
+
         ## Name of the linux language class dynamic allocation function
         self.select_function_name = "get"+base_class_name+"_Linux"
 
@@ -62,7 +64,7 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         self.def_os_str = "(defined(__linux__) || defined(__unix__))"
 
         ## Json language data list object
-        self.lang_json_data = json_lang_data
+        self.lang_json_data = json_project_data.get_lang_data()
 
         ## CPP Doxygen comment generator
         self.doxy_comment_gen = CDoxyCommentGenerator()

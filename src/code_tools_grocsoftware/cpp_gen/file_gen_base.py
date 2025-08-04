@@ -46,19 +46,22 @@ class GenerateCppFileHelper():
     This class implements boiler plate data and helper functions used by
     the parent file specific generation class to generate the file
     """
-    def __init__(self, eula_name:str = None):
+    def __init__(self, eula:EulaText=None):
         """!
         @brief GenerateFileHelper constructor
 
-        @param eula_name {string} Name of the EULA from EulaText class to use.
+        @param eula {EulaText} EULA object to use.
         """
         super().__init__()
 
         ## Copyright string generator for the file header generation
         self.copyright_generator = CopyrightGenerator()
-        ## End User Licence Agreement (EULA) for the file header generation
-        self.eula = None
-        ## Standard indentation for code blocks
+        if isinstance(eula, EulaText):
+            ## End User Licence Agreement (EULA) for the file header generation
+            self.eula = eula
+        else:
+            self.eula = EulaText("MIT_open")
+
         self.level_tab_size = 4
 
         ## C/CPP Doxygen comment generator for generating doxygen comment blocks
@@ -68,16 +71,11 @@ class GenerateCppFileHelper():
 
         ## Translation dictionary from generic data types to CPP specific data types
         self.type_xlation_dict = {'string':"std::string",
-                                'text':"std::string",
-                                'size':"size_t",
-                                'integer':"int",
-                                'unsigned':"unsigned",
-                                'char':"char"}
-
-        if eula_name is None:
-            self.eula = EulaText("MIT_open")
-        else:
-            self.eula = EulaText(eula_name)
+                                  'text':"std::string",
+                                  'size':"size_t",
+                                  'integer':"int",
+                                  'unsigned':"unsigned",
+                                  'char':"char"}
 
     def declare_type(self, base_type:str, type_mod:int=0)->str:
         """!

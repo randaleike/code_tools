@@ -2,8 +2,19 @@ var searchData=
 [
   ['set_5farray_5fsize_0',['set_array_size',['../classbase_1_1param__return__tools_1_1ParamRetDict.html#a800ede0a56e678353e7638ff654f85d3',1,'base::param_return_tools::ParamRetDict']]],
   ['set_5fbase_5fclass_5fname_1',['set_base_class_name',['../classbase_1_1json__string__class__description_1_1StringClassDescription.html#a1242c0ba6761b928172b52a199fcad20',1,'base::json_string_class_description::StringClassDescription']]],
-  ['set_5fdefault_2',['set_default',['../classbase_1_1json__language__list_1_1LanguageDescriptionList.html#af29b410f63441c9533c1f63ae55637cd',1,'base::json_language_list::LanguageDescriptionList']]],
-  ['set_5fdynamic_5fcompile_5fswitch_3',['set_dynamic_compile_switch',['../classbase_1_1json__string__class__description_1_1StringClassDescription.html#a6dcd1f00d16bbfec9cf1c62eab3cf9b2',1,'base::json_string_class_description::StringClassDescription']]],
-  ['set_5fnamespace_5fname_4',['set_namespace_name',['../classbase_1_1json__string__class__description_1_1StringClassDescription.html#a55d49de160d16348e284b6154db2d830',1,'base::json_string_class_description::StringClassDescription']]],
-  ['set_5ftype_5fmod_5farray_5fsize_5',['set_type_mod_array_size',['../classbase_1_1param__return__tools_1_1ParamRetDict.html#a0b5a6cfddbd2019862d8798bbf77d319',1,'base::param_return_tools::ParamRetDict']]]
+  ['set_5fbase_5fdir_5fname_2',['set_base_dir_name',['../classbase_1_1project__json_1_1ProjectDescription.html#a69c39edce9429334236cf2523723dde6',1,'base::project_json::ProjectDescription']]],
+  ['set_5fbase_5fselection_5fname_3',['set_base_selection_name',['../classbase_1_1json__string__class__description_1_1StringClassDescription.html#a14ffb25298acac4a0056874d57297972',1,'base::json_string_class_description::StringClassDescription']]],
+  ['set_5fcustom_5feula_5ftext_4',['set_custom_eula_text',['../classbase_1_1project__json_1_1ProjectDescription.html#acb38949fb7373f954f7e1abc998ae4bd',1,'base::project_json::ProjectDescription']]],
+  ['set_5fdefault_5',['set_default',['../classbase_1_1json__language__list_1_1LanguageDescriptionList.html#af29b410f63441c9533c1f63ae55637cd',1,'base::json_language_list::LanguageDescriptionList']]],
+  ['set_5fdynamic_5fcompile_5fswitch_6',['set_dynamic_compile_switch',['../classbase_1_1json__string__class__description_1_1StringClassDescription.html#a6dcd1f00d16bbfec9cf1c62eab3cf9b2',1,'base::json_string_class_description::StringClassDescription']]],
+  ['set_5feula_5fname_7',['set_eula_name',['../classbase_1_1project__json_1_1ProjectDescription.html#a44f1910f18d026b4683ac649800e32c3',1,'base::project_json::ProjectDescription']]],
+  ['set_5finc_5fsubdir_8',['set_inc_subdir',['../classbase_1_1project__json_1_1ProjectDescription.html#ae16e1c0902dc88fe6ae97632e4756a72',1,'base::project_json::ProjectDescription']]],
+  ['set_5flang_5fdata_5fname_9',['set_lang_data_name',['../classbase_1_1project__json_1_1ProjectDescription.html#ac8bb1c928a2bb229f03f11b563a782a6',1,'base::project_json::ProjectDescription']]],
+  ['set_5fmock_5fsubdir_10',['set_mock_subdir',['../classbase_1_1project__json_1_1ProjectDescription.html#a124d320f9615c0d399585fe09cb5ab6a',1,'base::project_json::ProjectDescription']]],
+  ['set_5fnamespace_5fname_11',['set_namespace_name',['../classbase_1_1json__string__class__description_1_1StringClassDescription.html#a55d49de160d16348e284b6154db2d830',1,'base::json_string_class_description::StringClassDescription']]],
+  ['set_5fowner_12',['set_owner',['../classbase_1_1project__json_1_1ProjectDescription.html#ad3f2a567a44574dee9818161abf4586d',1,'base::project_json::ProjectDescription']]],
+  ['set_5fsrc_5fsubdir_13',['set_src_subdir',['../classbase_1_1project__json_1_1ProjectDescription.html#a79e9d240b75fc378a292739e807b0dd2',1,'base::project_json::ProjectDescription']]],
+  ['set_5fstring_5fdata_5fname_14',['set_string_data_name',['../classbase_1_1project__json_1_1ProjectDescription.html#a64ed3de5928c259ad684a15796925f18',1,'base::project_json::ProjectDescription']]],
+  ['set_5ftest_5fsubdir_15',['set_test_subdir',['../classbase_1_1project__json_1_1ProjectDescription.html#aa585e4a47fbe5b9b5f3598a4fb094c19',1,'base::project_json::ProjectDescription']]],
+  ['set_5ftype_5fmod_5farray_5fsize_16',['set_type_mod_array_size',['../classbase_1_1param__return__tools_1_1ParamRetDict.html#a0b5a6cfddbd2019862d8798bbf77d319',1,'base::param_return_tools::ParamRetDict']]]
 ];

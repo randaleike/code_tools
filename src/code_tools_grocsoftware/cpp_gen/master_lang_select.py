@@ -28,24 +28,29 @@ for a language string generation library
 from code_tools_grocsoftware.base.doxygen_gen_tools import CDoxyCommentGenerator
 from code_tools_grocsoftware.cpp_gen.string_class_tools import BaseCppStringClassGenerator
 
+from code_tools_grocsoftware.base.project_json import ProjectDescription
+from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
+
 class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
     """!
     Methods for master language select function generation
     """
-    def __init__(self, owner:str = None, eula_name:str = None, base_class_name:str = "BaseClass",
-                 method_name:str = "getLocalParserStringListInterface",
-                 dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
+    def __init__(self, project_data:ProjectDescription,
+                 method_name:str = "getLocalParserStringListInterface"):
         """!
         @brief MasterSelectFunctionGenerator constructor
-        @param owner {string} Owner name to use in the copyright header message
-                              or None to use tool name
-        @param eula_name {string} Name of the EULA to pass down to the BaseCppStringClassGenerator
-                                  parent
-        @param base_class_name {string} Name of the base class for name generation
+        @param project_data {ProjectDescription} JSON project description data
         @param method_name {string} Function name to be used for generation
-        @param dynnamic_compile_switch {string} Dynamic compile switch for #if generation
         """
-        super().__init__(owner, eula_name, base_class_name, dynamic_compile_switch)
+        jsonstringdesc = project_data.get_string_data()
+        base_class_name = jsonstringdesc.get_base_class_name()
+        dynamic_compile_switch = jsonstringdesc.get_dynamic_compile_switch()
+
+        super().__init__(project_data.get_owner(),
+                         project_data.get_eula(),
+                         base_class_name,
+                         dynamic_compile_switch)
+
         self.select_function_name = base_class_name+"::"+method_name
         self.select_base_function_name = method_name
 

@@ -1,0 +1,12 @@
+{
+  "eula_name":"MIT_closed",
+  "custom_text": [],
+  "langDataFile":"data/test_lang.json",
+  "stringDataFile":"data/test_string.json",
+  "baseDirName":"foo",
+  "inc_subdir": "inc",
+  "src_subdir": "src",
+  "test_subdir": "test",
+  "mock_subdir": "mock",
+  "owner": "Henry"
+}
