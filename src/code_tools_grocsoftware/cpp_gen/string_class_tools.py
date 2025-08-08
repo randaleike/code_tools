@@ -33,6 +33,13 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
     """!
     Base string class generation class
     """
+    ## Major version number definition for  the genertator
+    version_major = 0
+    ## Minor version number definition for  the genertator
+    version_minor = 4
+    ## Patch version number definition for  the genertator
+    version_patch = 1
+
     def __init__(self, owner:str = None, eula:EulaText=None,
                  base_class_name:str = "BaseClass",
                  dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
@@ -69,13 +76,6 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         self.type_xlation_dict['LANGID'] = "LANGID"
         self.type_xlation_dict['sharedptr'] = self.base_intf_ret_ptr_type
         self.type_xlation_dict['strstream'] = "std::stringstream"
-
-        ## Major version number definition for  the genertator
-        self.version_major = 0
-        ## Minor version number definition for  the genertator
-        self.version_minor = 4
-        ## Patch version number definition for  the genertator
-        self.version_patch = 1
 
         ## Autogeneration tool name
         self.auto_tool_name = self.__class__.__name__+self._get_version()

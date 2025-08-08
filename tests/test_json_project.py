@@ -25,6 +25,7 @@ Unittest for programmer base tools utility
 #==========================================================================
 
 import os
+import pytest
 from unittest.mock import mock_open, patch
 
 from code_tools_grocsoftware.base.eula import EulaText
@@ -56,6 +57,8 @@ def test001_constructor_default():
     assert test_obj.project_json_data['test_subdir'] is None
     assert test_obj.project_json_data['mock_subdir'] is None
     assert test_obj.project_json_data['owner'] == "Unknown"
+    assert test_obj.project_json_data['groupName'] is None
+    assert test_obj.project_json_data['groupDesc'] is None
 
 def test002_get_eula():
     """!
@@ -231,7 +234,73 @@ def test020_set_eula_text():
     assert test_obj.project_json_data['custom_text'] == ["Line 1", "Line 2"]
     assert isinstance(test_obj.get_eula(), EulaText)
 
-def test021_clear():
+def test021_get_group_name():
+    """!
+    @brief Test get_group_name
+    """
+    test_obj = ProjectDescription()
+    group_name = test_obj.get_group_name()
+
+    assert group_name is None
+
+def test022_set_group_name():
+    """!
+    @brief Test set_group_name
+    """
+    test_obj = ProjectDescription()
+    test_obj.set_group_name("TestGroup")
+
+    assert test_obj.get_group_name() == "TestGroup"
+
+def test023_get_group_desc():
+    """!
+    @brief Test get_group_desc
+    """
+    test_obj = ProjectDescription()
+    group_desc = test_obj.get_group_desc()
+
+    assert group_desc is None
+
+def test024_set_group_desc():
+    """!
+    @brief Test set_group_desc
+    """
+    test_obj = ProjectDescription()
+    test_obj.set_group_desc("TestGroupDesc")
+
+    assert test_obj.get_group_desc() == "TestGroupDesc"
+
+def test025_set_custom_eula_fail():
+    """!
+    @brief Test set_custom_eula_text
+    """
+    test_obj = ProjectDescription()
+
+    with pytest.raises(TypeError):
+        test_obj.set_custom_eula_text("Line 1")
+        assert test_obj.project_json_data['custom_text'] == []
+
+def test025_get_custom_eula():
+    """!
+    @brief Test get_custom_eula
+    """
+    test_obj = ProjectDescription()
+    test_obj.set_custom_eula_text(["Line 1", "Line 2"])
+    custom_eula = test_obj.get_eula()
+
+    assert isinstance(custom_eula, EulaText)
+    assert test_obj.project_json_data['custom_text'] == ["Line 1", "Line 2"]
+
+def test026_get_custom_eula_text():
+    """!
+    @brief Test get_custom_eula_text
+    """
+    test_obj = ProjectDescription()
+    testdata = test_obj.get_custom_text()
+    assert isinstance(testdata, list)
+    assert testdata == []
+
+def test030_clear():
     """!
     @brief Test clear method
     """
@@ -245,6 +314,8 @@ def test021_clear():
     test_obj.set_string_data_name("TestStringData")
     test_obj.set_owner("TestOwner")
     test_obj.set_eula_name("Other")
+    test_obj.set_group_name("TestGroup")
+    test_obj.set_group_desc("TestGroupDesc")
     test_obj.clear()
 
     assert test_obj.project_json_data['eula_name'] == "MIT_open"
@@ -257,8 +328,10 @@ def test021_clear():
     assert test_obj.project_json_data['test_subdir'] is None
     assert test_obj.project_json_data['mock_subdir'] is None
     assert test_obj.project_json_data['owner'] == "Unknown"
+    assert test_obj.project_json_data['groupName'] is None
+    assert test_obj.project_json_data['groupDesc'] is None
 
-def test022_constructor_with_file():
+def test031_constructor_with_file():
     """!
     @brief Test update method
     """
@@ -272,7 +345,9 @@ def test022_constructor_with_file():
     testdata += '  "src_subdir": "src",\n'
     testdata += '  "test_subdir": "test",\n'
     testdata += '  "mock_subdir": "mock",\n'
-    testdata += '  "owner": "Henry"\n'
+    testdata += '  "owner": "Henry",\n'
+    testdata += '  "groupName": "frank",\n'
+    testdata += '  "groupDesc": "Group desc"\n'
     testdata += '}'
 
     # Mock the open function to return the test data
@@ -296,8 +371,10 @@ def test022_constructor_with_file():
         assert test_obj.project_json_data['test_subdir'] == "test"
         assert test_obj.project_json_data['mock_subdir'] == "mock"
         assert test_obj.project_json_data['owner'] == "Henry"
+        assert test_obj.project_json_data['groupName'] == "frank"
+        assert test_obj.project_json_data['groupDesc'] == "Group desc"
 
-def test023_update():
+def test032_update():
     """!
     @brief Test update method
     """
@@ -305,7 +382,6 @@ def test023_update():
     # This will also call the update method
     test_obj = ProjectDescription()
     test_obj.set_eula_name("TestEula")
-    test_obj.set_custom_eula_text(["Line 1", "Line 2"])
     test_obj.set_lang_data_name("TestLangData")
     test_obj.set_string_data_name("TestStringData")
     test_obj.set_base_dir_name("TestBaseDir")
@@ -314,7 +390,10 @@ def test023_update():
     test_obj.set_test_subdir("TestTestSubdir")
     test_obj.set_mock_subdir("TestMockSubdir")
     test_obj.set_owner("TestOwner")
+    test_obj.set_group_name("TestGroup")
+    test_obj.set_group_desc("TestGroupDesc")
 
+    # Mock the open function to check if it is called correctly
     with patch('builtins.open', mock_open()) as mocked_file:
         # Update the JSON file
         test_obj.filename = "temp_test_project.json"  # Set a temporary filename
@@ -323,7 +402,7 @@ def test023_update():
         mocked_file.assert_called_once_with("temp_test_project.json", 'w', encoding='utf-8')
 
         # Check that the file was written with the expected content
-        assert len(mocked_file.mock_calls) == 49
+        assert len(mocked_file.mock_calls) == 54
         mocked_file().write.assert_any_call(': ')    # add count
         mocked_file().write.assert_any_call(',\n  ') # add count
 
@@ -333,9 +412,7 @@ def test023_update():
         mocked_file().write.assert_any_call('"TestEula"')
 
         mocked_file().write.assert_any_call('"custom_text"')
-        mocked_file().write.assert_any_call('[\n    "Line 1"')
-        mocked_file().write.assert_any_call(',\n    "Line 2"')
-        mocked_file().write.assert_any_call(']')
+        mocked_file().write.assert_any_call('[]')
 
         mocked_file().write.assert_any_call('"langDataFile"')
         mocked_file().write.assert_any_call('"TestLangData"')
@@ -361,4 +438,11 @@ def test023_update():
         mocked_file().write.assert_any_call('"owner"')
         mocked_file().write.assert_any_call('"TestOwner"')
 
+        mocked_file().write.assert_any_call('"groupName"')
+        mocked_file().write.assert_any_call('"TestGroup"')
+
+        mocked_file().write.assert_any_call('"groupDesc"')
+        mocked_file().write.assert_any_call('"TestGroupDesc"')
+
         mocked_file().write.assert_any_call('}')
+

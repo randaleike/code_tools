@@ -981,4 +981,31 @@ class Test02StringClassDescription:
             expected_str += "    @foo@, @moo@\n"
             assert capsys.readouterr().out == expected_str
 
+    def test35_input_param_return_type_good_input_float(self, capsys):
+        """!
+        @brief Test _input_param_return_type(), good input, text
+        """
+        type_list = ["f", "F", "float", "FLOAT", "Float"]
+        input_list = []
+        for element in type_list:
+            input_list.append(element)
+            input_list.append(element)
+
+        input_str = (text for text in input_list)
+        def test_mock_in(prompt:str)->str:
+            return Test02StringClassDescription.mock_param_ret_input(prompt, input_str)
+
+        with patch('builtins.input', test_mock_in):
+            testobj = StringClassDescription()
+            for _ in range(0,len(type_list)):
+                type_name, type_mod = testobj._input_param_return_type(True)
+                assert type_name == 'float'
+                assert type_mod == 0
+
+                type_name, type_mod = testobj._input_param_return_type(False)
+                assert type_name == 'float'
+                assert type_mod == 0
+
+            assert capsys.readouterr().out == ""
+
 # pylint: enable=protected-access

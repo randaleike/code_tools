@@ -2,6 +2,7 @@
   "baseClassName": "ParserStringListInterface",
   "namespace": "argparser",
   "dynamicCompileSwitch": "TEST_DYNAMIC_INTERNATIONALIZATION",
+  "baseSelectionFunction": "getLocalStringListInterface",
   "propertyMethods": {
     "getLangIsoCode": {
       "name": "isoCode",

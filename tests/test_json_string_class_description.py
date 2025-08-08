@@ -549,4 +549,20 @@ class Test02StringClassDescription:
         for method_name in testobj.get_tranlate_method_list():
             assert len(temp[method_name]['translateDesc']) == 2
 
+    def test39_get_base_selection_name(self):
+        """!
+        @brief Test get_base_selection_name()
+        """
+        testobj = StringClassDescription()
+        assert testobj.string_jason_data['baseSelectionFunction'] == testobj.get_base_selection_name()
+
+    def test40_set_base_selection_name(self):
+        """!
+        @brief Test set_base_selection_name()
+        """
+        testobj = StringClassDescription()
+        assert testobj.string_jason_data['baseSelectionFunction'] == "getLocalStringListInterface"
+        testobj.set_base_selection_name("NewBaseSelection")
+        assert testobj.string_jason_data['baseSelectionFunction'] == "NewBaseSelection"
+
 # pylint: enable=protected-access

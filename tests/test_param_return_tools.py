@@ -574,3 +574,16 @@ class Test03ParamDict:
         assert "integer" == param_type
         assert "Test parameter dictionary with mode input" == param_desc
         assert ParamRetDict.type_mod_ptr == param_mode
+
+    def test12_is_return_list(self):
+        """!
+        @brief Test if the parameter is a list type
+        """
+        test_dict = ParamRetDict.build_return_dict("list",
+                                                   "Test return list type",
+                                                   True)
+        assert ParamRetDict.is_return_list(test_dict)
+
+        test_dict1 = ParamRetDict.build_return_dict("list",
+                                                    "Test not return list type")
+        assert not ParamRetDict.is_return_list(test_dict1)

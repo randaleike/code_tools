@@ -96,20 +96,8 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         #  {param_name: (value, is_text)}
         #  is_text is True if the value is a text string and should be quoted
         #  when used in the test code
-        #  param_name is one of:
-        #    keyString, envKeyString, jsonKeyString, xmlKeyString,
-        #    nargs, nargsExpected, nargsFound,
-        self.test_param_values = {'keyString': ("--myKey", True),
-                                'envKeyString': ("MY_ENV_KEY", True),
-                                'jsonKeyString': ("jsonkey:", True),
-                                'xmlKeyString': ("<xmlkey>", True),
-                                'nargs': ("3", False),
-                                'nargsExpected': ("2", False),
-                                'nargsFound': ("1", False),
-                                'vargRange': ("<-100:100>", True),
-                                'vargType': ("integer", True),
-                                'valueString': ("23", True)
-                                }
+        self.test_param_values = {}
+
         ## Mock class name
         self.mock_class_name = "mock_"+self.json_str_data.get_base_class_name()
 
@@ -120,12 +108,23 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         """
         self.inc_subdirs.append(subdir_name)
 
+    def get_include_dirs(self)->list:
+        """!
+        @brief Get the include subdirectory list
+        @return list - List of include subdirectory strings that were added
+                       using the add_inculde_dir method
+        """
+        return self.inc_subdirs
+
     def _add_file(self, language_name:str, file_type:str, file_name:str):
         """!
         @brief Add File to the list of files
         @param language_name {string} Language name or None for base files
         @param file_type {string} Type 'include' | 'source' | 'mockInclude'
                                        | 'mockSource | 'unittest'
+        @param file_name {string} File name to add
+        @note If language_name is None, then the file is a base file
+        @note If language_name is not None, then the file is a language specific file
         """
         if language_name is None:
             language_name = 'base'
@@ -142,17 +141,21 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         @return list - list of generated include file names
         """
         file_list = []
-        for _, file_dict in self.fnames.items():
-            file_list.append(file_dict['include'])
+        for _, lang_files in self.fnames.items():
+            if 'include' in lang_files:
+                file_list.append(lang_files['include'])
         return file_list
 
-    def get_include_dirs(self)->list:
+    def get_mock_include_fnames(self)->list:
         """!
-        @brief Get the include subdirectory list
-        @return list - List of include subdirectory strings that were added
-                       using the add_inculde_dir method
+        @brief Generate a list of include file names
+        @return list - list of generated mockInclude file names
         """
-        return self.inc_subdirs
+        file_list = []
+        for _, lang_files in self.fnames.items():
+            if 'mockInclude' in lang_files:
+                file_list.append(lang_files['mockInclude'])
+        return file_list
 
     def get_source_fnames(self)->list:
         """!
@@ -160,8 +163,9 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         @return list - list of generated source file names
         """
         file_list = []
-        for _, file_dict in self.fnames.items():
-            file_list.append(file_dict['source'])
+        for _, lang_files in self.fnames.items():
+            if 'source' in lang_files:
+                file_list.append(lang_files['source'])
         return file_list
 
     def get_unittest_set_names(self)->list:
@@ -172,6 +176,12 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         unittest_sets = []
         language_list = self.json_lang_data.get_language_list()
         for language_name in language_list:
+            if ((language_name not in self.fnames) or
+                 ('source' not in self.fnames[language_name]) or
+                 ('unittest' not in self.fnames[language_name])):
+                continue
+
+            # Generate the unittest target name and add data to the list
             unittest_target = self.gen_unittest_target_name(language_name)
             unittest_sets.append((language_name,
                                   self.fnames[language_name]['source'],
@@ -210,16 +220,16 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         if ParamRetDict.is_return_list(property_return):
             # List case
             code_text.append(self.gen_function_ret_type(property_return)+"returnData;")
-            data_list = self.json_lang_data.getLanguagePropertyData(lang_name, property_name)
+            data_list = self.json_lang_data.get_property_data(lang_name, property_name)
 
             # Determine data type
             for data_item in data_list:
-                code_text.append(self.gen_add_list_statment("returnData", data_item, is_text))
+                code_text.append(self.gen_add_list_statment("returnData", str(data_item), is_text))
             code_text.append("return returnData;")
         else:
             # Single item case
             data_item = self.json_lang_data.get_property_data(lang_name, property_name)
-            code_text.append(self.gen_return_statment(data_item, is_text))
+            code_text.append(self.gen_return_statment(str(data_item), is_text))
 
         return code_text
 
@@ -244,10 +254,6 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         method_list = self.json_str_data.get_property_method_list()
         for method_name in method_list:
             _, desc, params, ret = self.json_str_data.get_property_method_data(method_name)
-            if len(params) == 0:
-                postfix = "const "+base_postfix
-            else:
-                postfix = base_postfix
 
             # Output final declaration
             hfile.writelines(self.write_method(method_name,
@@ -255,52 +261,53 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
                                                params,
                                                ret,
                                                prefix,
-                                               postfix,
+                                               base_postfix,
                                                skipdox))
             if not skipdox:
                 hfile.writelines(["\n"]) # whitespace for readability
 
-    def write_src_property_methods(self, cppfile, lang_name:str, class_name:str):
+    def write_src_property_methods(self, cppfile, lang_name:str):
         """!
         @brief Write the property method sourc file definitios
 
         @param hfile {File} File to write the data to
         @param lang_name {string} Language name or None this is for the base file
-        @param class_name {string} Class name decoration
         """
-        skipdox = bool(lang_name is None)
-        method_list = self.json_str_data.get_property_method_list()
-        for method in method_list:
-            name, desc, params, ret = self.json_str_data.get_property_method_data(method)
+        if lang_name is not None:
+            class_name = self.json_str_data.get_language_class_name(lang_name)
 
-            # Translate the return type
-            if len(params) == 0:
-                postfix = "const"
-            else:
-                postfix = None
+            method_list = self.json_str_data.get_property_method_list()
+            for method in method_list:
+                name, desc, params, ret = self.json_str_data.get_property_method_data(method)
 
-            # Output final declaration
-            method_def = self.define_function_with_decorations(class_name+"::"+method,
-                                                               desc,
-                                                               params,
-                                                               ret,
-                                                               skipdox,
-                                                               None,
-                                                               postfix)
-            cppfile.writelines(method_def)
+                # Translate the return type
+                if len(params) == 0:
+                    postfix = "const"
+                else:
+                    postfix = None
 
-            # Get the language data replacements
-            code_text = self._gen_property_code(lang_name, name, ret)
+                # Output final declaration
+                method_def = self.define_function_with_decorations(class_name+"::"+method,
+                                                                   desc,
+                                                                   params,
+                                                                   ret,
+                                                                   True,
+                                                                   None,
+                                                                   postfix)
+                cppfile.writelines(method_def)
 
-            # Output code body
-            if len(code_text) == 1:
-                cppfile.writelines(["{"+code_text[0]+"}\n"])
-            else:
-                body_indent = "".rjust(self.level_tab_size, ' ')
-                cppfile.writelines(["{\n"])
-                for line in code_text:
-                    cppfile.writelines([body_indent+line+"\n"])
-                cppfile.writelines(["}\n"])
+                # Get the language data replacements
+                code_text = self._gen_property_code(lang_name, name, ret)
+
+                # Output code body
+                if len(code_text) == 1:
+                    cppfile.writelines(["{"+code_text[0]+"}\n"])
+                else:
+                    body_indent = "".rjust(self.level_tab_size, ' ')
+                    cppfile.writelines(["{\n"])
+                    for line in code_text:
+                        cppfile.writelines([body_indent+line+"\n"])
+                    cppfile.writelines(["}\n"])
 
     def _gen_stream_code(self, stream_data:list)->str:
         """!
@@ -312,7 +319,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         stream_str = self.type_xlation_dict['strstream']+" "+stream_name+"; "
         stream_str += stream_name
         stream_str += TransTxtParser.assemble_stream(stream_data, "<<")
-        stream_str += "; return parserstr.str();"
+        stream_str += "; return "+stream_name+".str();"
         return stream_str
 
     def _write_inc_translate_methods(self, hfile, base:bool=False):
@@ -347,15 +354,15 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
             if not skipdox:
                 hfile.writelines(["\n"]) # whitespace for readability
 
-    def _write_src_translate_methods(self, cppfile, lang_name:str, class_name:str):
+    def _write_src_translate_methods(self, cppfile, lang_name:str = None):
         """!
         @brief Write the property method definitions
 
         @param cppfile {File} File to write the data to
         @param lang_name {string} Language name or None this is for the base file
-        @param class_name {string} Class name decoration
         """
         skipdox = bool(lang_name is None)
+        class_name = self.json_str_data.get_language_class_name(lang_name)
 
         methods = self.json_str_data.get_tranlate_method_list()
         for name in methods:
@@ -388,30 +395,32 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
             # Output code body
             cppfile.writelines(["{"+code_text+"}\n"])
 
-    def write_inc_file(self, hfile, lang_name:str, group_name:str = None, group_desc:str = None):
+    def write_inc_file(self, hfile, lang_name:str = None):
         """!
         @brief Write the language specific include file
 
         @param hfile {File} File to write the data to
         @param lang_name {string} - Language name
-        @param group_name {string} - Doxygen group name for the project
-        @param group_desc {string} - Doxygen group description for the project
         """
         # Set the class name and description
         decl_indent = self.level_tab_size*2
         class_name = self.json_str_data.get_language_class_name(lang_name)
+        group_name = self.project_data.get_group_name()
+        group_desc = self.project_data.get_group_desc()
+
         if lang_name is None:
             class_desc = "Parser error/help string generation interface"
             inheritence = None
             class_decoration = None
-            skipdoxy = True
-            nocopy = False
+            skipdoxy = False
+            virtual_destructor = True
+
         else:
             class_desc = "Language specific parser error/help string generation interface"
             inheritence = "public "+self.json_str_data.get_base_class_name()
             class_decoration = "final"
-            skipdoxy = False
-            nocopy = True
+            skipdoxy = True
+            virtual_destructor = False
 
         # Write the common header
         hfile.writelines(self._generate_file_header())
@@ -442,21 +451,22 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
 
         # Start class definition
         hfile.writelines(self.gen_class_open(class_name, class_desc, inheritence, class_decoration))
-        indent = "".rjust(self.level_tab_size, "")
+        indent = "".rjust(self.level_tab_size, " ")
         hfile.writelines([indent+"public:\n"])
 
         # Add default Constructor/destructor definitions
         hfile.writelines(self.gen_class_default_constructor_destructor(class_name,
                                                                        decl_indent,
-                                                                       skipdoxy,
-                                                                       nocopy))
+                                                                       virtual_destructor,
+                                                                       not skipdoxy,
+                                                                       False))
 
         # Add the property fetch methods
-        self.write_inc_property_methods(hfile)
+        self.write_inc_property_methods(hfile, bool(lang_name is None))
         hfile.writelines(["\n"]) # whitespace for readability
 
         # Add the string generation methods
-        self._write_inc_translate_methods(hfile)
+        self._write_inc_translate_methods(hfile, bool(lang_name is None))
 
         if lang_name is None:
             # Add the static generation function declaration

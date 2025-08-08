@@ -50,7 +50,8 @@ class ProjectDescription():
                                   'baseDirName':"", 'inc_subdir': "",
                                   'src_subdir': "", 'test_subdir': None,
                                   'mock_subdir': None,
-                                  'owner': "Unknown"}
+                                  'owner': "Unknown",
+                                  'groupName': None, 'groupDesc': None}
 
         if project_data_file_name is not None:
             self.filename = project_data_file_name
@@ -72,7 +73,8 @@ class ProjectDescription():
                                   'baseDirName':"", 'inc_subdir': "",
                                   'src_subdir': "", 'test_subdir': None,
                                   'mock_subdir': None,
-                                  'owner': "Unknown"}
+                                  'owner': "Unknown",
+                                  'groupName': None, 'groupDesc': None}
 
     def update(self):
         """!
@@ -93,7 +95,7 @@ class ProjectDescription():
             eula = EulaText(custom_eula = self.project_json_data['custom_text'])
         return eula
 
-    def set_eula_name(self, eula_name:str):
+    def set_eula_name(self, eula_name:str = "MIT_open"):
         """!
         @brief Set the EULA name in the JSON data
 
@@ -107,6 +109,9 @@ class ProjectDescription():
 
         @param eula_text (list) - Custom EULA text script
         """
+        self.project_json_data['eula_name'] = 'custom'
+        if not isinstance(eula_text, list):
+            raise TypeError("EULA text must be a list of strings")
         self.project_json_data['custom_text'] = eula_text
 
     def get_lang_data(self)->LanguageDescriptionList:
@@ -116,7 +121,7 @@ class ProjectDescription():
         """
         return LanguageDescriptionList(self.project_json_data['langDataFile'])
 
-    def set_lang_data_name(self, lang_data_name:str):
+    def set_lang_data_name(self, lang_data_name:str = None):
         """!
         @brief Set the language data file name in the JSON data
 
@@ -131,7 +136,7 @@ class ProjectDescription():
         """
         return StringClassDescription(self.project_json_data['stringDataFile'])
 
-    def set_string_data_name(self, string_data_name:str):
+    def set_string_data_name(self, string_data_name:str = None):
         """!
         @brief Set the string data file name in the JSON data
 
@@ -146,7 +151,7 @@ class ProjectDescription():
         """
         return self.project_json_data['baseDirName']
 
-    def set_base_dir_name(self, base_dir_name:str):
+    def set_base_dir_name(self, base_dir_name:str = ""):
         """!
         @brief Set the base directory name in the JSON data
 
@@ -183,7 +188,7 @@ class ProjectDescription():
         """
         return self.project_json_data['inc_subdir']
 
-    def set_inc_subdir(self, inc_subdir:str):
+    def set_inc_subdir(self, inc_subdir:str = "inc"):
         """!
         @brief Set the include subdirectory name in the JSON data
 
@@ -198,7 +203,7 @@ class ProjectDescription():
         """
         return self.project_json_data['src_subdir']
 
-    def set_src_subdir(self, src_subdir:str):
+    def set_src_subdir(self, src_subdir:str = "src"):
         """!
         @brief Set the source subdirectory name in the JSON data
 
@@ -213,7 +218,7 @@ class ProjectDescription():
         """
         return self.project_json_data['test_subdir']
 
-    def set_test_subdir(self, test_subdir:str):
+    def set_test_subdir(self, test_subdir:str = "test"):
         """!
         @brief Set the test subdirectory name in the JSON data
 
@@ -228,10 +233,38 @@ class ProjectDescription():
         """
         return self.project_json_data['mock_subdir']
 
-    def set_mock_subdir(self, mock_subdir:str):
+    def set_mock_subdir(self, mock_subdir:str = "mock"):
         """!
         @brief Set the mock subdirectory name in the JSON data
 
         @param mock_subdir (string) - Mock subdirectory name to set
         """
         self.project_json_data['mock_subdir'] = mock_subdir
+
+    def get_group_name(self):
+        """!
+        @brief Set the group name
+        """
+        return self.project_json_data['groupName']
+
+    def set_group_name(self, name:str = None):
+        """!
+        @brief Set the mock subdirectory name in the JSON data
+
+        @param name (string) - Group name name to set
+        """
+        self.project_json_data['groupName'] = name
+
+    def get_group_desc(self):
+        """!
+        @brief Set the group description
+        """
+        return self.project_json_data['groupDesc']
+
+    def set_group_desc(self, desc:str = None):
+        """!
+        @brief Set the mock subdirectory name in the JSON data
+
+        @param desc (string) - Group description name to set
+        """
+        self.project_json_data['groupDesc'] = desc

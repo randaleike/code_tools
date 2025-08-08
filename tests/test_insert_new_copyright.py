@@ -256,3 +256,32 @@ class TestClass03InsertNewCopyrightBlock:
             handle.write.assert_any_call('void uselessFunction2(int nothing);\n')
             handle.write.assert_any_call('/** @} */')
             # pylint: enable=line-too-long
+
+    def test005_insert_new_copyright_block_open_error(self, capsys):
+        """!
+        Test insert_new_copyright_block(), replace entire eula block
+        """
+        comment_blk_loc = {'blkStart': 3, 'blkEndEOL': 1085, 'blkEndSOL': 1082,
+                           'copyrightMsgs': [
+                               {'lineOffset': 6, 'text':" Copyright (c) 2022-2023 Randal Eike\n"
+                               }
+                            ]
+                          }
+        test_comment_markers = c_comment_parms
+        test_comment_markers['blockLineStart'] = '*'
+
+        with patch("builtins.open", mock_open()) as mock_wfile:
+            mock_wfile.side_effect = OSError("Test error")
+            pytest.raises(OSError)
+            status = insert_new_copyright_block(self._input_file,
+                                                "test.c.out",
+                                                comment_blk_loc,
+                                                test_comment_markers,
+                                                "Copyright (c) 2022-2026 Randal Eike",
+                                                ["test eula"])
+            assert not status
+            assert mock_wfile.call_count == 1
+            captured = capsys.readouterr()
+            expected_err_str = "ERROR: Unable to open file \"test.c.out\" for writing as text file.\n"
+            assert captured.out == expected_err_str
+
