@@ -101,6 +101,18 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         ## Mock class name
         self.mock_class_name = "mock_"+self.json_str_data.get_base_class_name()
 
+        # Update the translation matrix
+        uselist = []
+        if project_data.get_include_using() is not None:
+            uselist.extend(project_data.get_include_using())
+        if project_data.get_base_src_using() is not None:
+            uselist.extend(project_data.get_base_src_using())
+        if project_data.get_lang_src_using() is not None:
+            uselist.extend(project_data.get_lang_src_using())
+
+        for entry in uselist:
+            self.update_xlate_name(entry['stdName'], entry['localName'])
+
     def add_inculde_dir(self, subdir_name:str):
         """!
         @brief Add subdir name to the include dir list
@@ -233,7 +245,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
 
         return code_text
 
-    def write_inc_property_methods(self, hfile, base:bool = False):
+    def _write_inc_property_methods(self, hfile, base:bool = False):
         """!
         @brief Write the property method definitions
 
@@ -266,7 +278,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
             if not skipdox:
                 hfile.writelines(["\n"]) # whitespace for readability
 
-    def write_src_property_methods(self, cppfile, lang_name:str):
+    def _write_src_property_methods(self, cppfile, lang_name:str):
         """!
         @brief Write the property method sourc file definitios
 
@@ -443,11 +455,24 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
             hfile.writelines(self.doxy_comment_gen.gen_doxy_defgroup(filename,
                                                                      group_name,
                                                                      group_desc))
+            hfile.writelines(["\n"]) # whitespace for readability
 
         # Class definition
         hfile.writelines(["#pragma once\n"])
         hfile.writelines(self.gen_namespace_open(self.namespace_name))
         hfile.writelines(["\n"]) # whitespace for readability
+
+        # Add using statements
+        if lang_name is None:
+            using_list = self.project_data.get_include_using()
+            if using_list is not None:
+                using_code = []
+                for using in using_list:
+                    using_code.append(self.gen_using_statement(using['localName'],
+                                                               using['stdName'],
+                                                               using['desc']))
+                hfile.writelines(using_code)
+                hfile.writelines(["\n"]) # whitespace for readability
 
         # Start class definition
         hfile.writelines(self.gen_class_open(class_name, class_desc, inheritence, class_decoration))
@@ -462,7 +487,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
                                                                        False))
 
         # Add the property fetch methods
-        self.write_inc_property_methods(hfile, bool(lang_name is None))
+        self._write_inc_property_methods(hfile, bool(lang_name is None))
         hfile.writelines(["\n"]) # whitespace for readability
 
         # Add the string generation methods
@@ -490,3 +515,117 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         if group_name is not None:
             # Complete the doxygen group
             hfile.writelines(self.doxy_comment_gen.gen_doxy_group_end())
+
+    def write_base_src_file(self, srcfile):
+        """!
+        @brief Write the language specific source file
+
+        @param srcfile {File} File to write the data to
+        """
+        # Set the class name and description
+        group_name = self.project_data.get_group_name()
+        group_desc = self.project_data.get_group_desc()
+
+        # Write the common header
+        srcfile.writelines(self._generate_file_header())
+        srcfile.writelines(["\n"]) # whitespace for readability
+
+        # Write the include block
+        include_list = [self.json_str_data.get_language_class_name()+".h"]
+        lang_list = self.json_lang_data.get_language_list()
+        for lang in lang_list:
+            include_list.append(self.json_str_data.get_language_class_name(lang)+".h")
+
+        srcfile.writelines(self.gen_include_block(include_list))
+        srcfile.writelines(["\n"]) # whitespace for readability
+
+        if group_name is not None:
+            filename = self.json_str_data.get_language_class_name()+".cpp"
+            srcfile.writelines(self.doxy_comment_gen.gen_doxy_defgroup(filename,
+                                                                       group_name,
+                                                                       group_desc))
+            srcfile.writelines(["\n"]) # whitespace for readability
+
+        # Set namespace
+        srcfile.writelines(self.gen_using_namespace(self.namespace_name))
+        srcfile.writelines(["\n"]) # whitespace for readability
+
+        # Add using statements
+        using_list = self.project_data.get_base_src_using()
+        if using_list is not None:
+            using_code = []
+            for using in using_list:
+                using_code.append(self.gen_using_statement(using['localName'],
+                                                           using['stdName'],
+                                                           using['desc']))
+            srcfile.writelines(using_code)
+            srcfile.writelines(["\n"]) # whitespace for readability
+
+        for os_sel_gen in self.os_lang_sel_list:
+            # Add the OS specific delection functions
+            srcfile.writelines(os_sel_gen.gen_function())
+            srcfile.writelines(["\n"]) # whitespace for readability
+
+        # Add the master generation function declaration
+        srcfile.writelines(self.master_func_gen.gen_function(self.os_lang_sel_list))
+        srcfile.writelines(["\n"]) # whitespace for readability
+
+        if group_name is not None:
+            # Complete the doxygen group
+            srcfile.writelines(self.doxy_comment_gen.gen_doxy_group_end())
+
+    def write_lang_src_file(self, srcfile, lang_name:str):
+        """!
+        @brief Write the language specific source file
+
+        @param hfile {File} File to write the data to
+        @param lang_name {string} - Language name
+        """
+        # Set the class name and description
+        group_name = self.project_data.get_group_name()
+        group_desc = self.project_data.get_group_desc()
+
+        # Write the common header
+        srcfile.writelines(self._generate_file_header())
+        srcfile.writelines(["\n"]) # whitespace for readability
+
+        # Write the include block
+        include_list = ["<sstream>",
+                        self.json_str_data.get_language_class_name(lang_name)+".h"]
+
+        srcfile.writelines(self.gen_include_block(include_list))
+        srcfile.writelines(["\n"]) # whitespace for readability
+
+        if group_name is not None:
+            filename = self.json_str_data.get_language_class_name(lang_name)+".cpp"
+            srcfile.writelines(self.doxy_comment_gen.gen_doxy_defgroup(filename,
+                                                                       group_name,
+                                                                       group_desc))
+            srcfile.writelines(["\n"]) # whitespace for readability
+
+        # Set namespace
+        srcfile.writelines(self.gen_using_namespace(self.namespace_name))
+        srcfile.writelines(["\n"]) # whitespace for readability
+
+        # Add using statements
+        using_list = self.project_data.get_lang_src_using()
+        if using_list is not None:
+            using_code = []
+            for using in using_list:
+                using_code.append(self.gen_using_statement(using['localName'],
+                                                           using['stdName'],
+                                                           using['desc']))
+            srcfile.writelines(using_code)
+            srcfile.writelines(["\n"]) # whitespace for readability
+
+        # Add the property fetch methods
+        self._write_src_property_methods(srcfile, lang_name)
+        srcfile.writelines(["\n"]) # whitespace for readability
+
+        # Add the string generation methods
+        self._write_src_translate_methods(srcfile, lang_name)
+        srcfile.writelines(["\n"]) # whitespace for readability
+
+        if group_name is not None:
+            # Complete the doxygen group
+            srcfile.writelines(self.doxy_comment_gen.gen_doxy_group_end())

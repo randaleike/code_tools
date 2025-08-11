@@ -37,8 +37,6 @@ from code_tools_grocsoftware.base.json_string_class_description import StringCla
 from code_tools_grocsoftware.base.project_json import ProjectDescription
 from code_tools_grocsoftware.cpp_gen.class_file_gen import GenerateLangFiles
 from code_tools_grocsoftware.cpp_gen.master_lang_select import MasterSelectFunctionGenerator
-from code_tools_grocsoftware.cpp_gen.linux_lang_select import LinuxLangSelectFunctionGenerator
-from code_tools_grocsoftware.cpp_gen.windows_lang_select import WindowsLangSelectFunctionGenerator
 
 from tests.dir_init import TESTFILEPATH
 
@@ -117,117 +115,6 @@ class MockProjectDescription(ProjectDescription):
         return "mockBaseSelection"
 
 # pylint: disable=protected-access
-
-def gen_inc_expected(class_gen, lang_name:str = None,
-                     group_name:str = None, group_desc:str = None)->list:
-    """!
-    @brief Generate the expected inc file text
-    @param class_gen class generator
-    @param lang_name {string} Language name or None for base code
-    @param group_name {string} doxygen group name or None for base code
-    @param group_desc {string} doxygen description or None for base code
-    """
-    str_data = StringClassDescription(strclass_filename)
-    class_name = str_data.get_language_class_name(lang_name)
-
-    base = BaseCppStringClassGenerator("mock_owner", MockEulaText())
-
-    if lang_name is None:
-        include_list = ["<cstddef>", "<cstdlib>", "<memory>", "<string>"]
-        class_desc = "Parser error/help string generation interface"
-        inheritence = None
-        class_decoration = None
-        prefix = '[[nodiscard]] virtual'
-        postfix = '= 0'
-        skipdoxy = False
-        virtual_destructor = True
-    else:
-        include_list = [str_data.get_base_class_name()+".h"]
-        class_desc = "Language specific parser error/help string generation interface"
-        inheritence = "public "+str_data.get_base_class_name()
-        class_decoration = "final"
-        prefix = None
-        postfix = 'final'
-        skipdoxy = True
-        virtual_destructor = False
-
-    expected = []
-    expected.extend(class_gen._generate_file_header())
-    expected.append("\n")
-    expected.extend(base.gen_include_block(include_list))
-    expected.append("\n")
-
-    if group_name is not None:
-        filename = str_data.get_language_class_name(lang_name)+".h"
-        expected.extend(base.doxy_comment_gen.gen_doxy_defgroup(filename,
-                                                                group_name,
-                                                                group_desc))
-
-    expected.append("#pragma once\n")
-    expected.extend(base.gen_namespace_open(class_gen.namespace_name))
-    expected.append("\n")
-
-    expected.extend(base.gen_class_open(class_name,
-                                        class_desc,
-                                        inheritence,
-                                        class_decoration))
-    indent = "".rjust(base.level_tab_size, " ")
-    expected.append(indent+"public:\n")
-
-    # Add default Constructor/destructor definitions
-    expected.extend(base.gen_class_default_constructor_destructor(class_name,
-                                                                  base.level_tab_size*2,
-                                                                  virtual_destructor,
-                                                                  not skipdoxy))
-
-    prop_list = str_data.get_property_method_list()
-    for methodname in prop_list:
-        _, pdesc, pparams, pret = str_data.get_property_method_data(methodname)
-        expected.extend(base.write_method(methodname,
-                                        pdesc,
-                                        pparams,
-                                        pret,
-                                        prefix,
-                                        postfix,
-                                        skipdoxy))
-        if not skipdoxy:
-            expected.append("\n")
-    expected.append("\n")
-
-    trans_list = str_data.get_tranlate_method_list()
-    for methodname in trans_list:
-        tdesc, tparams, tret = str_data.get_tranlate_method_function_data(methodname)
-
-        expected.extend(base.write_method(methodname,
-                                        tdesc,
-                                        tparams,
-                                        tret,
-                                        prefix,
-                                        postfix,
-                                        skipdoxy))
-        if not skipdoxy:
-            expected.append("\n")
-
-    if lang_name is None:
-        sname, sdesc, sret, sparams = class_gen.master_func_gen.get_function_desc()
-        sfunc = class_gen.declare_function_with_decorations(sname,
-                                                        sdesc,
-                                                        sparams,
-                                                        sret,
-                                                        base.level_tab_size*2,
-                                                        skipdoxy,
-                                                        "static")
-        expected.extend(sfunc)
-
-    expected.extend(base.gen_class_close(class_name))
-    expected.append("\n")
-    expected.extend(base.gen_namespace_close(class_gen.namespace_name))
-
-    if group_name is not None:
-        # Complete the doxygen group
-        expected.extend(base.doxy_comment_gen.gen_doxy_group_end())
-
-    return expected
 
 def test001_class_constructor():
     """!
@@ -545,7 +432,7 @@ def test013_gen_property_code_list():
 
 def test014_write_inc_property_methods():
     """!
-    @brief Test write_inc_property_methods method with text value
+    @brief Test _write_inc_property_methods method with text value
     """
     mock_file = MockFile()
     base = BaseCppStringClassGenerator()
@@ -576,7 +463,7 @@ def test014_write_inc_property_methods():
         # Mock the project description to return the expected data
         class_gen = GenerateLangFiles(MockProjectDescription())
 
-        class_gen.write_inc_property_methods(mock_file, True)
+        class_gen._write_inc_property_methods(mock_file, True)
 
         assert len(mock_file.mock_calls) == 2
         assert len(mock_file.writedata) == len(expected)
@@ -585,7 +472,7 @@ def test014_write_inc_property_methods():
 
 def test015_write_inc_property_methods_lang():
     """!
-    @brief Test write_inc_property_methods method with text value
+    @brief Test _write_inc_property_methods method with text value
     """
     mock_file = MockFile()
     base = BaseCppStringClassGenerator()
@@ -615,7 +502,7 @@ def test015_write_inc_property_methods_lang():
             # Mock the project description to return the expected data
             class_gen = GenerateLangFiles(MockProjectDescription())
 
-            class_gen.write_inc_property_methods(mock_file, False)
+            class_gen._write_inc_property_methods(mock_file, False)
 
             assert len(mock_file.mock_calls) == 1
             assert len(mock_file.writedata) == len(expected)
@@ -624,7 +511,7 @@ def test015_write_inc_property_methods_lang():
 
 def test016_write_inc_property_methods_with_params():
     """!
-    @brief Test write_inc_property_methods method with text value
+    @brief Test _write_inc_property_methods method with text value
     """
     mock_file = MockFile()
     base = BaseCppStringClassGenerator()
@@ -654,7 +541,7 @@ def test016_write_inc_property_methods_with_params():
 
             # Mock the project description to return the expected data
             class_gen = GenerateLangFiles(MockProjectDescription())
-            class_gen.write_inc_property_methods(mock_file, False)
+            class_gen._write_inc_property_methods(mock_file, False)
 
             assert len(mock_file.mock_calls) == 1
             assert len(mock_file.writedata) == len(expected)
@@ -663,7 +550,7 @@ def test016_write_inc_property_methods_with_params():
 
 def test017_write_src_property_methods():
     """!
-    @brief Test write_src_property_methods method with text value
+    @brief Test _write_src_property_methods method with text value
     """
     mock_file = MockFile()
     str_data = StringClassDescription(strclass_filename)
@@ -697,7 +584,7 @@ def test017_write_src_property_methods():
         # Mock the project description to return the expected data
         class_gen = GenerateLangFiles(MockProjectDescription())
 
-        class_gen.write_src_property_methods(mock_file, "english")
+        class_gen._write_src_property_methods(mock_file, "english")
 
         assert len(mock_file.mock_calls) == 2
         assert len(mock_file.writedata) == len(expected)
@@ -707,7 +594,7 @@ def test017_write_src_property_methods():
 
 def test018_write_src_property_methods_with_param():
     """!
-    @brief Test write_src_property_methods method with param
+    @brief Test _write_src_property_methods method with param
     """
     mock_file = MockFile()
     str_data = StringClassDescription(strclass_filename)
@@ -742,7 +629,7 @@ def test018_write_src_property_methods_with_param():
 
             # Mock the project description to return the expected data
             class_gen = GenerateLangFiles(MockProjectDescription())
-            class_gen.write_src_property_methods(mock_file, "spanish")
+            class_gen._write_src_property_methods(mock_file, "spanish")
 
             assert len(mock_file.mock_calls) == 2
             assert len(mock_file.writedata) == len(expected)
@@ -752,7 +639,7 @@ def test018_write_src_property_methods_with_param():
 
 def test019_write_src_property_methods_with_list():
     """!
-    @brief Test write_src_property_methods method with list return
+    @brief Test _write_src_property_methods method with list return
     """
     mock_file = MockFile()
     str_data = StringClassDescription(strclass_filename)
@@ -786,7 +673,7 @@ def test019_write_src_property_methods_with_list():
 
             # Mock the project description to return the expected data
             class_gen = GenerateLangFiles(MockProjectDescription())
-            class_gen.write_src_property_methods(mock_file, "spanish")
+            class_gen._write_src_property_methods(mock_file, "spanish")
 
             code_text = class_gen._gen_property_code("spanish", "LANGID", retdict)
             for line in code_text:
@@ -988,60 +875,5 @@ def test024_write_src_translate_methods_with_params():
 
                 for i, line in enumerate(expected):
                     assert mock_file.writedata[i] == line
-
-def test025_write_inc_file():
-    """!
-    @brief Test write_inc_file, base, no group
-    """
-    mock_file = MockFile()
-    class_gen = GenerateLangFiles(MockProjectDescription())
-    class_gen.write_inc_file(mock_file)
-
-    expected = gen_inc_expected(class_gen)
-    assert len(mock_file.mock_calls) == 19
-    assert len(mock_file.writedata) == len(expected)
-
-    for i, line in enumerate(expected):
-        assert mock_file.writedata[i] == line
-
-def test025_write_inc_file_lang():
-    """!
-    @brief Test write_inc_file, base, no group
-    """
-    mock_file = MockFile()
-
-    class_gen = GenerateLangFiles(MockProjectDescription())
-    class_gen.write_inc_file(mock_file, "english")
-
-    expected = gen_inc_expected(class_gen, "english")
-
-    assert len(mock_file.mock_calls) == 16
-    assert len(mock_file.writedata) == len(expected)
-
-    for i, line in enumerate(expected):
-        assert mock_file.writedata[i] == line
-
-def test026_write_inc_file_with_group():
-    """!
-    @brief Test write_inc_file, base, no group
-    """
-    mock_file = MockFile()
-    mock_gname = 'code_tools_grocsoftware.base.project_json.ProjectDescription.get_group_name'
-    mock_gdesc = 'code_tools_grocsoftware.base.project_json.ProjectDescription.get_group_desc'
-
-    with patch (mock_gname) as mock_group_name:
-        mock_group_name.return_value = "TestGroup"
-        with patch (mock_gdesc) as mock_group_desc:
-            mock_group_desc.return_value = "Group desc"
-
-            class_gen = GenerateLangFiles(MockProjectDescription())
-            class_gen.write_inc_file(mock_file)
-
-            expected = gen_inc_expected(class_gen, None, "TestGroup", "Group desc")
-            assert len(mock_file.mock_calls) == 21
-            assert len(mock_file.writedata) == len(expected)
-
-            for i, line in enumerate(expected):
-                assert mock_file.writedata[i] == line
 
 # pylint: enable=protected-access

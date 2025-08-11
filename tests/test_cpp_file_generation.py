@@ -1145,3 +1145,16 @@ class Test01CppFilehelper:
         assert len(test_text) == 2
         assert test_text[0] == "  class MyTestClassName final : public MyBaseClass\n"
         assert test_text[1] == "  {\n"
+
+    def test56gen_using_statement(self):
+        """!
+        @brief Test the gen_using_statement method
+        """
+        helper = GenerateCppFileHelper()
+
+        test_text = helper.gen_using_statement("parserstr", "std::string")
+        assert test_text == "using parserstr = std::string;"
+
+        test_text = helper.gen_using_statement("parserstr", "std::string", "desc")
+        assert test_text == "using parserstr = std::string;          //!< desc"
+

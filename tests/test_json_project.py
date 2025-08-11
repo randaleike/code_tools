@@ -300,6 +300,92 @@ def test026_get_custom_eula_text():
     assert isinstance(testdata, list)
     assert testdata == []
 
+# pylint: disable=protected-access
+
+def test027_add_using():
+    """!
+    @brief Test _add_using method
+    """
+    test_obj = ProjectDescription()
+    assert test_obj.project_json_data['inc_using'] is None
+    assert test_obj.project_json_data['base_src_using'] is None
+    assert test_obj.project_json_data['lang_src_using'] is None
+
+    test_obj._add_using('inc_using', 'integer', 'number', 'Temp')
+    assert isinstance(test_obj.project_json_data['inc_using'], list)
+    assert len(test_obj.project_json_data['inc_using']) == 1
+    assert isinstance(test_obj.project_json_data['inc_using'][0], dict)
+    assert len(test_obj.project_json_data['inc_using'][0]) == 3
+    assert test_obj.project_json_data['inc_using'][0] == {'localName':'integer',
+                                                          'stdName':'number',
+                                                          'desc':'Temp'}
+
+    test_obj._add_using('base_src_using', 'float', 'number', 'Float')
+    assert isinstance(test_obj.project_json_data['base_src_using'], list)
+    assert len(test_obj.project_json_data['base_src_using']) == 1
+    assert isinstance(test_obj.project_json_data['base_src_using'][0], dict)
+    assert len(test_obj.project_json_data['base_src_using'][0]) == 3
+    assert test_obj.project_json_data['base_src_using'][0] == {'localName':'float',
+                                                               'stdName':'number',
+                                                               'desc':'Float'}
+
+    test_obj._add_using('lang_src_using', 'string', 'text', 'Value')
+    assert isinstance(test_obj.project_json_data['lang_src_using'], list)
+    assert len(test_obj.project_json_data['lang_src_using']) == 1
+    assert isinstance(test_obj.project_json_data['lang_src_using'][0], dict)
+    assert len(test_obj.project_json_data['lang_src_using'][0]) == 3
+    assert test_obj.project_json_data['lang_src_using'][0] == {'localName':'string',
+                                                               'stdName':'text',
+                                                               'desc':'Value'}
+
+    test_obj._add_using('lang_src_using', 'foo', 'goo', 'good')
+    assert isinstance(test_obj.project_json_data['lang_src_using'], list)
+    assert len(test_obj.project_json_data['lang_src_using']) == 2
+
+def test028_get_using():
+    """!
+    @brief Test _get_using method
+    """
+    test_obj = ProjectDescription()
+    assert test_obj.project_json_data['inc_using'] is None
+    assert test_obj.project_json_data['base_src_using'] is None
+    assert test_obj.project_json_data['lang_src_using'] is None
+
+    assert test_obj._get_using('inc_using') is None
+    assert test_obj._get_using('base_src_using') is None
+    assert test_obj._get_using('lang_src_using') is None
+
+    test_obj._add_using('inc_using', 'integer', 'number', 'Temp')
+    test_obj._add_using('base_src_using', 'float', 'number', 'Float')
+    test_obj._add_using('lang_src_using', 'string', 'text', 'Value')
+
+    assert test_obj._get_using('inc_using') == test_obj.project_json_data['inc_using']
+    assert test_obj._get_using('base_src_using') == test_obj.project_json_data['base_src_using']
+    assert test_obj._get_using('lang_src_using') == test_obj.project_json_data['lang_src_using']
+
+def test029_add_get_using_specific():
+    """!
+    @brief Test add/get_using specific methods
+    """
+    test_obj = ProjectDescription()
+    assert test_obj.project_json_data['inc_using'] is None
+    assert test_obj.project_json_data['base_src_using'] is None
+    assert test_obj.project_json_data['lang_src_using'] is None
+
+    assert test_obj.get_include_using() is None
+    assert test_obj.get_base_src_using() is None
+    assert test_obj.get_lang_src_using() is None
+
+    test_obj.add_include_using('integer', 'number', 'Temp')
+    test_obj.add_base_src_using('float', 'number', 'Float')
+    test_obj.add_lang_src_using('string', 'text', 'Value')
+
+    assert test_obj.get_include_using() == test_obj.project_json_data['inc_using']
+    assert test_obj.get_base_src_using() == test_obj.project_json_data['base_src_using']
+    assert test_obj.get_lang_src_using() == test_obj.project_json_data['lang_src_using']
+
+# pylint: enable=protected-access
+
 def test030_clear():
     """!
     @brief Test clear method
@@ -402,7 +488,7 @@ def test032_update():
         mocked_file.assert_called_once_with("temp_test_project.json", 'w', encoding='utf-8')
 
         # Check that the file was written with the expected content
-        assert len(mocked_file.mock_calls) == 54
+        assert len(mocked_file.mock_calls) == 66
         mocked_file().write.assert_any_call(': ')    # add count
         mocked_file().write.assert_any_call(',\n  ') # add count
 

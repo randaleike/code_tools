@@ -77,6 +77,17 @@ class GenerateCppFileHelper():
                                   'unsigned':"unsigned",
                                   'char':"char"}
 
+    def update_xlate_name(self, std_name:str, new_name:str):
+        """!
+        @brief Update the translation matrix with a new type name
+        @param std_name {string} Old translation name
+        @param new_name {string} New name
+        """
+        for key, xlate_name in self.type_xlation_dict.items():
+            if xlate_name == std_name:
+                self.type_xlation_dict[key] = new_name
+
+
     def declare_type(self, base_type:str, type_mod:int=0)->str:
         """!
         @brief Generate the type text based on the input type name and type modification data
@@ -261,7 +272,6 @@ class GenerateCppFileHelper():
                 func_declare_text.append(inline_indent+"}\n")
 
         return func_declare_text
-
 
     def define_function_with_decorations(self, name:str, briefdesc:str,
                                          param_dict_list:list, ret_dict:dict,
@@ -675,3 +685,18 @@ class GenerateCppFileHelper():
         else:
             retstr = "return "+ret_value+";"
         return retstr
+
+    def gen_using_statement(self, local_name:str, std_name:str, desc:str = None)->str:
+        """!
+        @brief Generate a using statement
+        @param local_name {string} Local type name
+        @param std_name {string} Standard C/C++ type name
+        @param desc {string} Doxygen comment
+        @return string - Constructed using statement
+        """
+        usingstr = "using "+local_name+" = "+std_name+";"
+        if desc is not None:
+            doxycomment = self.doxy_comment_gen.gen_doxy_var_doc_str(desc)
+            usingstr = usingstr.ljust(40)+doxycomment
+
+        return usingstr

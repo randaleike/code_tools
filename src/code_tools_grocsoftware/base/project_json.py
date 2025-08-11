@@ -51,7 +51,10 @@ class ProjectDescription():
                                   'src_subdir': "", 'test_subdir': None,
                                   'mock_subdir': None,
                                   'owner': "Unknown",
-                                  'groupName': None, 'groupDesc': None}
+                                  'groupName': None, 'groupDesc': None,
+                                  'inc_using':None,
+                                  'base_src_using':None,
+                                  'lang_src_using':None}
 
         if project_data_file_name is not None:
             self.filename = project_data_file_name
@@ -74,7 +77,10 @@ class ProjectDescription():
                                   'src_subdir': "", 'test_subdir': None,
                                   'mock_subdir': None,
                                   'owner': "Unknown",
-                                  'groupName': None, 'groupDesc': None}
+                                  'groupName': None, 'groupDesc': None,
+                                  'inc_using':None,
+                                  'base_src_using':None,
+                                  'lang_src_using':None}
 
     def update(self):
         """!
@@ -268,3 +274,76 @@ class ProjectDescription():
         @param desc (string) - Group description name to set
         """
         self.project_json_data['groupDesc'] = desc
+
+    def _add_using(self, section:str, local_name:str, std_name:str, desc:str = None):
+        """!
+        @brief Add value to using list
+        @param section {string} Using section name
+        @param local_name {string} Local type name
+        @param std_name {string} Standard C/C++ type name
+        @param desc {string} Doxygen comment
+        """
+        new_entry = {'localName':local_name, 'stdName':std_name, 'desc':desc}
+        if self.project_json_data[section] is None:
+            self.project_json_data[section] = [new_entry]
+        else:
+            self.project_json_data[section].append(new_entry)
+
+    def _get_using(self, section:str)->list:
+        """!
+        @brief Return the section using dictionary list
+        @param section {string} Using section name
+        @return list - list of using dictionary entries
+        """
+        return self.project_json_data[section]
+
+    def add_include_using(self, local_name:str, std_name:str, desc:str = None):
+        """!
+        @brief Add value to include file using list
+        @param local_name {string} Local type name
+        @param std_name {string} Standard C/C++ type name
+        @param desc {string} Doxygen comment
+        @return string - Constructed using statement
+        """
+        self._add_using('inc_using', local_name, std_name, desc)
+
+    def get_include_using(self)->list:
+        """!
+        @brief Return the include using dictionary list
+        @return list - list of using dictionary entries
+        """
+        return self._get_using('inc_using')
+
+    def add_base_src_using(self, local_name:str, std_name:str, desc:str = None):
+        """!
+        @brief Add value to base source file using list
+        @param local_name {string} Local type name
+        @param std_name {string} Standard C/C++ type name
+        @param desc {string} Doxygen comment
+        @return string - Constructed using statement
+        """
+        self._add_using('base_src_using', local_name, std_name, desc)
+
+    def get_base_src_using(self)->list:
+        """!
+        @brief Return the base source using dictionary list
+        @return list - list of using dictionary entries
+        """
+        return self._get_using('base_src_using')
+
+    def add_lang_src_using(self, local_name:str, std_name:str, desc:str = None):
+        """!
+        @brief Add value to language specific source file using list
+        @param local_name {string} Local type name
+        @param std_name {string} Standard C/C++ type name
+        @param desc {string} Doxygen comment
+        @return string - Constructed using statement
+        """
+        self._add_using('lang_src_using', local_name, std_name, desc)
+
+    def get_lang_src_using(self)->list:
+        """!
+        @brief Return the language specific source using dictionary list
+        @return list - list of using dictionary entries
+        """
+        return self._get_using('lang_src_using')
