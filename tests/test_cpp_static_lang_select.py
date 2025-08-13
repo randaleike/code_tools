@@ -71,6 +71,7 @@ class TestClass01StaticLangSelect:
         mock_project_data.get_lang_data = mocker.Mock(return_value=LanguageDescriptionList())
         mock_project_data.get_owner = mocker.Mock(return_value="TestOwner")
         mock_project_data.get_eula = mocker.Mock(return_value=DummyEulaText())
+        mock_project_data.get_version = mocker.Mock(return_value = "v1.0.0")
 
         mock_string_data.get_base_class_name = mocker.Mock(return_value="BaseClass")
         mock_string_data.get_dynamic_compile_switch = mocker.Mock(return_value="DYNAMIC_INTERNATIONALIZATION")
@@ -87,6 +88,7 @@ class TestClass01StaticLangSelect:
         mock_project_data.get_lang_data = mocker.Mock(return_value=lang_list)
         mock_project_data.get_owner = mocker.Mock(return_value="TestOwner")
         mock_project_data.get_eula = mocker.Mock(return_value=DummyEulaText())
+        mock_project_data.get_version = mocker.Mock(return_value = "v1.0.0")
 
         mock_string_data.get_base_class_name = mocker.Mock(return_value="BaseClass")
         mock_string_data.get_dynamic_compile_switch = mocker.Mock(return_value="DYNAMIC_INTERNATIONALIZATION")
@@ -116,6 +118,7 @@ class TestClass01StaticLangSelect:
         mock_project_data.get_string_data = mocker.Mock(return_value=mock_string_data)
         mock_project_data.get_owner = mocker.Mock(return_value="George")
         mock_project_data.get_eula = mocker.Mock(return_value=DummyEulaText())
+        mock_project_data.get_version = mocker.Mock(return_value = "v1.0.0")
 
         mock_string_data.get_base_class_name = mocker.Mock(return_value="TestBaseClass")
         mock_string_data.get_dynamic_compile_switch = mocker.Mock(return_value="TEST_DYNAM_SWITCH")

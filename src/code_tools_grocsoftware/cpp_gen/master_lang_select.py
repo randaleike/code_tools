@@ -46,10 +46,9 @@ class MasterSelectFunctionGenerator(BaseCppStringClassGenerator):
         base_class_name = jsonstringdesc.get_base_class_name()
         dynamic_compile_switch = jsonstringdesc.get_dynamic_compile_switch()
 
-        super().__init__(project_data.get_owner(),
-                         project_data.get_eula(),
-                         base_class_name,
-                         dynamic_compile_switch)
+        super().__init__(base_class_name,
+                         dynamic_compile_switch,
+                         project_data.get_version())
 
         self.select_function_name = base_class_name+"::"+method_name
         self.select_base_function_name = method_name

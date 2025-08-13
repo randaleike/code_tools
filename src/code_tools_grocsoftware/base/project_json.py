@@ -25,6 +25,7 @@ Utility to create a json language description list
 #==========================================================================
 
 import json
+from datetime import date
 
 from code_tools_grocsoftware.base.eula import EulaText
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
@@ -45,27 +46,20 @@ class ProjectDescription():
         self.filename = "jsonProjectDescription.json"
 
         ## JSON language description data from the file
-        self.project_json_data = {'eula_name':"MIT_open", 'custom_text': [],
-                                  'langDataFile':None, 'stringDataFile':None,
-                                  'baseDirName':"", 'inc_subdir': "",
-                                  'src_subdir': "", 'test_subdir': None,
-                                  'mock_subdir': None,
-                                  'owner': "Unknown",
-                                  'groupName': None, 'groupDesc': None,
-                                  'inc_using':None,
-                                  'base_src_using':None,
-                                  'lang_src_using':None}
+        self.project_json_data = {}
 
         if project_data_file_name is not None:
             self.filename = project_data_file_name
-
-        try:
-            lang_json_file = open(self.filename, 'r', encoding='utf-8') # pylint: disable=consider-using-with
-        except FileNotFoundError:
-            self.clear()
+            try:
+                lang_json_file = open(self.filename, 'r', encoding='utf-8') # pylint: disable=consider-using-with
+            except FileNotFoundError:
+                self.clear()
+            else:
+                self.project_json_data = json.load(lang_json_file)
+                lang_json_file.close()
         else:
-            self.project_json_data = json.load(lang_json_file)
-            lang_json_file.close()
+            self.clear()
+
 
     def clear(self):
         """!
@@ -80,7 +74,11 @@ class ProjectDescription():
                                   'groupName': None, 'groupDesc': None,
                                   'inc_using':None,
                                   'base_src_using':None,
-                                  'lang_src_using':None}
+                                  'lang_src_using':None,
+                                  'creationYear': int(date.today().year),
+                                  'version':{'major':0,
+                                             'minor':1,
+                                             'patch':0}}
 
     def update(self):
         """!
@@ -347,3 +345,40 @@ class ProjectDescription():
         @return list - list of using dictionary entries
         """
         return self._get_using('lang_src_using')
+
+    def set_version(self, major:int=0, minor:int=0, patch=0):
+        """!
+        @brief Set the version levels
+        @param major {integer} Major version number, default = 0
+        @param minor {integer} Major version number, default = 0
+        @param patch {integer} Major version number, default = 0
+        """
+        self.project_json_data['version']={'major':major,
+                                           'minor':minor,
+                                           'patch':patch}
+
+    def get_version(self)->str:
+        """!
+        @brief Get the version string
+        @return string - Version string
+        """
+        verstr = "v"
+        verstr += str(self.project_json_data['version']['major'])
+        verstr += "."
+        verstr += str(self.project_json_data['version']['minor'])
+        verstr += "."
+        verstr += str(self.project_json_data['version']['patch'])
+        return verstr
+
+    def set_creation_year(self, year:int):
+        """!
+        @brief Set the creation year
+        @param year {integer} Project creation year
+        """
+        self.project_json_data['creationYear'] = year
+
+    def get_creation_year(self):
+        """!
+        @brief Get the creation year
+        """
+        return self.project_json_data['creationYear']

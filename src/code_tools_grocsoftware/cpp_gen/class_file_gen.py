@@ -58,10 +58,9 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         ## Json string class description object
         self.json_str_data:StringClassDescription = project_data.get_string_data()
 
-        super().__init__(project_data.get_owner(),
-                         project_data.get_eula(),
-                         self.json_str_data.get_base_class_name(),
-                         self.json_str_data.get_dynamic_compile_switch())
+        super().__init__(self.json_str_data.get_base_class_name(),
+                         self.json_str_data.get_dynamic_compile_switch(),
+                         self.project_data.get_version())
 
         ## Class generator version information
         self.version = {'Major': 1,
@@ -429,24 +428,26 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
 
         else:
             class_desc = "Language specific parser error/help string generation interface"
-            inheritence = "public "+self.json_str_data.get_base_class_name()
+            inheritence = "public "+self.gen_h_fname()
             class_decoration = "final"
             skipdoxy = True
             virtual_destructor = False
 
         # Write the common header
-        hfile.writelines(self._generate_file_header())
+        hfile.writelines(self._generate_file_header(self.project_data.get_eula(),
+                                                    self.project_data.get_owner(),
+                                                    self.project_data.get_creation_year()))
         hfile.writelines(["\n"]) # whitespace for readability
 
         # Write the include block
         if lang_name is None:
             # Base includes
             include_list = ["<cstddef>", "<cstdlib>", "<memory>", "<string>"]
-            filename = self.json_str_data.get_base_class_name()+".h"
+            filename = self.gen_h_fname()
         else:
             # Language specific includes
-            include_list = [self.json_str_data.get_base_class_name()+".h"]
-            filename = self.json_str_data.get_language_class_name(lang_name)+".h"
+            include_list = [self.gen_h_fname()]
+            filename = self.gen_h_fname(lang_name)
 
         hfile.writelines(self.gen_include_block(include_list))
         hfile.writelines(["\n"]) # whitespace for readability
@@ -527,20 +528,22 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         group_desc = self.project_data.get_group_desc()
 
         # Write the common header
-        srcfile.writelines(self._generate_file_header())
+        srcfile.writelines(self._generate_file_header(self.project_data.get_eula(),
+                                                      self.project_data.get_owner(),
+                                                      self.project_data.get_creation_year()))
         srcfile.writelines(["\n"]) # whitespace for readability
 
         # Write the include block
-        include_list = [self.json_str_data.get_language_class_name()+".h"]
+        include_list = [self.gen_h_fname()]
         lang_list = self.json_lang_data.get_language_list()
         for lang in lang_list:
-            include_list.append(self.json_str_data.get_language_class_name(lang)+".h")
+            include_list.append(self.gen_h_fname(lang))
 
         srcfile.writelines(self.gen_include_block(include_list))
         srcfile.writelines(["\n"]) # whitespace for readability
 
         if group_name is not None:
-            filename = self.json_str_data.get_language_class_name()+".cpp"
+            filename = self.gen_cpp_fname()
             srcfile.writelines(self.doxy_comment_gen.gen_doxy_defgroup(filename,
                                                                        group_name,
                                                                        group_desc))
@@ -586,18 +589,20 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         group_desc = self.project_data.get_group_desc()
 
         # Write the common header
-        srcfile.writelines(self._generate_file_header())
+        srcfile.writelines(self._generate_file_header(self.project_data.get_eula(),
+                                                      self.project_data.get_owner(),
+                                                      self.project_data.get_creation_year()))
         srcfile.writelines(["\n"]) # whitespace for readability
 
         # Write the include block
         include_list = ["<sstream>",
-                        self.json_str_data.get_language_class_name(lang_name)+".h"]
+                        self.gen_h_fname(lang_name)]
 
         srcfile.writelines(self.gen_include_block(include_list))
         srcfile.writelines(["\n"]) # whitespace for readability
 
         if group_name is not None:
-            filename = self.json_str_data.get_language_class_name(lang_name)+".cpp"
+            filename = self.gen_cpp_fname(lang_name)
             srcfile.writelines(self.doxy_comment_gen.gen_doxy_defgroup(filename,
                                                                        group_name,
                                                                        group_desc))
@@ -629,3 +634,309 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         if group_name is not None:
             # Complete the doxygen group
             srcfile.writelines(self.doxy_comment_gen.gen_doxy_group_end())
+
+    def _gen_unittest_main(self)->list:
+        """!
+        @brief Generate the unittest main function
+        @return list - List of code strings
+        """
+        bodyindent = "".rjust(self.level_tab_size, " ")
+        code_main = ["// Execute the tests\n"]
+        code_main.append("int main(int argc, char **argv)\n")
+        code_main.append("{\n")
+        code_main.append(bodyindent+"::testing::InitGoogleTest(&argc, argv);\n")
+        code_main.append(bodyindent+"return RUN_ALL_TESTS();\n")
+        code_main.append("}\n")
+        return code_main
+
+    def write_base_unittest_file(self, utfile):
+        """!
+        @brief Write the OS language selection CPP file
+        @param utfile {File} File to write the data to
+        """
+        # Set the class name and description
+        group_name = self.project_data.get_group_name()
+        group_desc = self.project_data.get_group_desc()
+        get_iso_name = self.json_str_data.get_iso_property_method_name()
+
+        # Write the common header data
+        utfile.writelines(self._generate_file_header(self.project_data.get_eula(),
+                                                     self.project_data.get_owner(),
+                                                     self.project_data.get_creation_year()))
+        utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add the common includes
+        include_list = ["<gtest/gtest.h>", self.gen_h_fname()]
+        utfile.writelines(self.gen_include_block(include_list))
+        utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add doxygen group start
+        if group_name is not None:
+            utfile.writelines(self.doxy_comment_gen.gen_doxy_defgroup(self.gen_unittest_fname(),
+                                                                      group_name+'unittest',
+                                                                      group_desc+'unit test'))
+
+            utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add using namespace
+        utfile.writelines(self.gen_using_namespace(self.namespace_name))
+
+        # Add using statements
+        using_list = self.project_data.get_base_src_using()
+        if using_list is not None:
+            using_code = []
+            for using in using_list:
+                using_code.append(self.gen_using_statement(using['localName'],
+                                                           using['stdName'],
+                                                           using['desc']))
+            utfile.writelines(using_code)
+            utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add the master selection function
+        utfile.writelines(["\n"]) # whitespace for readability
+        utfile.writelines(self.master_func_gen.gen_unit_test(get_iso_name, self.os_lang_sel_list))
+
+        # Add the test main
+        utfile.writelines(["\n"]) # whitespace for readability
+        utfile.writelines(self._gen_unittest_main())
+
+        # Complete the doxygen group
+        if group_name is not None:
+            utfile.writelines(["\n"]) # whitespace for readability
+            utfile.writelines(self.doxy_comment_gen.gen_doxy_group_end())
+
+    def write_selection_unittest_file(self, utfile, os_sel_gen):
+        """!
+        @brief Write the OS specific language selection CPP file
+        @param utfile {File} File to write the data to
+        """
+        # Set the class name and description
+        group_name = self.project_data.get_group_name()
+        group_desc = self.project_data.get_group_desc()
+        get_iso_name = self.json_str_data.get_iso_property_method_name()
+        fname, _ = os_sel_gen.get_unittest_file_name()
+
+        # Write the common header data
+        utfile.writelines(self._generate_file_header(self.project_data.get_eula(),
+                                                     self.project_data.get_owner(),
+                                                     self.project_data.get_creation_year()))
+        utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add the common includes
+        include_list = ["<gtest/gtest.h>", self.gen_h_fname()]
+        utfile.writelines(self.gen_include_block(include_list))
+        utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add doxygen group start
+        if group_name is not None:
+            utfile.writelines(self.doxy_comment_gen.gen_doxy_defgroup(fname,
+                                                                      group_name+'unittest',
+                                                                      group_desc+'unit test'))
+
+            utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add using namespace
+        utfile.writelines(self.gen_using_namespace(self.namespace_name))
+        utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add using statements
+        using_list = self.project_data.get_base_src_using()
+        if using_list is not None:
+            using_code = []
+            for using in using_list:
+                using_code.append(self.gen_using_statement(using['localName'],
+                                                           using['stdName'],
+                                                           using['desc']))
+            utfile.writelines(using_code)
+            utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add the language dependent selection functions
+        utfile.writelines(os_sel_gen.gen_unit_test(get_iso_name))
+
+        # Add the test main
+        utfile.writelines(["\n"]) # whitespace for readability
+        utfile.writelines(self._gen_unittest_main())
+
+        # Complete the doxygen group
+        if group_name is not None:
+            utfile.writelines(["\n"]) # whitespace for readability
+            utfile.writelines(self.doxy_comment_gen.gen_doxy_group_end())
+
+    def _generate_property_unittest(self, method:str, langname:str)->list:
+        """!
+        @brief Generate the unit test for the input property method
+        @param propertyMethod {string} Property function name
+        @param langname {string} Language name
+        @return list of strings - Test code to output
+        """
+        code_txt = []
+        pname, _, pparams, pret = self.json_str_data.get_property_method_data(method)
+        ut_section = self.json_str_data.get_language_class_name(langname)
+        body_indent = "".rjust(4, ' ')
+
+        # Translate the return type
+        code_txt.append("TEST("+ut_section+", fetch"+method+")\n")
+        code_txt.append("{\n")
+        vardecl = body_indent+self.json_str_data.get_language_class_name(langname)+" testvar;\n"
+        code_txt.append(vardecl)
+
+        # Build the property function call
+        fetch_code = self.gen_function_ret_type(pret)
+        fetch_code += "output = testvar."
+        fetch_code += method
+        fetch_code += "("
+        param_prefix = ""
+        for param in pparams:
+            fetch_code += param_prefix
+            param_val = self.test_param_values[ParamRetDict.get_param_name(param)]
+            fetch_code += param_val
+            param_prefix = ", "
+        fetch_code += ");\n"
+        code_txt.append(body_indent+fetch_code)
+
+        # Build the test assertion
+        is_list = ParamRetDict.is_mod_list(ParamRetDict.get_return_type_mod(pret))
+        if LanguageDescriptionList.is_property_text(pname):
+            if is_list:
+                code_txt.append(body_indent+"for (auto const &item : output)\n")
+                code_txt.append(body_indent+"{\n")
+                for_indent = body_indent+"".rjust(4, ' ')
+                for item in self.json_lang_data.get_property_data(langname, pname):
+                    assert_txt = "EXPECT_STREQ("
+                    assert_txt += "\""
+                    assert_txt += item
+                    assert_txt += "\", item.c_str());\n"
+                    code_txt.append(for_indent+assert_txt)
+                code_txt.append(body_indent+"}\n")
+            else:
+                assert_txt = "EXPECT_STREQ("
+                assert_txt += "\""
+                assert_txt += self.json_lang_data.get_property_data(langname, pname)
+                assert_txt += "\", output.c_str());\n"
+                code_txt.append(body_indent+assert_txt)
+        else:
+            if is_list:
+                code_txt.append(body_indent+"for (auto const &item : output)\n")
+                code_txt.append(body_indent+"{\n")
+                for_indent = body_indent+"".rjust(4, ' ')
+                for item in self.json_lang_data.get_property_data(langname, pname):
+                    assert_txt = "EXPECT_EQ("
+                    assert_txt += item
+                    assert_txt += ", item);\n"
+                    code_txt.append(for_indent+assert_txt)
+                code_txt.append(body_indent+"}\n")
+            else:
+                assert_txt = "EXPECT_EQ("
+                assert_txt += self.json_lang_data.get_property_data(langname, pname)
+                assert_txt += ", output);\n"
+                code_txt.append(body_indent+assert_txt)
+        code_txt.append("}\n")
+        return code_txt
+
+    def _generate_translate_unittest(self, method:str, langname:str)->list:
+        """!
+        @brief Generate the unit test for the input property method
+        @param method {string} Property function name
+        @param langname {string} Language name
+        @return list of strings - Test code to output
+        """
+        code_txt = []
+        _, tparams, tret = self.json_str_data.get_tranlate_method_function_data(method)
+        ut_section = self.json_str_data.get_language_class_name(langname)
+        body_indent = "".rjust(4, ' ')
+
+        # Translate the return type
+        code_txt.append("TEST("+ut_section+", print"+method+")\n")
+        code_txt.append("{\n")
+        code_txt.append(body_indent+self.json_str_data.get_language_class_name(langname)+" testvar;\n")
+
+        # Build the property function call
+        fetch_code = self.gen_function_ret_type(tret)
+        fetch_code += "output = testvar."
+        fetch_code += method
+        fetch_code += "("
+        param_prefix = ""
+        for param in tparams:
+            val, is_text = self.test_param_values[ParamRetDict.get_param_name(param)]
+            fetch_code += param_prefix
+            fetch_code += val
+            param_prefix = ", "
+        fetch_code += ");\n"
+        code_txt.append(body_indent+fetch_code)
+
+        # Build the expected string
+        target_lang = self.json_lang_data.get_iso_code_data(langname)
+        str_data = self.json_str_data.get_tranlate_method_text_data(method, target_lang)
+        expected = TransTxtParser.assemble_test_return_string(str_data,
+                                                              self.test_param_values)
+
+        # Build the assertion test
+        assert_txt = "EXPECT_STREQ(\""+expected+"\", output.c_str());\n"
+        code_txt.append(body_indent+assert_txt)
+        code_txt.append("}\n")
+        return code_txt
+
+    def write_lang_unittest_file(self, utfile, lang:str):
+        """!
+        @brief Write the OS specific language selection CPP file
+        @param utfile {File} File to write the data to
+        """
+        # Set the class name and description
+        group_name = self.project_data.get_group_name()
+        group_desc = self.project_data.get_group_desc()
+        fname = self.gen_unittest_fname(lang)
+
+        # Write the common header data
+        utfile.writelines(self._generate_file_header(self.project_data.get_eula(),
+                                                     self.project_data.get_owner(),
+                                                     self.project_data.get_creation_year()))
+        utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add the common includes
+        include_list = ["<gtest/gtest.h>",
+                           self.gen_h_fname(),
+                           self.gen_h_fname(lang)]
+        utfile.writelines(self.gen_include_block(include_list))
+        utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add doxygen group start
+        if group_name is not None:
+            utfile.writelines(self.doxy_comment_gen.gen_doxy_defgroup(fname,
+                                                                      group_name+'unittest',
+                                                                      group_desc+'unit test'))
+
+            utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add using namespace
+        utfile.writelines(self.gen_using_namespace(self.namespace_name))
+
+        # Add using statements
+        using_list = self.project_data.get_base_src_using()
+        if using_list is not None:
+            using_code = []
+            for using in using_list:
+                using_code.append(self.gen_using_statement(using['localName'],
+                                                           using['stdName'],
+                                                           using['desc']))
+            utfile.writelines(using_code)
+            utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add the property unittest methods
+        method_list = self.json_str_data.get_property_method_list()
+        for method_name in method_list:
+            utfile.writelines(self._generate_property_unittest(method_name, lang))
+            utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add the string generation methods
+        method_list = self.json_str_data.get_tranlate_method_list()
+        for method_name in method_list:
+            utfile.writelines(self._generate_translate_unittest(method_name, lang))
+            utfile.writelines(["\n"]) # whitespace for readability
+
+        # Add the test main
+        utfile.writelines(self._gen_unittest_main())
+
+        # Complete the doxygen group
+        if group_name is not None:
+            utfile.writelines(["\n"]) # whitespace for readability
+            utfile.writelines(self.doxy_comment_gen.gen_doxy_group_end())

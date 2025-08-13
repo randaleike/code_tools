@@ -44,10 +44,9 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         base_class_name = jsonstringdesc.get_base_class_name()
         dynamic_compile_switch = jsonstringdesc.get_dynamic_compile_switch()
 
-        super().__init__(json_project_data.get_owner(),
-                         json_project_data.get_eula(),
-                         base_class_name,
-                         dynamic_compile_switch)
+        super().__init__(base_class_name,
+                         dynamic_compile_switch,
+                         json_project_data.get_version())
 
         self.select_function_name = "get"+base_class_name+"_Static"
 

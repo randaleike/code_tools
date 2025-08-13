@@ -24,10 +24,13 @@ Unittest for programmer base tools utility
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #==========================================================================
 
+from datetime import date
+
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from code_tools_grocsoftware.base.eula import EulaText
 from code_tools_grocsoftware.cpp_gen.file_gen_base import GenerateCppFileHelper
 from code_tools_grocsoftware.cpp_gen.string_class_tools import BaseCppStringClassGenerator
+from tests.mock_eula import MockEulaText
 
 # pylint: disable=protected-access
 
@@ -41,7 +44,6 @@ class TestClass01StringClass:
         """
         test_obj = BaseCppStringClassGenerator()
 
-        assert test_obj.owner == "BaseCppStringClassGenerator"
         assert test_obj.base_class_name == "BaseClass"
         assert test_obj.dynamic_compile_switch == "DYNAMIC_INTERNATIONALIZATION"
         assert test_obj.if_dynamic_defined == "defined(DYNAMIC_INTERNATIONALIZATION)"
@@ -53,11 +55,7 @@ class TestClass01StringClass:
         assert test_obj.type_xlation_dict['sharedptr'] == "std::shared_ptr<BaseClass>"
         assert test_obj.type_xlation_dict['strstream'] == "std::stringstream"
 
-        assert test_obj.version_major == 0
-        assert test_obj.version_minor == 4
-        assert test_obj.version_patch == 1
-
-        assert test_obj.auto_tool_name == test_obj.__class__.__name__+"V0.4.1"
+        assert test_obj.auto_tool_name == test_obj.__class__.__name__+"v0.0.0"
         assert test_obj.group_name == "LocalLanguageSelection"
 
         assert test_obj.group_desc == "Local language detection and selection utility"
@@ -68,12 +66,9 @@ class TestClass01StringClass:
         """!
         @brief Test constructor
         """
-        test_obj = BaseCppStringClassGenerator("me",
-                                               "MIT_open",
-                                               "TestBaseClass",
+        test_obj = BaseCppStringClassGenerator("TestBaseClass",
                                                "BASE_DYNAMIC_SWITCH")
 
-        assert test_obj.owner == "me"
         assert test_obj.base_class_name == "TestBaseClass"
         assert test_obj.dynamic_compile_switch == "BASE_DYNAMIC_SWITCH"
         assert test_obj.if_dynamic_defined == "defined(BASE_DYNAMIC_SWITCH)"
@@ -85,11 +80,7 @@ class TestClass01StringClass:
         assert test_obj.type_xlation_dict['sharedptr'] == "std::shared_ptr<TestBaseClass>"
         assert test_obj.type_xlation_dict['strstream'] == "std::stringstream"
 
-        assert test_obj.version_major == 0
-        assert test_obj.version_minor == 4
-        assert test_obj.version_patch == 1
-
-        assert test_obj.auto_tool_name == test_obj.__class__.__name__+"V0.4.1"
+        assert test_obj.auto_tool_name == test_obj.__class__.__name__+"v0.0.0"
         assert test_obj.group_name == "LocalLanguageSelection"
 
         assert test_obj.group_desc == "Local language detection and selection utility"
@@ -115,44 +106,28 @@ class TestClass01StringClass:
         assert test_obj._gen_make_ptr_return_statement() == exp_ret1
         assert test_obj._gen_make_ptr_return_statement("oompa") == exp_ret2
 
-    def test005_get_version(self):
-        """!
-        @brief Test _get_version
-        """
-        test_obj = BaseCppStringClassGenerator()
-        expected = "V"
-        expected += str(test_obj.version_major)
-        expected += "."
-        expected += str(test_obj.version_minor)
-        expected += "."
-        expected += str(test_obj.version_patch)
-        assert test_obj._get_version() == expected
-
     def test006_generate_file_header(self):
         """!
         @brief Test _generate_file_header
         """
-        test_obj = BaseCppStringClassGenerator("Tester", "MIT_open")
-        str_list = test_obj._generate_file_header()
-        eula_data = EulaText('MIT_open')
-        eula_name = eula_data.format_eula_name()
-        eula_text = eula_data.format_eula_text()
-        assert len(str_list) == 27
+        eula_data = MockEulaText()
+
+        test_obj = BaseCppStringClassGenerator()
+        current_year = date.today().year
+        str_list = test_obj._generate_file_header(eula_data, "Tester")
+        assert len(str_list) == 10
         assert str_list[0] == "/*----------------------------------------------------------" \
                               "--------------------\n"
-        assert str_list[1] == "* Copyright (c) 2025 Tester\n"
+        assert str_list[1] == "* Copyright (c) "+str(current_year)+" Tester\n"
         assert str_list[2] == "* \n"
-        assert str_list[3] == "* "+eula_name+"\n"
+        assert str_list[3] == "* Mock EULA\n"
         assert str_list[4] == "* \n"
-
-        for index, eula_line in enumerate(eula_text):
-            assert str_list[index+5] == "* "+eula_line+"\n"
-
-        assert str_list[23] == "* \n"
+        assert str_list[5] == "* Mock EULA text\n"
+        assert str_list[6] == "* \n"
         expected = "* This file was autogenerated by "+test_obj.auto_tool_name+" do not edit\n"
-        assert str_list[24] == expected
-        assert str_list[25] == "* \n"
-        assert str_list[26] == "* --------------------------------------------------------" \
+        assert str_list[7] == expected
+        assert str_list[8] == "* \n"
+        assert str_list[9] == "* --------------------------------------------------------" \
                                "--------------------*/\n"
 
     def test007_generate_h_file_name(self):

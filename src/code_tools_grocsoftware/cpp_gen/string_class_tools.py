@@ -33,28 +33,16 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
     """!
     Base string class generation class
     """
-    ## Major version number definition for  the genertator
-    version_major = 0
-    ## Minor version number definition for  the genertator
-    version_minor = 4
-    ## Patch version number definition for  the genertator
-    version_patch = 1
-
-    def __init__(self, owner:str = None, eula:EulaText=None,
-                 base_class_name:str = "BaseClass",
-                 dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION"):
+    def __init__(self, base_class_name:str = "BaseClass",
+                 dynamic_compile_switch:str = "DYNAMIC_INTERNATIONALIZATION",
+                 version:str = "v0.0.0"):
         """!
         @brief BaseCppStringClassGenerator constructor
-        @param owner {string} Owner string for the copyright/EULA file header comment
-        @param eula {EulaText} EULA data for the copyright/EULA file header comment
         @param base_class_name {string} Base class name for class definition generation
         @param dynamic_compile_switch {string} Dynamic language selection compile switch
+        @param version {string} Version string
         """
-        super().__init__(eula)
-        ## Owner name for file header copyright message generation
-        self.owner = "BaseCppStringClassGenerator"
-        if owner is not None:
-            self.owner = owner
+        super().__init__()
 
         ## Base class name for class definition generations
         self.base_class_name = base_class_name
@@ -78,7 +66,7 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         self.type_xlation_dict['strstream'] = "std::stringstream"
 
         ## Autogeneration tool name
-        self.auto_tool_name = self.__class__.__name__+self._get_version()
+        self.auto_tool_name = str(self.__class__.__name__)+version
 
         ## Doxygen group name
         self.group_name = "LocalLanguageSelection"
@@ -129,19 +117,14 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         ret_line += ">();\n"
         return ret_line
 
-    def _get_version(self)->str:
-        """!
-        @brief Return the version number as a string
-        @return string - Version number
-        """
-        return "V"+str(self.version_major)+"."+str(self.version_minor)+"."+str(self.version_patch)
-
-    def _generate_file_header(self)->list:
+    def _generate_file_header(self, eula:EulaText, owner:str='Unknown',
+                              create_date:int=None)->list:
         """!
         @brief Generate the boiler plate file header with copyright and eula
         @return list - List of strings for the header
         """
-        return super().generate_generic_file_header(self.auto_tool_name, 2025, self.owner)
+        return super().generate_generic_file_header(eula, owner, create_date,
+                                                    self.auto_tool_name)
 
     def gen_h_fname(self, lang_name:str = None)->str:
         """!

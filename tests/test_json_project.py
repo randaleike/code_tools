@@ -488,7 +488,7 @@ def test032_update():
         mocked_file.assert_called_once_with("temp_test_project.json", 'w', encoding='utf-8')
 
         # Check that the file was written with the expected content
-        assert len(mocked_file.mock_calls) == 66
+        assert len(mocked_file.mock_calls) == 88
         mocked_file().write.assert_any_call(': ')    # add count
         mocked_file().write.assert_any_call(',\n  ') # add count
 
