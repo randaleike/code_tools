@@ -28,7 +28,8 @@ for a language string generation library
 __version__ = '0.8.3'
 
 __all__ = ["file_gen_base", "string_class_tools", "linux_lang_select",
-           "windows_lang_select", "static_lang_select", "master_lang_select"]
+           "windows_lang_select", "static_lang_select", "master_lang_select",
+           "class_file_gen", "project_file_gen", "cmake_gen"]
 
 from . import file_gen_base
 from . import string_class_tools
@@ -36,3 +37,6 @@ from . import linux_lang_select
 from . import windows_lang_select
 from . import static_lang_select
 from . import master_lang_select
+from . import class_file_gen
+from . import project_file_gen
+from . import cmake_gen

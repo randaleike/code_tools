@@ -76,16 +76,6 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         self.master_func_gen = MasterSelectFunctionGenerator(self.project_data,
                                                              self.master_function_name)
 
-        ## File name dictionary
-        #  {language_name: {'include': include_fname,
-        #                   'source': source_fname,
-        #                   'mockInclude': mock_include_fname,
-        #                   'mockSource': mock_source_fname,
-        #                   'unittest': unittest_fname}}
-        self.fnames = {}
-        ## Include subdirectory list
-        self.inc_subdirs = []
-
         ## Parameter test value dictionary
         #  {param_name: (value, is_text)}
         #  is_text is True if the value is a text string and should be quoted
@@ -104,94 +94,12 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         for entry in uselist:
             self.update_xlate_name(entry['stdName'], entry['localName'])
 
-    def add_inculde_dir(self, subdir_name:str):
+    def get_os_lang_sel_list(self)->list:
         """!
-        @brief Add subdir name to the include dir list
-        @param subdir_name {string} Subdirectory name
+        @brief Return the os selector list
+        @return list - os selection generation class list
         """
-        self.inc_subdirs.append(subdir_name)
-
-    def get_include_dirs(self)->list:
-        """!
-        @brief Get the include subdirectory list
-        @return list - List of include subdirectory strings that were added
-                       using the add_inculde_dir method
-        """
-        return self.inc_subdirs
-
-    def _add_file(self, language_name:str, file_type:str, file_name:str):
-        """!
-        @brief Add File to the list of files
-        @param language_name {string} Language name or None for base files
-        @param file_type {string} Type 'include' | 'source' | 'mockInclude'
-                                       | 'mockSource | 'unittest'
-        @param file_name {string} File name to add
-        @note If language_name is None, then the file is a base file
-        @note If language_name is not None, then the file is a language specific file
-        """
-        if language_name is None:
-            language_name = 'base'
-
-        if language_name in self.fnames:
-            self.fnames[language_name][file_type] = file_name
-        else:
-            self.fnames[language_name] = {}
-            self.fnames[language_name][file_type] = file_name
-
-    def get_include_fnames(self)->list:
-        """!
-        @brief Generate a list of include file names
-        @return list - list of generated include file names
-        """
-        file_list = []
-        for _, lang_files in self.fnames.items():
-            if 'include' in lang_files:
-                file_list.append(lang_files['include'])
-        return file_list
-
-    def get_mock_include_fnames(self)->list:
-        """!
-        @brief Generate a list of include file names
-        @return list - list of generated mockInclude file names
-        """
-        file_list = []
-        for _, lang_files in self.fnames.items():
-            if 'mockInclude' in lang_files:
-                file_list.append(lang_files['mockInclude'])
-        return file_list
-
-    def get_source_fnames(self)->list:
-        """!
-        @brief Generate a list of source file names
-        @return list - list of generated source file names
-        """
-        file_list = []
-        for _, lang_files in self.fnames.items():
-            if 'source' in lang_files:
-                file_list.append(lang_files['source'])
-        return file_list
-
-    def get_unittest_set_names(self)->list:
-        """!
-        @brief Generate a list of source file names
-        @return list - list of unittest source, unittest file names
-        """
-        unittest_sets = []
-        language_list = self.json_lang_data.get_language_list()
-        for language_name in language_list:
-            if ((language_name not in self.fnames) or
-                 ('source' not in self.fnames[language_name]) or
-                 ('unittest' not in self.fnames[language_name])):
-                continue
-
-            # Generate the unittest target name and add data to the list
-            unittest_target = self.gen_unittest_target_name(language_name)
-            unittest_sets.append((language_name,
-                                  self.fnames[language_name]['source'],
-                                  self.fnames[language_name]['unittest'],
-                                  unittest_target))
-
-        return unittest_sets
+        return self.os_lang_sel_list
 
     def _get_param_test_value(self, param_name:str)->str:
         """!
@@ -692,7 +600,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         group_name = self.project_data.get_group_name()
         group_desc = self.project_data.get_group_desc()
         get_iso_name = self.json_str_data.get_iso_property_method_name()
-        fname, _ = os_sel_gen.get_unittest_file_name()
+        fname = os_sel_gen.get_unittest_file_name()
 
         # Write the common header data
         utfile.writelines(self._generate_file_header(self.project_data.get_eula(),
@@ -1006,3 +914,4 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         if group_name is not None:
             # Complete the doxygen group
             srcfile.writelines(self.doxy_comment_gen.gen_doxy_group_end())
+

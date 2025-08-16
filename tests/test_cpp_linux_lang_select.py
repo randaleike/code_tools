@@ -405,8 +405,7 @@ class TestClass01LinuxLangSelect:
         @brief Test get_unittest_file_name
         """
         test_obj = LinuxLangSelectFunctionGenerator(self.default_setup(mocker))
-        cpp_name, test_name = test_obj.get_unittest_file_name()
+        cpp_name = test_obj.get_unittest_file_name()
         assert cpp_name == "LocalLanguageSelect_Linux_test.cpp"
-        assert test_name == "LocalLanguageSelect_Linux_test"
 
 # pylint: enable=protected-access

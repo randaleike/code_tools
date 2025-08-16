@@ -334,8 +334,8 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         inc_block.append("#endif // "+self.def_os_str+"\n")
         return inc_block
 
-    def get_unittest_file_name(self)->tuple:
+    def get_unittest_file_name(self)->str:
         """!
-        @return tuple(str,str) - Unit test cpp file name, Test name
+        @return str - Unit test cpp file name
         """
-        return "LocalLanguageSelect_Linux_test.cpp", "LocalLanguageSelect_Linux_test"
+        return "LocalLanguageSelect_Linux_test.cpp"
