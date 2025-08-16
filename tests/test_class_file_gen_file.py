@@ -804,7 +804,7 @@ def test094_write_mock_src_file_with_extra():
         class_gen = GenerateLangFiles(MockProjectDescription())
         class_gen.write_mock_src_file(mock_file)
 
-        assert len(mock_file.mock_calls) == 15
-        assert len(mock_file.writedata) == 40
+        assert len(mock_file.mock_calls) == 16
+        assert len(mock_file.writedata) == 41
 
 # pylint: enable=protected-access
