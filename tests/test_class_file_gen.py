@@ -124,7 +124,6 @@ def test001_class_constructor():
     assert isinstance(class_gen.project_data,  MockProjectDescription)
     assert isinstance(class_gen.json_lang_data, LanguageDescriptionList)
     assert isinstance(class_gen.json_str_data, StringClassDescription)
-    assert class_gen.version == {'Major': 1, 'Minor': 0, 'Patch': 0}
     assert isinstance(class_gen.os_lang_sel_list, list)
     assert len(class_gen.os_lang_sel_list) == 2
 
@@ -147,7 +146,6 @@ def test001_class_constructor():
     assert isinstance(class_gen.test_param_values, dict)
     assert len(class_gen.test_param_values) == 0
     assert not class_gen.test_param_values
-    assert class_gen.mock_class_name == "mock_"+class_gen.json_str_data.get_base_class_name()
 
 def test002_add_inculde_dir():
     """!

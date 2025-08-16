@@ -61,7 +61,8 @@ class StringClassDescription():
                                       'dynamicCompileSwitch': "DYNAMIC_INTERNATIONALIZATION",
                                       'baseSelectionFunction': "getLocalStringListInterface",
                                       'propertyMethods':{},
-                                      'translateMethods':{}}
+                                      'translateMethods':{},
+                                      'extraMock':[]}
         else:
             self.string_jason_data = json.load(lang_json_file)
             lang_json_file.close()
@@ -184,6 +185,20 @@ class StringClassDescription():
         @return string - Name of the base class language selection function name
         """
         return self.string_jason_data['baseSelectionFunction']
+
+    def get_extra_mock(self)->list:
+        """!
+        @brief Get any extra mock source code
+        @return List of extra code lines or None
+        """
+        return self.string_jason_data['extraMock']
+
+    def set_extra_mock(self, extra_code:list):
+        """!
+        @brief Set the extra mock code value
+        @param extra_code {list} List of extra code lines
+        """
+        self.string_jason_data['extraMock'] = extra_code
 
     def _define_property_function_entry(self, property_name:str = "", brief_desc:str = "",
                                      ret_type:str = "", ret_desc:str = "",

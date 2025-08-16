@@ -604,7 +604,7 @@ class Test01CppFilehelper:
                                   "-----------------*/\n"
 
         header_text = helper.generate_generic_file_header(MockEulaText(), "Me",
-                                                       current_year)
+                                                          current_year)
         assert len(header_text) == 8
         assert header_text[0] == "/*------------------------------------------------------------" \
                                  "------------------\n"
@@ -626,6 +626,19 @@ class Test01CppFilehelper:
         assert min_text[2] == "* \n"
         assert min_text[3] == "* --------------------------------------------------------------" \
                                "--------------*/\n"
+
+        header_text = helper.generate_generic_file_header(MockEulaText(), "Me")
+        assert len(header_text) == 8
+        assert header_text[0] == "/*------------------------------------------------------------" \
+                                 "------------------\n"
+        assert header_text[1] == copyright_msg+"\n"
+        assert header_text[2] == "* \n"
+        assert header_text[3] == "* Mock EULA\n"
+        assert header_text[4] == "* \n"
+        assert header_text[5] == "* Mock EULA text\n"
+        assert header_text[6] == "* \n"
+        assert header_text[7] == "* -----------------------------------------------------------" \
+                                  "-----------------*/\n"
 
     def test29gen_include(self):
         """!

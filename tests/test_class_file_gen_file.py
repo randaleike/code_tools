@@ -30,6 +30,8 @@ import os
 from unittest.mock import patch
 
 from code_tools_grocsoftware.base.eula import EulaText
+from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
+from code_tools_grocsoftware.base.translate_text_parser import TransTxtParser
 
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
@@ -401,5 +403,408 @@ def test052_write_lang_unittest_file_with_using():
 
         assert len(mock_file.mock_calls) == 12
         assert len(mock_file.writedata) == 39
+
+def test060_generate_property_unittest():
+    """!
+    @brief Test _generate_property_unittest, no params, single return, non-text
+    """
+    mock_jsonstr = StringClassDescription
+    mock_jsonlang = LanguageDescriptionList
+
+    pparams = []
+    pret = ParamRetDict.build_return_dict_with_mod("integer", "Test ret desc", 0)
+
+    with patch.object(mock_jsonstr, 'get_property_method_data') as get_method_data:
+        get_method_data.return_value = ("testData", "test desc", pparams, pret)
+        with patch.object(mock_jsonlang, 'is_property_text') as lang_is_text:
+            lang_is_text.return_value = False
+            with patch.object(mock_jsonlang, 'get_property_data') as get_prop_data:
+                get_prop_data.return_value = 42
+
+                class_gen = GenerateLangFiles(MockProjectDescription())
+                code_txt = class_gen._generate_property_unittest("mock_property",
+                                                                    "english")
+
+                get_method_data.assert_called_once_with("mock_property")
+                lang_is_text.assert_called_once_with("testData")
+                get_prop_data.assert_called_once_with("english", "testData")
+
+                assert len(code_txt) == 6
+                assert code_txt[0] == 'TEST(ParserStringListInterfaceEnglish, fetchmock_property)\n'
+                assert code_txt[1] == '{\n'
+                assert code_txt[2] == '    ParserStringListInterfaceEnglish testvar;\n'
+                assert code_txt[3] == '    int output = testvar.mock_property();\n'
+                assert code_txt[4] == '    EXPECT_EQ(42, output);\n'
+                assert code_txt[5] == '}\n'
+
+def test061_generate_property_unittest_text():
+    """!
+    @brief Test _generate_property_unittest, no params, single return, text
+    """
+    mock_jsonstr = StringClassDescription
+    mock_jsonlang = LanguageDescriptionList
+
+    pparams = []
+    pret = ParamRetDict.build_return_dict_with_mod("string", "Test ret desc", 0)
+
+    with patch.object(mock_jsonstr, 'get_property_method_data') as get_method_data:
+        get_method_data.return_value = ("testData", "test desc", pparams, pret)
+        with patch.object(mock_jsonlang, 'is_property_text') as lang_is_text:
+            lang_is_text.return_value = True
+            with patch.object(mock_jsonlang, 'get_property_data') as get_prop_data:
+                get_prop_data.return_value = "42"
+
+                class_gen = GenerateLangFiles(MockProjectDescription())
+                code_txt = class_gen._generate_property_unittest("mock_property",
+                                                                    "english")
+
+                get_method_data.assert_called_once_with("mock_property")
+                lang_is_text.assert_called_once_with("testData")
+                get_prop_data.assert_called_once_with("english", "testData")
+
+                assert len(code_txt) == 6
+                assert code_txt[0] == 'TEST(ParserStringListInterfaceEnglish, fetchmock_property)\n'
+                assert code_txt[1] == '{\n'
+                assert code_txt[2] == '    ParserStringListInterfaceEnglish testvar;\n'
+                assert code_txt[3] == '    std::string output = testvar.mock_property();\n'
+                assert code_txt[4] == '    EXPECT_STREQ("42", output.c_str());\n'
+                assert code_txt[5] == '}\n'
+
+def test062_generate_property_unittest_list_int():
+    """!
+    @brief Test _generate_property_unittest, no params, list return, non-text
+    """
+    mock_jsonstr = StringClassDescription
+    mock_jsonlang = LanguageDescriptionList
+
+    pparams = []
+    pret = ParamRetDict.build_return_dict_with_mod("integer", "Test ret desc", ParamRetDict.type_mod_list)
+
+    with patch.object(mock_jsonstr, 'get_property_method_data') as get_method_data:
+        get_method_data.return_value = ("testData", "test desc", pparams, pret)
+        with patch.object(mock_jsonlang, 'is_property_text') as lang_is_text:
+            lang_is_text.return_value = False
+            with patch.object(mock_jsonlang, 'get_property_data') as get_prop_data:
+                get_prop_data.return_value = [42, 24]
+
+                class_gen = GenerateLangFiles(MockProjectDescription())
+                code_txt = class_gen._generate_property_unittest("mock_property",
+                                                                    "english")
+
+                get_method_data.assert_called_once_with("mock_property")
+                lang_is_text.assert_called_once_with("testData")
+                get_prop_data.assert_called_once_with("english", "testData")
+
+                assert len(code_txt) == 7
+                assert code_txt[0] == 'TEST(ParserStringListInterfaceEnglish, fetchmock_property)\n'
+                assert code_txt[1] == '{\n'
+                assert code_txt[2] == '    ParserStringListInterfaceEnglish testvar;\n'
+                assert code_txt[3] == '    std::list<int> output = testvar.mock_property();\n'
+                assert code_txt[4] == '    EXPECT_EQ(42, output.pop_front());\n'
+                assert code_txt[5] == '    EXPECT_EQ(24, output.pop_front());\n'
+                assert code_txt[6] == '}\n'
+
+def test063_generate_property_unittest_list_text():
+    """!
+    @brief Test _generate_property_unittest, no params, list return, non-text
+    """
+    mock_jsonstr = StringClassDescription
+    mock_jsonlang = LanguageDescriptionList
+
+    pparams = []
+    pret = ParamRetDict.build_return_dict_with_mod("string", "Test ret desc", ParamRetDict.type_mod_list)
+
+    with patch.object(mock_jsonstr, 'get_property_method_data') as get_method_data:
+        get_method_data.return_value = ("testData", "test desc", pparams, pret)
+        with patch.object(mock_jsonlang, 'is_property_text') as lang_is_text:
+            lang_is_text.return_value = True
+            with patch.object(mock_jsonlang, 'get_property_data') as get_prop_data:
+                get_prop_data.return_value = ["foo", "goo", "moo"]
+
+                class_gen = GenerateLangFiles(MockProjectDescription())
+                code_txt = class_gen._generate_property_unittest("mock_property",
+                                                                    "english")
+
+                get_method_data.assert_called_once_with("mock_property")
+                lang_is_text.assert_called_once_with("testData")
+                get_prop_data.assert_called_once_with("english", "testData")
+
+                assert len(code_txt) == 8
+                assert code_txt[0] == 'TEST(ParserStringListInterfaceEnglish, fetchmock_property)\n'
+                assert code_txt[1] == '{\n'
+                assert code_txt[2] == '    ParserStringListInterfaceEnglish testvar;\n'
+                assert code_txt[3] == '    std::list<std::string> output = testvar.mock_property();\n'
+                assert code_txt[4] == '    EXPECT_STREQ("foo", output.pop_front().c_str());\n'
+                assert code_txt[5] == '    EXPECT_STREQ("goo", output.pop_front().c_str());\n'
+                assert code_txt[6] == '    EXPECT_STREQ("moo", output.pop_front().c_str());\n'
+                assert code_txt[7] == '}\n'
+
+def test064_generate_property_unittest_with_text_params():
+    """!
+    @brief Test _generate_property_unittest, with params, single return, non-text
+    """
+    mock_jsonstr = StringClassDescription
+    mock_jsonlang = LanguageDescriptionList
+
+    pparams = [ParamRetDict.build_param_dict("wtf", "integer", "What the f?")]
+    pret = ParamRetDict.build_return_dict_with_mod("integer", "Test ret desc", 0)
+
+    with patch.object(mock_jsonstr, 'get_property_method_data') as get_method_data:
+        get_method_data.return_value = ("testData", "test desc", pparams, pret)
+        with patch.object(mock_jsonlang, 'is_property_text') as lang_is_text:
+            lang_is_text.return_value = False
+            with patch.object(mock_jsonlang, 'get_property_data') as get_prop_data:
+                get_prop_data.return_value = 42
+
+                class_gen = GenerateLangFiles(MockProjectDescription())
+                class_gen.test_param_values['wtf'] = ('yes', True)
+                code_txt = class_gen._generate_property_unittest("mock_property",
+                                                                    "english")
+
+                get_method_data.assert_called_once_with("mock_property")
+                lang_is_text.assert_called_once_with("testData")
+                get_prop_data.assert_called_once_with("english", "testData")
+
+                assert len(code_txt) == 6
+                assert code_txt[0] == 'TEST(ParserStringListInterfaceEnglish, fetchmock_property)\n'
+                assert code_txt[1] == '{\n'
+                assert code_txt[2] == '    ParserStringListInterfaceEnglish testvar;\n'
+                assert code_txt[3] == '    int output = testvar.mock_property("yes");\n'
+                assert code_txt[4] == '    EXPECT_EQ(42, output);\n'
+                assert code_txt[5] == '}\n'
+
+def test065_generate_property_unittest_with_nontext_params():
+    """!
+    @brief Test _generate_property_unittest, with params, single return, non-text
+    """
+    mock_jsonstr = StringClassDescription
+    mock_jsonlang = LanguageDescriptionList
+
+    pparams = [ParamRetDict.build_param_dict("wtf", "integer", "What the f?")]
+    pret = ParamRetDict.build_return_dict_with_mod("integer", "Test ret desc", 0)
+
+    with patch.object(mock_jsonstr, 'get_property_method_data') as get_method_data:
+        get_method_data.return_value = ("testData", "test desc", pparams, pret)
+        with patch.object(mock_jsonlang, 'is_property_text') as lang_is_text:
+            lang_is_text.return_value = False
+            with patch.object(mock_jsonlang, 'get_property_data') as get_prop_data:
+                get_prop_data.return_value = 42
+
+                class_gen = GenerateLangFiles(MockProjectDescription())
+                class_gen.test_param_values['wtf'] = ("1", False)
+                code_txt = class_gen._generate_property_unittest("mock_property",
+                                                                    "english")
+
+                get_method_data.assert_called_once_with("mock_property")
+                lang_is_text.assert_called_once_with("testData")
+                get_prop_data.assert_called_once_with("english", "testData")
+
+                assert len(code_txt) == 6
+                assert code_txt[0] == 'TEST(ParserStringListInterfaceEnglish, fetchmock_property)\n'
+                assert code_txt[1] == '{\n'
+                assert code_txt[2] == '    ParserStringListInterfaceEnglish testvar;\n'
+                assert code_txt[3] == '    int output = testvar.mock_property(1);\n'
+                assert code_txt[4] == '    EXPECT_EQ(42, output);\n'
+                assert code_txt[5] == '}\n'
+
+def test070_generate_translate_unittest():
+    """!
+    @brief Test _generate_translate_unittest, no params
+    """
+    mock_jsonstr = StringClassDescription
+    mock_jsonlang = LanguageDescriptionList
+
+    pparams = []
+    pret = ParamRetDict.build_return_dict_with_mod("string", "Test ret desc", 0)
+    txt_list = TransTxtParser.parse_translate_string("this is a test")
+
+    with patch.object(mock_jsonstr, 'get_tranlate_method_function_data') as get_method_data:
+        get_method_data.return_value = ("test desc", pparams, pret)
+        with patch.object(mock_jsonstr, 'get_tranlate_method_text_data') as get_trans_data:
+            get_trans_data.return_value = txt_list
+            with patch.object(mock_jsonlang, 'get_iso_code_data') as lang_iso:
+                lang_iso.return_value = "en"
+
+                class_gen = GenerateLangFiles(MockProjectDescription())
+                code_txt = class_gen._generate_translate_unittest("mock_trans",
+                                                                    "english")
+
+                get_method_data.assert_called_once_with("mock_trans")
+                get_trans_data.assert_called_once_with("mock_trans", "en")
+                lang_iso.assert_called_once_with("english")
+
+                assert len(code_txt) == 6
+                assert code_txt[0] == 'TEST(ParserStringListInterfaceEnglish, printmock_trans)\n'
+                assert code_txt[1] == '{\n'
+                assert code_txt[2] == '    ParserStringListInterfaceEnglish testvar;\n'
+                assert code_txt[3] == '    std::string output = testvar.mock_trans();\n'
+                assert code_txt[4] == '    EXPECT_STREQ("this is a test", output.c_str());\n'
+                assert code_txt[5] == '}\n'
+
+def test071_generate_translate_unittest_nontext_param():
+    """!
+    @brief Test _generate_translate_unittest, no params
+    """
+    mock_jsonstr = StringClassDescription
+    mock_jsonlang = LanguageDescriptionList
+
+    pparams = [ParamRetDict.build_param_dict("wtf", "integer", "What the f?")]
+    pret = ParamRetDict.build_return_dict_with_mod("string", "Test ret desc", 0)
+    txt_list = TransTxtParser.parse_translate_string("this is a @wtf@ test")
+
+    with patch.object(mock_jsonstr, 'get_tranlate_method_function_data') as get_method_data:
+        get_method_data.return_value = ("test desc", pparams, pret)
+        with patch.object(mock_jsonstr, 'get_tranlate_method_text_data') as get_trans_data:
+            get_trans_data.return_value = txt_list
+            with patch.object(mock_jsonlang, 'get_iso_code_data') as lang_iso:
+                lang_iso.return_value = "en"
+
+                class_gen = GenerateLangFiles(MockProjectDescription())
+                class_gen.test_param_values['wtf'] = ("12", False)
+                code_txt = class_gen._generate_translate_unittest("mock_trans",
+                                                                    "english")
+
+                get_method_data.assert_called_once_with("mock_trans")
+                get_trans_data.assert_called_once_with("mock_trans", "en")
+                lang_iso.assert_called_once_with("english")
+
+                assert len(code_txt) == 6
+                assert code_txt[0] == 'TEST(ParserStringListInterfaceEnglish, printmock_trans)\n'
+                assert code_txt[1] == '{\n'
+                assert code_txt[2] == '    ParserStringListInterfaceEnglish testvar;\n'
+                assert code_txt[3] == '    std::string output = testvar.mock_trans(12);\n'
+                assert code_txt[4] == '    EXPECT_STREQ("this is a 12 test", output.c_str());\n'
+                assert code_txt[5] == '}\n'
+
+def test072_generate_translate_unittest_text_param():
+    """!
+    @brief Test _generate_translate_unittest, no params
+    """
+    mock_jsonstr = StringClassDescription
+    mock_jsonlang = LanguageDescriptionList
+
+    pparams = [ParamRetDict.build_param_dict("wtf", "string", "What the f?")]
+    pret = ParamRetDict.build_return_dict_with_mod("string", "Test ret desc", 0)
+    txt_list = TransTxtParser.parse_translate_string("this is a @wtf@ test")
+
+    with patch.object(mock_jsonstr, 'get_tranlate_method_function_data') as get_method_data:
+        get_method_data.return_value = ("test desc", pparams, pret)
+        with patch.object(mock_jsonstr, 'get_tranlate_method_text_data') as get_trans_data:
+            get_trans_data.return_value = txt_list
+            with patch.object(mock_jsonlang, 'get_iso_code_data') as lang_iso:
+                lang_iso.return_value = "en"
+
+                class_gen = GenerateLangFiles(MockProjectDescription())
+                class_gen.test_param_values['wtf'] = ("foo", True)
+                code_txt = class_gen._generate_translate_unittest("mock_trans",
+                                                                    "english")
+
+                get_method_data.assert_called_once_with("mock_trans")
+                get_trans_data.assert_called_once_with("mock_trans", "en")
+                lang_iso.assert_called_once_with("english")
+
+                assert len(code_txt) == 6
+                assert code_txt[0] == 'TEST(ParserStringListInterfaceEnglish, printmock_trans)\n'
+                assert code_txt[1] == '{\n'
+                assert code_txt[2] == '    ParserStringListInterfaceEnglish testvar;\n'
+                assert code_txt[3] == '    std::string output = testvar.mock_trans("foo");\n'
+                assert code_txt[4] == '    EXPECT_STREQ("this is a foo test", output.c_str());\n'
+                assert code_txt[5] == '}\n'
+
+def test081_write_mock_inc_file():
+    """!
+    @brief Test write_mock_inc_file, base, no group
+    """
+    mock_file = MockFile()
+    class_gen = GenerateLangFiles(MockProjectDescription())
+    class_gen.write_mock_inc_file(mock_file)
+
+    assert len(mock_file.mock_calls) == 15
+    assert len(mock_file.writedata) == 36
+
+def test082_write_mock_inc_file_with_group():
+    """!
+    @brief Test write_mock_inc_file, base, no group
+    """
+    mock_file = MockFile()
+    mock_gname = 'code_tools_grocsoftware.base.project_json.ProjectDescription.get_group_name'
+    mock_gdesc = 'code_tools_grocsoftware.base.project_json.ProjectDescription.get_group_desc'
+
+    with patch (mock_gname) as mock_group_name:
+        mock_group_name.return_value = "TestGroup"
+        with patch (mock_gdesc) as mock_group_desc:
+            mock_group_desc.return_value = "Group desc"
+
+            class_gen = GenerateLangFiles(MockProjectDescription())
+            class_gen.write_mock_inc_file(mock_file)
+
+            assert len(mock_file.mock_calls) == 18
+            assert len(mock_file.writedata) == 52
+
+def test091_write_mock_src_file():
+    """!
+    @brief Test write_mock_src_file, no group, no using, no extra
+    """
+    mock_file = MockFile()
+    class_gen = GenerateLangFiles(MockProjectDescription())
+    class_gen.write_mock_src_file(mock_file)
+
+    assert len(mock_file.mock_calls) == 13
+    assert len(mock_file.writedata) == 35
+
+def test092_write_mock_src_file_with_group():
+    """!
+    @brief Test write_mock_src_file, with group, no using, no extra
+    """
+    mock_file = MockFile()
+    mock_gname = 'code_tools_grocsoftware.base.project_json.ProjectDescription.get_group_name'
+    mock_gdesc = 'code_tools_grocsoftware.base.project_json.ProjectDescription.get_group_desc'
+
+    with patch (mock_gname) as mock_group_name:
+        mock_group_name.return_value = "TestGroup"
+        with patch (mock_gdesc) as mock_group_desc:
+            mock_group_desc.return_value = "Group desc"
+
+            class_gen = GenerateLangFiles(MockProjectDescription())
+            class_gen.write_mock_src_file(mock_file)
+
+            assert len(mock_file.mock_calls) == 16
+            assert len(mock_file.writedata) == 51
+
+def test093_write_mock_src_file_with_using():
+    """!
+    @brief Test write_mock_src_file, with using, no group, no extra
+    """
+    mock_file = MockFile()
+    mock_ginc = 'code_tools_grocsoftware.base.project_json.ProjectDescription.get_base_src_using'
+
+    with patch (mock_ginc) as mock_get_inc:
+        mock_get_inc.return_value = [{'localName':"parserstr", 'stdName':"std::string", 'desc':None}]
+
+        class_gen = GenerateLangFiles(MockProjectDescription())
+        class_gen.write_mock_src_file(mock_file)
+
+        assert len(mock_file.mock_calls) == 13
+        assert len(mock_file.writedata) == 36
+
+def test094_write_mock_src_file_with_extra():
+    """!
+    @brief Test write_mock_src_file, no using, no group, with extra
+    """
+    mock_file = MockFile()
+    mock_extra = 'code_tools_grocsoftware.base.json_string_class_description.'
+    mock_extra += 'StringClassDescription.get_extra_mock'
+
+    with patch (mock_extra) as mock_get_extra:
+        mock_get_extra.return_value = ['#if defined(foo)\n',
+                                       '    //Comment\n',
+                                       '    something.do();\n',
+                                       '#endif //defined(foo)']
+
+        class_gen = GenerateLangFiles(MockProjectDescription())
+        class_gen.write_mock_src_file(mock_file)
+
+        assert len(mock_file.mock_calls) == 15
+        assert len(mock_file.writedata) == 40
 
 # pylint: enable=protected-access

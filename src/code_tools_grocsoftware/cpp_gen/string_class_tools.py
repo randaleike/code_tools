@@ -273,3 +273,99 @@ class BaseCppStringClassGenerator(GenerateCppFileHelper):
         # Close the MOCK_METHOD macro and out put to file
         decl_text += ");\n"
         return [decl_text]
+
+    def generate_property_unittest(self, method:str, ut_section:str,
+                                   ret_dict:dict, expected:list,
+                                   param_data,
+                                   is_text:bool = False)->list:
+        """!
+        @brief Generate the unit test for the input property method
+        @param propertyMethod {string} Property function name
+        @param ut_section {string} Unittest section name
+        @param ret_dict {dictionary} Method return dictionary definition
+        @param expected {list} Expected data
+        @param param_data {list} Property parameter test value list
+        @return list of strings - Test code to output
+        """
+        code_txt = []
+        body_indent = "".rjust(4, ' ')
+
+        # Translate the return type
+        code_txt.append("TEST("+ut_section+", fetch"+method+")\n")
+        code_txt.append("{\n")
+        vardecl = body_indent+ut_section+" testvar;\n"
+        code_txt.append(vardecl)
+
+        # Build the property function call
+        fetch_code = self.gen_function_ret_type(ret_dict)
+        fetch_code += "output = testvar."
+        fetch_code += method
+        fetch_code += "("
+        param_prefix = ""
+        for test_value in param_data:
+            fetch_code += param_prefix
+            fetch_code += test_value
+            param_prefix = ", "
+        fetch_code += ");\n"
+        code_txt.append(body_indent+fetch_code)
+
+        # Build the test assertion
+        is_list = ParamRetDict.is_mod_list(ParamRetDict.get_return_type_mod(ret_dict))
+        assert_pop = ""
+        if is_list:
+            assert_pop = ", output.pop_front()"
+        else:
+            assert_pop = ", output"
+
+        for item in expected:
+            if is_text:
+                assert_start = "EXPECT_STREQ(\""+item+"\""
+                assert_end = ".c_str());\n"
+            else:
+                assert_start = "EXPECT_EQ("+str(item)
+                assert_end = ");\n"
+
+            code_txt.append(body_indent+assert_start+assert_pop+assert_end)
+
+        code_txt.append("}\n")
+        return code_txt
+
+    def generate_translate_unittest(self, method:str, ut_section:str,
+                                    ret_dict:dict, expected:str,
+                                    param_data:list)->list:
+        """!
+        @brief Generate the unit test for the input property method
+        @param method {string} Tranlated string generation function name
+        @param ut_section {string} Unittest section name
+        @param ret_dict {dictionary} Method return dictionary definition
+        @param expected {string} Expected response data
+        @param param_data {list} Tranlated string generation function parameter
+                                 test value list
+        @return list of strings - Test code to output
+        """
+        code_txt = []
+        body_indent = "".rjust(4, ' ')
+
+        # Translate the return type
+        code_txt.append("TEST("+ut_section+", print"+method+")\n")
+        code_txt.append("{\n")
+        code_txt.append(body_indent+ut_section+" testvar;\n")
+
+        # Build the property function call
+        fetch_code = self.gen_function_ret_type(ret_dict)
+        fetch_code += "output = testvar."
+        fetch_code += method
+        fetch_code += "("
+        param_prefix = ""
+        for param_value in param_data:
+            fetch_code += param_prefix
+            fetch_code += param_value
+            param_prefix = ", "
+        fetch_code += ");\n"
+        code_txt.append(body_indent+fetch_code)
+
+        # Build the assertion test
+        assert_txt = "EXPECT_STREQ(\""+expected+"\", output.c_str());\n"
+        code_txt.append(body_indent+assert_txt)
+        code_txt.append("}\n")
+        return code_txt

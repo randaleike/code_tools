@@ -3,6 +3,7 @@
   "namespace": "argparser",
   "dynamicCompileSwitch": "TEST_DYNAMIC_INTERNATIONALIZATION",
   "baseSelectionFunction": "getLocalStringListInterface",
+  "extraMock": [],
   "propertyMethods": {
     "getLangIsoCode": {
       "name": "isoCode",

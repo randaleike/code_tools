@@ -699,3 +699,17 @@ class GenerateCppFileHelper():
             usingstr = usingstr.ljust(40)+doxycomment
 
         return usingstr
+
+    def gen_unittest_main(self)->list:
+        """!
+        @brief Generate the unittest main function
+        @return list - List of code strings
+        """
+        bodyindent = "".rjust(self.level_tab_size, " ")
+        code_main = ["// Execute the tests\n"]
+        code_main.append("int main(int argc, char **argv)\n")
+        code_main.append("{\n")
+        code_main.append(bodyindent+"::testing::InitGoogleTest(&argc, argv);\n")
+        code_main.append(bodyindent+"return RUN_ALL_TESTS();\n")
+        code_main.append("}\n")
+        return code_main
