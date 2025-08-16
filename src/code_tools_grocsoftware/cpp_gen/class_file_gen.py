@@ -997,6 +997,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         if extra:
             srcfile.writelines(["\n"]) # whitespace for readability
             srcfile.writelines(extra)
+            srcfile.writelines(["\n"]) # whitespace for readability
 
         srcfile.writelines([body_indent+"return retPtr;\n"])
         srcfile.writelines([self.master_func_gen.gen_function_end()])
