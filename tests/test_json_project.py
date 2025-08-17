@@ -26,7 +26,7 @@ Unittest for programmer base tools utility
 
 import os
 import pytest
-from unittest.mock import mock_open, patch
+from unittest.mock import patch, mock_open
 
 from code_tools_grocsoftware.base.eula import EulaText
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
@@ -51,7 +51,6 @@ def test001_constructor_default():
     assert test_obj.project_json_data['custom_text'] == []
     assert test_obj.project_json_data['langDataFile'] is None
     assert test_obj.project_json_data['stringDataFile'] is None
-    assert test_obj.project_json_data['baseDirName'] == ""
     assert test_obj.project_json_data['inc_subdir'] == ""
     assert test_obj.project_json_data['src_subdir'] == ""
     assert test_obj.project_json_data['test_subdir'] is None
@@ -60,7 +59,28 @@ def test001_constructor_default():
     assert test_obj.project_json_data['groupName'] is None
     assert test_obj.project_json_data['groupDesc'] is None
 
-def test002_get_eula():
+def test002_constructor_bad_name():
+    """!
+    @brief Test constructor, bad file name
+    """
+    test_obj = ProjectDescription("foo")
+    pytest.raises(FileNotFoundError)
+
+    assert test_obj.filename == "foo"
+    assert isinstance(test_obj.project_json_data, dict)
+    assert test_obj.project_json_data['eula_name'] == "MIT_open"
+    assert test_obj.project_json_data['custom_text'] == []
+    assert test_obj.project_json_data['langDataFile'] is None
+    assert test_obj.project_json_data['stringDataFile'] is None
+    assert test_obj.project_json_data['inc_subdir'] == ""
+    assert test_obj.project_json_data['src_subdir'] == ""
+    assert test_obj.project_json_data['test_subdir'] is None
+    assert test_obj.project_json_data['mock_subdir'] is None
+    assert test_obj.project_json_data['owner'] == "Unknown"
+    assert test_obj.project_json_data['groupName'] is None
+    assert test_obj.project_json_data['groupDesc'] is None
+
+def test003_get_eula():
     """!
     @brief Test get_eula
     """
@@ -69,7 +89,7 @@ def test002_get_eula():
 
     assert isinstance(eula_text, EulaText)
 
-def test003_set_eula_name():
+def test004_set_eula_name():
     """!
     @brief Test set_eula_name
     """
@@ -78,7 +98,7 @@ def test003_set_eula_name():
 
     assert test_obj.project_json_data['eula_name'] == "TestEula"
 
-def test004_get_lang_data():
+def test005_get_lang_data():
     """!
     @brief Test get_lang_data
     """
@@ -87,7 +107,7 @@ def test004_get_lang_data():
 
     assert isinstance(lang_data, LanguageDescriptionList)
 
-def test005_set_lang_data_name():
+def test006_set_lang_data_name():
     """!
     @brief Test set_lang_data_name
     """
@@ -96,7 +116,7 @@ def test005_set_lang_data_name():
 
     assert test_obj.project_json_data['langDataFile'] == "TestLangData"
 
-def test006_get_string_data():
+def test007_get_string_data():
     """!
     @brief Test get_string_data
     """
@@ -105,7 +125,7 @@ def test006_get_string_data():
 
     assert isinstance(string_data, StringClassDescription)
 
-def test007_set_string_data_name():
+def test008_set_string_data_name():
     """!
     @brief Test set_string_data_name
     """
@@ -114,7 +134,7 @@ def test007_set_string_data_name():
 
     assert test_obj.project_json_data['stringDataFile'] == "TestStringData"
 
-def test008_get_owner():
+def test009_get_owner():
     """!
     @brief Test get_owner
     """
@@ -124,32 +144,13 @@ def test008_get_owner():
     assert isinstance(owner, str)
     assert owner == "Unknown"
 
-def test009_set_owner():
+def test010_set_owner():
     """!
     @brief Test set_owner
     """
     test_obj = ProjectDescription()
     test_obj.set_owner("TestOwner")
     assert test_obj.get_owner() == "TestOwner"
-
-def test010_get_base_dir_name():
-    """!
-    @brief Test get_base_dir_name
-    """
-    test_obj = ProjectDescription()
-    base_dir_name = test_obj.get_base_dir_name()
-
-    assert isinstance(base_dir_name, str)
-    assert base_dir_name == ""
-
-def test011_set_base_dir_name():
-    """!
-    @brief Test set_base_dir_name
-    """
-    test_obj = ProjectDescription()
-    test_obj.set_base_dir_name("TestBaseDir")
-
-    assert test_obj.get_base_dir_name() == "TestBaseDir"
 
 def test012_get_inc_subdir():
     """!
@@ -395,7 +396,6 @@ def test030_clear():
     test_obj.set_mock_subdir("TestMockSubdir")
     test_obj.set_inc_subdir("TestIncSubdir")
     test_obj.set_src_subdir("TestSrcSubdir")
-    test_obj.set_base_dir_name("TestBaseDir")
     test_obj.set_lang_data_name("TestLangData")
     test_obj.set_string_data_name("TestStringData")
     test_obj.set_owner("TestOwner")
@@ -408,7 +408,6 @@ def test030_clear():
     assert test_obj.project_json_data['custom_text'] == []
     assert test_obj.project_json_data['langDataFile'] is None
     assert test_obj.project_json_data['stringDataFile'] is None
-    assert test_obj.project_json_data['baseDirName'] == ""
     assert test_obj.project_json_data['inc_subdir'] == ""
     assert test_obj.project_json_data['src_subdir'] == ""
     assert test_obj.project_json_data['test_subdir'] is None
@@ -451,7 +450,6 @@ def test031_constructor_with_file():
         assert test_obj.project_json_data['custom_text'] == []
         assert test_obj.project_json_data['langDataFile'] == "data/test_lang.json"
         assert test_obj.project_json_data['stringDataFile'] == "data/test_string.json"
-        assert test_obj.project_json_data['baseDirName'] == "foo"
         assert test_obj.project_json_data['inc_subdir'] == "inc"
         assert test_obj.project_json_data['src_subdir'] == "src"
         assert test_obj.project_json_data['test_subdir'] == "test"
@@ -470,7 +468,6 @@ def test032_update():
     test_obj.set_eula_name("TestEula")
     test_obj.set_lang_data_name("TestLangData")
     test_obj.set_string_data_name("TestStringData")
-    test_obj.set_base_dir_name("TestBaseDir")
     test_obj.set_inc_subdir("TestIncSubdir")
     test_obj.set_src_subdir("TestSrcSubdir")
     test_obj.set_test_subdir("TestTestSubdir")
@@ -488,7 +485,7 @@ def test032_update():
         mocked_file.assert_called_once_with("temp_test_project.json", 'w', encoding='utf-8')
 
         # Check that the file was written with the expected content
-        assert len(mocked_file.mock_calls) == 88
+        assert len(mocked_file.mock_calls) == 84
         mocked_file().write.assert_any_call(': ')    # add count
         mocked_file().write.assert_any_call(',\n  ') # add count
 
@@ -505,9 +502,6 @@ def test032_update():
 
         mocked_file().write.assert_any_call('"stringDataFile"')
         mocked_file().write.assert_any_call('"TestStringData"')
-
-        mocked_file().write.assert_any_call('"baseDirName"')
-        mocked_file().write.assert_any_call('"TestBaseDir"')
 
         mocked_file().write.assert_any_call('"inc_subdir"')
         mocked_file().write.assert_any_call('"TestIncSubdir"')
@@ -532,3 +526,36 @@ def test032_update():
 
         mocked_file().write.assert_any_call('}')
 
+def test033_set_version():
+    """!
+    @brief Test set_version
+    """
+    test_obj = ProjectDescription()
+    test_obj.set_version(3,2,5)
+
+    assert test_obj.project_json_data['version']['major'] == 3
+    assert test_obj.project_json_data['version']['minor'] == 2
+    assert test_obj.project_json_data['version']['patch'] == 5
+
+def test034_get_version():
+    """!
+    @brief Test get_version
+    """
+    test_obj = ProjectDescription()
+    test_obj.set_version(3,2,5)
+
+
+    assert test_obj.get_version_num() == "3.2.5"
+    assert test_obj.get_version() == "v3.2.5"
+
+def test035_set_creation_year():
+    """!
+    @brief Test set_creation_year
+    """
+    test_obj = ProjectDescription()
+
+    test_obj.set_creation_year(1999)
+    assert test_obj.project_json_data['creationYear'] == 1999
+
+    test_obj.set_creation_year(2020)
+    assert test_obj.project_json_data['creationYear'] == 2020

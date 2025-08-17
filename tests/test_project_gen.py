@@ -25,13 +25,12 @@ Unittest for programmer base tools utility
 #==========================================================================
 
 import os
-from unittest.mock import patch
+from unittest.mock import patch, mock_open
 import pytest
 
 from code_tools_grocsoftware.base.json_language_list import LanguageDescriptionList
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
 
-from code_tools_grocsoftware.cpp_gen.class_file_gen import GenerateLangFiles
 from code_tools_grocsoftware.base.project_json import ProjectDescription
 from code_tools_grocsoftware.cpp_gen.project_file_gen import ProjectFileGenerator
 
@@ -57,13 +56,6 @@ class MockProjectDescription(ProjectDescription):
         @return (StringClassDescription) - String class description list object
         """
         return StringClassDescription(strclass_filename)
-
-    def get_base_dir_name(self)->str:
-        """!
-        @brief Get the base directory name from the JSON data
-        @return (string) - Base directory name
-        """
-        return 'baseDirName'
 
     def get_inc_subdir(self)->str:
         """!
@@ -92,6 +84,21 @@ class MockProjectDescription(ProjectDescription):
         @return (string) - Mock subdirectory name
         """
         return 'mock'
+
+class MockFile:
+    """!
+    @brief Mock file object for testing
+    """
+    def __init__(self):
+        self.mock_calls = []
+        self.writedata = []
+
+    def writelines(self, lines):
+        """!
+        @brief Mock writelines method
+        """
+        self.mock_calls.append(('writelines', ""))
+        self.writedata.extend(lines)
 
 # pylint: disable=protected-access
 
@@ -389,7 +396,7 @@ def test015_make_dirs_nobase(capsys):
         with pytest.raises(NameError):
 
             proj_gen = ProjectFileGenerator(MockProjectDescription())
-            assert not proj_gen.make_dirs()
+            assert not proj_gen.make_dirs("baseDirName")
 
             path_exists.assert_called_once_with("baseDirName")
             captured = capsys.readouterr()
@@ -397,7 +404,7 @@ def test015_make_dirs_nobase(capsys):
 
 def test016_make_dirs_existing():
     """!
-    @brief Test _make_subdir, exists = True
+    @brief Test make_dirs, exists = True
     """
     with patch('os.path.exists') as path_exists:
         path_exists.return_value = True
@@ -405,7 +412,7 @@ def test016_make_dirs_existing():
             os_mkdir.return_value = True
 
             proj_gen = ProjectFileGenerator(MockProjectDescription())
-            assert proj_gen.make_dirs()
+            assert proj_gen.make_dirs("baseDirName")
 
             assert path_exists.call_count == 5
             assert os_mkdir.call_count == 0
@@ -418,7 +425,7 @@ def test016_make_dirs_existing():
 
 def test017_make_dirs():
     """!
-    @brief Test _make_subdir, exists = false
+    @brief Test make_dirs, exists = false
     """
     with patch('os.path.exists') as path_exists:
         path_exists.side_effect = [True, False, False, False, False]
@@ -426,7 +433,7 @@ def test017_make_dirs():
             os_mkdir.return_value = True
 
             proj_gen = ProjectFileGenerator(MockProjectDescription())
-            assert proj_gen.make_dirs()
+            assert proj_gen.make_dirs("baseDirName")
 
             assert path_exists.call_count == 5
             assert os_mkdir.call_count == 4
@@ -444,5 +451,118 @@ def test017_make_dirs():
 
             path_exists.assert_any_call("baseDirName/mock")
             os_mkdir.assert_any_call("baseDirName/mock")
+
+def test018_make_dirs_fail():
+    """!
+    @brief Test make_dirs, make failure
+    """
+    with patch('os.path.exists') as path_exists:
+        path_exists.side_effect = [True, False, False, False, False]
+        with patch('os.mkdir') as os_mkdir:
+            os_mkdir.return_value = False
+            os_mkdir.side_effect = OSError
+
+            proj_gen = ProjectFileGenerator(MockProjectDescription())
+            assert not proj_gen.make_dirs("baseDirName")
+
+            assert path_exists.call_count == 5
+            assert os_mkdir.call_count == 4
+
+def test020_generate_files():
+    """!
+    @brief Test generate_files, exists = false
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+
+    with patch(class_gen+'write_inc_file') as wrt_inc:
+        with patch(class_gen+'write_base_src_file') as wrt_base:
+            with patch(class_gen+'write_lang_src_file') as wrt_lang_src:
+                with patch(class_gen+'write_base_unittest_file') as wrt_baseut:
+                    with patch(class_gen+'write_selection_unittest_file') as wrt_slct_ut:
+                        with patch(class_gen+'write_lang_unittest_file') as wrt_lang_ut:
+                            with patch(class_gen+'write_mock_inc_file') as wrt_mock_inc:
+                                with patch(class_gen+'write_mock_src_file') as wrt_mock_src:
+                                    with patch('builtins.open', mock_open()) as mocked_file:
+                                        proj_gen.generate_files("baseDirName")
+
+
+                                        mocked_file.assert_any_call("baseDirName/inc/" \
+                                                                    "ParserStringListInterface.h",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+                                        mocked_file.assert_any_call("baseDirName/src/" \
+                                                                    "ParserStringListInterface.cpp",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+
+                                        mocked_file.assert_any_call("baseDirName/test/" \
+                                                                    "ParserStringListInterface" \
+                                                                    "_test.cpp",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+
+                                        mocked_file.assert_any_call("baseDirName/mock/" \
+                                                                    "mock_" \
+                                                                    "ParserStringListInterface.h",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+                                        mocked_file.assert_any_call("baseDirName/mock/" \
+                                                                    "mock_" \
+                                                                    "ParserStringListInterface.cpp",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+
+                                        mocked_file.assert_any_call("baseDirName/test/" \
+                                                                    "LocalLanguageSelect_" \
+                                                                    "Linux_test.cpp",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+                                        mocked_file.assert_any_call("baseDirName/test/" \
+                                                                    "LocalLanguageSelect_" \
+                                                                    "Windows_test.cpp",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+
+                                        mocked_file.assert_any_call("baseDirName/inc/" \
+                                                                    "ParserStringListInterface" \
+                                                                    "English.h",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+                                        mocked_file.assert_any_call("baseDirName/inc/" \
+                                                                    "ParserStringListInterface" \
+                                                                    "Spanish.h",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+                                        mocked_file.assert_any_call("baseDirName/src/" \
+                                                                    "ParserStringListInterface" \
+                                                                    "English.cpp",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+                                        mocked_file.assert_any_call("baseDirName/src/" \
+                                                                    "ParserStringListInterface" \
+                                                                    "Spanish.cpp",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+
+                                        mocked_file.assert_any_call("baseDirName/test/" \
+                                                                    "ParserStringListInterface" \
+                                                                    "English_test.cpp",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+                                        mocked_file.assert_any_call("baseDirName/test/" \
+                                                                    "ParserStringListInterface" \
+                                                                    "Spanish_test.cpp",
+                                                                    mode = 'wt',
+                                                                    encoding="utf-8")
+
+                                        assert wrt_inc.call_count == 3
+                                        assert wrt_base.call_count == 1
+                                        assert wrt_lang_src.call_count == 2
+                                        assert wrt_baseut.call_count == 1
+                                        assert wrt_slct_ut.call_count == 2
+                                        assert wrt_lang_ut.call_count == 2
+                                        assert wrt_mock_inc.call_count == 1
+                                        assert wrt_mock_src.call_count == 1
 
 # pylint: enable=protected-access

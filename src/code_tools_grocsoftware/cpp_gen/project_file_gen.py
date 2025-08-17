@@ -175,13 +175,13 @@ class ProjectFileGenerator():
                 print(f"OS Error occurred creating: {subdir}.")
         return return_val
 
-    def make_dirs(self)->bool:
+    def make_dirs(self, base_dir:str)->bool:
         """!
         @brief Make the subdirectories
+        @param base_dir {str} Base directory name
         @return bool - True, all directories created, False id an error occurred
         """
         return_val = True
-        base_dir = self.project_data.get_base_dir_name()
 
         if not os.path.exists(base_dir):
             return_val = False
@@ -198,11 +198,11 @@ class ProjectFileGenerator():
 
         return return_val
 
-    def generate_files(self):
+    def generate_files(self, base_dir:str):
         """!
         @brief Generate the output files
+        @param base_dir {str} Base directory name
         """
-        base_dir = self.project_data.get_base_dir_name()
         incdir = os.path.join(base_dir, self.project_data.get_inc_subdir())
         self.add_inculde_dir(incdir)
 
@@ -240,8 +240,8 @@ class ProjectFileGenerator():
         lang_list = self.json_lang_data.get_language_list()
         for lang in lang_list:
             incname = os.path.join(incdir, self.class_gen.gen_h_fname(lang))
-            srcname = os.path.join(testdir, self.class_gen.gen_cpp_fname(lang))
-            tstname = os.path.join(mockdir, self.class_gen.gen_unittest_fname(lang))
+            srcname = os.path.join(srcdir, self.class_gen.gen_cpp_fname(lang))
+            tstname = os.path.join(testdir, self.class_gen.gen_unittest_fname(lang))
             with open(incname, mode='wt', encoding="utf-8") as langinc:
                 self.class_gen.write_inc_file(langinc, lang)
 

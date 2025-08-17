@@ -565,4 +565,28 @@ class Test02StringClassDescription:
         testobj.set_base_selection_name("NewBaseSelection")
         assert testobj.string_jason_data['baseSelectionFunction'] == "NewBaseSelection"
 
+    def test41_set_extra_mock(self):
+        """!
+        @brief Test set_extra_mock
+        """
+        testobj = StringClassDescription()
+        testobj.set_extra_mock(["#ifdef (foo)\n",
+                                "#endif\n"])
+        assert len(testobj.string_jason_data['extraMock']) == 2
+        assert testobj.string_jason_data['extraMock'][0] == "#ifdef (foo)\n"
+        assert testobj.string_jason_data['extraMock'][1] == "#endif\n"
+
+    def test42_get_extra_mock(self):
+        """!
+        @brief Test get_extra_mock
+        """
+        testobj = StringClassDescription()
+        testobj.set_extra_mock(["#ifdef (foo)\n",
+                                "#endif\n"])
+
+        extra = testobj.get_extra_mock()
+        assert len(extra) == 2
+        assert extra[0] == "#ifdef (foo)\n"
+        assert extra[1] == "#endif\n"
+
 # pylint: enable=protected-access

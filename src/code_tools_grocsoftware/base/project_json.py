@@ -67,9 +67,8 @@ class ProjectDescription():
         """
         self.project_json_data = {'eula_name':"MIT_open", 'custom_text': [],
                                   'langDataFile':None, 'stringDataFile':None,
-                                  'baseDirName':"", 'inc_subdir': "",
-                                  'src_subdir': "", 'test_subdir': None,
-                                  'mock_subdir': None,
+                                  'inc_subdir': "", 'src_subdir': "",
+                                  'test_subdir': None, 'mock_subdir': None,
                                   'owner': "Unknown",
                                   'groupName': None, 'groupDesc': None,
                                   'inc_using':None,
@@ -147,21 +146,6 @@ class ProjectDescription():
         @param string_data_name (string) - String data file name to set
         """
         self.project_json_data['stringDataFile'] = string_data_name
-
-    def get_base_dir_name(self)->str:
-        """!
-        @brief Get the base directory name from the JSON data
-        @return (string) - Base directory name
-        """
-        return self.project_json_data['baseDirName']
-
-    def set_base_dir_name(self, base_dir_name:str = ""):
-        """!
-        @brief Set the base directory name in the JSON data
-
-        @param base_dir_name (string) - Base directory name to set
-        """
-        self.project_json_data['baseDirName'] = base_dir_name
 
     def get_custom_text(self)->list:
         """!
@@ -357,17 +341,24 @@ class ProjectDescription():
                                            'minor':minor,
                                            'patch':patch}
 
+    def get_version_num(self)->str:
+        """!
+        @brief Get the version string
+        @return string - Version numeric string
+        """
+        verstr = str(self.project_json_data['version']['major'])
+        verstr += "."
+        verstr += str(self.project_json_data['version']['minor'])
+        verstr += "."
+        verstr += str(self.project_json_data['version']['patch'])
+        return verstr
+
     def get_version(self)->str:
         """!
         @brief Get the version string
         @return string - Version string
         """
-        verstr = "v"
-        verstr += str(self.project_json_data['version']['major'])
-        verstr += "."
-        verstr += str(self.project_json_data['version']['minor'])
-        verstr += "."
-        verstr += str(self.project_json_data['version']['patch'])
+        verstr = "v"+self.get_version_num()
         return verstr
 
     def set_creation_year(self, year:int):

@@ -914,4 +914,3 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         if group_name is not None:
             # Complete the doxygen group
             srcfile.writelines(self.doxy_comment_gen.gen_doxy_group_end())
-
