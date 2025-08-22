@@ -34,6 +34,7 @@ from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
 from tests.dir_init import TESTFILEPATH
 
 # pylint: disable=protected-access
+# pylint: disable=too-many-lines
 
 LIST_PROMPT = "[T(ext)|i(nteger)|u(nsigned)|s(ize)|c(ustom)]: "
 RET_PROMPT = "Enter return base type "+LIST_PROMPT

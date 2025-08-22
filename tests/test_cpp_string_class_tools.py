@@ -27,7 +27,6 @@ Unittest for programmer base tools utility
 from datetime import date
 
 from code_tools_grocsoftware.base.param_return_tools import ParamRetDict
-from code_tools_grocsoftware.base.eula import EulaText
 from code_tools_grocsoftware.cpp_gen.file_gen_base import GenerateCppFileHelper
 from code_tools_grocsoftware.cpp_gen.string_class_tools import BaseCppStringClassGenerator
 from tests.mock_eula import MockEulaText

@@ -39,6 +39,8 @@ from tests.dir_init import TESTFILEPATH
 langfilename = os.path.join(TESTFILEPATH, "teststringlanglist.json")
 strclass_filename = os.path.join(TESTFILEPATH, "teststrdesc.json")
 
+# pylint: disable=too-few-public-methods
+
 class MockProjectDescription(ProjectDescription):
     """!
     @brief Mock ProjectDescription for testing
@@ -100,6 +102,7 @@ class MockFile:
         self.mock_calls.append(('writelines', ""))
         self.writedata.extend(lines)
 
+# pylint: enable=too-few-public-methods
 # pylint: disable=protected-access
 
 def test002_add_inculde_dir():
@@ -109,11 +112,11 @@ def test002_add_inculde_dir():
     proj_gen = ProjectFileGenerator(MockProjectDescription())
     assert not proj_gen.inc_subdirs
 
-    proj_gen.add_inculde_dir("test_dir")
+    proj_gen.add_include_dir("test_dir")
     assert "test_dir" in proj_gen.inc_subdirs
     assert len(proj_gen.inc_subdirs) == 1
 
-    proj_gen.add_inculde_dir("test_dir2")
+    proj_gen.add_include_dir("test_dir2")
     assert "test_dir2" in proj_gen.inc_subdirs
     assert len(proj_gen.inc_subdirs) == 2
 
@@ -164,8 +167,8 @@ def test004_get_include_dirs():
     proj_gen = ProjectFileGenerator(MockProjectDescription())
     assert not proj_gen.inc_subdirs
 
-    proj_gen.add_inculde_dir("test_dir")
-    proj_gen.add_inculde_dir("test_dir2")
+    proj_gen.add_include_dir("test_dir")
+    proj_gen.add_include_dir("test_dir2")
 
     inc_dirs = proj_gen.get_include_dirs()
     assert isinstance(inc_dirs, list)
@@ -238,7 +241,8 @@ def test007_get_mock_include_fnames():
 
 def test008_get_unittest_set_names():
     """!
-    @brief Test get_unittest_set_names method
+    @brief Test get_lang_unittest_set_names
+ method
     """
     proj_gen = ProjectFileGenerator(MockProjectDescription())
 
@@ -255,72 +259,80 @@ def test008_get_unittest_set_names():
     proj_gen._add_file("unittest", "es_unittest_file.cpp", "spanish")
 
     # Check if the unittest set names are generated correctly
-    tstlist = proj_gen.get_unittest_set_names()
+    tstlist = proj_gen.get_lang_unittest_set_names()
     assert len(tstlist) == 2
-    entuple = ('english', 'entest_file.cpp',
-               'en_unittest_file.cpp', 'ParserStringListInterfaceEnglish_test')
-    estuple = ('spanish', 'estest_file.cpp',
-               'es_unittest_file.cpp', 'ParserStringListInterfaceSpanish_test')
+    entuple = ('entest_file.cpp',
+               'en_unittest_file.cpp',
+               'ParserStringListInterfaceEnglish_test')
+    estuple = ('estest_file.cpp',
+               'es_unittest_file.cpp',
+               'ParserStringListInterfaceSpanish_test')
 
     assert entuple in tstlist
     assert estuple in tstlist
 
 def test009_get_unittest_set_names_no_source():
     """!
-    @brief Test get_unittest_set_names method with no source file
+    @brief Test get_lang_unittest_set_names
+ method with no source file
     """
     proj_gen = ProjectFileGenerator(MockProjectDescription())
 
     proj_gen._add_file("unittest", "en_test_file_unittest.cpp", "english")
     proj_gen._add_file("unittest", "es_unittest_file.cpp", "spanish")
 
-    tstlist = proj_gen.get_unittest_set_names()
+    tstlist = proj_gen.get_lang_unittest_set_names()
     assert isinstance(tstlist, list)
     assert len(tstlist) == 0
 
     # Check if the unittest set names are generated correctly
     proj_gen._add_file("source", "en_test_file.cpp", "english")
-    tstlist = proj_gen.get_unittest_set_names()
+    tstlist = proj_gen.get_lang_unittest_set_names()
     assert len(tstlist) == 1
 
     # Check if the unittest set names are generated correctly with no unittest file
     proj_gen._add_file("source", "es_test_file.cpp", "spanish")
-    tstlist = proj_gen.get_unittest_set_names()
+    tstlist = proj_gen.get_lang_unittest_set_names()
     assert len(tstlist) == 2
-    entuple = ('english', 'en_test_file.cpp',
-               'en_test_file_unittest.cpp', 'ParserStringListInterfaceEnglish_test')
-    estuple = ('english', 'en_test_file.cpp',
-               'en_test_file_unittest.cpp', 'ParserStringListInterfaceEnglish_test')
+    entuple = ('en_test_file.cpp',
+               'en_test_file_unittest.cpp',
+               'ParserStringListInterfaceEnglish_test')
+    estuple = ('en_test_file.cpp',
+               'en_test_file_unittest.cpp',
+               'ParserStringListInterfaceEnglish_test')
     assert estuple in tstlist
     assert entuple in tstlist
 
 def test010_get_unittest_set_names_no_unittest():
     """!
-    @brief Test get_unittest_set_names method with no unittest file
+    @brief Test get_lang_unittest_set_names
+ method with no unittest file
     """
     proj_gen = ProjectFileGenerator(MockProjectDescription())
 
     proj_gen._add_file("source", "en_test_file.cpp", "english")
     proj_gen._add_file("source", "es_test_file.cpp", "spanish")
 
-    tstlist = proj_gen.get_unittest_set_names()
+    tstlist = proj_gen.get_lang_unittest_set_names()
     assert isinstance(tstlist, list)
     assert len(tstlist) == 0
 
     # Check if the unittest set names are generated correctly
     proj_gen._add_file("unittest", "en_test_file_unittest.cpp", "english")
-    tstlist = proj_gen.get_unittest_set_names()
+    tstlist = proj_gen.get_lang_unittest_set_names()
     assert len(tstlist) == 1
-    entuple = ('english', 'en_test_file.cpp',
-               'en_test_file_unittest.cpp', 'ParserStringListInterfaceEnglish_test')
+    entuple = ('en_test_file.cpp',
+               'en_test_file_unittest.cpp',
+               'ParserStringListInterfaceEnglish_test')
     assert entuple in tstlist
 
     # Check if the unittest set names are generated correctly with no unittest file
     proj_gen._add_file("unittest", "es_unittest_file.cpp", "spanish")
-    tstlist = proj_gen.get_unittest_set_names()
+    tstlist = proj_gen.get_lang_unittest_set_names()
     assert len(tstlist) == 2
-    estuple = ('spanish', 'es_test_file.cpp',
-               'es_unittest_file.cpp', 'ParserStringListInterfaceSpanish_test')
+    estuple = ('es_test_file.cpp',
+               'es_unittest_file.cpp',
+               'ParserStringListInterfaceSpanish_test')
     assert estuple in tstlist
     assert entuple in tstlist
 
@@ -452,7 +464,7 @@ def test017_make_dirs():
             path_exists.assert_any_call("baseDirName/mock")
             os_mkdir.assert_any_call("baseDirName/mock")
 
-def test018_make_dirs_fail():
+def test018_make_dirs_fail(capsys):
     """!
     @brief Test make_dirs, make failure
     """
@@ -467,102 +479,213 @@ def test018_make_dirs_fail():
 
             assert path_exists.call_count == 5
             assert os_mkdir.call_count == 4
+            captured = capsys.readouterr()
+            expected = "OS Error occurred creating: baseDirName/inc.\n"
+            expected += "OS Error occurred creating: baseDirName/src.\n"
+            expected += "OS Error occurred creating: baseDirName/test.\n"
+            expected += "OS Error occurred creating: baseDirName/mock.\n"
+            assert captured.out == expected
 
-def test020_generate_files():
+def test019_open_file():
+    """!
+    @brief Test open_file
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+
+    with patch('builtins.open', mock_open()) as mocked_file:
+        proj_gen.open_file("baseDirName", "foo/fname.x")
+        mocked_file.assert_called_once_with("baseDirName/foo/fname.x",
+                                            mode = 'wt',
+                                            encoding="utf-8")
+
+def test020_open_file_fail(capsys):
+    """!
+    @brief Test open_file, fail
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+
+    with patch('builtins.open', mock_open()) as mocked_file:
+        mocked_file.side_effect = OSError
+        assert proj_gen.open_file("baseDirName", "foo/fname.x") is None
+        mocked_file.assert_called_once_with("baseDirName/foo/fname.x",
+                                            mode = 'wt',
+                                            encoding="utf-8")
+        assert capsys.readouterr().out == "Failed to open 'baseDirName/foo/fname.x' for writing\n"
+
+def test030_generate_base_files():
+    """!
+    @brief Test generate_base_files, exists = false
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+    incfname = "inc/ParserStringListInterface.h"
+    srcfname = "src/ParserStringListInterface.cpp"
+    tstfname = "test/ParserStringListInterface_test.cpp"
+
+    with patch(class_gen+'write_inc_file') as wrt_inc:
+        with patch(class_gen+'write_base_src_file') as wrt_source:
+            with patch(class_gen+'write_base_unittest_file') as wrt_ut:
+                with patch('builtins.open', mock_open()) as mocked_file:
+                    proj_gen.generate_lang_files("baseDirName", None)
+
+                    mocked_file.assert_any_call("baseDirName/"+incfname,
+                                                mode = 'wt',
+                                                encoding="utf-8")
+                    mocked_file.assert_any_call("baseDirName/"+srcfname,
+                                                mode = 'wt',
+                                                encoding="utf-8")
+
+                    mocked_file.assert_any_call("baseDirName/"+tstfname,
+                                                mode = 'wt',
+                                                encoding="utf-8")
+                    assert proj_gen.fnames['base']['include'] == incfname
+                    assert proj_gen.fnames['base']['source'] == srcfname
+                    assert proj_gen.fnames['base']['unittest'] == tstfname
+
+                    assert wrt_inc.call_count == 1
+                    assert wrt_source.call_count == 1
+                    assert wrt_ut.call_count == 1
+
+def test031_generate_lang_files():
+    """!
+    @brief Test generate_lang_files
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+    incfname = "inc/ParserStringListInterfaceKlingon.h"
+    srcfname = "src/ParserStringListInterfaceKlingon.cpp"
+    tstfname = "test/ParserStringListInterfaceKlingon_test.cpp"
+
+    with patch(class_gen+'write_inc_file') as wrt_inc:
+        with patch(class_gen+'write_lang_src_file') as wrt_source:
+            with patch(class_gen+'write_lang_unittest_file') as wrt_ut:
+                with patch('builtins.open', mock_open()) as mocked_file:
+                    proj_gen.generate_lang_files("baseDirName", "klingon")
+
+                    mocked_file.assert_any_call("baseDirName/"+incfname,
+                                                mode = 'wt',
+                                                encoding="utf-8")
+                    mocked_file.assert_any_call("baseDirName/"+srcfname,
+                                                mode = 'wt',
+                                                encoding="utf-8")
+
+                    mocked_file.assert_any_call("baseDirName/"+tstfname,
+                                                mode = 'wt',
+                                                encoding="utf-8")
+                    assert proj_gen.fnames['klingon']['include'] == incfname
+                    assert proj_gen.fnames['klingon']['source'] == srcfname
+                    assert proj_gen.fnames['klingon']['unittest'] == tstfname
+
+                    assert wrt_inc.call_count == 1
+                    assert wrt_source.call_count == 1
+                    assert wrt_ut.call_count == 1
+
+def test032_generate_mock_files():
+    """!
+    @brief Test generate_mock_files
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+    incfname = "mock/mock_ParserStringListInterface.h"
+    srcfname = "mock/mock_ParserStringListInterface.cpp"
+
+    with patch(class_gen+'write_mock_inc_file') as wrt_inc:
+        with patch(class_gen+'write_mock_src_file') as wrt_source:
+            with patch('builtins.open', mock_open()) as mocked_file:
+                proj_gen.generate_mock_files("baseDirName")
+
+                mocked_file.assert_any_call("baseDirName/"+incfname,
+                                            mode = 'wt',
+                                            encoding="utf-8")
+                mocked_file.assert_any_call("baseDirName/"+srcfname,
+                                            mode = 'wt',
+                                            encoding="utf-8")
+
+                assert proj_gen.fnames['base']['mockInclude'] == incfname
+                assert proj_gen.fnames['base']['mockSource'] == srcfname
+
+                assert wrt_inc.call_count == 1
+                assert wrt_source.call_count == 1
+
+def test033_generate_select_files():
+    """!
+    @brief Test generate_select_files
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+    linuxname = "test/LocalLanguageSelect_Linux_test.cpp"
+    winfname = "test/LocalLanguageSelect_Windows_test.cpp"
+
+    with patch(class_gen+'write_selection_unittest_file') as wrt_source:
+        with patch('builtins.open', mock_open()) as mocked_file:
+            proj_gen.generate_select_files("baseDirName")
+
+            mocked_file.assert_any_call("baseDirName/"+linuxname,
+                                        mode = 'wt',
+                                        encoding="utf-8")
+            mocked_file.assert_any_call("baseDirName/"+winfname,
+                                        mode = 'wt',
+                                        encoding="utf-8")
+
+            assert len(proj_gen.select_files) == 2
+            assert (linuxname, 'LocalLanguageSelect_Linux') in proj_gen.select_files
+            assert (winfname, 'LocalLanguageSelect_Windows') in proj_gen.select_files
+
+            assert wrt_source.call_count == 2
+
+def test034_generate_files():
     """!
     @brief Test generate_files, exists = false
     """
     proj_gen = ProjectFileGenerator(MockProjectDescription())
-    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+    class_gen = 'code_tools_grocsoftware.cpp_gen.project_file_gen.ProjectFileGenerator.'
+    with patch(class_gen+'generate_lang_files') as wrt_lang:
+        with patch(class_gen+'generate_mock_files') as wrt_mock:
+            with patch(class_gen+'generate_select_files') as wrt_select:
 
-    with patch(class_gen+'write_inc_file') as wrt_inc:
-        with patch(class_gen+'write_base_src_file') as wrt_base:
-            with patch(class_gen+'write_lang_src_file') as wrt_lang_src:
-                with patch(class_gen+'write_base_unittest_file') as wrt_baseut:
-                    with patch(class_gen+'write_selection_unittest_file') as wrt_slct_ut:
-                        with patch(class_gen+'write_lang_unittest_file') as wrt_lang_ut:
-                            with patch(class_gen+'write_mock_inc_file') as wrt_mock_inc:
-                                with patch(class_gen+'write_mock_src_file') as wrt_mock_src:
-                                    with patch('builtins.open', mock_open()) as mocked_file:
-                                        proj_gen.generate_files("baseDirName")
+                proj_gen.generate_files("TestBase")
+                assert len(proj_gen.inc_subdirs) == 1
+                assert proj_gen.inc_subdirs[0] == "TestBase/inc"
 
+                assert wrt_lang.call_count == 3
+                assert wrt_mock.call_count == 1
+                assert wrt_select.call_count == 1
 
-                                        mocked_file.assert_any_call("baseDirName/inc/" \
-                                                                    "ParserStringListInterface.h",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
-                                        mocked_file.assert_any_call("baseDirName/src/" \
-                                                                    "ParserStringListInterface.cpp",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
+def test035_get_project_data():
+    """!
+    @brief Test get_project_data
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    data = proj_gen.get_project_data()
+    assert isinstance(data, MockProjectDescription)
 
-                                        mocked_file.assert_any_call("baseDirName/test/" \
-                                                                    "ParserStringListInterface" \
-                                                                    "_test.cpp",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
+def test036_get_select_unittest_set_names():
+    """!
+    @brief Test get_select_unittest_set_names
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    proj_gen._add_select_file("foo_test.cpp", "foo_test")
 
-                                        mocked_file.assert_any_call("baseDirName/mock/" \
-                                                                    "mock_" \
-                                                                    "ParserStringListInterface.h",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
-                                        mocked_file.assert_any_call("baseDirName/mock/" \
-                                                                    "mock_" \
-                                                                    "ParserStringListInterface.cpp",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
+    data = proj_gen.get_select_unittest_set_names()
+    assert len(data) == 1
+    assert data[0] == ("foo_test.cpp", "foo_test")
 
-                                        mocked_file.assert_any_call("baseDirName/test/" \
-                                                                    "LocalLanguageSelect_" \
-                                                                    "Linux_test.cpp",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
-                                        mocked_file.assert_any_call("baseDirName/test/" \
-                                                                    "LocalLanguageSelect_" \
-                                                                    "Windows_test.cpp",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
+    proj_gen._add_select_file("moo_test.cpp", "moo_test")
 
-                                        mocked_file.assert_any_call("baseDirName/inc/" \
-                                                                    "ParserStringListInterface" \
-                                                                    "English.h",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
-                                        mocked_file.assert_any_call("baseDirName/inc/" \
-                                                                    "ParserStringListInterface" \
-                                                                    "Spanish.h",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
-                                        mocked_file.assert_any_call("baseDirName/src/" \
-                                                                    "ParserStringListInterface" \
-                                                                    "English.cpp",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
-                                        mocked_file.assert_any_call("baseDirName/src/" \
-                                                                    "ParserStringListInterface" \
-                                                                    "Spanish.cpp",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
+    data1 = proj_gen.get_select_unittest_set_names()
+    assert len(data1) == 2
+    assert data1[0] == ("foo_test.cpp", "foo_test")
+    assert data1[1] == ("moo_test.cpp", "moo_test")
 
-                                        mocked_file.assert_any_call("baseDirName/test/" \
-                                                                    "ParserStringListInterface" \
-                                                                    "English_test.cpp",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
-                                        mocked_file.assert_any_call("baseDirName/test/" \
-                                                                    "ParserStringListInterface" \
-                                                                    "Spanish_test.cpp",
-                                                                    mode = 'wt',
-                                                                    encoding="utf-8")
+def test037_get_base_unittest_set_names():
+    """!
+    @brief Test get_base_unittest_set_names
+    """
 
-                                        assert wrt_inc.call_count == 3
-                                        assert wrt_base.call_count == 1
-                                        assert wrt_lang_src.call_count == 2
-                                        assert wrt_baseut.call_count == 1
-                                        assert wrt_slct_ut.call_count == 2
-                                        assert wrt_lang_ut.call_count == 2
-                                        assert wrt_mock_inc.call_count == 1
-                                        assert wrt_mock_src.call_count == 1
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    proj_gen._add_file("unittest", "foo_test.cpp")
+
+    data = proj_gen.get_base_unittest_set_names()
+    assert data == ("foo_test.cpp", proj_gen.class_gen.gen_unittest_target_name())
 
 # pylint: enable=protected-access

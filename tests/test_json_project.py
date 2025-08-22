@@ -25,8 +25,8 @@ Unittest for programmer base tools utility
 #==========================================================================
 
 import os
-import pytest
 from unittest.mock import patch, mock_open
+import pytest
 
 from code_tools_grocsoftware.base.eula import EulaText
 from code_tools_grocsoftware.base.json_string_class_description import StringClassDescription
@@ -485,7 +485,7 @@ def test032_update():
         mocked_file.assert_called_once_with("temp_test_project.json", 'w', encoding='utf-8')
 
         # Check that the file was written with the expected content
-        assert len(mocked_file.mock_calls) == 84
+        assert len(mocked_file.mock_calls) == 88
         mocked_file().write.assert_any_call(': ')    # add count
         mocked_file().write.assert_any_call(',\n  ') # add count
 
@@ -559,3 +559,67 @@ def test035_set_creation_year():
 
     test_obj.set_creation_year(2020)
     assert test_obj.project_json_data['creationYear'] == 2020
+
+def test036_get_creation_year():
+    """!
+    @brief Test get_creation_year
+    """
+    test_obj = ProjectDescription()
+
+    test_obj.set_creation_year(1999)
+    assert test_obj.get_creation_year() == 1999
+
+    test_obj.set_creation_year(2020)
+    assert test_obj.get_creation_year() == 2020
+
+def test037_set_project_name():
+    """!
+    @brief Test set_project_name
+    """
+    test_obj = ProjectDescription()
+
+    test_obj.set_project_name("TestProject")
+    assert test_obj.project_json_data['projectName'] == "TestProject"
+
+    test_obj.set_project_name("SuperProject")
+    assert test_obj.project_json_data['projectName'] == "SuperProject"
+
+def test038_get_project_name():
+    """!
+    @brief Test get_project_name
+    """
+    test_obj = ProjectDescription()
+
+    test_obj.set_project_name("TestProject")
+    assert test_obj.get_project_name() == "TestProject"
+
+    test_obj.set_project_name("SuperProject")
+    assert test_obj.get_project_name() == "SuperProject"
+
+def test039_get_url():
+    """!
+    @brief Test get_url
+    """
+    test_obj = ProjectDescription()
+
+    assert test_obj.get_url() is None
+
+    test_obj.set_url("https://example.com")
+    assert test_obj.get_url() == "https://example.com"
+
+    test_obj.set_url("https://another-example.com")
+    assert test_obj.get_url() == "https://another-example.com"
+
+def test040_get_description():
+    """!
+    @brief Test get_description
+    """
+    test_obj = ProjectDescription()
+
+    assert test_obj.get_description() is None
+
+    test_obj.set_description("This is a test project.")
+    assert test_obj.get_description() == "This is a test project."
+
+    test_obj.set_description("This is another test project.")
+    assert test_obj.get_description() == "This is another test project."

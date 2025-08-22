@@ -323,4 +323,4 @@ class WindowsLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         """!
         @return str - Unit test cpp file name
         """
-        return "LocalLanguageSelect_Windows_test.cpp"
+        return "LocalLanguageSelect_Windows_test.cpp", "LocalLanguageSelect_Windows"

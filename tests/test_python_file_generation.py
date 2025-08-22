@@ -32,6 +32,7 @@ from code_tools_grocsoftware.python_gen.file_gen_base import GeneratePythonFileH
 from tests.mock_eula import MockEulaText
 
 # pylint: disable=protected-access
+# pylint: disable=too-many-lines
 
 class Test01CppFilehelper:
     """!

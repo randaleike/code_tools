@@ -234,4 +234,4 @@ class StaticLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         """!
         @return str - Unit test cpp file name
         """
-        return "LocalLanguageSelect_Static_test.cpp"
+        return "LocalLanguageSelect_Static_test.cpp", "LocalLanguageSelect_Static"

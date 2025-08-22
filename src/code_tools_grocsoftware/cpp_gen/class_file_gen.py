@@ -600,7 +600,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         group_name = self.project_data.get_group_name()
         group_desc = self.project_data.get_group_desc()
         get_iso_name = self.json_str_data.get_iso_property_method_name()
-        fname = os_sel_gen.get_unittest_file_name()
+        fname, _ = os_sel_gen.get_unittest_file_name()
 
         # Write the common header data
         utfile.writelines(self._generate_file_header(self.project_data.get_eula(),

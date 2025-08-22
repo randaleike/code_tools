@@ -332,7 +332,8 @@ class TestClass01StaticLangSelect:
         @brief Test get_unittest_file_name
         """
         test_obj = StaticLangSelectFunctionGenerator(self.default_setup(mocker))
-        cpp_name = test_obj.get_unittest_file_name()
+        cpp_name, target_name = test_obj.get_unittest_file_name()
         assert cpp_name == "LocalLanguageSelect_Static_test.cpp"
+        assert target_name == "LocalLanguageSelect_Static"
 
 # pylint: enable=protected-access

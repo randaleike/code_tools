@@ -43,6 +43,7 @@ from tests.dir_init import TESTFILEPATH
 langfilename = os.path.join(TESTFILEPATH, "teststringlanglist.json")
 strclass_filename = os.path.join(TESTFILEPATH, "teststrdesc.json")
 
+# pylint: disable=too-few-public-methods
 class MockFile:
     """!
     @brief Mock file object for testing
@@ -114,6 +115,7 @@ class MockProjectDescription(ProjectDescription):
         """
         return "mockBaseSelection"
 
+# pylint: enable=too-few-public-methods
 # pylint: disable=protected-access
 
 def test001_class_constructor():

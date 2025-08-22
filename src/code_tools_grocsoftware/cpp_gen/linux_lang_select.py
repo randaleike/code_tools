@@ -338,4 +338,4 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         """!
         @return str - Unit test cpp file name
         """
-        return "LocalLanguageSelect_Linux_test.cpp"
+        return "LocalLanguageSelect_Linux_test.cpp", "LocalLanguageSelect_Linux"

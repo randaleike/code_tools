@@ -284,4 +284,3 @@ class TestClass03InsertNewCopyrightBlock:
             captured = capsys.readouterr()
             expected_err_str = "ERROR: Unable to open file \"test.c.out\" for writing as text file.\n"
             assert captured.out == expected_err_str
-

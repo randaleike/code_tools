@@ -74,6 +74,7 @@ class ProjectDescription():
                                   'inc_using':None,
                                   'base_src_using':None,
                                   'lang_src_using':None,
+                                  'projectName': "Project",
                                   'creationYear': int(date.today().year),
                                   'version':{'major':0,
                                              'minor':1,
@@ -373,3 +374,44 @@ class ProjectDescription():
         @brief Get the creation year
         """
         return self.project_json_data['creationYear']
+
+    def set_project_name(self, name:str):
+        """!
+        @brief Set the project name
+        @param name {string} Project name
+        """
+        self.project_json_data['projectName'] = name
+
+    def get_project_name(self)->str:
+        """!
+        @brief Set the project name
+        """
+        return self.project_json_data['projectName']
+
+    def get_url(self)->str:
+        """!
+        @brief Get the project URL
+        @return (string) - Project URL
+        """
+        return self.project_json_data.get('url', None)
+
+    def set_url(self, url:str):
+        """!
+        @brief Set the project URL
+        @param url (string) - Project URL to set
+        """
+        self.project_json_data['url'] = url
+
+    def get_description(self)->str:
+        """!
+        @brief Get the project description
+        @return (string) - Project description
+        """
+        return self.project_json_data.get('description', None)
+
+    def set_description(self, description:str):
+        """!
+        @brief Set the project description
+        @param description (string) - Project description to set
+        """
+        self.project_json_data['description'] = description
