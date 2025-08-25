@@ -1174,4 +1174,4 @@ class Test01CppFilehelper:
         assert test_text == "using parserstr = std::string;"
 
         test_text = helper.gen_using_statement("parserstr", "std::string", "desc")
-        assert test_text == "using parserstr = std::string;          //!< desc"
+        assert test_text == "using parserstr = std::string;          //!< desc\n"

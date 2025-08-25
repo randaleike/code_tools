@@ -560,7 +560,7 @@ def test031_generate_lang_files():
         with patch(class_gen+'write_lang_src_file') as wrt_source:
             with patch(class_gen+'write_lang_unittest_file') as wrt_ut:
                 with patch('builtins.open', mock_open()) as mocked_file:
-                    proj_gen.generate_lang_files("baseDirName", "klingon")
+                    assert proj_gen.generate_lang_files("baseDirName", "klingon")
 
                     mocked_file.assert_any_call("baseDirName/"+incfname,
                                                 mode = 'wt',
@@ -572,6 +572,11 @@ def test031_generate_lang_files():
                     mocked_file.assert_any_call("baseDirName/"+tstfname,
                                                 mode = 'wt',
                                                 encoding="utf-8")
+
+                    assert 'include' in proj_gen.fnames['klingon']
+                    assert 'source' in proj_gen.fnames['klingon']
+                    assert 'unittest' in proj_gen.fnames['klingon']
+
                     assert proj_gen.fnames['klingon']['include'] == incfname
                     assert proj_gen.fnames['klingon']['source'] == srcfname
                     assert proj_gen.fnames['klingon']['unittest'] == tstfname
@@ -592,7 +597,7 @@ def test032_generate_mock_files():
     with patch(class_gen+'write_mock_inc_file') as wrt_inc:
         with patch(class_gen+'write_mock_src_file') as wrt_source:
             with patch('builtins.open', mock_open()) as mocked_file:
-                proj_gen.generate_mock_files("baseDirName")
+                assert proj_gen.generate_mock_files("baseDirName")
 
                 mocked_file.assert_any_call("baseDirName/"+incfname,
                                             mode = 'wt',
@@ -600,6 +605,9 @@ def test032_generate_mock_files():
                 mocked_file.assert_any_call("baseDirName/"+srcfname,
                                             mode = 'wt',
                                             encoding="utf-8")
+
+                assert 'mockInclude' in proj_gen.fnames['base']
+                assert 'mockSource' in proj_gen.fnames['base']
 
                 assert proj_gen.fnames['base']['mockInclude'] == incfname
                 assert proj_gen.fnames['base']['mockSource'] == srcfname
@@ -618,7 +626,7 @@ def test033_generate_select_files():
 
     with patch(class_gen+'write_selection_unittest_file') as wrt_source:
         with patch('builtins.open', mock_open()) as mocked_file:
-            proj_gen.generate_select_files("baseDirName")
+            assert proj_gen.generate_select_files("baseDirName")
 
             mocked_file.assert_any_call("baseDirName/"+linuxname,
                                         mode = 'wt',
@@ -687,5 +695,192 @@ def test037_get_base_unittest_set_names():
 
     data = proj_gen.get_base_unittest_set_names()
     assert data == ("foo_test.cpp", proj_gen.class_gen.gen_unittest_target_name())
+
+def test038_generate_lang_files_fail_inc(capsys):
+    """!
+    @brief Test generate_lang_files
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+    incfname = "inc/ParserStringListInterfaceKlingon.h"
+    srcfname = "src/ParserStringListInterfaceKlingon.cpp"
+    tstfname = "test/ParserStringListInterfaceKlingon_test.cpp"
+
+    with patch(class_gen+'write_inc_file') as wrt_inc:
+        with patch(class_gen+'write_lang_src_file') as wrt_source:
+            with patch(class_gen+'write_lang_unittest_file') as wrt_ut:
+                with patch('builtins.open', mock_open()) as mocked_file:
+                    mocked_file.side_effect = [OSError, MockFile(), MockFile()]
+                    assert not proj_gen.generate_lang_files("baseDirName", "klingon")
+
+                    assert 'include' not in proj_gen.fnames['klingon']
+                    assert 'source' in proj_gen.fnames['klingon']
+                    assert 'unittest' in proj_gen.fnames['klingon']
+                    assert proj_gen.fnames['klingon']['source'] == srcfname
+                    assert proj_gen.fnames['klingon']['unittest'] == tstfname
+
+                    assert wrt_inc.call_count == 0
+                    assert wrt_source.call_count == 1
+                    assert wrt_ut.call_count == 1
+                    captured = capsys.readouterr()
+                    assert captured.out == "Failed to open 'baseDirName/"+incfname+"' for writing\n"
+
+def test039_generate_lang_files_fail_src(capsys):
+    """!
+    @brief Test generate_lang_files
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+    incfname = "inc/ParserStringListInterfaceKlingon.h"
+    srcfname = "src/ParserStringListInterfaceKlingon.cpp"
+    tstfname = "test/ParserStringListInterfaceKlingon_test.cpp"
+
+    with patch(class_gen+'write_inc_file') as wrt_inc:
+        with patch(class_gen+'write_lang_src_file') as wrt_source:
+            with patch(class_gen+'write_lang_unittest_file') as wrt_ut:
+                with patch('builtins.open', mock_open()) as mocked_file:
+                    mocked_file.side_effect = [MockFile(), OSError, MockFile()]
+                    assert not proj_gen.generate_lang_files("baseDirName", "klingon")
+
+                    assert 'include' in proj_gen.fnames['klingon']
+                    assert 'source' not in proj_gen.fnames['klingon']
+                    assert 'unittest' in proj_gen.fnames['klingon']
+                    assert proj_gen.fnames['klingon']['include'] == incfname
+                    assert proj_gen.fnames['klingon']['unittest'] == tstfname
+
+                    assert wrt_inc.call_count == 1
+                    assert wrt_source.call_count == 0
+                    assert wrt_ut.call_count == 1
+                    captured = capsys.readouterr()
+                    assert captured.out == "Failed to open 'baseDirName/"+srcfname+"' for writing\n"
+
+def test040_generate_lang_files_fail_ut(capsys):
+    """!
+    @brief Test generate_lang_files
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+    incfname = "inc/ParserStringListInterfaceKlingon.h"
+    srcfname = "src/ParserStringListInterfaceKlingon.cpp"
+    tstfname = "test/ParserStringListInterfaceKlingon_test.cpp"
+
+    with patch(class_gen+'write_inc_file') as wrt_inc:
+        with patch(class_gen+'write_lang_src_file') as wrt_source:
+            with patch(class_gen+'write_lang_unittest_file') as wrt_ut:
+                with patch('builtins.open', mock_open()) as mocked_file:
+                    mocked_file.side_effect = [MockFile(), MockFile(), OSError]
+                    assert not proj_gen.generate_lang_files("baseDirName", "klingon")
+
+                    assert 'include' in proj_gen.fnames['klingon']
+                    assert 'source' in proj_gen.fnames['klingon']
+                    assert 'unittest' not in proj_gen.fnames['klingon']
+                    assert proj_gen.fnames['klingon']['include'] == incfname
+                    assert proj_gen.fnames['klingon']['source'] == srcfname
+
+                    assert wrt_inc.call_count == 1
+                    assert wrt_source.call_count == 1
+                    assert wrt_ut.call_count == 0
+                    captured = capsys.readouterr()
+                    assert captured.out == "Failed to open 'baseDirName/"+tstfname+"' for writing\n"
+
+def test041_generate_mock_files_fail_inc(capsys):
+    """!
+    @brief Test generate_mock_files
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+    incfname = "mock/mock_ParserStringListInterface.h"
+    srcfname = "mock/mock_ParserStringListInterface.cpp"
+
+    with patch(class_gen+'write_mock_inc_file') as wrt_inc:
+        with patch(class_gen+'write_mock_src_file') as wrt_source:
+            with patch('builtins.open', mock_open()) as mocked_file:
+                mocked_file.side_effect = [OSError, MockFile()]
+                assert not proj_gen.generate_mock_files("baseDirName")
+
+                assert 'mockInclude' not in proj_gen.fnames['base']
+                assert 'mockSource' in proj_gen.fnames['base']
+
+                assert proj_gen.fnames['base']['mockSource'] == srcfname
+
+                assert wrt_inc.call_count == 0
+                assert wrt_source.call_count == 1
+
+                captured = capsys.readouterr()
+                assert captured.out == "Failed to open 'baseDirName/"+incfname+"' for writing\n"
+
+def test042_generate_mock_files_fail_src(capsys):
+    """!
+    @brief Test generate_mock_files
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+    incfname = "mock/mock_ParserStringListInterface.h"
+    srcfname = "mock/mock_ParserStringListInterface.cpp"
+
+    with patch(class_gen+'write_mock_inc_file') as wrt_inc:
+        with patch(class_gen+'write_mock_src_file') as wrt_source:
+            with patch('builtins.open', mock_open()) as mocked_file:
+                mocked_file.side_effect = [MockFile(), OSError]
+                assert not proj_gen.generate_mock_files("baseDirName")
+
+                assert 'mockInclude' in proj_gen.fnames['base']
+                assert 'mockSource' not in proj_gen.fnames['base']
+
+                assert proj_gen.fnames['base']['mockInclude'] == incfname
+
+                assert wrt_inc.call_count == 1
+                assert wrt_source.call_count == 0
+
+                captured = capsys.readouterr()
+                assert captured.out == "Failed to open 'baseDirName/"+srcfname+"' for writing\n"
+
+def test043_generate_select_files_fail_win(capsys):
+    """!
+    @brief Test generate_select_files
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+    linuxname = "test/LocalLanguageSelect_Linux_test.cpp"
+    winfname = "test/LocalLanguageSelect_Windows_test.cpp"
+
+    with patch(class_gen+'write_selection_unittest_file') as wrt_source:
+        with patch('builtins.open', mock_open()) as mocked_file:
+            mocked_file.side_effect = [MockFile(), OSError]
+
+            assert not proj_gen.generate_select_files("baseDirName")
+
+            assert len(proj_gen.select_files) == 1
+            assert (linuxname, 'LocalLanguageSelect_Linux') in proj_gen.select_files
+            assert (winfname, 'LocalLanguageSelect_Windows') not in proj_gen.select_files
+
+            assert wrt_source.call_count == 1
+
+            captured = capsys.readouterr()
+            assert captured.out == "Failed to open 'baseDirName/"+winfname+"' for writing\n"
+
+def test044_generate_select_files_fail_linux(capsys):
+    """!
+    @brief Test generate_select_files
+    """
+    proj_gen = ProjectFileGenerator(MockProjectDescription())
+    class_gen = 'code_tools_grocsoftware.cpp_gen.class_file_gen.GenerateLangFiles.'
+    linuxname = "test/LocalLanguageSelect_Linux_test.cpp"
+    winfname = "test/LocalLanguageSelect_Windows_test.cpp"
+
+    with patch(class_gen+'write_selection_unittest_file') as wrt_source:
+        with patch('builtins.open', mock_open()) as mocked_file:
+            mocked_file.side_effect = [OSError, MockFile()]
+
+            assert not proj_gen.generate_select_files("baseDirName")
+
+            assert len(proj_gen.select_files) == 1
+            assert (linuxname, 'LocalLanguageSelect_Linux') not in proj_gen.select_files
+            assert (winfname, 'LocalLanguageSelect_Windows') in proj_gen.select_files
+
+            assert wrt_source.call_count == 1
+
+            captured = capsys.readouterr()
+            assert captured.out == "Failed to open 'baseDirName/"+linuxname+"' for writing\n"
 
 # pylint: enable=protected-access

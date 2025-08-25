@@ -112,6 +112,7 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
         function_body.append(self.gen_include("<cstdlib>"))
         function_body.append(self.gen_include("<regex>"))
         function_body.append("\n")  # whitespace for readability
+        function_body.append("// NOLINTBEGIN\n\n")
 
         # Generate function doxygen comment and start
         function_body.extend(self.gen_function_define())
@@ -170,6 +171,7 @@ class LinuxLangSelectFunctionGenerator(BaseCppStringClassGenerator):
 
         # Complete the function
         function_body.append(self.gen_function_end())
+        function_body.append("// NOLINTEND\n")
         function_body.append("#endif // "+self.def_os_str+"\n")
         return function_body
 

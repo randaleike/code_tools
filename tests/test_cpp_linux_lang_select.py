@@ -194,12 +194,13 @@ class TestClass01LinuxLangSelect:
 
         capture_list = test_obj.gen_function()
 
-        assert len(capture_list) == 41
+        assert len(capture_list) == 43
 
         assert capture_list[0] == "#if (defined(__linux__) || defined(__unix__))\n"
         assert capture_list[1] == cpp_gen.gen_include("<cstdlib>")
         assert capture_list[2] == cpp_gen.gen_include("<regex>")
         assert capture_list[3] == "\n"
+        assert capture_list[4] == "// NOLINTBEGIN\n\n"
 
         desc = "Determine the correct local language class from the input LANG environment setting"
         expected_list = cpp_gen.define_function_with_decorations(test_obj.select_function_name,
@@ -208,20 +209,20 @@ class TestClass01LinuxLangSelect:
                                                              test_obj.base_intf_ret_ptr_dict)
         expected_list.append("{\n")
         for index, expected_text in enumerate(expected_list):
-            assert capture_list[index+4] == expected_text
+            assert capture_list[index+5] == expected_text
 
         param_name = ParamRetDict.get_param_name(test_obj.param_dict_list[0])
-        assert capture_list[13] == "    // Check for valid input\n"
-        assert capture_list[14] == "    if (nullptr != "+param_name+")\n"
-        assert capture_list[15] == "    {\n"
-        assert capture_list[16] == "        // Break the string into its components\n"
-        assert capture_list[17] == "        std::cmatch search_match;\n"
-        assert capture_list[18] == "        std::regex search_regex(\"^([a-z]{2})_([A-Z]{2})" \
+        assert capture_list[14] == "    // Check for valid input\n"
+        assert capture_list[15] == "    if (nullptr != "+param_name+")\n"
+        assert capture_list[16] == "    {\n"
+        assert capture_list[17] == "        // Break the string into its components\n"
+        assert capture_list[18] == "        std::cmatch search_match;\n"
+        assert capture_list[19] == "        std::regex search_regex(\"^([a-z]{2})_([A-Z]{2})" \
                                    "\\\\.(UTF-[0-9]{1,2})\");\n"
-        assert capture_list[19] == "        bool matched = std::regex_match("+param_name+", " \
+        assert capture_list[20] == "        bool matched = std::regex_match("+param_name+", " \
                                    "search_match, search_regex);\n"
-        assert capture_list[20] == "\n"
-        assert capture_list[21] == "        // Determine the language\n"
+        assert capture_list[21] == "\n"
+        assert capture_list[22] == "        // Determine the language\n"
 
         first = True
         for index, lang_name in enumerate(lang_list.get_language_list()):
@@ -235,26 +236,27 @@ class TestClass01LinuxLangSelect:
             if_line += lang_code
             if_line += "\"))\n"
 
-            list_offset = 22 + (index * 4)
+            list_offset = 23 + (index * 4)
             assert capture_list[list_offset] == "        "+if_line
             assert capture_list[list_offset+1] == "        {\n"
             assert capture_list[list_offset+2] == "            " \
                                                   +cpp_gen._gen_make_ptr_return_statement(lang_name)
             assert capture_list[list_offset+3] == "        }\n"
 
-        assert capture_list[30] == "        else //unknown language code, use default language\n"
-        assert capture_list[31] == "        {\n"
+        assert capture_list[31] == "        else //unknown language code, use default language\n"
+        assert capture_list[32] == "        {\n"
         default_lang, _ = lang_list.get_default_data()
-        assert capture_list[32] == "            " \
+        assert capture_list[33] == "            " \
                                    +cpp_gen._gen_make_ptr_return_statement(default_lang)
-        assert capture_list[33] == "        }\n"
-        assert capture_list[34] == "    }\n"
-        assert capture_list[35] == "    else // null pointer input, use default language\n"
-        assert capture_list[36] == "    {\n"
-        assert capture_list[37] == "        "+cpp_gen._gen_make_ptr_return_statement(default_lang)
-        assert capture_list[38] == "    } // end of if(nullptr != "+param_name+")\n"
-        assert capture_list[39] == "} // end of "+test_obj.select_function_name+"()\n"
-        assert capture_list[40] == "#endif // "+test_obj.def_os_str+"\n"
+        assert capture_list[34] == "        }\n"
+        assert capture_list[35] == "    }\n"
+        assert capture_list[36] == "    else // null pointer input, use default language\n"
+        assert capture_list[37] == "    {\n"
+        assert capture_list[38] == "        "+cpp_gen._gen_make_ptr_return_statement(default_lang)
+        assert capture_list[39] == "    } // end of if(nullptr != "+param_name+")\n"
+        assert capture_list[40] == "} // end of "+test_obj.select_function_name+"()\n"
+        assert capture_list[41] == "// NOLINTEND\n"
+        assert capture_list[42] == "#endif // "+test_obj.def_os_str+"\n"
     # pylint: enable=too-many-statements
 
 

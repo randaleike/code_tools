@@ -696,7 +696,7 @@ class GenerateCppFileHelper():
         usingstr = "using "+local_name+" = "+std_name+";"
         if desc is not None:
             doxycomment = self.doxy_comment_gen.gen_doxy_var_doc_str(desc)
-            usingstr = usingstr.ljust(40)+doxycomment
+            usingstr = usingstr.ljust(40)+doxycomment+"\n"
 
         return usingstr
 

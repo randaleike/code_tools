@@ -589,4 +589,34 @@ class Test02StringClassDescription:
         assert extra[0] == "#ifdef (foo)\n"
         assert extra[1] == "#endif\n"
 
+    def test43_add_test_param_value(self):
+        """!
+        @brief Test add_test_param_value
+        """
+        testobj = StringClassDescription()
+        testobj.add_test_param_value("testParam", "one", True)
+        testobj.add_test_param_value("testParam1", "2", False)
+        assert len(testobj.string_jason_data['testParamValues']) == 2
+
+        assert 'testParam' in list(testobj.string_jason_data['testParamValues'])
+        assert 'testParam1' in list(testobj.string_jason_data['testParamValues'])
+
+        assert testobj.string_jason_data['testParamValues']['testParam'] == ("one", True)
+        assert testobj.string_jason_data['testParamValues']['testParam1'] == ("2", False)
+
+    def test44_get_test_param_value(self):
+        """!
+        @brief Test get_test_param_value
+        """
+        testobj = StringClassDescription()
+        testobj.add_test_param_value("testParam", "one", True)
+        testobj.add_test_param_value("testParam1", "2", False)
+
+        val = testobj.get_test_param_values()
+        assert 'testParam' in list(val)
+        assert 'testParam1' in list(val)
+
+        assert val['testParam'] == ("one", True)
+        assert val['testParam1'] == ("2", False)
+
 # pylint: enable=protected-access

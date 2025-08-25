@@ -184,7 +184,7 @@ def test011_write_base_src_file():
     class_gen.write_base_src_file(mock_file)
 
     assert len(mock_file.mock_calls) == 12
-    assert len(mock_file.writedata) == 108
+    assert len(mock_file.writedata) == 110
 
 def test012_write_base_src_file_with_group():
     """!
@@ -203,7 +203,7 @@ def test012_write_base_src_file_with_group():
             class_gen.write_base_src_file(mock_file)
 
             assert len(mock_file.mock_calls) == 15
-            assert len(mock_file.writedata) == 124
+            assert len(mock_file.writedata) == 126
 
 def test013_write_base_src_file_with_using():
     """!
@@ -219,7 +219,7 @@ def test013_write_base_src_file_with_using():
         class_gen.write_base_src_file(mock_file)
 
         assert len(mock_file.mock_calls) == 14
-        assert len(mock_file.writedata) == 110
+        assert len(mock_file.writedata) == 112
 
 def test021_write_lang_src_file():
     """!

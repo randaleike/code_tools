@@ -359,7 +359,7 @@ def test014_gen_unittest_target():
 
     assert code_txt[9] == "gtest_add_tests (TARGET TestSome_test TEST_LIST TestSome_testAllTests)\n\n"
 
-    assert code_txt[10] == "if(\"${CMAKE_SYSTEM_NAME}\" == \"Windows\")\n"
+    assert code_txt[10] == "if(${CMAKE_SYSTEM_NAME} MATCHES \"Windows\")\n"
     assert code_txt[11] == "    set_tests_properties(TestSome_testAllTests " \
                            "PROPERTIES ENVIRONMENT \"PATH=$<SHELL_PATH:$<TARGET_FILE_DIR" \
                            ":gtest>>$<SEMICOLON>$ENV{PATH}\")\n"
@@ -387,7 +387,7 @@ def test015_gen_unittest_target_noinc():
 
     assert code_txt[8] == "gtest_add_tests (TARGET TestSome_test TEST_LIST TestSome_testAllTests)\n\n"
 
-    assert code_txt[9] == "if(\"${CMAKE_SYSTEM_NAME}\" == \"Windows\")\n"
+    assert code_txt[9] == "if(${CMAKE_SYSTEM_NAME} MATCHES \"Windows\")\n"
     assert code_txt[10] == "    set_tests_properties(TestSome_testAllTests " \
                            "PROPERTIES ENVIRONMENT \"PATH=$<SHELL_PATH:$<TARGET_FILE_DIR" \
                            ":gtest>>$<SEMICOLON>$ENV{PATH}\")\n"
@@ -431,7 +431,7 @@ def test017_gen_unittest_target_with_google():
 
     assert code_txt[11] == "gtest_add_tests (TARGET TestSome_test TEST_LIST TestSome_testAllTests)\n\n"
 
-    assert code_txt[12] == "if(\"${CMAKE_SYSTEM_NAME}\" == \"Windows\")\n"
+    assert code_txt[12] == "if(${CMAKE_SYSTEM_NAME} MATCHES \"Windows\")\n"
     assert code_txt[13] == "    set_tests_properties(TestSome_testAllTests " \
                            "PROPERTIES ENVIRONMENT \"PATH=$<SHELL_PATH:$<TARGET_FILE_DIR" \
                            ":gtest>>$<SEMICOLON>$ENV{PATH}\")\n"
@@ -465,7 +465,7 @@ def test018_gen_unittest_target_noinc_with_google():
 
     assert code_txt[11] == "gtest_add_tests (TARGET TestSome_test TEST_LIST TestSome_testAllTests)\n\n"
 
-    assert code_txt[12] == "if(\"${CMAKE_SYSTEM_NAME}\" == \"Windows\")\n"
+    assert code_txt[12] == "if(${CMAKE_SYSTEM_NAME} MATCHES \"Windows\")\n"
     assert code_txt[13] == "    set_tests_properties(TestSome_testAllTests " \
                            "PROPERTIES ENVIRONMENT \"PATH=$<SHELL_PATH:$<TARGET_FILE_DIR" \
                            ":gtest>>$<SEMICOLON>$ENV{PATH}\")\n"

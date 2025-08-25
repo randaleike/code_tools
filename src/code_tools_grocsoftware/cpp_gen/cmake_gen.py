@@ -234,7 +234,7 @@ class GenerateCmakeFile():
 
             cmake_txt.append("gtest_add_tests (TARGET "+target_name+" TEST_LIST "+target_name+"AllTests)\n\n")
 
-            cmake_txt.append("if(\"${CMAKE_SYSTEM_NAME}\" == \"Windows\")\n")
+            cmake_txt.append("if(${CMAKE_SYSTEM_NAME} MATCHES \"Windows\")\n")
             cmake_txt.append("    set_tests_properties("+target_name+"AllTests " \
                                 "PROPERTIES ENVIRONMENT \"PATH=$<SHELL_PATH:$<TARGET_FILE_DIR" \
                                 ":gtest>>$<SEMICOLON>$ENV{PATH}\")\n")

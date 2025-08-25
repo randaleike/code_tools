@@ -80,7 +80,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         #  {param_name: (value, is_text)}
         #  is_text is True if the value is a text string and should be quoted
         #  when used in the test code
-        self.test_param_values = {}
+        self.test_param_values = self.json_str_data.get_test_param_values()
 
         # Update the translation matrix
         uselist = []
@@ -328,7 +328,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
 
         else:
             class_desc = "Language specific parser error/help string generation interface"
-            inheritence = "public "+self.gen_h_fname()
+            inheritence = "public "+self.base_class_name
             class_decoration = "final"
             skipdoxy = True
             virtual_destructor = False
@@ -774,7 +774,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         group_name = self.project_data.get_group_name()
         group_desc = self.project_data.get_group_desc()
         class_desc = "Mock Parser error/help string generation interface"
-        inheritence = self.json_str_data.get_language_class_name()
+        inheritence = "public "+self.json_str_data.get_language_class_name()
         class_decoration = None
         skipdoxy = False
         virtual_destructor = True
@@ -786,7 +786,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
         mockfile.writelines(["\n"]) # whitespace for readability
 
         # Write the include block
-        include_list = ["<mock/gmock.h>", self.gen_h_fname()]
+        include_list = ["<gmock/gmock.h>", self.gen_h_fname()]
         filename = self.gen_mock_h_fname()
 
         mockfile.writelines(self.gen_include_block(include_list))
@@ -884,10 +884,10 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
                 using_code.append(self.gen_using_statement(using['localName'],
                                                            using['stdName'],
                                                            using['desc']))
-        using_code.append("using ::testing::StrictMock;")
-        using_code.append("using ::testing::Return;")
+        using_code.append("using ::testing::StrictMock;\n")
+        using_code.append("using ::testing::Return;\n")
         using_code.append(self.gen_using_statement("stringMockptr",
-                                                   "StrictMock<mock_ParserStringListInterface>*"))
+                                                   "StrictMock<mock_ParserStringListInterface>*\n"))
         srcfile.writelines(using_code)
         srcfile.writelines(["\n"]) # whitespace for readability
 
@@ -897,7 +897,7 @@ class GenerateLangFiles(BaseCppStringClassGenerator):
 
         srcfile.writelines(self.master_func_gen.gen_function_define())
         ptr_code = self.gen_function_ret_type(retdict)
-        ptr_code += " retPtr = std::make_shared< StrictMock<mock"
+        ptr_code += " retPtr = std::make_shared< StrictMock<"
         ptr_code += class_name
         ptr_code += "> >();\n"
         srcfile.writelines([body_indent+ptr_code])

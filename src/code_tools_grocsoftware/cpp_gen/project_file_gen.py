@@ -241,18 +241,23 @@ class ProjectFileGenerator():
             print (f"Failed to open '{open_name}' for writing")
             return None
 
-    def generate_lang_files(self, base_dir:str, lang:str = None):
+    def generate_lang_files(self, base_dir:str, lang:str = None)->bool:
         """!
         @brief Generate the inc, source and unittest files
         @param base_dir {str} Base directory name
         @param lang {str or None} Language name or None for base files
+        @return bool - True if all files were created else False
         """
+        return_val = True
+
         incname = os.path.join(self.project_data.get_inc_subdir(),
                                self.class_gen.gen_h_fname(lang))
         baseinc = self.open_file(base_dir, incname)
         if baseinc is not None:
             self._add_file('include', incname, lang)
             self.class_gen.write_inc_file(baseinc, lang)
+        else:
+            return_val = False
 
         srcname = os.path.join(self.project_data.get_src_subdir(),
                                self.class_gen.gen_cpp_fname(lang))
@@ -263,6 +268,8 @@ class ProjectFileGenerator():
                 self.class_gen.write_base_src_file(basesrc)
             else:
                 self.class_gen.write_lang_src_file(basesrc, lang)
+        else:
+            return_val = False
 
         tstname = os.path.join(self.project_data.get_test_subdir(),
                                self.class_gen.gen_unittest_fname(lang))
@@ -273,18 +280,26 @@ class ProjectFileGenerator():
                 self.class_gen.write_base_unittest_file(utsrc)
             else:
                 self.class_gen.write_lang_unittest_file(utsrc, lang)
+        else:
+            return_val = False
 
-    def generate_mock_files(self, base_dir:str):
+        return return_val
+
+    def generate_mock_files(self, base_dir:str)->bool:
         """!
         @brief Generate the mock files
         @param base_dir {str} Base directory name
+        @return bool - True if all files were created else False
         """
+        return_val = True
         mockhname = os.path.join(self.project_data.get_mock_subdir(),
                                  self.class_gen.gen_mock_h_fname())
         mock_h = self.open_file(base_dir, mockhname)
         if mock_h is not None:
             self._add_file('mockInclude', mockhname)
             self.class_gen.write_mock_inc_file(mock_h)
+        else:
+            return_val = False
 
         mocksrcname = os.path.join(self.project_data.get_mock_subdir(),
                                    self.class_gen.gen_mock_cpp_fname())
@@ -292,12 +307,18 @@ class ProjectFileGenerator():
         if mock_cpp is not None:
             self._add_file('mockSource', mocksrcname)
             self.class_gen.write_mock_src_file(mock_cpp)
+        else:
+            return_val = False
 
-    def generate_select_files(self, base_dir:str):
+        return return_val
+
+    def generate_select_files(self, base_dir:str)->bool:
         """!
         @brief Generate the output files
         @param base_dir {str} Base directory name
+        @return bool - True if all files were created else False
         """
+        return_val = True
         for os_sel in self.class_gen.get_os_lang_sel_list():
             fname, target_name = os_sel.get_unittest_file_name()
             selname = os.path.join(self.project_data.get_test_subdir(), fname)
@@ -305,25 +326,31 @@ class ProjectFileGenerator():
             if select_ut is not None:
                 self._add_select_file(selname, target_name)
                 self.class_gen.write_selection_unittest_file(select_ut, os_sel)
+            else:
+                return_val = False
+        return return_val
 
-    def generate_files(self, base_dir:str):
+    def generate_files(self, base_dir:str)->bool:
         """!
         @brief Generate the output files
         @param base_dir {str} Base directory name
+        @return bool - True if all files were created else False
         """
+        return_val = True
         incdir = os.path.join(base_dir, self.project_data.get_inc_subdir())
         self.add_include_dir(incdir)
 
         # Generate the base files
-        self.generate_lang_files(base_dir)
+        return_val &= self.generate_lang_files(base_dir)
 
         # Generate the language specific files
         lang_list = self.json_lang_data.get_language_list()
         for lang in lang_list:
-            self.generate_lang_files(base_dir, lang)
+            return_val &= self.generate_lang_files(base_dir, lang)
 
         # Generate the mock files
-        self.generate_mock_files(base_dir)
+        return_val &= self.generate_mock_files(base_dir)
 
         # Generate the select unit tests
-        self.generate_select_files(base_dir)
+        return_val &= self.generate_select_files(base_dir)
+        return return_val

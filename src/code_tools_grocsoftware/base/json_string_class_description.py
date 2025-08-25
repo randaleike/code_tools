@@ -62,7 +62,9 @@ class StringClassDescription():
                                       'baseSelectionFunction': "getLocalStringListInterface",
                                       'propertyMethods':{},
                                       'translateMethods':{},
-                                      'extraMock':[]}
+                                      'extraMock':[],
+                                      'testParamValues':{}
+                                      }
         else:
             self.string_jason_data = json.load(lang_json_file)
             lang_json_file.close()
@@ -199,6 +201,27 @@ class StringClassDescription():
         @param extra_code {list} List of extra code lines
         """
         self.string_jason_data['extraMock'] = extra_code
+
+    def add_test_param_value(self, param_name:str, test_value:str, istext:bool = False):
+        """!
+        @brief Add a test parameter value to the input translate method
+        @param param_name {string} Name of the parameter to add the test value to
+        @param test_value {string} Test value to add to the parameter
+        @param istext {boolean} True if the test value is text, else False (default)
+        """
+        if 'testParamValues' not in self.string_jason_data:
+            self.string_jason_data['testParamValues'] = {}
+
+        self.string_jason_data['testParamValues'][param_name] = (test_value, istext)
+
+    def get_test_param_values(self)->dict:
+        """!
+        @brief Get the test parameter value for the input parameter name
+        @return (dict) - Test value dictionary
+        """
+        if 'testParamValues' in self.string_jason_data:
+            return self.string_jason_data['testParamValues']
+        return {}
 
     def _define_property_function_entry(self, property_name:str = "", brief_desc:str = "",
                                      ret_type:str = "", ret_desc:str = "",
